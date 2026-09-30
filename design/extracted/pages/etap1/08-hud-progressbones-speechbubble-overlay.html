@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!-- Klockowo1.html · board 8 "HUD · ProgressBones · SpeechBubble · Overlay" 1440x1300 · refs svg/… are relative to design/extracted/ · x-dc, helmet, DCLogic and sc-camel-view-box (= viewBox) are design-tool artifacts, not product code -->
+<html lang="uk"><head>
+<meta charset="utf-8">
+<title>Klockowo — HUD, kosteczki, dymki, overlay</title>
+<script src="omitted:b98f67ba.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style></style>
+<style>
+body{margin:0;background:#FFF7E8;font-family:"Nunito",system-ui,sans-serif;color:#2D2A4A}
+@keyframes hd-pop{0%{transform:scale(.2) translateY(-30px);opacity:0}60%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+.hd-arrive{animation:hd-pop .6s cubic-bezier(.34,1.56,.64,1) infinite alternate 1s}
+@media (prefers-reduced-motion: reduce){.hd-arrive{animation:none}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1300px; box-sizing: border-box; background: #FFF7E8; padding: 40px 56px; display: flex; flex-direction: column; gap: 20px; position: relative">
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+<defs>
+<path id="hd-home" d="M8 22.5 L21.4 10.6 C22.9 9.3 25.1 9.3 26.6 10.6 L40 22.5 C40.6 23.1 41 23.9 41 24.8 L41 38 C41 39.7 39.7 41 38 41 L30 41 L30 32 C30 30.3 28.7 29 27 29 L21 29 C19.3 29 18 30.3 18 32 L18 41 L10 41 C8.3 41 7 39.7 7 38 L7 24.8 C7 23.9 7.4 23.1 8 22.5 Z"></path>
+<g id="hd-speaker"><path d="M6 19 C6 17.3 7.3 16 9 16 L15 16 L24.5 8.4 C25.8 7.4 27.7 8.3 27.7 10 L27.7 38 C27.7 39.7 25.8 40.6 24.5 39.6 L15 32 L9 32 C7.3 32 6 30.7 6 29 Z"></path><path d="M33 18 C35.5 20.5 35.5 27.5 33 30 M37.5 13.5 C42.5 18.5 42.5 29.5 37.5 34.5" fill="none" stroke="#2D2A4A" stroke-width="3.5" stroke-linecap="round"></path></g>
+<g id="hd-bulb"><path d="M24 4 C15.7 4 9 10.7 9 19 C9 24.4 11.8 28.6 15.4 31.4 C16.4 32.2 17 33.3 17 34.6 L17 35 L31 35 L31 34.6 C31 33.3 31.6 32.2 32.6 31.4 C36.2 28.6 39 24.4 39 19 C39 10.7 32.3 4 24 4 Z"></path><rect x="17" y="37.5" width="14" height="4" rx="2"></rect><rect x="20" y="43" width="8" height="3" rx="1.5"></rect></g>
+<path id="hd-check" fill-rule="evenodd" d="M24 4 A20 20 0 1 1 24 44 A20 20 0 1 1 24 4 Z M16.64 22.96 L21 27.32 L31.36 16.96 L35.04 20.64 L21 34.68 L12.96 26.64 Z"></path>
+<path id="hd-close" d="M14 14 L34 34 M34 14 L14 34" fill="none" stroke="#2D2A4A" stroke-width="6.5" stroke-linecap="round"></path>
+<path id="hd-next" d="M8 21 L28 21 L28 13 C28 11.2 30.1 10.3 31.4 11.6 L42.1 22.3 C43 23.2 43 24.8 42.1 25.7 L31.4 36.4 C30.1 37.7 28 36.8 28 35 L28 27 L8 27 C6.3 27 5 25.7 5 24 C5 22.3 6.3 21 8 21 Z"></path>
+<path id="hd-bone" d="M15.81 20.5 A6 6 0 1 0 6.68 24 A6 6 0 1 0 15.81 27.5 L32.19 27.5 A6 6 0 1 0 41.32 24 A6 6 0 1 0 32.19 20.5 Z"></path>
+<g id="hd-b-full"><use href="#hd-bone" fill="#FFC21A" stroke="#2D2A4A" stroke-width="2.6" stroke-linejoin="round"></use><path d="M14 22.6 H30" stroke="#FFFFFF" stroke-opacity=".7" stroke-width="2" stroke-linecap="round"></path></g>
+<g id="hd-b-empty"><use href="#hd-bone" fill="none" stroke="#8C87A8" stroke-width="2.2" stroke-dasharray="3.5 3"></use></g>
+<g id="hd-paw"><ellipse cx="24" cy="31" rx="10" ry="8.5"></ellipse><ellipse cx="11.5" cy="20" rx="4.2" ry="5.2"></ellipse><ellipse cx="19" cy="12.5" rx="4.2" ry="5.4"></ellipse><ellipse cx="29" cy="12.5" rx="4.2" ry="5.4"></ellipse><ellipse cx="36.5" cy="20" rx="4.2" ry="5.2"></ellipse></g>
+<g id="hd-5" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M78 16 L32 16 L27 62 C36 56 44 54 52 54 C70 54 82 67 82 86 C82 108 68 124 49 124 C37 124 27 119 20 111"></path></g>
+</defs>
+</svg>
+
+<div style="display: flex; align-items: baseline; gap: 24px">
+<h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 44px; line-height: 1">HUD · ProgressBones · SpeechBubble · Overlay</h1>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: baseline; gap: 16px"><h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 24px">HUD · 1280 × 104</h2><span style="font-size: 15px; font-weight: 700; color: #5E5A80">кнопки 72 px, 24 px від верху й боків · 6 слотів-кісточок (aria-label «kosteczki») по центру · тло — 50 світу, панель без смуги</span></div>
+<div style="width: 1280px; height: 104px; background: #EAF7E3; border-radius: 20px; position: relative; display: flex; align-items: flex-start; justify-content: space-between; padding: 24px 24px 0; box-sizing: border-box">
+<button type="button" aria-label="Mapa" style="width: 72px; height: 72px; border-radius: 999px; border: 3px solid #2D2A4A; background: #FFFFFF; box-shadow: 0 6px 0 #E3CFA8, inset 0 2px 0 rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="40" height="40" fill="#2D2A4A" aria-hidden="true"><use href="#hd-home"></use></svg></button>
+<div role="img" aria-label="kosteczki: 0 z 6" style="display: flex; gap: 12px; margin-top: 8px"><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span></div>
+<button type="button" aria-label="Posłuchaj" style="width: 72px; height: 72px; border-radius: 999px; border: 3px solid #2D2A4A; background: #3AA0FF; box-shadow: 0 6px 0 #1F76CC, inset 0 2px 0 rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="40" height="40" fill="#2D2A4A" aria-hidden="true"><use href="#hd-speaker"></use></svg></button>
+</div>
+<div style="font-size: 14px; font-weight: 800; color: #5E5A80">Стан: початок рівня · 0 / 6</div>
+<div style="width: 1280px; height: 104px; background: #E0F1FD; border-radius: 20px; position: relative; display: flex; align-items: flex-start; justify-content: space-between; padding: 24px 24px 0; box-sizing: border-box">
+<button type="button" aria-label="Mapa" style="width: 72px; height: 72px; border-radius: 999px; border: 3px solid #2D2A4A; background: #FFFFFF; box-shadow: 0 6px 0 #E3CFA8, inset 0 2px 0 rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="40" height="40" fill="#2D2A4A" aria-hidden="true"><use href="#hd-home"></use></svg></button>
+<div role="img" aria-label="kosteczki: 3 z 6" style="display: flex; gap: 12px; margin-top: 8px"><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-full"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-full"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg class="hd-arrive" sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-full"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span><span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span></div>
+<button type="button" aria-label="Posłuchaj" style="width: 72px; height: 72px; border-radius: 999px; border: 3px solid #2D2A4A; background: #3AA0FF; box-shadow: 0 6px 0 #1F76CC, 0 0 0 10px rgba(58,160,255,.25), inset 0 2px 0 rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="40" height="40" fill="#2D2A4A" aria-hidden="true"><use href="#hd-speaker"></use></svg></button>
+</div>
+<div style="font-size: 14px; font-weight: 800; color: #5E5A80">Стан: 3-тя кісточка долітає (дуга 600 мс, ease-pop) · «Posłuchaj» пульсує один раз після нової інструкції · W3</div>
+</section>
+
+<section style="display: flex; gap: 28px; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 22px">Телефон 390 · портрет</h2>
+<div style="width: 390px; height: 250px; background: #EAF7E3; border-radius: 28px; overflow: hidden; position: relative; border: 2px solid #D2EDC7; box-sizing: border-box">
+<div style="height: 47px; background: repeating-linear-gradient(135deg, #D2EDC7 0 8px, #EAF7E3 8px 16px); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #3A7D1E">safe-area-inset-top</div>
+<div style="height: 112px; display: flex; align-items: flex-start; justify-content: space-between; padding: 24px 24px 0; box-sizing: border-box">
+<button type="button" aria-label="Mapa" style="width: 80px; height: 80px; border-radius: 999px; border: 3px solid #2D2A4A; background: #FFFFFF; box-shadow: 0 6px 0 #E3CFA8; display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" fill="#2D2A4A" aria-hidden="true"><use href="#hd-home"></use></svg></button>
+<div role="img" aria-label="kosteczki: 2 z 6" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 6px"><svg sc-camel-view-box="0 0 48 48" width="34" height="30" aria-hidden="true"><use href="#hd-b-full"></use></svg><svg sc-camel-view-box="0 0 48 48" width="34" height="30" aria-hidden="true"><use href="#hd-b-full"></use></svg><svg sc-camel-view-box="0 0 48 48" width="34" height="30" aria-hidden="true"><use href="#hd-b-empty"></use></svg><svg sc-camel-view-box="0 0 48 48" width="34" height="30" aria-hidden="true"><use href="#hd-b-empty"></use></svg><svg sc-camel-view-box="0 0 48 48" width="34" height="30" aria-hidden="true"><use href="#hd-b-empty"></use></svg><svg sc-camel-view-box="0 0 48 48" width="34" height="30" aria-hidden="true"><use href="#hd-b-empty"></use></svg></div>
+<button type="button" aria-label="Posłuchaj" style="width: 80px; height: 80px; border-radius: 999px; border: 3px solid #2D2A4A; background: #3AA0FF; box-shadow: 0 6px 0 #1F76CC; display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" fill="#2D2A4A" aria-hidden="true"><use href="#hd-speaker"></use></svg></button>
+</div>
+<div style="padding: 0 24px; font-size: 13px; font-weight: 700; color: #5E5A80; line-height: 1.4">Панель 112 + safe-area. Кнопки 80. Кісточки — 2 ряди по 3 (34 px), бо між кнопками лише 182 px.</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 22px">Телефон 844 × 390 · альбом (масштаб 75%)</h2>
+<div style="width: 633px; height: 293px; position: relative; overflow: hidden; border-radius: 22px">
+<div style="width: 844px; height: 390px; transform: scale(.75); transform-origin: 0 0; background: #EAF7E3; position: absolute; left: 0; top: 0; display: flex">
+<div style="width: 128px; flex-shrink: 0; background: #D2EDC7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px">
+<button type="button" aria-label="Mapa" style="width: 80px; height: 80px; border-radius: 999px; border: 3px solid #2D2A4A; background: #FFFFFF; box-shadow: 0 6px 0 #E3CFA8; display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" fill="#2D2A4A" aria-hidden="true"><use href="#hd-home"></use></svg></button>
+<button type="button" aria-label="Posłuchaj" style="width: 80px; height: 80px; border-radius: 999px; border: 3px solid #2D2A4A; background: #3AA0FF; box-shadow: 0 6px 0 #1F76CC; display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" fill="#2D2A4A" aria-hidden="true"><use href="#hd-speaker"></use></svg></button>
+<button type="button" aria-label="Pomóż mi" style="width: 80px; height: 80px; border-radius: 999px; border: 3px solid #2D2A4A; background: #FFC21A; box-shadow: 0 6px 0 #D99A00; display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" fill="#2D2A4A" aria-hidden="true"><use href="#hd-bulb"></use></svg></button>
+</div>
+<div style="flex-grow: 1; position: relative; padding: 24px 24px 24px 24px; box-sizing: border-box">
+<div role="img" aria-label="kosteczki: 4 z 6" style="display: flex; gap: 8px; height: 28px; align-items: center"><svg sc-camel-view-box="0 0 48 48" width="32" height="28" aria-hidden="true"><use href="#hd-b-full"></use></svg><svg sc-camel-view-box="0 0 48 48" width="32" height="28" aria-hidden="true"><use href="#hd-b-full"></use></svg><svg sc-camel-view-box="0 0 48 48" width="32" height="28" aria-hidden="true"><use href="#hd-b-full"></use></svg><svg sc-camel-view-box="0 0 48 48" width="32" height="28" aria-hidden="true"><use href="#hd-b-full"></use></svg><svg sc-camel-view-box="0 0 48 48" width="32" height="28" aria-hidden="true"><use href="#hd-b-empty"></use></svg><svg sc-camel-view-box="0 0 48 48" width="32" height="28" aria-hidden="true"><use href="#hd-b-empty"></use></svg></div>
+<div style="position: absolute; left: 24px; top: 72px; width: 420px; height: 200px; border: 3px dashed #7BCB5A; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #3A7D1E">сцена завдання</div>
+<button type="button" aria-label="Gotowe" style="position: absolute; right: 136px; bottom: 24px; width: 80px; height: 80px; border-radius: 24px; border: 3px solid #2D2A4A; background: #3CBF6B; box-shadow: 0 6px 0 #25964F; display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" fill="#2D2A4A" aria-hidden="true"><use href="#hd-check"></use></svg></button>
+<div style="position: absolute; right: 24px; top: 24px; bottom: 24px; width: 88px; display: flex; flex-direction: column; justify-content: space-between">
+<span style="height: 88px; border-radius: 20px; border: 3px solid #2D2A4A; background: #FFFFFF; box-shadow: 0 4px 0 #E3CFA8"></span><span style="height: 88px; border-radius: 20px; border: 3px solid #2D2A4A; background: #FFFFFF; box-shadow: 0 4px 0 #E3CFA8"></span><span style="height: 88px; border-radius: 20px; border: 3px solid #2D2A4A; background: #FFFFFF; box-shadow: 0 4px 0 #E3CFA8"></span>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 13px; font-weight: 700; color: #5E5A80; max-width: 633px; line-height: 1.4">Смуга ліворуч — «Mapa», «Posłuchaj», «Pomóż mi» (по 80). Кісточки — неінтерактивний ряд 28 px угорі сцени. Лоток — стовпець праворуч (3 × 88), «Gotowe» 80 — у нижньому правому куті сцени. Кубика приховано.</div>
+</div>
+</section>
+
+<div style="display: flex; gap: 20px; flex-grow: 1">
+<section style="width: 330px; flex-shrink: 0; background: #FFFFFF; border-radius: 24px; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 22px">ProgressBones</h2>
+<div style="display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 14px 14px; align-items: center">
+<span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-empty"></use></svg></span><span style="font-size: 15px; font-weight: 700; line-height: 1.35">empty — слот surface-2, пунктир ink-soft</span>
+<span style="width: 60px; height: 48px; border-radius: 14px; background: #FDEBC8; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="44" height="44" aria-hidden="true"><use href="#hd-b-full"></use></svg></span><span style="font-size: 15px; font-weight: 700; line-height: 1.35">filled — reward + контур ink</span>
+<span style="width: 60px; height: 48px; border-radius: 14px; background: #FFF5DA; box-shadow: 0 0 0 4px #FFC21A; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="50" height="50" aria-hidden="true"><use href="#hd-b-full"></use></svg></span><span style="font-size: 15px; font-weight: 700; line-height: 1.35">arriving — посадка: ×1,15 → 1, 250 мс</span>
+<span style="display: flex; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="32" height="28" aria-hidden="true"><use href="#hd-b-full"></use></svg></span><span style="font-size: 15px; font-weight: 700; line-height: 1.35">compact 28 px — 844×390, не інтерактивні</span>
+</div>
+<div style="font-size: 14px; font-weight: 600; color: #5E5A80; line-height: 1.45; margin-top: auto">Слотів завжди 6: кісточку дають і після «показу разом». Лише одна кісточка летить за раз.</div>
+</section>
+
+<section style="flex-grow: 1; background: #FFFFFF; border-radius: 24px; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 22px">SpeechBubble — лише іконки або цифри</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 20px; padding-top: 4px">
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="position: relative; align-self: flex-start"><div style="min-width: 150px; height: 104px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #2D2A4A; border-radius: 24px; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 0 18px"><svg sc-camel-view-box="0 0 100 140" width="46" height="64" aria-hidden="true"><use href="#hd-5" stroke="#2D2A4A"></use></svg><svg sc-camel-view-box="0 0 40 40" width="46" height="46" fill="#2D2A4A" aria-hidden="true"><circle cx="8" cy="8" r="5.5"></circle><circle cx="32" cy="8" r="5.5"></circle><circle cx="20" cy="20" r="5.5"></circle><circle cx="8" cy="32" r="5.5"></circle><circle cx="32" cy="32" r="5.5"></circle></svg></div><svg sc-camel-view-box="0 0 40 26" width="40" height="26" style="position: absolute; left: 26px; bottom: -22px" aria-hidden="true"><path d="M2 0 L10 24 L30 0" fill="#FFFFFF" stroke="#2D2A4A" stroke-width="3" stroke-linejoin="round"></path><path d="M4 -1 H28" stroke="#FFFFFF" stroke-width="5"></path></svg></div><span style="font-size: 14px; font-weight: 700; color: #5E5A80; margin-top: 16px">число + крапки кубика</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="position: relative; align-self: flex-start"><div style="width: 150px; height: 104px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #2D2A4A; border-radius: 24px; display: flex; align-items: center; justify-content: center; gap: 6px"><svg sc-camel-view-box="0 0 48 48" width="52" height="52" fill="#2D2A4A" aria-hidden="true"><use href="#hd-paw"></use></svg><span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 52px; line-height: 1">?</span></div><svg sc-camel-view-box="0 0 40 26" width="40" height="26" style="position: absolute; left: 26px; bottom: -22px" aria-hidden="true"><path d="M2 0 L10 24 L30 0" fill="#FFFFFF" stroke="#2D2A4A" stroke-width="3" stroke-linejoin="round"></path><path d="M4 -1 H28" stroke="#FFFFFF" stroke-width="5"></path></svg></div><span style="font-size: 14px; font-weight: 700; color: #5E5A80; margin-top: 16px">«Wybierz swojego pieska!»</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="position: relative; align-self: flex-start"><div style="width: 150px; height: 104px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #2D2A4A; border-radius: 52px; display: flex; align-items: center; justify-content: center"><span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 60px; line-height: 1">?</span></div><svg sc-camel-view-box="0 0 44 36" width="44" height="36" style="position: absolute; left: 18px; bottom: -36px" aria-hidden="true"><circle cx="14" cy="8" r="7" fill="#FFFFFF" stroke="#2D2A4A" stroke-width="3"></circle><circle cx="6" cy="27" r="4.5" fill="#FFFFFF" stroke="#2D2A4A" stroke-width="3"></circle></svg></div><span style="font-size: 14px; font-weight: 700; color: #5E5A80; margin-top: 30px">thinking — хмаринка</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div style="position: relative; align-self: flex-start"><div style="width: 150px; height: 104px; box-sizing: border-box; background: #E0F1FD; border: 3px solid #2D2A4A; border-radius: 24px; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="56" height="56" fill="#2D2A4A" aria-hidden="true"><use href="#hd-speaker"></use></svg></div><svg sc-camel-view-box="0 0 40 26" width="40" height="26" style="position: absolute; left: 26px; bottom: -22px" aria-hidden="true"><path d="M2 0 L10 24 L30 0" fill="#E0F1FD" stroke="#2D2A4A" stroke-width="3" stroke-linejoin="round"></path><path d="M4 -1 H28" stroke="#E0F1FD" stroke-width="5"></path></svg></div><span style="font-size: 14px; font-weight: 700; color: #5E5A80; margin-top: 16px">talking — Кубик говорить</span></div>
+</div>
+<div style="font-size: 14px; font-weight: 600; color: #5E5A80; line-height: 1.45; margin-top: auto">Бульбашка — біла, контур 3, радіус 24, хвостик до рота Кубика (зліва внизу). Мін. висота 104. Текст у бульбашці не ставимо — дитина ще не читає.</div>
+</section>
+
+<section style="width: 470px; flex-shrink: 0; background: #FFFFFF; border-radius: 24px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 22px">Overlay</h2>
+<div style="height: 300px; border-radius: 20px; background: #EAF7E3; position: relative; overflow: hidden">
+<div style="position: absolute; inset: 0; background: rgba(45,42,74,.55)"></div>
+<div role="dialog" aria-label="Masz nową naklejkę!" style="position: absolute; left: 50px; top: 30px; width: 322px; height: 240px; background: #FFFFFF; border-radius: 24px; border: 3px solid #2D2A4A; box-sizing: border-box; box-shadow: 0 10px 24px rgba(45,42,74,.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px">
+<button type="button" aria-label="Zamknij" style="position: absolute; right: -22px; top: -22px; width: 72px; height: 72px; border-radius: 999px; border: 3px solid #2D2A4A; background: #FFFFFF; box-shadow: 0 6px 0 #E3CFA8; display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="40" height="40" fill="#2D2A4A" aria-hidden="true"><use href="#hd-close"></use></svg></button>
+<div style="width: 104px; height: 104px; border-radius: 24px; border: 3px dashed #D99A00; background: #FFF5DA; display: flex; align-items: center; justify-content: center; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 18px; color: #996300; text-align: center; line-height: 1.1">вміст</div>
+<a href="#" aria-label="Dalej" style="width: 72px; height: 72px; border-radius: 999px; border: 3px solid #2D2A4A; background: #FF8A3D; box-shadow: 0 6px 0 #D9661C; display: flex; align-items: center; justify-content: center; box-sizing: border-box"><svg sc-camel-view-box="0 0 48 48" width="40" height="40" fill="#2D2A4A" aria-hidden="true"><use href="#hd-next"></use></svg></a>
+</div>
+</div>
+<div style="font-size: 14px; font-weight: 600; color: #5E5A80; line-height: 1.45">Затемнення ink 55%, тло нерухоме. Панель: радіус 24, контур 3, появляється scale .9→1 + згасання 300 мс ease-out. «Zamknij» 72 — у кутку, ≥24 px від краю екрана. Приклад: «Masz nową naklejkę!»</div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1300}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+
+
+</body></html>

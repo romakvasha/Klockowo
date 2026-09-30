@@ -1,0 +1,100 @@
+/* EXTRACTED VERBATIM from design board etap1/02 "Tokeny" (Klockowo1.html) by design/tools/unpack.mjs.
+   Used by the design but missing here: --kl-neutral-edge #E3CFA8, --kl-disabled #EDEAF3 (see design/INDEX.md). */
+:root {
+  /* baza */
+  --kl-bg: #FFF7E8;
+  --kl-surface: #FFFFFF;
+  --kl-surface-2: #FDEBC8;
+  --kl-ink: #2D2A4A;
+  --kl-ink-soft: #5E5A80;
+  /* semantyka: wypełnienie / krawędź */
+  --kl-primary: #FF8A3D;
+  --kl-primary-edge: #D9661C;
+  --kl-secondary: #3AA0FF;
+  --kl-secondary-edge: #1F76CC;
+  --kl-success: #3CBF6B;
+  --kl-success-edge: #25964F;
+  --kl-retry: #B7A8FF;
+  --kl-retry-edge: #7F6CE0;
+  --kl-reward: #FFC21A;
+  --kl-reward-edge: #D99A00;
+  --kl-locked: #C9C4D6;
+  --kl-locked-edge: #A39DB5;
+  /* rzędy: dziesiątki / jedności */
+  --kl-tens: #4A90E2;  --kl-tens-digit: #1A4FA0;
+  --kl-ones: #FF9F43;  --kl-ones-digit: #A34700;
+  /* bloki terenu */
+  --kl-block-grass: #7BCB5A;
+  --kl-block-earth: #A0714F;
+  --kl-block-stone: #A7ADB5;
+  --kl-block-sand: #F3D9A0;
+  --kl-block-water: #4FB3F6;
+  --kl-block-wood: #B7844F;
+  --kl-block-leaves: #3E9E4F;
+  /* światy: 50 = tło świata */
+  /* W1 Łąka Liczenia */
+  --kl-w1-50: #EAF7E3; --kl-w1-100: #D2EDC7;
+  --kl-w1-500: #7BCB5A; --kl-w1-700: #3A7D1E;
+  /* W2 Ogród Cyfr */
+  --kl-w2-50: #FFF0E1; --kl-w2-100: #FFDEBF;
+  --kl-w2-500: #FF9F43; --kl-w2-700: #AC5800;
+  /* W3 Wyspa Dodawania */
+  --kl-w3-50: #E0F1FD; --kl-w3-100: #BEE2FC;
+  --kl-w3-500: #3FA9F5; --kl-w3-700: #0074B8;
+  /* W4 Most Dwudziestki */
+  --kl-w4-50: #FFE7E7; --kl-w4-100: #FFCDCD;
+  --kl-w4-500: #FF6B6B; --kl-w4-700: #C63E42;
+  /* W5 Las Dziesiątek */
+  --kl-w5-50: #DEF1EC; --kl-w5-100: #B8E0D8;
+  --kl-w5-500: #2FA58B; --kl-w5-700: #007E67;
+  /* W6 Miasto Setki */
+  --kl-w6-50: #F8E7F9; --kl-w6-100: #F0CDF2;
+  --kl-w6-500: #D46BD8; --kl-w6-700: #A847AC;
+  /* W7 Kosmiczna Droga */
+  --kl-w7-50: #E7E6FF; --kl-w7-100: #CDCAFF;
+  --kl-w7-500: #6C63FF; --kl-w7-700: #4B42D6;
+  /* Hub Plac Zabaw */
+  --kl-hub-50: #FFF5DA; --kl-hub-100: #FFEAB1;
+  --kl-hub-500: #FFC21A; --kl-hub-700: #996300;
+
+  /* focus-visible: 2 px biały + 3 px ink, odstęp 4 */
+  --kl-focus: 0 0 0 2px #FFFFFF, 0 0 0 5px #2D2A4A;
+  --kl-focus-offset: 4px;
+  /* selected: pierścień 4 px */
+  --kl-selected: 0 0 0 4px #1F76CC;
+  /* typografia (PC → telefon) */
+  --kl-font-display: "Fredoka", "Nunito", system-ui, sans-serif;
+  --kl-font-ui: "Nunito", system-ui, sans-serif;
+  --kl-font-digit-fallback: "Andika", "Fredoka", sans-serif;
+  --kl-fs-digit-hero: clamp(96px, 12.5vw, 160px);
+  --kl-fs-digit-tile: clamp(56px, 5.6vw, 72px);
+  --kl-fs-h1: clamp(36px, 4.4vw, 56px);
+  --kl-fs-button: clamp(22px, 2.2vw, 28px);
+  --kl-fs-count-label: clamp(24px, 2.5vw, 32px);
+  --kl-fs-parent: 18px;  /* podpisy min. 16px */
+  /* odstępy — siatka 8 px */
+  --kl-space-1: 8px;  --kl-space-2: 16px;
+  --kl-space-3: 24px; --kl-space-4: 32px;
+  --kl-space-6: 48px; --kl-space-8: 64px;
+  /* promienie */
+  --kl-radius-chip: 12px;  --kl-radius-tile: 20px;
+  --kl-radius-panel: 24px; --kl-radius-round: 999px;
+  /* „blokowy” cień; --edge = krawędź koloru */
+  --kl-shadow-block: 0 6px 0 var(--edge),
+    0 10px 24px rgba(45, 42, 74, .12);
+  --kl-shadow-pressed: 0 2px 0 var(--edge),
+    0 4px 10px rgba(45, 42, 74, .12);
+  --kl-highlight: inset 0 2px 0 rgba(255, 255, 255, .55);
+  --kl-press: translateY(4px) scale(.94);
+  /* ruch */
+  --kl-ease-pop: cubic-bezier(.34, 1.56, .64, 1);
+  --kl-ease-out: cubic-bezier(.22, 1, .36, 1);
+  --kl-dur-tap: 90ms;     --kl-dur-count: 250ms;
+  --kl-dur-retry: 300ms;  --kl-dur-correct: 350ms;
+  --kl-dur-slide: 350ms;  --kl-dur-unlock: 500ms;
+  --kl-dur-bone: 600ms;   --kl-dur-path: 1200ms;
+  --kl-dur-confetti: 1500ms; --kl-dur-reduced: 150ms;
+  /* cele dotyku */
+  --kl-target: 64px; --kl-target-phone: 80px;
+  --kl-gap-min: 16px; --kl-edge-safe: 24px;
+}

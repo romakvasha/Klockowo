@@ -1,0 +1,261 @@
+[
+ {
+  "etap": "etap2",
+  "n": 0,
+  "title": "Gra · szablon 1280×720",
+  "size": "1280x720",
+  "file": "pages/etap2/00-gra-szablon-1280-720.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 1,
+  "title": "Gra · 1440×900",
+  "size": "1440x900",
+  "file": "pages/etap2/01-gra-1440-900.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 2,
+  "title": "Gra · 1024×768",
+  "size": "1024x768",
+  "file": "pages/etap2/02-gra-1024-768.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 3,
+  "title": "Gra · 768×1024 (pion)",
+  "size": "768x1024",
+  "file": "pages/etap2/03-gra-768-1024-pion.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 4,
+  "title": "Gra · 390×844 (telefon)",
+  "size": "390x844",
+  "file": "pages/etap2/04-gra-390-844-telefon.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 5,
+  "title": "Gra · 844×390 (telefon, poziomo)",
+  "size": "844x390",
+  "file": "pages/etap2/05-gra-844-390-telefon-poziomo.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 6,
+  "title": "MascotStage · HintButton · MissionCard · TreasureChest",
+  "size": "1440x1340",
+  "file": "pages/etap2/06-mascotstage-hintbutton-missioncard-treasurechest.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 7,
+  "title": "CountableObject · DropZone · DotCard · ręce",
+  "size": "1440x1200",
+  "file": "pages/etap2/07-countableobject-dropzone-dotcard-rece.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 8,
+  "title": "TenFrame · BeadRack20",
+  "size": "1440x1200",
+  "file": "pages/etap2/08-tenframe-beadrack20.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 9,
+  "title": "NumberLine · JumpArc",
+  "size": "1440x1200",
+  "file": "pages/etap2/09-numberline-jumparc.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 10,
+  "title": "HundredChart",
+  "size": "1440x1200",
+  "file": "pages/etap2/10-hundredchart.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 11,
+  "title": "BlockCube · BlockRod · BlockPlate · StickBundle · PlaceValueMat",
+  "size": "1440x1200",
+  "file": "pages/etap2/11-blockcube-blockrod-blockplate-stickbundle.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 12,
+  "title": "Przedmioty W1–W3 i zwierzątka",
+  "size": "1440x1200",
+  "file": "pages/etap2/12-przedmioty-w1-w3-i-zwierzatka.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 13,
+  "title": "Drużyna: Łatka, Pufka, Tofik, Iskra",
+  "size": "1600x1200",
+  "file": "pages/etap2/13-druzyna-latka-pufka-tofik-iskra.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 14,
+  "title": "5 · Ścieżka świata — W1 (12)",
+  "size": "1280x720",
+  "file": "pages/etap2/14-sciezka-swiata-w1-12.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 15,
+  "title": "5 · Ścieżka świata — W3 (15)",
+  "size": "1280x720",
+  "file": "pages/etap2/15-sciezka-swiata-w3-15.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 16,
+  "title": "5 · Ścieżka świata — W4 z gałęzią ★",
+  "size": "1280x720",
+  "file": "pages/etap2/16-sciezka-swiata-w4-z-galezia.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 17,
+  "title": "6 · Wprowadzenie",
+  "size": "1280x720",
+  "file": "pages/etap2/17-wprowadzenie.html"
+ },
+ {
+  "etap": "etap2",
+  "n": 18,
+  "title": "6 · Wprowadzenie — nowa idea",
+  "size": "1280x720",
+  "file": "pages/etap2/18-wprowadzenie-nowa-idea.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 0,
+  "title": "Logo «Klockowo»",
+  "size": "1280x720",
+  "file": "pages/etap1/00-logo-klockowo.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 1,
+  "title": "Kolory i skale światów",
+  "size": "1440x1200",
+  "file": "pages/etap1/01-kolory-i-skale-swiatow.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 2,
+  "title": "Tokeny CSS: odstępy, promienie, cienie, ruch",
+  "size": "1440x1200",
+  "file": "pages/etap1/02-tokeny-css-odstepy-promienie-cienie-ruch.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 3,
+  "title": "Typografia i diakrytyki",
+  "size": "1440x1200",
+  "file": "pages/etap1/03-typografia-i-diakrytyki.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 4,
+  "title": "Cyfry SVG 0–9",
+  "size": "1440x820",
+  "file": "pages/etap1/04-cyfry-svg-0-9.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 5,
+  "title": "Ikony",
+  "size": "1440x820",
+  "file": "pages/etap1/05-ikony.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 6,
+  "title": "PlayButton · IconButton · CheckButton",
+  "size": "1440x1300",
+  "file": "pages/etap1/06-playbutton-iconbutton-checkbutton.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 7,
+  "title": "AnswerTile · DigitCard",
+  "size": "1440x1300",
+  "file": "pages/etap1/07-answertile-digitcard.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 8,
+  "title": "HUD · ProgressBones · SpeechBubble · Overlay",
+  "size": "1440x1300",
+  "file": "pages/etap1/08-hud-progressbones-speechbubble-overlay.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 9,
+  "title": "WorldIsland · LevelNode",
+  "size": "1440x1300",
+  "file": "pages/etap1/09-worldisland-levelnode.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 10,
+  "title": "AvatarButton · PupPicker · Toggle · Slider",
+  "size": "1440x1300",
+  "file": "pages/etap1/10-avatarbutton-puppicker-toggle-slider.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 11,
+  "title": "Kubik — arkusz póz",
+  "size": "1600x1500",
+  "file": "pages/etap1/11-kubik-arkusz-poz.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 12,
+  "title": "8 piesków — Twój piesek / awatary",
+  "size": "1440x1000",
+  "file": "pages/etap1/12-8-pieskow-twoj-piesek-awatary.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 13,
+  "title": "1 · Ładowanie",
+  "size": "1280x720",
+  "file": "pages/etap1/13-ladowanie.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 14,
+  "title": "2a · Start — «Graj!»",
+  "size": "1280x720",
+  "file": "pages/etap1/14-start-graj.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 15,
+  "title": "2b · Start — «Kto dziś gra?»",
+  "size": "1280x720",
+  "file": "pages/etap1/15-start-kto-dzis-gra.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 16,
+  "title": "3 · Twój piesek",
+  "size": "1280x720",
+  "file": "pages/etap1/16-twoj-piesek.html"
+ },
+ {
+  "etap": "etap1",
+  "n": 17,
+  "title": "4 · Mapa przygody",
+  "size": "1280x720",
+  "file": "pages/etap1/17-mapa-przygody.html"
+ }
+]

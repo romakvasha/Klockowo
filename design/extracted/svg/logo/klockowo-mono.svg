@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -14 818 146" role="img" aria-label="Klockowo"><defs>
+<g id="lg-cube">
+<path d="M0 0 L6 -6 L30 -6 L24 0 Z"></path>
+<path d="M0 0 L6 -6 L30 -6 L24 0 Z" fill="#FFFFFF" fill-opacity=".5"></path>
+<path d="M24 0 L30 -6 L30 18 L24 24 Z"></path>
+<path d="M24 0 L30 -6 L30 18 L24 24 Z" fill="#2D2A4A" fill-opacity=".3"></path>
+<rect x="0" y="0" width="24" height="24"></rect>
+<rect x="3.5" y="3.5" width="14" height="3" rx="1.5" fill="#FFFFFF" fill-opacity=".55"></rect>
+<path d="M0 0 L6 -6 L30 -6 L30 18 L24 24 L0 24 Z M0 0 L24 0 L24 24 M24 0 L30 -6" fill="none" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+</g>
+<g id="lg-K">
+<use href="#lg-cube" x="0" y="96"></use><use href="#lg-cube" x="72" y="96"></use>
+<use href="#lg-cube" x="0" y="72"></use><use href="#lg-cube" x="48" y="72"></use>
+<use href="#lg-cube" x="0" y="48"></use><use href="#lg-cube" x="24" y="48"></use>
+<use href="#lg-cube" x="0" y="24"></use><use href="#lg-cube" x="48" y="24"></use>
+<use href="#lg-cube" x="0" y="0"></use><use href="#lg-cube" x="72" y="0"></use>
+</g>
+<g id="lg-l">
+<use href="#lg-cube" x="0" y="96"></use><use href="#lg-cube" x="24" y="96"></use>
+<use href="#lg-cube" x="0" y="72"></use><use href="#lg-cube" x="0" y="48"></use>
+<use href="#lg-cube" x="0" y="24"></use><use href="#lg-cube" x="0" y="0"></use>
+</g>
+<g id="lg-o">
+<use href="#lg-cube" x="0" y="96"></use><use href="#lg-cube" x="24" y="96"></use><use href="#lg-cube" x="48" y="96"></use>
+<use href="#lg-cube" x="0" y="72"></use><use href="#lg-cube" x="48" y="72"></use>
+<use href="#lg-cube" x="0" y="48"></use><use href="#lg-cube" x="24" y="48"></use><use href="#lg-cube" x="48" y="48"></use>
+</g>
+<g id="lg-c">
+<use href="#lg-cube" x="0" y="96"></use><use href="#lg-cube" x="24" y="96"></use><use href="#lg-cube" x="48" y="96"></use>
+<use href="#lg-cube" x="0" y="72"></use>
+<use href="#lg-cube" x="0" y="48"></use><use href="#lg-cube" x="24" y="48"></use><use href="#lg-cube" x="48" y="48"></use>
+</g>
+<g id="lg-k">
+<use href="#lg-cube" x="0" y="96"></use><use href="#lg-cube" x="48" y="96"></use>
+<use href="#lg-cube" x="0" y="72"></use><use href="#lg-cube" x="24" y="72"></use>
+<use href="#lg-cube" x="0" y="48"></use><use href="#lg-cube" x="48" y="48"></use>
+<use href="#lg-cube" x="0" y="24"></use><use href="#lg-cube" x="0" y="0"></use>
+</g>
+<g id="lg-w">
+<use href="#lg-cube" x="24" y="96"></use><use href="#lg-cube" x="72" y="96"></use>
+<use href="#lg-cube" x="0" y="72"></use><use href="#lg-cube" x="48" y="72"></use><use href="#lg-cube" x="96" y="72"></use>
+<use href="#lg-cube" x="0" y="48"></use><use href="#lg-cube" x="48" y="48"></use><use href="#lg-cube" x="96" y="48"></use>
+</g>
+<g id="lg-word">
+<use href="#lg-K" x="0" fill="#FF8A3D"></use>
+<use href="#lg-l" x="120" fill="#7BCB5A"></use>
+<use href="#lg-o" x="192" fill="#3FA9F5"></use>
+<use href="#lg-c" x="288" fill="#FF6B6B"></use>
+<use href="#lg-k" x="384" fill="#FFC21A"></use>
+<use href="#lg-o" x="480" fill="#2FA58B"></use>
+<use href="#lg-w" x="576" fill="#D46BD8"></use>
+<use href="#lg-o" x="720" fill="#6C63FF"></use>
+</g>
+<g id="lg-word-mono">
+<use href="#lg-K" x="0"></use><use href="#lg-l" x="120"></use><use href="#lg-o" x="192"></use><use href="#lg-c" x="288"></use>
+<use href="#lg-k" x="384"></use><use href="#lg-o" x="480"></use><use href="#lg-w" x="576"></use><use href="#lg-o" x="720"></use>
+</g>
+</defs><use href="#lg-word-mono" fill="currentColor"/></svg>

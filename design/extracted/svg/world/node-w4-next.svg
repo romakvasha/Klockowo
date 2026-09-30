@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-52 -60 104 112"><defs><pattern id="px" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#FFFFFF" fill-opacity=".14"></rect><rect x="8" y="4" width="4" height="4" fill="#2D2A4A" fill-opacity=".07"></rect><rect x="4" y="12" width="4" height="4" fill="#2D2A4A" fill-opacity=".06"></rect><rect x="12" y="8" width="4" height="4" fill="#FFFFFF" fill-opacity=".1"></rect></pattern></defs><ellipse cx="0" cy="14" rx="62" ry="34.1" fill="#FFC21A" fill-opacity="0.18"></ellipse>
+<ellipse cx="0" cy="14" rx="52" ry="28.6" fill="#FFC21A" fill-opacity="0.28"></ellipse>
+<ellipse cx="0" cy="14" rx="44" ry="24.200000000000003" fill="#FFC21A" fill-opacity="0.4"></ellipse>
+<path d="M-48 0 L0 24 L0 46 L-48 22 Z" fill="#E26266" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M48 0 L0 24 L0 46 L48 22 Z" fill="#C45962" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M0 -24 L48 0 L0 24 L-48 0 Z" fill="#FFFFFF" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M-48 0 L0 24 L0 46 L-48 22 Z" fill="url(#px)"></path>
+<path d="M48 0 L0 24 L0 46 L48 22 Z" fill="url(#px)"></path>
+<path d="M0 -24 L48 0 L0 24 L-48 0 Z" fill="url(#px)"></path>
+</svg>

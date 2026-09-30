@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!-- Klockowo.html · board 10 "HundredChart" 1440x1200 · refs svg/… are relative to design/extracted/ · x-dc, helmet, DCLogic and sc-camel-view-box (= viewBox) are design-tool artifacts, not product code -->
+<html lang="uk"><head>
+<meta charset="utf-8">
+<title>HundredChart</title>
+<script src="omitted:b98f67ba.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style></style>
+<style>
+body{margin:0;background:#FFF7E8;font-family:"Nunito",system-ui,sans-serif;color:#2D2A4A}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1200px; box-sizing: border-box; background: #FFF7E8; padding: 36px 48px; display: flex; flex-direction: column; gap: 18px; position: relative">
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+<defs>
+<g id="hs-0" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M50 18 C72 18 82 44 82 70 C82 96 72 122 50 122 C28 122 18 96 18 70 C18 44 28 18 50 18 Z"></path></g>
+<g id="hs-1" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M26 54 L62 16 L62 124"></path></g>
+<g id="hs-2" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M22 42 C22 25 35 16 51 16 C68 16 80 27 80 43 C80 62 60 78 20 124 L82 124"></path></g>
+<g id="hs-3" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M24 28 C32 19 42 16 51 16 C67 16 78 26 78 40 C78 56 64 66 48 66 C66 66 82 77 82 94 C82 112 68 124 50 124 C38 124 27 119 20 110"></path></g>
+<g id="hs-4" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M32 16 L22 84 L84 84"></path><path d="M66 22 L66 124"></path></g>
+<g id="hs-5" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M78 16 L32 16 L27 62 C36 56 44 54 52 54 C70 54 82 67 82 86 C82 108 68 124 49 124 C37 124 27 119 20 111"></path></g>
+<g id="hs-6" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M70 18 C42 26 20 52 20 86 C20 109 33 124 51 124 C69 124 82 110 82 92 C82 74 69 62 52 62 C37 62 24 71 21 84"></path></g>
+<g id="hs-7" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16 L80 16 L42 124"></path><path d="M45 70 L77 70"></path></g>
+<g id="hs-8" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M50 66 C34 66 24 56 24 42 C24 27 35 16 50 16 C65 16 76 27 76 42 C76 56 66 66 50 66 C32 66 20 78 20 95 C20 112 33 124 50 124 C67 124 80 112 80 95 C80 78 68 66 50 66 Z"></path></g>
+<g id="hs-9" fill="none" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M80 48 C80 30 68 16 50 16 C32 16 20 30 20 48 C20 66 32 78 50 78 C66 78 80 67 80 48 L80 124"></path></g>
+<g id="hs-leaf"><path d="M6 46 C4 22 22 6 50 6 C50 32 34 50 6 46 Z" fill="#7BCB5A" stroke="#2D2A4A" stroke-width="3" stroke-linejoin="round"></path><path d="M10 42 C20 32 30 22 44 12" fill="none" stroke="#3E9E4F" stroke-width="3" stroke-linecap="round"></path></g>
+</defs>
+</svg>
+
+<div style="display: flex; align-items: baseline; gap: 24px"><h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 40px; line-height: 1">HundredChart — таблиця 100</h1><span style="font-size: 17px; font-weight: 600; color: #5E5A80">W6 «Miasto Setki»: знайти число, що під листочком, закономірності, сусіди ±1 / ±10</span></div>
+
+<div style="display: flex; gap: 24px">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: baseline; gap: 12px"><h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 24px">ПК: клітинка 56, без проміжків — межі 2 px</h2></div>
+<div role="grid" aria-label="Tablica stu" style="display: grid; grid-template-columns: repeat(10, 56px); gap: 2px; background: #A39DB5; border: 3px solid #2D2A4A; border-radius: 16px; overflow: hidden; width: 584px">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="100">
+<div style="position: relative; width: 56px; height: 56px; background: {{c.bg}}; box-shadow: {{c.ring}}">
+<button type="button" aria-label="{{c.label}}" style="position: absolute; inset: 0; border: 0; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; gap: 0">
+<sc-if value="{{c.hundred}}" hint-placeholder-val="{{false}}"><svg sc-camel-view-box="0 0 100 140" width="17" height="24" style="margin-right: -3px" aria-hidden="true"><use href="#hs-1" stroke="#2D2A4A"></use></svg></sc-if>
+<sc-if value="{{c.two}}" hint-placeholder-val="{{true}}"><svg sc-camel-view-box="0 0 100 140" width="19" height="27" style="margin-right: -3px" aria-hidden="true"><use href="{{c.t}}" stroke="#1A4FA0"></use></svg></sc-if>
+<svg sc-camel-view-box="0 0 100 140" width="19" height="27" aria-hidden="true"><use href="{{c.o}}" stroke="#A34700"></use></svg>
+</button>
+<sc-if value="{{c.leaf}}" hint-placeholder-val="{{false}}"><svg sc-camel-view-box="0 0 56 56" width="56" height="56" style="position: absolute; inset: 0; pointer-events: none" aria-hidden="true"><rect x="0" y="0" width="56" height="56" fill="#EAF7E3"></rect><use href="#hs-leaf"></use></svg></sc-if>
+</div>
+</sc-for>
+</div>
+<div style="font-size: 14px; font-weight: 600; color: #5E5A80; line-height: 1.45; width: 584px">Таблиця займає всю висоту під панеллю (≈580 px). На макеті: рядок 31–40 підсвічено, стовпець 2…92 розфарбовано (закономірність +10), 47 — ціль, 36 і 58 — під листочками, 75 — центр «сусідів» з кільцем, ±1 і ±10 — світло-рожеві.</div>
+</section>
+
+<div style="flex: 1; display: flex; flex-direction: column; gap: 18px">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 24px">Стани клітинки</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px">
+<div style="display: flex; gap: 12px; align-items: center"><span style="width: 56px; height: 56px; flex-shrink: 0; background: #FFFFFF; border: 2px solid #A39DB5; box-sizing: border-box; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 100 140" width="19" height="27" style="margin-right: -3px" aria-hidden="true"><use href="#hs-4" stroke="#1A4FA0"></use></svg><svg sc-camel-view-box="0 0 100 140" width="19" height="27" aria-hidden="true"><use href="#hs-7" stroke="#A34700"></use></svg></span><span style="font-size: 14px; font-weight: 700">normal — розряди кольорові (на білому)</span></div>
+<div style="display: flex; gap: 12px; align-items: center"><span style="width: 56px; height: 56px; flex-shrink: 0; background: #EAF7E3; border: 2px solid #A39DB5; box-sizing: border-box; display: flex"><svg sc-camel-view-box="0 0 56 56" width="52" height="52" aria-hidden="true"><use href="#hs-leaf"></use></svg></span><span style="font-size: 14px; font-weight: 700">під листочком — «Jaka liczba się schowała?» <span style="color: #AC5800">[do sprawdzenia]</span></span></div>
+<div style="display: flex; gap: 12px; align-items: center"><span style="width: 56px; height: 56px; flex-shrink: 0; background: #FFE08A; box-shadow: inset 0 0 0 3px #2D2A4A; box-sizing: border-box; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 100 140" width="19" height="27" style="margin-right: -3px" aria-hidden="true"><use href="#hs-4" stroke="#1A4FA0"></use></svg><svg sc-camel-view-box="0 0 100 140" width="19" height="27" aria-hidden="true"><use href="#hs-7" stroke="#A34700"></use></svg></span><span style="font-size: 14px; font-weight: 700">highlighted — ціль / підказка; тло світле, розряди лишаються кольоровими (≥4,8:1)</span></div>
+<div style="display: flex; gap: 12px; align-items: center"><span style="width: 56px; height: 56px; flex-shrink: 0; background: #FFFFFF; box-shadow: inset 0 0 0 4px #1F76CC; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 100 140" width="19" height="27" style="margin-right: -3px" aria-hidden="true"><use href="#hs-4" stroke="#1A4FA0"></use></svg><svg sc-camel-view-box="0 0 100 140" width="19" height="27" aria-hidden="true"><use href="#hs-7" stroke="#A34700"></use></svg></span><span style="font-size: 14px; font-weight: 700">selected — кільце 4 #1F76CC, далі «Gotowe»</span></div>
+<div style="display: flex; gap: 12px; align-items: center"><span style="width: 56px; height: 56px; flex-shrink: 0; background: #3CBF6B; display: flex; align-items: center; justify-content: center; position: relative"><svg sc-camel-view-box="0 0 100 140" width="19" height="27" style="margin-right: -3px" aria-hidden="true"><use href="#hs-4" stroke="#2D2A4A"></use></svg><svg sc-camel-view-box="0 0 100 140" width="19" height="27" aria-hidden="true"><use href="#hs-7" stroke="#2D2A4A"></use></svg><svg sc-camel-view-box="0 0 20 20" width="20" height="20" style="position: absolute; right: -6px; top: -6px" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="#FFFFFF" stroke="#2D2A4A" stroke-width="2"></circle><path d="M6 10.5 L9 13.5 L14.5 7.5" fill="none" stroke="#25964F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span style="font-size: 14px; font-weight: 700">correct — зелена + галочка, цифри ink</span></div>
+<div style="display: flex; gap: 12px; align-items: center"><span style="width: 56px; height: 56px; flex-shrink: 0; background: #FFFFFF; box-shadow: inset 0 0 0 4px #7F6CE0; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 100 140" width="19" height="27" style="margin-right: -3px; opacity: .4" aria-hidden="true"><use href="#hs-7" stroke="#1A4FA0"></use></svg><svg sc-camel-view-box="0 0 100 140" width="19" height="27" style="opacity: .4" aria-hidden="true"><use href="#hs-4" stroke="#A34700"></use></svg></span><span style="font-size: 14px; font-weight: 700">retry — лавандова рамка, вміст 40% (74 замість 47)</span></div>
+</div>
+<div style="display: flex; gap: 14px; align-items: center; border-top: 2px solid #FDEBC8; padding-top: 12px"><span style="font-size: 14px; font-weight: 800">4 кольори розфарбування:</span><span style="width: 40px; height: 40px; border-radius: 8px; background: #D2EDC7; border: 2px solid #A39DB5"></span><span style="width: 40px; height: 40px; border-radius: 8px; background: #FFEAB1; border: 2px solid #A39DB5"></span><span style="width: 40px; height: 40px; border-radius: 8px; background: #FFDEBF; border: 2px solid #A39DB5"></span><span style="width: 40px; height: 40px; border-radius: 8px; background: #F8E7F9; border: 2px solid #A39DB5"></span><span style="font-size: 13px; font-weight: 600; color: #5E5A80">світлі, щоб цифри розрядів мали ≥4,5:1 (#A34700 на них — від 4,8:1)</span></div>
+<div style="font-size: 14px; font-weight: 600; color: #5E5A80; line-height: 1.45">Підсвічений рядок/стовпець — #E0F1FD; сусіди ±1/±10 — #F8E7F9 навколо центральної клітинки з кільцем. Листочок знімається дотиком: «здувається» 250 мс, під ним — число.</div>
+</section>
+
+<section style="flex-grow: 1; background: #FFFFFF; border-radius: 24px; padding: 18px 22px 20px; display: flex; gap: 22px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 24px">Телефон: збільшення по рядках</h2>
+<div style="display: flex; gap: 18px; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 6px; align-items: center"><div aria-hidden="true" style="display: grid; grid-template-columns: repeat(10, 12px); gap: 1px; background: #A39DB5; border: 2px solid #2D2A4A; border-radius: 6px; overflow: hidden"><sc-for list="{{mini}}" as="m" hint-placeholder-count="100"><span style="width: 12px; height: 12px; background: {{m.bg}}"></span></sc-for></div><span style="font-size: 13px; font-weight: 700; color: #5E5A80; width: 140px; text-align: center">огляд (не інтерактивний), рядок 41–50</span></div>
+<div style="display: grid; grid-template-columns: repeat(5, 64px); gap: 2px; background: #A39DB5; border: 3px solid #2D2A4A; border-radius: 14px; overflow: hidden">
+<sc-for list="{{zoom}}" as="z" hint-placeholder-count="10"><button type="button" aria-label="{{z.label}}" style="width: 64px; height: 64px; border: 0; padding: 0; background: {{z.bg}}; display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 100 140" width="22" height="31" style="margin-right: -3px" aria-hidden="true"><use href="{{z.t}}" stroke="#1A4FA0"></use></svg><svg sc-camel-view-box="0 0 100 140" width="22" height="31" aria-hidden="true"><use href="{{z.o}}" stroke="#A34700"></use></svg></button></sc-for>
+</div>
+</div>
+</div>
+<div style="flex: 1; font-size: 14px; font-weight: 600; color: #5E5A80; line-height: 1.5; padding-top: 40px">Планшет: збільшений рядок 10×64 px під оглядом. Телефон: рядок переноситься на 2×5 клітинок по 64 px (80 — для перетягування). Дитина торкається лише збільшеного фрагмента; огляд показує, де вона в таблиці. Перехід між рядками — стрілки 80 px (Етап 4).</div>
+</section>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1200}}">
+class Component extends DCLogic {
+  renderVals() {
+    var words = ['', 'jeden', 'dwa', 'trzy', 'cztery', 'pięć', 'sześć', 'siedem', 'osiem', 'dziewięć'];
+    var cells = [], mini = [], zoom = [];
+    for (var n = 1; n <= 100; n++) {
+      var row = Math.floor((n - 1) / 10), t = Math.floor(n / 10) % 10, o = n % 10;
+      var bg = '#FFFFFF', ring = 'none';
+      if (row === 3) bg = '#E0F1FD';
+      if (n % 10 === 2) bg = '#D2EDC7';
+      if (n === 74 || n === 76 || n === 65 || n === 85) bg = '#F8E7F9';
+      if (n === 75) ring = 'inset 0 0 0 4px #1F76CC';
+      if (n === 47) { bg = '#FFE08A'; ring = 'inset 0 0 0 3px #2D2A4A'; }
+      cells.push({ n: n, bg: bg, ring: ring, two: n >= 10 && n < 100, hundred: n === 100, t: '#hs-' + t, o: '#hs-' + o, leaf: n === 36 || n === 58, label: String(n) });
+      mini.push({ bg: row === 4 ? '#FFE08A' : '#FFFFFF' });
+    }
+    for (var z = 41; z <= 50; z++) { zoom.push({ t: '#hs-' + (Math.floor(z / 10) % 10), o: '#hs-' + (z % 10), bg: z === 47 ? '#FFE08A' : '#FFFFFF', label: String(z) }); }
+    return { cells: cells, mini: mini, zoom: zoom };
+  }
+}
+</script>
+
+
+</body></html>

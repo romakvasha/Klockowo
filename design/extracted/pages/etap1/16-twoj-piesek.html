@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- Klockowo1.html · board 16 "3 · Twój piesek" 1280x720 · refs svg/… are relative to design/extracted/ · x-dc, helmet, DCLogic and sc-camel-view-box (= viewBox) are design-tool artifacts, not product code -->
+<html lang="pl"><head>
+<meta charset="utf-8">
+<title>Twój piesek</title>
+<script src="omitted:b98f67ba.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style></style>
+<style>
+body{margin:0;background:#FFF5DA;font-family:"Nunito",system-ui,sans-serif;color:#2D2A4A}
+.tp-card{transition:transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .15s ease-out}
+.tp-card:active{transform:translateY(4px) scale(.94)}
+@media (prefers-reduced-motion: reduce){.tp-card{transition:none}}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; position: relative; overflow: hidden; background: #FFF5DA">
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+<defs>
+<path id="tp-check" fill-rule="evenodd" d="M24 4 A20 20 0 1 1 24 44 A20 20 0 1 1 24 4 Z M16.64 22.96 L21 27.32 L31.36 16.96 L35.04 20.64 L21 34.68 L12.96 26.64 Z"></path>
+<g id="tp-paw"><ellipse cx="24" cy="31" rx="10" ry="8.5"></ellipse><ellipse cx="11.5" cy="20" rx="4.2" ry="5.2"></ellipse><ellipse cx="19" cy="12.5" rx="4.2" ry="5.4"></ellipse><ellipse cx="29" cy="12.5" rx="4.2" ry="5.4"></ellipse><ellipse cx="36.5" cy="20" rx="4.2" ry="5.2"></ellipse></g>
+<g id="tp-ok"><circle cx="20" cy="20" r="17.5" fill="#FFFFFF" stroke="#2D2A4A" stroke-width="3"></circle><path d="M12 20.5 L17.5 26 L28.5 15" fill="none" stroke="#1F76CC" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path></g>
+</defs>
+</svg>
+
+<svg sc-camel-view-box="0 0 1280 120" width="1280" height="120" style="position: absolute; left: 0; bottom: 0" aria-hidden="true"><path d="M0 70 H1280 V120 H0 Z" fill="#FFEAB1"></path><path d="M0 70 H1280" stroke="#E3CFA8" stroke-width="3"></path></svg>
+
+<img src="svg/kubik/kubik-talking-a.svg" alt="Kubik" style="position: absolute; left: 36px; top: 468px; width: 184px; height: 230px">
+<div style="position: absolute; left: 48px; top: 322px; width: 160px; height: 104px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #2D2A4A; border-radius: 24px; display: flex; align-items: center; justify-content: center; gap: 4px"><svg sc-camel-view-box="0 0 48 48" width="54" height="54" fill="#2D2A4A" aria-hidden="true"><use href="#tp-paw"></use></svg><span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 52px; line-height: 1">?</span></div>
+<svg sc-camel-view-box="0 0 40 30" width="40" height="30" style="position: absolute; left: 118px; top: 422px" aria-hidden="true"><path d="M2 2 L12 28 L30 2" fill="#FFFFFF" stroke="#2D2A4A" stroke-width="3" stroke-linejoin="round"></path><path d="M4 0.5 H28" stroke="#FFFFFF" stroke-width="4"></path></svg>
+
+<div role="radiogroup" aria-label="Wybierz swojego pieska!" style="position: absolute; left: 280px; top: 96px; width: 776px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px">
+<sc-for list="{{pups}}" as="p" hint-placeholder-count="8">
+<div style="position: relative; width: 176px; height: 176px">
+<button type="button" class="tp-card" role="radio" aria-checked="{{p.checked}}" aria-label="{{p.label}}" sc-camel-on-click="{{p.pick}}" style="width: 176px; height: 176px; border-radius: 24px; border: 3px solid #2D2A4A; background: {{p.bg}}; box-shadow: {{p.shadow}}; transform: {{p.lift}}; padding: 0; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; cursor: pointer"><img src="{{p.src}}" alt="" style="width: 150px; height: 150px"></button>
+<sc-if value="{{p.sel}}" hint-placeholder-val="{{false}}"><svg sc-camel-view-box="0 0 40 40" width="44" height="44" style="position: absolute; right: -12px; top: -20px" aria-hidden="true"><use href="#tp-ok"></use></svg></sc-if>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ready}}" hint-placeholder-val="{{true}}">
+<a href="MapaPrzygody.dc.html" aria-label="Gotowe" style="position: absolute; left: 1136px; top: 608px; width: 120px; height: 88px; box-sizing: border-box; border-radius: 24px; border: 3px solid #2D2A4A; background: #3CBF6B; box-shadow: 0 6px 0 #25964F, 0 10px 24px rgba(45,42,74,.12), inset 0 2px 0 rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center"><svg sc-camel-view-box="0 0 48 48" width="46" height="46" fill="#2D2A4A" aria-hidden="true"><use href="#tp-check"></use></svg></a>
+</sc-if>
+<sc-if value="{{notReady}}" hint-placeholder-val="{{false}}">
+<button type="button" disabled="" aria-label="Gotowe" style="position: absolute; left: 1136px; top: 608px; width: 120px; height: 88px; border-radius: 24px; border: 3px solid #A39DB5; background: #EDEAF3; display: flex; align-items: center; justify-content: center; padding: 0"><svg sc-camel-view-box="0 0 48 48" width="46" height="46" fill="#A39DB5" aria-hidden="true"><use href="#tp-check"></use></svg></button>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:720}}">
+class Component extends DCLogic {
+  renderVals() {
+    var picked = (this.state && this.state.picked !== undefined) ? this.state.picked : 2;
+    var self = this;
+    var list = [
+      ['/_blob/283f284478ed58e7a6b9464ce9e54070', 'Kudłaty piesek!', '#EAF7E3'],
+      ['/_blob/6b07e44260f784d91566847b103dbaa8', 'Czarny piesek!', '#E0F1FD'],
+      ['/_blob/695010f5de6bb494864b615bee2ebdd5', 'Kręcony piesek!', '#FFFFFF'],
+      ['/_blob/695049f7d5c7c42632e537c0460926bf', 'Szybki piesek!', '#FFF0E1'],
+      ['/_blob/ac928ba11aac1d2c1842df985a9d224b', 'Piesek z uszkami jak motylek!', '#F8E7F9'],
+      ['/_blob/104d945b037c344a56eb85b9f9a33307', 'Piesek z kokardką!', '#FFE7E7'],
+      ['/_blob/20e418bbb4e3c4a2125d3f50f0b05796', 'Pomarszczony piesek!', '#E7E6FF'],
+      ['/_blob/85532c2747bc6160174da2e2d34e8e4d', 'Piesek w paski!', '#DEF1EC']
+    ];
+    var pups = list.map(function (p, i) {
+      var sel = i === picked;
+      return {
+        src: p[0], label: p[1], bg: p[2], sel: sel,
+        checked: sel ? 'true' : 'false',
+        shadow: sel ? '0 6px 0 #E3CFA8, 0 0 0 4px #1F76CC' : '0 6px 0 #E3CFA8',
+        lift: sel ? 'translateY(-12px)' : 'none',
+        pick: function () { self.setState({ picked: sel ? null : i }); }
+      };
+    });
+    return { pups: pups, ready: picked !== null, notReady: picked === null };
+  }
+}
+</script>
+
+
+</body></html>
