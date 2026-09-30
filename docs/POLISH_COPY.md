@@ -227,7 +227,7 @@ A compound number ending in 1 still takes the `many` form: "dwadzieścia jeden j
 
 **Digit names in the instrumental** (for "z … na końcu"): zerem, jedynką, dwójką, trójką, czwórką, piątką, szóstką, siódemką, ósemką, dziewiątką.
 
-**Animal names in the dative** (for "Daj …"): misiowi, jeżykowi, kotkowi, pieskowi, zajączkowi, żabce, sowie, wiewiórce.
+**Animal names in the dative** (for "Daj …"; the 8 animals of BRIEF §10): misiowi, jeżykowi, kotkowi, liskowi, zajączkowi, żabce, sowie, myszce.
 
 ```ts
 const PR = new Intl.PluralRules('pl');
@@ -274,3 +274,29 @@ const isAre = (n: number) => (PR.select(n) === 'few' ? 'Są' : 'Jest');
 - **With symbols:** read "+" as "dodać" and "=" as "równa się": "Trzy dodać dwa równa się pięć." "Plus" is also correct and common at home. Use "dodać" consistently in the voice, and accept "plus" if the child says it.
 - **Questions:** "Ile razem?", "Ile to jest {a} dodać {b}?", and the casual "Ile wyszło?"
 - **Words to keep out of the child's view:** "suma", "składnik" and "wynik działania". These are fine in the parent panel.
+
+## 9. Додаткові рядки з дизайну — перевірені 2026-09-30
+Claude Design запропонував рядки, яких немає в BRIEF, і позначив їх `[do sprawdzenia]`. Власник доручив перевірку Claude: кожен рядок звірено з правилами BRIEF §4 (числа словами, без минулого часу щодо дитини, без «łaciaty»/«rudy») і з польськими джерелами. Claude — не носій мови, тож остаточно їх слухає власник: усі рядки озвучуються на `/#/dev/speech` (M2). Рядки нижче вставляються в `lines.ts` дослівно.
+
+**Описи цуценят («Twój piesek», при дотику на картку; BRIEF §6 п.3)**
+
+| Цуценя | Рядок | Походження і перевірка |
+|---|---|---|
+| Polski owczarek nizinny | «Kudłaty piesek!» | BRIEF |
+| Nowofundland | «Czarny piesek!» | BRIEF |
+| Pudel | «Piesek w loczkach!» | **змінено**: у дизайні «Kręcony piesek!» — не ідіоматично (кажуть «kręcona sierść», «pies w lokach»); «w loczkach» — природне дитяче слово |
+| Chart polski | «Szybki piesek!» | дизайн, коректно |
+| Papillon | «Piesek z uszkami jak motylek!» | дизайн, коректно (після «jak» — називний, як «oczy jak spodki»; породу описують як «uszy jak skrzydła motyla») |
+| Shih tzu | «Piesek z kokardką!» | дизайн, коректно |
+| Shar-pei | «Pomarszczony piesek!» | дизайн, коректно |
+| Akita pręgowana | «Piesek w paski!» | дизайн, коректно |
+
+**Інші рядки**
+
+| Де | Рядок | Перевірка |
+|---|---|---|
+| W4 ★, 8 + 5 через десяток (подвійна рамка) | «Osiem i dwa to dziesięć. I jeszcze trzy — trzynaście.» | коректно; зразок «X i Y to Z», як у BRIEF «Siedem i trzy to dziesięć.» |
+| W6 «Tajemnicza tablica», клітинка під листочком | «Jaka liczba się schowała?» | коректно; звичний зворот («jaka liczba kryje się pod znakiem zapytania»); «schowała» — про число, не про дитину |
+| W3, Wprowadzenie, гість Pufka | «Rybki zgubiły drogę do domu! Pomożesz?» | коректно; «zgubić drogę» — ідіома; «Pomożesz?» дозволено BRIEF §4; минулий час — про рибок |
+
+Також перевірено й коректні: давальний відмінок тваринок (§8) і форми «rybka / rybki / rybek».

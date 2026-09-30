@@ -17,7 +17,7 @@
 - Vite + React + TypeScript (strict). Стан — zustand (persist у localStorage, з версією схеми й міграціями). Маршрути — react-router з HashRouter.
 - Стилі — CSS Modules + CSS custom properties; токени з дизайну — у `src/styles/tokens.css`. Шрифти локально через @fontsource (Fredoka, Nunito, Andika; обов'язково latin-ext).
 - Анімації — CSS і Web Animations API; бібліотеку `motion` додавай лише якщо без неї ніяк. Перетягування — власний хук на Pointer Events (миша + дотик), завжди з альтернативою «дотик по предмету → дотик по місцю».
-- Голос — Web Speech API (pl-PL) лише через `src/speech/tts.ts`: черга, `speak()` повертає Promise після завершення, вибір голосу, швидкість, гучність, заміна окремих фраз на mp3 з `public/audio/`, якщо файл є. Звукові ефекти — синтез через Web Audio API (без аудіофайлів).
+- Голос — Web Speech API (pl-PL) лише через `src/speech/tts.ts`: черга, `speak()` повертає Promise після завершення, вибір голосу, швидкість, гучність, заміна окремих фраз на mp3 з `public/audio/`, якщо файл є. Звукові ефекти й тиха фонова музика (повзунок «Muzyka») — синтез через Web Audio API (без аудіофайлів).
 - Тести — Vitest для чистої логіки (граматика, генератори завдань, перевірка відповідей, адаптивність, прогрес). E2E-тестів не пишемо.
 - Без бекенду, аналітики, реклами, зовнішніх посилань і запитів.
 
@@ -30,7 +30,7 @@ components/math/  CountableObject, DropZone, TenFrame, BeadRack20, DotCard, Numb
 characters/   Kubik, TeamPup, PlayerPup, MascotStage
 games/        engine/ (цикл завдання, підказки, черга повторів) + по папці на міні-гру: generate.ts, check.ts, View.tsx
 curriculum/   worlds.ts, levels/ (дані рівнів: список TaskSpec), adaptivity.ts, review.ts
-speech/       tts.ts, sfx.ts, lines.ts (УСІ польські рядки), plural.ts, numberWords.ts, nouns.ts
+speech/       tts.ts, sfx.ts, music.ts, lines.ts (УСІ польські рядки), plural.ts, numberWords.ts, nouns.ts
 store/        profiles, settings, progress (zustand)
 styles/       tokens.css, global.css
 assets/       SVG із дизайну (окремими файлами)
@@ -60,5 +60,5 @@ dev/          сторінки-вітрини /#/dev/... для перевірк
 - Цілі дотику ≥ 64 px (на телефоні ≥ 80), нічого не залежить від hover.
 - Жодних таймерів, червоних хрестиків, штрафів; сигнал ніколи не лише кольором.
 - Поважати `prefers-reduced-motion` і налаштування «Mniej animacji».
-- Звук і голос — лише після першого дотику («Graj!»).
+- Звук, музика і голос — лише після першого дотику («Graj!»); музика тиха й завжди стихає під голосом.
 - Наступне завдання — лише коли голос договорив.

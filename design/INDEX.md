@@ -82,10 +82,10 @@
 
 ## 7. Розбіжності й застереження
 1. **Twój piesek (etap1/16)**: картки цуценят в експорті порожні (`/_blob/…`) — беремо `svg/pups/`; фони карток = пастелі `--kl-w1,w3,—,w2,w6,w4,w7,w5-50`, 3-тя (Pudel) має `#FFFFFF`, а не пастель — уточнити.
-2. **Репліки, яких нема в BRIEF** (дизайн позначив `[do sprawdzenia]`; не вставляти в `lines.ts`, поки не підтвердить власник): «Kręcony piesek!», «Szybki piesek!», «Piesek z uszkami jak motylek!», «Piesek z kokardką!», «Pomarszczony piesek!», «Piesek w paski!»; «Osiem i dwa to dziesięć. I jeszcze trzy — trzynaście.» (W4 ★); «Jaka liczba się schowała?» (HundredChart); «Rybki zgubiły drogę do domu! Pomożesz?» (W3, Pufka). У BRIEF є лише «Kudłaty piesek!», «Czarny piesek!» і «Kaczuszki się zgubiły!…».
+2. **Репліки, яких нема в BRIEF** (дизайн позначив `[do sprawdzenia]`: 6 описів цуценят, W4 ★ «Osiem i dwa…», «Jaka liczba się schowała?», місія W3): **перевірено 2026-09-30, затверджені тексти — `POLISH_COPY` §9** (брати звідти, не з бордів). Єдина правка: Pudel → «Piesek w loczkach!» (у дизайні «Kręcony piesek!»). У BRIEF є лише «Kudłaty piesek!», «Czarny piesek!» і «Kaczuszki się zgubiły!…».
 3. Дизайн містить понад сотню польських `aria-label`/alt, яких нема в BRIEF (напр. «Poziom zablokowany», «Zadanie dodatkowe», «Tablica stu», «kosteczki: 2 z 6», «Strefa rodzica — przytrzymaj 3 sekundy») — брати з бордів за потреби й класти в `lines.ts`.
-4. **Музика**: повзунок «Muzyka» є в BRIEF §6.15 і в дизайні, але в PLAN музики немає (лише синтезовані ефекти) — рішення власника до M22.
-5. `POLISH_COPY` §8: список давальних застарів (є `pieskowi`, `wiewiórce`; бракує `liskowi`, `myszce`) — для `nouns.ts` брати 8 тваринок із BRIEF §10 (дизайн збігається з BRIEF).
+4. **Музика**: повзунок «Muzyka» (BRIEF §6.15, дизайн) залишаємо — музика буде синтезована через Web Audio, без файлів (PLAN M2b). Не сподобається на прослуховуванні — сховати повзунок прапором `MUSIC_ENABLED`.
+5. `POLISH_COPY` §8: список давальних виправлено під 8 тваринок BRIEF §10 (дизайн збігається з BRIEF).
 6. Не копіювати в `src/` артефакти інструмента: `<x-dc>`, `<helmet>`, `DCLogic`, `sc-camel-view-box` (= `viewBox`), `<html lang="uk">`, українські анотації в бордах.
 7. Kubik у грі ~184 px заввишки (BRIEF: 160–200) — узгоджено. Усі інші числа (панель 104, плитки 120/gap 24, кнопки 72/80, радіуси, easing) збігаються з BRIEF §7–8, §11.
 
