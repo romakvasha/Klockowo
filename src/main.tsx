@@ -4,9 +4,13 @@ import './styles/fonts';
 import './styles/tokens.css';
 import './styles/global.css';
 import { App } from './app/App';
+import { installAudioUnlock } from './speech/unlock';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('#root not found');
+
+// Звук і голос — лише після першого дотику
+installAudioUnlock();
 
 createRoot(root).render(
   <StrictMode>

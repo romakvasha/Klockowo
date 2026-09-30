@@ -1,0 +1,250 @@
+/* Dev-сторінка /#/dev/speech. Службова: великі цілі дотику, але без ігрового оформлення. */
+.stack {
+  display: grid;
+  gap: var(--kl-space-3);
+  margin-top: var(--kl-space-2);
+}
+
+.panel {
+  display: grid;
+  gap: var(--kl-space-2);
+  padding: var(--kl-space-3);
+  background: var(--kl-surface);
+  border-radius: var(--kl-radius-tile);
+  --edge: var(--kl-neutral-edge);
+  box-shadow: var(--kl-highlight), var(--kl-shadow-block);
+  min-width: 0;
+}
+
+.h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.h3 {
+  margin: var(--kl-space-1) 0 0;
+  font-size: 20px;
+  color: var(--kl-ink-soft);
+}
+
+.meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-1);
+  margin: 0;
+  color: var(--kl-ink-soft);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.status {
+  margin: 0;
+  font-size: var(--kl-fs-parent);
+}
+
+.ok {
+  color: var(--kl-success-edge);
+  font-weight: 700;
+}
+
+.warn {
+  color: var(--kl-retry-edge);
+  font-weight: 700;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--kl-space-1);
+}
+
+.btn,
+.btnGhost,
+.cell,
+.play {
+  min-height: 56px;
+  min-width: 56px;
+  padding: 0 var(--kl-space-2);
+  color: var(--kl-ink);
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  border: 0;
+  border-radius: var(--kl-radius-chip);
+  cursor: pointer;
+  --edge: var(--kl-neutral-edge);
+  box-shadow: var(--kl-highlight), var(--kl-shadow-block);
+  transition: transform var(--kl-dur-tap) var(--kl-ease-out), box-shadow var(--kl-dur-tap) var(--kl-ease-out);
+}
+
+.btn {
+  background: var(--kl-primary);
+  --edge: var(--kl-primary-edge);
+}
+
+.btnGhost,
+.cell {
+  background: var(--kl-surface-2);
+}
+
+.play {
+  flex: none;
+  background: var(--kl-secondary);
+  --edge: var(--kl-secondary-edge);
+}
+
+.btn:active,
+.btnGhost:active,
+.cell:active,
+.play:active {
+  transform: var(--kl-press);
+  box-shadow: var(--kl-highlight), var(--kl-shadow-pressed);
+}
+
+.cell {
+  text-align: left;
+  font-weight: 600;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+  font-size: var(--kl-fs-parent);
+  min-width: 0;
+}
+
+.field select,
+.num {
+  min-height: 56px;
+  padding: 0 var(--kl-space-2);
+  font: inherit;
+  font-size: 18px;
+  color: var(--kl-ink);
+  background: var(--kl-bg);
+  border: 2px solid var(--kl-ink);
+  border-radius: var(--kl-radius-chip);
+  max-width: 100%;
+}
+
+.field input[type='range'],
+.slider {
+  min-height: 44px;
+  width: 100%;
+  accent-color: var(--kl-secondary-edge);
+}
+
+.slider {
+  flex: 1 1 200px;
+}
+
+.num {
+  width: 96px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.rows {
+  display: grid;
+  gap: var(--kl-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--kl-space-2);
+  min-width: 0;
+}
+
+.rowBody {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.phrase {
+  font-size: 22px;
+  overflow-wrap: anywhere;
+}
+
+.mark {
+  padding: 0 8px;
+  color: var(--kl-ink);
+  background: var(--kl-reward);
+  border-radius: var(--kl-radius-chip);
+}
+
+.slug {
+  color: var(--kl-ink-soft);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.log {
+  margin: 0;
+  padding-left: var(--kl-space-3);
+  font-size: var(--kl-fs-parent);
+}
+
+.scroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--kl-fs-parent);
+}
+
+.table th,
+.table td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--kl-neutral-edge);
+  white-space: nowrap;
+}
+
+.grid {
+  display: grid;
+  gap: var(--kl-space-1);
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+}
+
+.numCell {
+  display: grid;
+  gap: 2px;
+  min-height: 72px;
+  padding: 6px 8px;
+  color: var(--kl-ink);
+  font: inherit;
+  background: var(--kl-surface-2);
+  border: 2px solid var(--kl-neutral-edge);
+  border-radius: var(--kl-radius-chip);
+  cursor: pointer;
+}
+
+.numCell:active {
+  transform: var(--kl-press);
+}
+
+.numActive {
+  border-color: var(--kl-secondary-edge);
+  background: var(--kl-secondary);
+}
+
+.numDigit {
+  font-family: var(--kl-font-display);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.numWord {
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}

@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import { DevIndex } from '../dev/DevIndex';
+import { SpeechPage } from '../dev/SpeechPage';
 import { TokensPage } from '../dev/TokensPage';
 import { AdventureMap } from '../screens/AdventureMap';
 import { Badges } from '../screens/Badges';
@@ -54,6 +55,7 @@ export function AppRoutes() {
       })}
       <Route path="/dev" element={<DevIndex />} />
       <Route path="/dev/tokens" element={<TokensPage />} />
+      <Route path="/dev/speech" element={<SpeechPage />} />
       <Route path="*" element={<Navigate to={HOME_PATH} replace />} />
     </Routes>
   );
