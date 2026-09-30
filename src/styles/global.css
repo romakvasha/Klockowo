@@ -1,0 +1,80 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--kl-bg);
+  color: var(--kl-ink);
+  font-family: var(--kl-font-ui);
+  font-weight: 700;
+  line-height: 1.3;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  /* безпечні зони телефона (вирізи, жести) */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--kl-font-display);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* focus-visible: подвійне кільце (2 px білий + 3 px ink, відступ 4) — не таке, як selected */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--kl-focus);
+}
+
+/* «Mniej animacji» (прапорець на <html>) і системне prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--kl-dur-reduced) !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--kl-dur-reduced) !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-reduce-motion='true'] *,
+:root[data-reduce-motion='true'] *::before,
+:root[data-reduce-motion='true'] *::after {
+  animation-duration: var(--kl-dur-reduced) !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: var(--kl-dur-reduced) !important;
+  scroll-behavior: auto !important;
+}

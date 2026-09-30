@@ -10,7 +10,7 @@
 - Зробити: `git init`, `.gitignore` (node_modules, dist); `design/INDEX.md` (до 200 рядків): токени (кольори, шрифти, радіуси, тіні, easing); компоненти — де лежать і які мають стани; екрани; SVG і картинки (шлях → призначення); розбіжності з BRIEF; чого бракує. Код не писати. Перший коміт (docs + design).
 - Перевірка: з INDEX.md зрозуміло, де що взяти, не відкриваючи весь дизайн.
 
-### [ ] M1 — Каркас проєкту
+### [x] M1 — Каркас проєкту
 - Читати: `design/INDEX.md`, BRIEF §6 (перелік екранів), §8.
 - Зробити: Vite + React + TS, zustand, react-router (HashRouter), Vitest, @fontsource (Fredoka, Nunito, Andika); структура з CLAUDE.md; `tokens.css`, `global.css`; заглушки всіх екранів із §6 і маршрути; сторінка `/#/dev` зі списком dev-сторінок; скрипти `dev`, `build`, `test`.
 - Перевірка: `npm run dev` показує заглушку Start; build і test проходять.
@@ -121,3 +121,6 @@
   Перевірити: `design/INDEX.md` (чи зрозуміло, де що лежить) і `design/extracted/svg/` (пози Kubika, тваринки, острови).
   Вирішено (відповідь власника, 2026-09-30): 9 реплік із `[do sprawdzenia]` перевірив Claude — затверджено в `POLISH_COPY` §9 (одна правка: Pudel → «Piesek w loczkach!»; там же виправлено давальні в §8); музику залишаємо — синтезована, новий етап M2b (у `CLAUDE.md` додано `music.ts`).
   Відкрито: (1) на борді «Twój piesek» картинки в експорті зламані — беремо SVG цуценят напряму; (2) у M1 додати в `tokens.css` `#E3CFA8` і `#EDEAF3`, шрифт Nunito — ще й cyrillic; (3) Етапи 3–6 дизайну ще не зроблено (INDEX §8).
+- **2026-09-30 · M1.** Каркас: Vite 8 + React 19 + TS 7 (strict), zustand, react-router 8 (`HashRouter`), Vitest 5, шрифти @fontsource (Fredoka 600/700, Nunito 600/700 + cyrillic, Andika 400/700; latin + latin-ext). `src/styles/`: `tokens.css` (дизайнові токени + `--kl-neutral-edge`, `--kl-disabled`), `global.css` (скид, безпечні зони, фокус-кільце, reduced-motion і прапорець `data-reduce-motion`), `fonts.ts`. Структура `src/` за CLAUDE.md (порожні теки мають `.gitkeep`). `app/routes.ts` — таблиця 18 екранів BRIEF §6 (id, шлях, етап, розділ BRIEF; параметри `:worldId`/`:levelId` попередні — формат id визначить M5); на кожен екран — заглушка в `screens/`; `/` веде на `/#/start`. `/#/dev` — перелік dev-сторінок і всіх екранів, `/#/dev/tokens` — палітра, шкали світів, шрифти з діакритикою й кирилицею, блокова кнопка. 7 тестів (таблиця маршрутів, реєстр dev-сторінок); `npm run build` і `npm test` проходять.
+  Перевірити: `npm run dev` → http://localhost:5173 (заглушка Start), `/#/dev`, `/#/dev/tokens` (чи всі літери Ł ą ę ź Ż та українські Ї Є Ґ відображаються правильно); для телефона — `npm run dev -- --host`.
+  Відомі проблеми/примітки: підписи заглушок («Заглушка · етап…», назви екранів у `routes.ts`) — службові, не репліки дитини, тому не в `lines.ts`; dev-сторінки зараз доступні й у production-збірці — рішення про приховування — на M24. `.claude/launch.json` лежить у репозиторії для превʼю в десктопному застосунку.
