@@ -1,0 +1,6 @@
+# Text files: LF in the repo and in the working tree (no CRLF noise on Windows).
+* text=auto eol=lf
+
+# Keep the Claude Design exports byte-for-byte: no EOL conversion, no textual diffs.
+design/*.html -text -diff
+design/*.pdf binary

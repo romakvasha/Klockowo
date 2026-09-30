@@ -1,0 +1,17 @@
+# dependencies and build output
+node_modules/
+dist/
+dev-dist/
+coverage/
+.vite/
+*.tsbuildinfo
+
+# logs, secrets, OS noise
+*.log
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# Claude Code per-machine settings
+.claude/settings.local.json
