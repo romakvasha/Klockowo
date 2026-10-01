@@ -1,0 +1,109 @@
+/* Wprowadzenie (design etap2/17–18): тло світу, смуга ґрунту на всю ширину, сцена 1280×720 (портрет 390×700) за масштабом --s по центру.
+   Кнопки «Mapa», «Posłuchaj», «Graj!» — справжнього розміру поверх сцени (дотик ≥ 72/80 px на будь-якому екрані). */
+.page {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  isolation: isolate;
+}
+
+/* смуга ґрунту: верх рахує екран (--ground-top) від масштабованої сцени; лінія зверху 6 px */
+.ground {
+  position: absolute;
+  top: var(--ground-top);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--ground);
+  border-top: 6px solid var(--ground-line);
+  transition: top 400ms var(--kl-ease-out);
+}
+
+.fit {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--s));
+}
+
+.decor {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* картка й панель стоять у лівому верхньому куті сцени, їхнє місце й розмір задає transform: так стискання до compact — плавний перехід */
+.cardSlot,
+.panelSlot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+
+.cardSlot {
+  transition: transform 450ms var(--kl-ease-out);
+}
+
+.guest,
+.kubik {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  transition: left 450ms var(--kl-ease-out), top 450ms var(--kl-ease-out), width 450ms var(--kl-ease-out), height 450ms var(--kl-ease-out);
+}
+
+.guestPup {
+  position: absolute;
+}
+
+/* верхня панель: «Mapa» ліворуч, «Posłuchaj» праворуч; відступи від країв ≥ 24 px з урахуванням safe-area */
+.chrome {
+  position: fixed;
+  z-index: 10;
+  top: max(var(--kl-edge-safe), env(safe-area-inset-top));
+  right: max(var(--kl-edge-safe), env(safe-area-inset-right));
+  left: max(var(--kl-edge-safe), env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.chrome > * {
+  pointer-events: auto;
+}
+
+/* «Graj!» 120 px (96 на телефоні) у правому нижньому куті; вискакує за 350 мс */
+.play {
+  position: fixed;
+  z-index: 10;
+  right: max(var(--kl-edge-safe), env(safe-area-inset-right));
+  bottom: max(var(--kl-edge-safe), env(safe-area-inset-bottom));
+  animation: var(--kl-anim-pop-in) 350ms var(--kl-ease-pop) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ground,
+  .cardSlot,
+  .guest,
+  .kubik {
+    transition: none;
+  }
+}
+
+:global(:root[data-reduce-motion='true']) .ground,
+:global(:root[data-reduce-motion='true']) .cardSlot,
+:global(:root[data-reduce-motion='true']) .guest,
+:global(:root[data-reduce-motion='true']) .kubik {
+  transition: none;
+}

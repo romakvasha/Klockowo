@@ -1,0 +1,26 @@
+.bone {
+  display: block;
+  overflow: visible;
+}
+
+.shape {
+  fill: var(--kl-reward);
+  stroke: var(--kl-ink);
+  stroke-width: 2.6;
+  stroke-linejoin: round;
+}
+
+.bone[data-empty='true'] .shape {
+  fill: none;
+  stroke: var(--kl-ink-soft);
+  stroke-width: 2.2;
+  stroke-dasharray: 3.5 3;
+}
+
+.shine {
+  fill: none;
+  stroke: #fff;
+  stroke-opacity: .7;
+  stroke-width: 2;
+  stroke-linecap: round;
+}

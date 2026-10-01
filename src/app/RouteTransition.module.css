@@ -1,0 +1,3 @@
+.slide {
+  animation: var(--kl-anim-slide) var(--kl-dur-slide) var(--kl-ease-out) backwards;
+}

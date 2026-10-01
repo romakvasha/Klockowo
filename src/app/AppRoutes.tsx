@@ -7,6 +7,7 @@ import { FramePage } from '../dev/ui/FramePage';
 import { UiPage } from '../dev/ui/UiPage';
 import { CharactersPage } from '../dev/characters/CharactersPage';
 import { DataPage } from '../dev/data/DataPage';
+import { MissionPage } from '../dev/mission/MissionPage';
 import { PathPage } from '../dev/path/PathPage';
 import { AdventureMap } from '../screens/AdventureMap';
 import { Badges } from '../screens/Badges';
@@ -65,6 +66,7 @@ export function AppRoutes() {
       <Route path="/dev/characters" element={<CharactersPage />} />
       <Route path="/dev/data" element={<DataPage />} />
       <Route path="/dev/path" element={<PathPage />} />
+      <Route path="/dev/mission" element={<MissionPage />} />
       <Route path="/dev/ui-frame" element={<FramePage />} />
       <Route path="*" element={<Navigate to={HOME_PATH} replace />} />
     </Routes>

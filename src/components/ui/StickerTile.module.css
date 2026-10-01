@@ -1,0 +1,74 @@
+.tile {
+  position: relative;
+  flex: none;
+  width: var(--size);
+  height: var(--size);
+  background: #fff;
+  border: 4px solid var(--kl-ink);
+  border-radius: calc(var(--size) * .14);
+  box-shadow: 0 6px 0 var(--edge), var(--kl-highlight);
+}
+
+.tile[data-world='w1'] { --edge: var(--kl-w1-500); --disc: var(--kl-w1-100); --accent: var(--kl-w1-500); }
+.tile[data-world='w2'] { --edge: var(--kl-w2-500); --disc: var(--kl-w2-100); --accent: var(--kl-w2-500); }
+.tile[data-world='w3'] { --edge: var(--kl-w3-500); --disc: var(--kl-w3-100); --accent: var(--kl-w3-500); }
+.tile[data-world='w4'] { --edge: var(--kl-w4-500); --disc: var(--kl-w4-100); --accent: var(--kl-w4-500); }
+.tile[data-world='w5'] { --edge: var(--kl-w5-500); --disc: var(--kl-w5-100); --accent: var(--kl-w5-500); }
+.tile[data-world='w6'] { --edge: var(--kl-w6-500); --disc: var(--kl-w6-100); --accent: var(--kl-w6-500); }
+.tile[data-world='w7'] { --edge: var(--kl-w7-500); --disc: var(--kl-w7-100); --accent: var(--kl-w7-500); }
+
+.disc {
+  position: absolute;
+  inset: 9%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--disc);
+  border-radius: calc(var(--size) * .1);
+}
+
+.disc img {
+  width: 84%;
+  height: auto;
+  max-width: none;
+}
+
+/* порожнє місце в альбомі: сіре тло, силует тваринки, «?» */
+.tile[data-locked='true'] {
+  --edge: var(--kl-locked-edge);
+  --disc: var(--kl-locked);
+}
+
+.tile[data-locked='true'] .disc img {
+  filter: brightness(0);
+  opacity: .22;
+}
+
+.question {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--kl-font-display);
+  font-size: calc(var(--size) * .46);
+  line-height: 1;
+  color: var(--kl-ink);
+}
+
+/* значок світу в кутку */
+.chip {
+  position: absolute;
+  top: -4%;
+  left: -4%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26%;
+  height: 26%;
+  font-size: calc(var(--size) * .15);
+  background: var(--accent);
+  border: 3px solid var(--kl-ink);
+  border-radius: var(--kl-radius-round);
+}

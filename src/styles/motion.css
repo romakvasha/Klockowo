@@ -26,6 +26,12 @@
   --kl-anim-glow: kl-glow;
   /* Start: аватари «Kto dziś gra?» з'являються по черзі */
   --kl-anim-pop-in: kl-pop-in;
+  /* Koniec poziomu: конфеті, політ кісточки в миску, поява наліпки й значка */
+  --kl-anim-confetti: kl-confetti;
+  --kl-anim-fly: kl-bone-fly;
+  --kl-anim-reveal: kl-reveal;
+  /* перехід між екранами: ковзання 350 мс */
+  --kl-anim-slide: kl-slide-in;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,6 +55,10 @@
     --kl-anim-slot: kl-fade-in;
     --kl-anim-glow: none;
     --kl-anim-pop-in: kl-fade-in;
+    --kl-anim-confetti: none;
+    --kl-anim-fly: kl-fade-in;
+    --kl-anim-reveal: kl-fade-in;
+    --kl-anim-slide: kl-fade-in;
   }
 }
 
@@ -72,6 +82,10 @@
   --kl-anim-slot: kl-fade-in;
   --kl-anim-glow: none;
   --kl-anim-pop-in: kl-fade-in;
+  --kl-anim-confetti: none;
+  --kl-anim-fly: kl-fade-in;
+  --kl-anim-reveal: kl-fade-in;
+  --kl-anim-slide: kl-fade-in;
 }
 
 @keyframes kl-fade-in {
@@ -193,4 +207,32 @@
 @keyframes kl-pop-in {
   from { opacity: 0; transform: scale(.4); }
   to { opacity: 1; transform: scale(1); }
+}
+
+/* Конфеті: шматочок падає зверху вниз із обертанням і зсувом убік; зникає наприкінці (≤ 1,5 с разом із затримкою) */
+@keyframes kl-confetti {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(var(--drift), calc(100vh + 48px), 0) rotate(var(--spin)); }
+}
+
+/* Кісточка летить дугою в миску Kubika (600 мс): --dx/--dy — зсув до отвору миски, у px сцени */
+@keyframes kl-bone-fly {
+  0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: translate(calc(var(--dx) * .5), calc(var(--dy) * .5 - 110px)) scale(1.2) rotate(140deg); }
+  100% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(.7) rotate(300deg); }
+}
+
+/* Наліпка й значок «відкриваються»: scale .3 → 1,12 → 1 із легким поворотом (400 мс, ease-pop) */
+@keyframes kl-reveal {
+  0% { opacity: 0; transform: scale(.3) rotate(-14deg); }
+  70% { opacity: 1; transform: scale(1.12) rotate(3deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Новий екран ковзає справа (350 мс, ease-out); без fill-mode forwards, щоб після кінця на екрані не лишався transform
+   (він зламав би position: fixed у нащадків) */
+@keyframes kl-slide-in {
+  from { opacity: 0; transform: translateX(5%); }
+  to { opacity: 1; transform: translateX(0); }
 }

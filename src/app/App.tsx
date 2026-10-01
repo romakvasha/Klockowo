@@ -1,6 +1,7 @@
 import { HashRouter } from 'react-router';
 import { AppRoutes } from './AppRoutes';
 import { MusicRouteSync } from './MusicRouteSync';
+import { RouteTransition } from './RouteTransition';
 import { SettingsSync } from './SettingsSync';
 
 export function App() {
@@ -8,7 +9,9 @@ export function App() {
     <HashRouter>
       <SettingsSync />
       <MusicRouteSync />
-      <AppRoutes />
+      <RouteTransition>
+        <AppRoutes />
+      </RouteTransition>
     </HashRouter>
   );
 }

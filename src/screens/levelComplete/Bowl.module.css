@@ -1,0 +1,32 @@
+.bowl {
+  position: relative;
+  width: 220px;
+  height: 120px;
+}
+
+/* миска мальована одним шаром */
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  max-width: none;
+}
+
+.bone {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  animation: var(--kl-anim-arrive) var(--kl-dur-bone) var(--kl-ease-pop) both;
+}
+
+.bowl[data-bump='true'] {
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+/* кісточки видно лише над переднім краєм: контур = все вище лінії y = 46 плюс нижня половина темного отвору (еліпс 74×12 з центром (110, 46)) */
+.heap {
+  position: absolute;
+  inset: 0;
+  clip-path: path('M0 0 H220 V46 H184 A74 12 0 0 1 36 46 H0 Z');
+}

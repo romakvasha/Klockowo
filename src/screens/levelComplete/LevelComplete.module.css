@@ -1,0 +1,150 @@
+/* Koniec poziomu (BRIEF §6.8): тло світу, смуга ґрунту на всю ширину, сцена 1280×720 (портрет 390×700) за масштабом --s по центру.
+   «Mapa» і «Dalej» — справжнього розміру поверх сцени (72/80 px і 88 px). */
+.page {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  isolation: isolate;
+}
+
+.ground {
+  position: absolute;
+  top: var(--ground-top);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--ground);
+  border-top: 6px solid var(--ground-line);
+}
+
+.fit {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--s));
+}
+
+.rail,
+.slot {
+  position: absolute;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kl-surface-2);
+  border-radius: 14px;
+}
+
+.slotBone {
+  width: 80%;
+  height: 80%;
+}
+
+/* кісточка, що летить у миску: дуга задана keyframes kl-bone-fly (600 мс), --dx/--dy — зсув до отвору */
+.flying {
+  position: absolute;
+  z-index: 5;
+  max-width: none;
+  animation: var(--kl-anim-fly) var(--kl-dur-bone) ease-in-out both;
+}
+
+.kubik,
+.animal,
+.bowl {
+  position: absolute;
+}
+
+.kubik {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.bowl {
+  transform-origin: 0 0;
+}
+
+/* тваринка вискакує, коли кісточки в мисці; над нею спливають сердечка */
+.animal {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.animal[data-show='true'] {
+  opacity: 1;
+  animation: var(--kl-anim-pop-in) 450ms var(--kl-ease-pop) both;
+}
+
+.animal img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+.heart {
+  position: absolute;
+  width: 34px;
+  height: 31px;
+  background: #ff6b6b;
+  opacity: 0;
+  clip-path: path('M17 31 C17 31 1 21 1 10 C1 4 5 1 9.5 1 C13 1 15.5 3 17 6 C18.5 3 21 1 24.5 1 C29 1 33 4 33 10 C33 21 17 31 17 31 Z');
+}
+
+.animal[data-show='true'] .heart {
+  animation: kl-heart 1400ms 400ms ease-out both;
+}
+
+.animal[data-show='true'] .heart[data-late='true'] {
+  animation-delay: 700ms;
+}
+
+@keyframes kl-heart {
+  0% { opacity: 0; transform: translateY(14px) scale(.4); }
+  30% { opacity: 1; transform: translateY(0) scale(1.1); }
+  100% { opacity: 1; transform: translateY(-12px) scale(1); }
+}
+
+/* наліпка й значок «відкриваються» (kl-reveal) */
+.reveal {
+  position: absolute;
+  z-index: 4;
+  animation: var(--kl-anim-reveal) 450ms var(--kl-ease-pop) both;
+}
+
+.chrome {
+  position: fixed;
+  z-index: 10;
+  top: max(var(--kl-edge-safe), env(safe-area-inset-top));
+  left: max(var(--kl-edge-safe), env(safe-area-inset-left));
+}
+
+/* «Dalej» 88 px у правому нижньому куті */
+.next {
+  position: fixed;
+  z-index: 10;
+  right: max(var(--kl-edge-safe), env(safe-area-inset-right));
+  bottom: max(var(--kl-edge-safe), env(safe-area-inset-bottom));
+  animation: var(--kl-anim-pop-in) 350ms var(--kl-ease-pop) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart {
+    animation: none !important;
+    opacity: 1;
+  }
+}
+
+:global(:root[data-reduce-motion='true']) .heart {
+  animation: none !important;
+  opacity: 1;
+}

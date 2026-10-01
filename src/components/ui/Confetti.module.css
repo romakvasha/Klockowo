@@ -1,0 +1,32 @@
+/* Конфеті: шматочки падають зверху донизу з обертанням (kl-confetti, motion.css), кожен — власні затримка й тривалість; загалом ≤ 1,5 с. */
+.confetti {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti i {
+  position: absolute;
+  top: -24px;
+  left: var(--x);
+  width: var(--size);
+  height: var(--size);
+  background: var(--color);
+  border: 2px solid var(--kl-ink);
+  border-radius: 3px;
+  opacity: 0;
+  animation: var(--kl-anim-confetti) var(--dur) var(--delay) ease-in both;
+}
+
+/* «Mniej animacji» і prefers-reduced-motion: без конфеті (BRIEF §11) */
+@media (prefers-reduced-motion: reduce) {
+  .confetti {
+    display: none;
+  }
+}
+
+:global(:root[data-reduce-motion='true']) .confetti {
+  display: none;
+}
