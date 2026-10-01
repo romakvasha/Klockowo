@@ -1,0 +1,21 @@
+.root {
+  --edge: var(--kl-success-edge);
+  width: var(--kl-check-w);
+  height: var(--kl-check-h);
+  border-radius: var(--kl-radius-panel);
+  background: var(--kl-success);
+  flex: none;
+}
+
+.icon {
+  width: var(--kl-check-icon);
+  height: var(--kl-check-icon);
+}
+
+/* Неактивна: пласка, без краю, сіра рамка + сіра галочка — не лише колір */
+.root:disabled {
+  color: var(--kl-locked-edge);
+  background: var(--kl-disabled);
+  border-color: var(--kl-locked-edge);
+  box-shadow: none;
+}

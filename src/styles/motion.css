@@ -1,0 +1,87 @@
+/* Рух за BRIEF §11. Компоненти беруть анімації через --kl-anim-*: при prefers-reduced-motion і налаштуванні
+   «Mniej animacji» (<html data-reduce-motion="true">) рух замінюється згасанням 150 мс або вимикається зовсім.
+   Тривалість 150 мс і одна ітерація примусово задає global.css. */
+:root {
+  --kl-anim-pop: kl-pop;
+  --kl-anim-shake: kl-shake;
+  --kl-anim-arrive: kl-arrive;
+  --kl-anim-appear: kl-appear;
+  --kl-anim-draw: kl-draw;
+  --kl-anim-breathe: kl-breathe;
+  --kl-anim-pulse: kl-pulse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --kl-anim-pop: kl-fade-in;
+    --kl-anim-shake: none;
+    --kl-anim-arrive: kl-fade-in;
+    --kl-anim-appear: kl-fade-in;
+    --kl-anim-draw: kl-fade-in;
+    --kl-anim-breathe: none;
+    --kl-anim-pulse: none;
+  }
+}
+
+:root[data-reduce-motion='true'] {
+  --kl-anim-pop: kl-fade-in;
+  --kl-anim-shake: none;
+  --kl-anim-arrive: kl-fade-in;
+  --kl-anim-appear: kl-fade-in;
+  --kl-anim-draw: kl-fade-in;
+  --kl-anim-breathe: none;
+  --kl-anim-pulse: none;
+}
+
+@keyframes kl-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* «Дихання» кнопки Graj! у спокої: 2,4 с */
+@keyframes kl-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+/* «Posłuchaj» пульсує один раз, коли голос договорив нову інструкцію */
+@keyframes kl-pulse {
+  0% { box-shadow: 0 6px 0 var(--edge), 0 0 0 0 rgba(58, 160, 255, .45); }
+  70% { box-shadow: 0 6px 0 var(--edge), 0 0 0 18px rgba(58, 160, 255, 0); }
+  100% { box-shadow: 0 6px 0 var(--edge), 0 0 0 0 rgba(58, 160, 255, 0); }
+}
+
+/* «Спробуй ще»: хитання ±6 px двічі (300 мс) */
+@keyframes kl-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  35% { transform: translateX(6px); }
+  55% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* Правильно: плитка «вистрибує» (350 мс) */
+@keyframes kl-pop {
+  0% { transform: translateY(0) scale(1); }
+  45% { transform: translateY(-12px) scale(1.1); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* Кісточка «долітає» у слот (600 мс, ease-pop) */
+@keyframes kl-arrive {
+  0% { transform: scale(.2) translateY(-30px); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Панель Overlay: scale .9 → 1 + згасання */
+@keyframes kl-appear {
+  from { opacity: 0; transform: scale(.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Галочка промальовується: контур має pathLength="100", stroke-dasharray: 100 задає компонент */
+@keyframes kl-draw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}

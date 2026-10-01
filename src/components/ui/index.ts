@@ -1,0 +1,20 @@
+// Базові UI-компоненти (M3). Розмір за в'юпортом — styles/responsive.css, рух — styles/motion.css, «блоковий» вигляд — styles/block.css.
+export { AnswerTile, type AnswerTileProps } from './AnswerTile';
+export { AvatarButton, type AvatarButtonProps } from './AvatarButton';
+export { BONES_PER_LEVEL } from './boneStates';
+export { CheckButton, type CheckButtonProps } from './CheckButton';
+export { DigitCard, type DigitCardProps } from './DigitCard';
+export { Digits, type DigitsProps } from './Digits';
+export { Dots, type DotsProps } from './Dots';
+export { HUD, type HudProps } from './HUD';
+export { Icon, type IconProps } from './Icon';
+export { ICON_NAMES, type IconName } from './icons';
+export { IconButton, type IconButtonProps, type IconButtonVariant } from './IconButton';
+export { Overlay, type OverlayProps } from './Overlay';
+export { PlayButton, type PlayButtonProps } from './PlayButton';
+export { ProgressBones, type ProgressBonesProps } from './ProgressBones';
+export { Slider, type SliderProps } from './Slider';
+export { SpeechBubble, type BubbleVariant, type SpeechBubbleProps } from './SpeechBubble';
+export { StateBadge, type BadgeKind } from './StateBadge';
+export type { TileState } from './TileButton';
+export { Toggle, type ToggleProps } from './Toggle';

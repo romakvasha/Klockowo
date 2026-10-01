@@ -1,0 +1,42 @@
+.root {
+  --size: var(--kl-btn);
+  --icon: var(--kl-btn-icon);
+  width: var(--size);
+  height: var(--size);
+  border-radius: var(--kl-radius-round);
+  flex: none;
+}
+
+.icon {
+  width: var(--icon);
+  height: var(--icon);
+}
+
+.neutral {
+  --edge: var(--kl-neutral-edge);
+  background: var(--kl-surface);
+}
+
+.secondary {
+  --edge: var(--kl-secondary-edge);
+  background: var(--kl-secondary);
+}
+
+.primary {
+  --edge: var(--kl-primary-edge);
+  background: var(--kl-primary);
+}
+
+.hint {
+  --edge: var(--kl-reward-edge);
+  background: var(--kl-reward);
+}
+
+.retry {
+  --edge: var(--kl-retry-edge);
+  background: var(--kl-retry);
+}
+
+.root[data-pulse='true'] {
+  animation: var(--kl-anim-pulse) 1.2s var(--kl-ease-out) 1;
+}

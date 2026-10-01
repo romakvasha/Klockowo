@@ -1,0 +1,288 @@
+/* Вітрина /#/dev/ui: службова сторінка для власника. Адаптивна: усе переноситься, горизонтальної прокрутки немає. */
+.page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--kl-space-3) var(--kl-edge-safe) var(--kl-space-8);
+  font-size: var(--kl-fs-parent);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--kl-target);
+  color: var(--kl-secondary-edge);
+  text-decoration: none;
+}
+
+.h1 {
+  margin-bottom: var(--kl-space-1);
+  font-size: var(--kl-fs-h1);
+}
+
+.lead {
+  max-width: 72ch;
+  margin: 0 0 var(--kl-space-2);
+  color: var(--kl-ink-soft);
+  font-weight: 600;
+}
+
+.section {
+  margin-top: var(--kl-space-3);
+  padding: var(--kl-space-3);
+  background: var(--kl-surface);
+  border-radius: var(--kl-radius-panel);
+}
+
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--kl-space-1) var(--kl-space-2);
+  margin-bottom: var(--kl-space-2);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.note {
+  color: var(--kl-ink-soft);
+  font-family: var(--kl-font-ui);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sub {
+  margin: var(--kl-space-3) 0 var(--kl-space-1);
+  font-family: var(--kl-font-ui);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--kl-space-4) 44px;
+  padding: 12px 8px 20px;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+}
+
+.caption {
+  max-width: 168px;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.hint {
+  max-width: 76ch;
+  margin: 4px 0 0;
+  color: var(--kl-ink-soft);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* сцена-тло світу для компонентів, що живуть на кольоровому тлі */
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kl-space-3);
+  padding: var(--kl-space-3);
+  background: var(--kl-w1-50);
+  border-radius: var(--kl-radius-tile);
+}
+
+.stageFlush {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kl-space-3);
+  overflow: hidden;
+  background: var(--kl-w1-50);
+  border-radius: var(--kl-radius-tile);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-1) var(--kl-space-2);
+  align-items: center;
+}
+
+.devButton {
+  min-width: var(--kl-target);
+  min-height: var(--kl-target);
+  padding: 0 var(--kl-space-3);
+  color: var(--kl-ink);
+  font-family: var(--kl-font-ui);
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--kl-surface);
+  border: 2px dashed var(--kl-ink-soft);
+  border-radius: var(--kl-radius-chip);
+  cursor: pointer;
+}
+
+.status {
+  min-height: 28px;
+  font-weight: 700;
+}
+
+/* рядки сітки для варіантів IconButton */
+.variant {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr;
+  gap: var(--kl-space-1) var(--kl-space-3);
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--kl-surface-2);
+}
+
+.variantName {
+  display: flex;
+  flex-direction: column;
+  font-weight: 800;
+}
+
+.variantName span {
+  color: var(--kl-ink-soft);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.variantCells {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-3);
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .variant {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* містки вмісту для демо Overlay і бульбашок */
+.placeholder {
+  display: grid;
+  place-items: center;
+  width: 104px;
+  height: 104px;
+  color: var(--kl-hub-700);
+  font-family: var(--kl-font-display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  background: var(--kl-hub-50);
+  border: 3px dashed var(--kl-reward-edge);
+  border-radius: var(--kl-radius-panel);
+}
+
+.bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-4) var(--kl-space-6);
+  padding: 8px 8px 24px;
+}
+
+/* хвостик бульбашки виступає на 22–36 px під неї — залишаємо місце, щоб не налізав на підпис */
+.bubbleGap {
+  margin-bottom: 40px;
+}
+
+.sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 640px;
+}
+
+.group {
+  margin: var(--kl-space-2) 0 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.toggles {
+  max-width: 560px;
+}
+
+/* ---- галерея в'юпортів: справжні iframe, щоб працювали media queries ---- */
+.frames {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--kl-space-3);
+}
+
+.frame {
+  margin: 0;
+}
+
+.frameBox {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--kl-ink-soft);
+  border-radius: var(--kl-radius-chip);
+}
+
+.frameIframe {
+  display: block;
+  border: 0;
+  transform-origin: 0 0;
+}
+
+.frameName {
+  margin-top: var(--kl-space-1);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* ---- /dev/ui-frame: мініатюрна ігрова сцена для галереї ---- */
+.scene {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--kl-w1-50);
+}
+
+.sceneStage {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kl-space-4);
+  padding: var(--kl-space-3) var(--kl-edge-safe);
+}
+
+.tray {
+  display: flex;
+  gap: var(--kl-space-3);
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .scene {
+    flex-direction: row;
+  }
+
+  .sceneStage {
+    flex-direction: row;
+    gap: var(--kl-space-3);
+    padding-top: calc(var(--kl-edge-safe) + 28px + var(--kl-space-1));
+  }
+
+  .tray {
+    flex-direction: column;
+    gap: var(--kl-space-2);
+  }
+}

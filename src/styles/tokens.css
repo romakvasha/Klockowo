@@ -81,11 +81,6 @@
   /* promienie */
   --kl-radius-chip: 12px;  --kl-radius-tile: 20px;
   --kl-radius-panel: 24px; --kl-radius-round: 999px;
-  /* „blokowy” cień; --edge = krawędź koloru */
-  --kl-shadow-block: 0 6px 0 var(--edge),
-    0 10px 24px rgba(45, 42, 74, .12);
-  --kl-shadow-pressed: 0 2px 0 var(--edge),
-    0 4px 10px rgba(45, 42, 74, .12);
   --kl-highlight: inset 0 2px 0 rgba(255, 255, 255, .55);
   --kl-press: translateY(4px) scale(.94);
   /* ruch */
@@ -99,4 +94,14 @@
   /* cele dotyku */
   --kl-target: 64px; --kl-target-phone: 80px;
   --kl-gap-min: 16px; --kl-edge-safe: 24px;
+}
+
+/* «Блокова» тінь: край 6 px кольору --edge елемента + м'яка тінь (BRIEF §8).
+   var(--edge) усередині custom property підставляється там, де її оголошено: на :root усі елементи отримали б один колір
+   краю. Тому ці два токени оголошено на кожному елементі — --edge береться окремо для кожної кнопки чи плитки. */
+*,
+*::before,
+*::after {
+  --kl-shadow-block: 0 6px 0 var(--edge), 0 10px 24px rgba(45, 42, 74, .12);
+  --kl-shadow-pressed: 0 2px 0 var(--edge), 0 4px 10px rgba(45, 42, 74, .12);
 }

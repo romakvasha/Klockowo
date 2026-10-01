@@ -1,0 +1,51 @@
+/* Поля ≥ 48 px: «Zamknij» виступає з кута панелі на 22 px, а від краю екрана має лишатись ≥ 24 px (+ safe-area) */
+.backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding:
+    max(48px, env(safe-area-inset-top))
+    max(48px, env(safe-area-inset-right))
+    max(48px, env(safe-area-inset-bottom))
+    max(48px, env(safe-area-inset-left));
+  background: rgba(45, 42, 74, .55);
+  animation: kl-fade-in var(--kl-dur-slide) var(--kl-ease-out) both;
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+  max-height: 100%;
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-ink);
+  border-radius: var(--kl-radius-panel);
+  box-shadow: 0 10px 24px rgba(45, 42, 74, .2);
+  animation: var(--kl-anim-appear) 300ms var(--kl-ease-out) both;
+}
+
+/* програмний фокус на панелі без кільця: кільця мають кнопки всередині */
+.panel:focus,
+.panel:focus-visible {
+  outline: none;
+  box-shadow: 0 10px 24px rgba(45, 42, 74, .2);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kl-space-2);
+  min-width: 240px;
+  padding: var(--kl-space-4);
+  overflow: auto;
+}
+
+.close {
+  position: absolute;
+  top: -22px;
+  right: -22px;
+}

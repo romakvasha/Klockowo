@@ -1,0 +1,88 @@
+/* Розміри компонентів за в'юпортами (BRIEF §12, борди design etap1/06–08). Компоненти читають лише ці змінні,
+   тому адаптивність живе в одному місці; будь-який елемент можна перевизначити локально (style або батьківський клас).
+   Базово — сцена 1280×720. Порядок правил важливий: пізніші перекривають ширші. */
+:root {
+  /* IconButton, панель HUD */
+  --kl-btn: 72px;
+  --kl-btn-icon: 40px;
+  --kl-hud-h: 104px;
+  /* PlayButton (Start); на Wprowadzenie — size={120} */
+  --kl-play: 160px;
+  /* CheckButton «Gotowe» */
+  --kl-check-w: 120px;
+  --kl-check-h: 88px;
+  --kl-check-icon: 46px;
+  /* AnswerTile (квадрат) і DigitCard (ширина = плитка, висота = 4/3) */
+  --kl-tile: 120px;
+  --kl-tile-digit: 72px;
+  /* ProgressBones: 6 слотів у ряд зі слотом-тлом */
+  --kl-bone-cols: 6;
+  --kl-bone-gap: 12px;
+  --kl-bone-slot-w: 60px;
+  --kl-bone-slot-h: 48px;
+  --kl-bone-slot-bg: var(--kl-surface-2);
+  --kl-bone-slot-r: 14px;
+  --kl-bone-icon-w: 44px;
+  --kl-bone-icon-h: 44px;
+}
+
+/* 1440×900 і ширше: сцена по центру, плитки 140 */
+@media (min-width: 1440px) {
+  :root {
+    --kl-tile: 140px;
+    --kl-tile-digit: 80px;
+  }
+}
+
+/* 1024×768 і планшет у портреті: плитки 128 */
+@media (max-width: 1100px) {
+  :root {
+    --kl-tile: 128px;
+    --kl-tile-digit: 76px;
+  }
+}
+
+/* Телефон, портрет (390×844): кнопки 80, плитки 96, панель 112, кісточки 2 ряди по 3 */
+@media (max-width: 599px) {
+  :root {
+    --kl-btn: 80px;
+    --kl-btn-icon: 44px;
+    --kl-hud-h: 112px;
+    --kl-play: 96px;
+    --kl-check-w: 80px;
+    --kl-check-h: 80px;
+    --kl-check-icon: 44px;
+    --kl-tile: 96px;
+    --kl-tile-digit: 56px;
+    --kl-bone-cols: 3;
+    --kl-bone-gap: 6px;
+    --kl-bone-slot-w: 34px;
+    --kl-bone-slot-h: 30px;
+    --kl-bone-slot-bg: transparent;
+    --kl-bone-slot-r: 0;
+    --kl-bone-icon-w: 34px;
+    --kl-bone-icon-h: 30px;
+  }
+}
+
+/* Телефон, альбом (844×390): бічна смуга замість панелі, плитки 88, кісточки — ряд 28 px угорі сцени */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --kl-btn: 80px;
+    --kl-btn-icon: 44px;
+    --kl-play: 96px;
+    --kl-check-w: 80px;
+    --kl-check-h: 80px;
+    --kl-check-icon: 44px;
+    --kl-tile: 88px;
+    --kl-tile-digit: 49px;
+    --kl-bone-cols: 6;
+    --kl-bone-gap: 8px;
+    --kl-bone-slot-w: 32px;
+    --kl-bone-slot-h: 28px;
+    --kl-bone-slot-bg: transparent;
+    --kl-bone-slot-r: 0;
+    --kl-bone-icon-w: 32px;
+    --kl-bone-icon-h: 28px;
+  }
+}

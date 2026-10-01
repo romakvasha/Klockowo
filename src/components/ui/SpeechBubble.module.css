@@ -1,0 +1,72 @@
+.bubble {
+  --bubble-bg: var(--kl-surface);
+  position: relative;
+  display: inline-flex;
+}
+
+.talking {
+  --bubble-bg: var(--kl-w3-50);
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-sizing: border-box;
+  min-width: 150px;
+  min-height: 104px;
+  padding: 0 18px;
+  background: var(--bubble-bg);
+  border: 3px solid var(--kl-ink);
+  border-radius: var(--kl-radius-panel);
+  color: var(--kl-ink);
+  font-family: var(--kl-font-display);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1;
+}
+
+.thinking .body {
+  border-radius: 52px;
+}
+
+.tail,
+.cloud {
+  position: absolute;
+  overflow: visible;
+}
+
+.tail {
+  bottom: -22px;
+  left: 26px;
+  width: 40px;
+  height: 26px;
+}
+
+.cloud {
+  bottom: -36px;
+  left: 18px;
+  width: 44px;
+  height: 36px;
+}
+
+.mirror {
+  right: 26px;
+  left: auto;
+  transform: scaleX(-1);
+}
+
+.shape {
+  fill: var(--bubble-bg);
+  stroke: var(--kl-ink);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+/* лінія, що закриває контур бульбашки в місці, де приєднується хвостик */
+.cover {
+  fill: none;
+  stroke: var(--bubble-bg);
+  stroke-width: 5;
+}

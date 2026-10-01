@@ -1,0 +1,46 @@
+/* «Блокова» основа інтерактивних елементів дитини (BRIEF §8): контур 3 px ink, об'ємний край --edge, світла смужка 2 px,
+   натиснута кнопка опускається на 4 px за 90 мс. Клас .kl-block підключають компоненти разом зі своїм модульним класом;
+   вони задають лише розмір, background і --edge. Нічого не залежить від hover.
+   Кільце фокуса — змінна --kl-ring: будь-який стан, що перевизначає box-shadow, додає в кінець `, var(--kl-ring)`.
+   data-demo="pressed|focus" — лише для вітрини /#/dev/ui: показує стан без справжнього натискання. */
+:root {
+  --edge: var(--kl-neutral-edge);
+}
+
+.kl-block {
+  --kl-ring: 0 0 0 0 transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: var(--kl-ink);
+  font: inherit;
+  border: 3px solid var(--kl-ink);
+  box-shadow: var(--kl-shadow-block), var(--kl-highlight), var(--kl-ring);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  transition: transform var(--kl-dur-tap) var(--kl-ease-out), box-shadow var(--kl-dur-tap) var(--kl-ease-out);
+}
+
+.kl-block:disabled {
+  cursor: default;
+}
+
+.kl-block:active:not(:disabled),
+.kl-block[data-demo='pressed'] {
+  transform: var(--kl-press);
+  box-shadow: var(--kl-shadow-pressed), var(--kl-highlight), var(--kl-ring);
+}
+
+/* focus-visible: подвійне кільце — біле 6 px (поза краєм кнопки) + ink 3 px; не таке, як selected */
+.kl-block:focus-visible,
+.kl-block[data-demo='focus'] {
+  --kl-ring: 0 0 0 6px var(--kl-surface);
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 6px;
+}

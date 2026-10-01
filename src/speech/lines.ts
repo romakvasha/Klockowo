@@ -25,6 +25,29 @@ export const LABELS = {
   placeOnes: 'jedności',
 } as const;
 
+/** aria-label станів плитки й картки (design etap1/07): «siedem — dobrze», «osiem — spróbuj jeszcze raz», «zablokowane». */
+export const TILE_STATE_LABELS = { correct: 'dobrze', retry: 'spróbuj jeszcze raz', locked: 'zablokowane' } as const;
+
+/** Підпис плитки: число словами; для correct/retry — зі станом, для locked — лише «zablokowane». */
+export function tileLabel(n: number, state?: string): string {
+  if (state === 'locked') return TILE_STATE_LABELS.locked;
+  const word = numberWords(n);
+  if (state === 'correct') return `${word} — ${TILE_STATE_LABELS.correct}`;
+  if (state === 'retry') return `${word} — ${TILE_STATE_LABELS.retry}`;
+  return word;
+}
+
+/** aria-label ряду кісточок: «kosteczki: 3 z 6». */
+export function bonesLabel(filled: number, total: number): string {
+  return `${LABELS.bones}: ${filled} z ${total}`;
+}
+
+/** AvatarButton (design etap1/10): профіль без імені; аватар на Mapa przygody веде до мапи. */
+export const PROFILE_NO_NAME = 'Profil bez imienia';
+export function profileMapLabel(name: string): string {
+  return `${name} — mapa`;
+}
+
 export const WORLD_NAMES: Readonly<Record<WorldKey | 'hub', string>> = {
   w1: 'Łąka Liczenia', w2: 'Ogród Cyfr', w3: 'Wyspa Dodawania', w4: 'Most Dwudziestki',
   w5: 'Las Dziesiątek', w6: 'Miasto Setki', w7: 'Kosmiczna Droga', hub: 'Plac Zabaw',
@@ -115,7 +138,7 @@ export const PARENT = {
   settings: {
     title: 'Ustawienia', sessionLength: 'Długość sesji', voice: 'Głos', speechRate: 'Tempo mowy', volume: 'Głośność',
     speech: 'Mowa', effects: 'Efekty', music: 'Muzyka', reduceMotion: 'Mniej animacji', extraTasks: 'Zadania dodatkowe ★',
-    unlockWorld: 'Odblokuj świat ręcznie',
+    unlockWorld: 'Odblokuj świat ręcznie', slower: 'Wolniej', faster: 'Szybciej', // кінці повзунка «Tempo mowy» (POLISH_COPY: «Wolniej lub szybciej»)
   },
   profiles: { title: 'Profile', add: 'Dodaj profil' },
   backup: {

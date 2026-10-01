@@ -1,0 +1,23 @@
+.root {
+  --size: var(--kl-play);
+  --edge: var(--kl-primary-edge);
+  width: var(--size);
+  height: var(--size);
+  padding-left: calc(var(--size) * .05); /* оптичне центрування трикутника */
+  border-radius: var(--kl-radius-round);
+  background: var(--kl-primary);
+}
+
+.icon {
+  width: calc(var(--size) * .45);
+  height: calc(var(--size) * .45);
+}
+
+/* «дихання» у спокої; дотик його перериває, щоб було видно натискання */
+.root[data-idle='true'] {
+  animation: var(--kl-anim-breathe) 2.4s ease-in-out infinite;
+}
+
+.root[data-idle='true']:active {
+  animation: none;
+}

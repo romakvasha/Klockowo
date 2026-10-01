@@ -1,0 +1,53 @@
+/* Значок стану в правому верхньому куті плитки (design etap1/07: 44 px, виступає на 14 px).
+   Позиція враховує 3 px контуру батьківської кнопки. */
+.badge {
+  position: absolute;
+  top: -17px;
+  right: -17px;
+  width: 44px;
+  height: 44px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.ring {
+  fill: var(--kl-surface);
+  stroke: var(--kl-ink);
+  stroke-width: 3;
+}
+
+.ringRetry {
+  stroke: var(--kl-retry-edge);
+}
+
+.tick {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  animation: var(--kl-anim-draw) 250ms var(--kl-ease-out) 100ms both;
+}
+
+.tickOk {
+  stroke: var(--kl-success-edge);
+}
+
+.tickChosen {
+  stroke: var(--kl-secondary-edge);
+}
+
+.arc {
+  fill: none;
+  stroke: var(--kl-retry-edge);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.head {
+  fill: var(--kl-retry-edge);
+  stroke: var(--kl-retry-edge);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}

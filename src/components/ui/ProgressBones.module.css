@@ -1,0 +1,56 @@
+.bones {
+  display: grid;
+  grid-template-columns: repeat(var(--kl-bone-cols), max-content);
+  gap: var(--kl-bone-gap);
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--kl-bone-slot-w);
+  height: var(--kl-bone-slot-h);
+  border-radius: var(--kl-bone-slot-r);
+  background: var(--kl-bone-slot-bg);
+}
+
+.bone {
+  width: var(--kl-bone-icon-w);
+  height: var(--kl-bone-icon-h);
+  overflow: visible;
+}
+
+/* empty: пунктирний контур ink-soft (контраст ≥ 3:1 на слоті surface-2) */
+.shape {
+  fill: none;
+  stroke: var(--kl-ink-soft);
+  stroke-width: 2.2;
+  stroke-dasharray: 3.5 3;
+  stroke-linejoin: round;
+}
+
+/* filled: reward + контур ink і світла смужка */
+.slot:not([data-state='empty']) .shape {
+  fill: var(--kl-reward);
+  stroke: var(--kl-ink);
+  stroke-width: 2.6;
+  stroke-dasharray: none;
+}
+
+.shine {
+  fill: none;
+  stroke: #fff;
+  stroke-opacity: .7;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* arriving: слот підсвічується (reward-кільце), кісточка «долітає» — scale .2 → 1,15 → 1 за 600 мс */
+.slot[data-state='arriving'] {
+  background-color: var(--kl-hub-50);
+  box-shadow: 0 0 0 4px var(--kl-reward);
+}
+
+.slot[data-state='arriving'] .bone {
+  animation: var(--kl-anim-arrive) var(--kl-dur-bone) var(--kl-ease-pop) both;
+}

@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client';
 import './styles/fonts';
 import './styles/tokens.css';
 import './styles/global.css';
+import './styles/responsive.css';
+import './styles/motion.css';
+import './styles/block.css';
 import { App } from './app/App';
 import { installAudioUnlock } from './speech/unlock';
 

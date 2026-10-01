@@ -1,0 +1,94 @@
+/* AnswerTile (квадрат) і DigitCard (3:4): розмір з --kl-tile / --kl-tile-digit (responsive.css), станів — data-state. */
+.tile {
+  --edge: var(--kl-neutral-edge);
+  position: relative;
+  flex: none;
+  width: var(--kl-tile);
+  height: var(--kl-tile);
+  border-radius: var(--kl-radius-tile);
+  background: var(--kl-surface);
+}
+
+.card {
+  height: calc(var(--kl-tile) * 4 / 3);
+}
+
+.glyphs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--kl-tile) * .0667);
+}
+
+.digit {
+  height: var(--kl-tile-digit);
+}
+
+.card .digit {
+  height: calc(var(--kl-tile) * .9167);
+}
+
+/* цифра з крапками: цифра менша, крапки під нею; на телефоні цифра все одно ≥ 48 px (BRIEF §8) */
+.withDots .digit {
+  height: max(48px, calc(var(--kl-tile-digit) * .78));
+}
+
+.withDots[data-dot-rows='2'] .digit {
+  height: max(48px, calc(var(--kl-tile-digit) * .69));
+}
+
+.card.withDots .digit {
+  height: calc(var(--kl-tile) * .667);
+}
+
+.lock {
+  width: calc(var(--kl-tile) * .4);
+  height: calc(var(--kl-tile) * .4);
+}
+
+/* ---- стани ---- */
+.tile[data-state='selected'],
+.tile[data-state='selected']:active:not(:disabled) {
+  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
+}
+
+/* правильно: зелена заливка, «вистрибує» 350 мс, галочка (значок) промальовується */
+.tile[data-state='correct'] {
+  --edge: var(--kl-success-edge);
+  background: var(--kl-success);
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+/* спробуй ще: хитання ±6 px двічі; рамка й стрілка непрозорі, вміст тьмяніє до 40 %, плитка неактивна, але на місці */
+.tile[data-state='retry'] {
+  background: var(--kl-surface);
+  border: 4px solid var(--kl-retry-edge);
+  box-shadow: none;
+  animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
+}
+
+.tile[data-state='retry'] .glyphs {
+  opacity: .4;
+}
+
+.tile[data-state='locked'] {
+  --edge: var(--kl-locked-edge);
+  background: var(--kl-locked);
+}
+
+.tile[data-state='dragging'] {
+  transform: scale(1.1) rotate(-3deg);
+  box-shadow: 0 6px 0 var(--edge), 0 18px 32px rgba(45, 42, 74, .24), var(--kl-ring);
+}
+
+/* підказка / показ разом: золота рамка + м'яке сяйво */
+.tile[data-state='highlighted'] {
+  --edge: var(--kl-reward-edge);
+  background: var(--kl-hub-50);
+  box-shadow: 0 6px 0 var(--edge), 0 0 0 4px var(--kl-reward), 0 0 0 12px rgba(255, 194, 26, .28), var(--kl-ring);
+}
+
+.tile[data-state='default']:disabled {
+  opacity: .4; /* «вимкнена» плитка без стану (наприклад, поки йде озвучення) */
+}

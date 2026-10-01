@@ -5,9 +5,9 @@ import {
 import {
   BREAK_EXERCISES, BUTTONS, FEEDBACK_LINES, FROM_COPY_9, GAME_PROMPTS, LEVEL_LINES, MISSION_LINES, PARENT, PRAISE, PUPS,
   SESSION_LINES, SPOKEN_LINES, START_LINES, WORLD_NAMES,
-  addSentence, breakLine, bridgeTen, confirmClear, confuses, countByTens, countOnPraise, countTouch, feedAnimal, findNumber,
-  frogJump, gateQuestion, houseQuestion, howManyMissing, pairSum, placeValue, praiseCorrect, praiseEcho, thereIs,
-  twoGroups, whoHasMore,
+  addSentence, bonesLabel, breakLine, bridgeTen, confirmClear, confuses, countByTens, countOnPraise, countTouch, feedAnimal,
+  findNumber, frogJump, gateQuestion, houseQuestion, howManyMissing, pairSum, placeValue, praiseCorrect, praiseEcho,
+  profileMapLabel, thereIs, tileLabel, twoGroups, whoHasMore,
 } from './lines';
 
 describe('шаблони дають дослівно приклади з BRIEF', () => {
@@ -193,5 +193,26 @@ describe('охоронні перевірки всіх озвучуваних р
       expect(countOnPraise(n)).not.toMatch(/\d/);
       expect(howManyMissing(n)).not.toMatch(/\d/);
     }
+  });
+});
+
+describe('aria-підписи компонентів (design etap1/07, 08, 10)', () => {
+  it('плитка: число словами; correct/retry — зі станом; locked — лише «zablokowane»', () => {
+    expect(tileLabel(6)).toBe('sześć');
+    expect(tileLabel(7, 'selected')).toBe('siedem');
+    expect(tileLabel(7, 'correct')).toBe('siedem — dobrze');
+    expect(tileLabel(8, 'retry')).toBe('osiem — spróbuj jeszcze raz');
+    expect(tileLabel(47)).toBe('czterdzieści siedem');
+    expect(tileLabel(0)).toBe('zero');
+    expect(tileLabel(30, 'locked')).toBe('zablokowane');
+  });
+
+  it('кісточки: «kosteczki: 3 z 6»', () => {
+    expect(bonesLabel(3, 6)).toBe('kosteczki: 3 z 6');
+    expect(bonesLabel(0, 6)).toBe('kosteczki: 0 z 6');
+  });
+
+  it('аватар: «Ola — mapa»', () => {
+    expect(profileMapLabel('Ola')).toBe('Ola — mapa');
   });
 });
