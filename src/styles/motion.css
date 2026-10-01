@@ -1,6 +1,7 @@
 /* Рух за BRIEF §11. Компоненти беруть анімації через --kl-anim-*: при prefers-reduced-motion і налаштуванні
    «Mniej animacji» (<html data-reduce-motion="true">) рух замінюється згасанням 150 мс або вимикається зовсім.
-   Тривалість 150 мс і одна ітерація примусово задає global.css. */
+   Тривалість 150 мс і одна ітерація примусово задає global.css.
+   Нова анімація: додай змінну в :root, її «спокійний» варіант — в обидва блоки reduced-motion нижче, keyframes — в кінець файла. */
 :root {
   --kl-anim-pop: kl-pop;
   --kl-anim-shake: kl-shake;
@@ -9,6 +10,16 @@
   --kl-anim-draw: kl-draw;
   --kl-anim-breathe: kl-breathe;
   --kl-anim-pulse: kl-pulse;
+  /* персонажі: зміна пози — без руху, дихання й кліпання, стрибок і хвіст, рот A/O/E, виїзд транспорту */
+  --kl-anim-pose: none;
+  --kl-anim-breathe-soft: kl-breathe-soft;
+  --kl-anim-hop: kl-hop;
+  --kl-anim-wag: kl-wag;
+  --kl-anim-blink: kl-blink;
+  --kl-anim-mouth-a: kl-mouth-a;
+  --kl-anim-mouth-o: kl-mouth-o;
+  --kl-anim-mouth-e: kl-mouth-e;
+  --kl-anim-drive-in: kl-drive-in;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -20,6 +31,15 @@
     --kl-anim-draw: kl-fade-in;
     --kl-anim-breathe: none;
     --kl-anim-pulse: none;
+    --kl-anim-pose: kl-fade-in;
+    --kl-anim-breathe-soft: none;
+    --kl-anim-hop: kl-fade-in;
+    --kl-anim-wag: none;
+    --kl-anim-blink: none;
+    --kl-anim-mouth-a: none;
+    --kl-anim-mouth-o: none;
+    --kl-anim-mouth-e: none;
+    --kl-anim-drive-in: kl-fade-in;
   }
 }
 
@@ -31,6 +51,15 @@
   --kl-anim-draw: kl-fade-in;
   --kl-anim-breathe: none;
   --kl-anim-pulse: none;
+  --kl-anim-pose: kl-fade-in;
+  --kl-anim-breathe-soft: none;
+  --kl-anim-hop: kl-fade-in;
+  --kl-anim-wag: none;
+  --kl-anim-blink: none;
+  --kl-anim-mouth-a: none;
+  --kl-anim-mouth-o: none;
+  --kl-anim-mouth-e: none;
+  --kl-anim-drive-in: kl-fade-in;
 }
 
 @keyframes kl-fade-in {
@@ -84,4 +113,53 @@
 @keyframes kl-draw {
   from { stroke-dashoffset: 100; }
   to { stroke-dashoffset: 0; }
+}
+
+/* Персонажі: ледь помітне дихання (3 с) */
+@keyframes kl-breathe-soft {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.012, 1.02); }
+}
+
+/* Персонажі: стрибок радості на 12 px (350 мс) */
+@keyframes kl-hop {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+/* Персонажі: хвіст ±15° (крутиться обгортка <g data-wag>, що не має власного transform) */
+@keyframes kl-wag {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+/* Персонажі: кліпання 120 мс раз на 4–6 с (2,5 % від циклу 4,8 с ≈ 120 мс) */
+@keyframes kl-blink {
+  0%, 97.5%, 100% { transform: scaleY(1); }
+  98.75% { transform: scaleY(.08); }
+}
+
+/* Персонажі: рот A → O → E, ≈ 9 разів/с (цикл 330 мс); показ перемикає visibility, кроки без плавності */
+@keyframes kl-mouth-a {
+  0% { visibility: visible; }
+  33.33% { visibility: hidden; }
+}
+
+@keyframes kl-mouth-o {
+  0% { visibility: hidden; }
+  33.33% { visibility: visible; }
+  66.66% { visibility: hidden; }
+}
+
+@keyframes kl-mouth-e {
+  0% { visibility: hidden; }
+  66.66% { visibility: visible; }
+}
+
+/* Транспорт команди приїжджає (600 мс ease-out) і завмирає */
+@keyframes kl-drive-in {
+  from { opacity: 0; transform: translateX(80px); }
+  to { opacity: 1; transform: translateX(0); }
 }

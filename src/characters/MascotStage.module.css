@@ -1,0 +1,46 @@
+/* Коробка стейджа = лише Kubik; бульбашка виступає над ним і праворуч, як у шаблоні гри (Kubik 147×184 @22,512; бульбашка @140,424). */
+.stage {
+  position: relative;
+  flex: none;
+  width: calc(var(--kl-kubik-h) * .8);
+  height: var(--kl-kubik-h);
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  bottom: calc(var(--kl-kubik-h) * .95);
+  left: calc(var(--kl-kubik-h) * .62);
+  transform-origin: left bottom;
+  scale: var(--kl-kubik-scale);
+}
+
+.bubbleIcon {
+  width: 56px;
+  height: 56px;
+}
+
+.retryIcon {
+  color: var(--kl-retry-edge);
+}
+
+/* Телефон, альбом (844×390): Kubik прихований, виїжджає знизу поверх сцени лише для hint і together */
+@media (max-height: 500px) and (orientation: landscape) {
+  .stage {
+    position: fixed;
+    z-index: 20;
+    bottom: 0;
+    left: calc(128px + var(--kl-edge-safe));
+    transition: transform 300ms var(--kl-ease-out), visibility 0s linear 300ms;
+  }
+
+  .stage:not([data-state='hint']):not([data-state='together']) {
+    visibility: hidden;
+    transform: translateY(110%);
+  }
+
+  .stage[data-state='hint'],
+  .stage[data-state='together'] {
+    transition-delay: 0s;
+  }
+}

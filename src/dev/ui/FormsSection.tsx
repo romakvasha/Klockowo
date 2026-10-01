@@ -3,14 +3,14 @@ import { AvatarButton, IconButton, Overlay, Slider, Toggle } from '../../compone
 import { BUTTONS, LEVEL_LINES, PARENT, PRAISE, profileMapLabel } from '../../speech/lines';
 import { sfx } from '../../speech/sfx';
 import { tts } from '../../speech/tts';
-import { pupUrl } from './pupImages';
+import { PlayerPup, type PupId } from '../../characters';
 import { Cell, DevButton, Hint, Row, Section } from './UiSection';
 import styles from './Ui.module.css';
 
 const S = PARENT.settings;
 
-function Pup({ id }: { id: string }) {
-  return <img src={pupUrl(id)} alt="" />;
+function Pup({ id }: { id: PupId }) {
+  return <PlayerPup id={id} />;
 }
 
 function AvatarRow() {

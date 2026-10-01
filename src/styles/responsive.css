@@ -24,6 +24,9 @@
   --kl-bone-slot-r: 14px;
   --kl-bone-icon-w: 44px;
   --kl-bone-icon-h: 44px;
+  /* Kubik: висота фігури (BRIEF §7, §12: ПК 160–200, планшет 120–170, телефон 100) і масштаб бульбашки поруч */
+  --kl-kubik-h: 184px;
+  --kl-kubik-scale: 1;
 }
 
 /* 1440×900 і ширше: сцена по центру, плитки 140 */
@@ -34,11 +37,21 @@
   }
 }
 
-/* 1024×768 і планшет у портреті: плитки 128 */
+/* 1024×768 і планшет у портреті: плитки 128, Kubik 150 */
 @media (max-width: 1100px) {
   :root {
     --kl-tile: 128px;
     --kl-tile-digit: 76px;
+    --kl-kubik-h: 150px;
+    --kl-kubik-scale: .82;
+  }
+}
+
+/* 768×1024 портрет: Kubik 120 px (BRIEF §12) */
+@media (max-width: 899px) and (orientation: portrait) {
+  :root {
+    --kl-kubik-h: 120px;
+    --kl-kubik-scale: .65;
   }
 }
 
@@ -62,6 +75,8 @@
     --kl-bone-slot-r: 0;
     --kl-bone-icon-w: 34px;
     --kl-bone-icon-h: 30px;
+    --kl-kubik-h: 100px;
+    --kl-kubik-scale: .55;
   }
 }
 
@@ -84,5 +99,7 @@
     --kl-bone-slot-r: 0;
     --kl-bone-icon-w: 32px;
     --kl-bone-icon-h: 28px;
+    --kl-kubik-h: 120px; /* Kubik прихований; виїжджає лише для hint і together */
+    --kl-kubik-scale: .65;
   }
 }

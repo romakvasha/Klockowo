@@ -2,8 +2,9 @@ import type { ReactNode } from 'react';
 import { cx } from './cx';
 import styles from './SpeechBubble.module.css';
 
-/** speech — звичайна; thinking — «хмаринка» з двома кружечками; talking — блакитна, Kubik говорить. */
-export type BubbleVariant = 'speech' | 'thinking' | 'talking';
+/** speech — звичайна; thinking — «хмаринка» з двома кружечками; talking — блакитна, Kubik говорить;
+ *  hint — тепла (лампочка, «Patrz, pokażę ci.»); retry — лавандова рамка (кругова стрілка, «спробуй ще»). */
+export type BubbleVariant = 'speech' | 'thinking' | 'talking' | 'hint' | 'retry';
 
 export interface SpeechBubbleProps {
   variant?: BubbleVariant;
@@ -20,7 +21,7 @@ export interface SpeechBubbleProps {
 export function SpeechBubble({ variant = 'speech', tail = 'left', label, children, className }: SpeechBubbleProps) {
   return (
     <div
-      className={cx(styles.bubble, variant === 'thinking' && styles.thinking, variant === 'talking' && styles.talking, className)}
+      className={cx(styles.bubble, variant !== 'speech' && styles[variant], className)}
       role={label ? 'img' : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}

@@ -1,0 +1,8 @@
+.vehicle {
+  display: block;
+  flex: none;
+}
+
+.arrive {
+  animation: var(--kl-anim-drive-in) 600ms var(--kl-ease-out) both;
+}

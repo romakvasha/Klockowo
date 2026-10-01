@@ -5,6 +5,7 @@ import { SpeechPage } from '../dev/SpeechPage';
 import { TokensPage } from '../dev/TokensPage';
 import { FramePage } from '../dev/ui/FramePage';
 import { UiPage } from '../dev/ui/UiPage';
+import { CharactersPage } from '../dev/characters/CharactersPage';
 import { AdventureMap } from '../screens/AdventureMap';
 import { Badges } from '../screens/Badges';
 import { BreakTime } from '../screens/BreakTime';
@@ -59,6 +60,7 @@ export function AppRoutes() {
       <Route path="/dev/tokens" element={<TokensPage />} />
       <Route path="/dev/speech" element={<SpeechPage />} />
       <Route path="/dev/ui" element={<UiPage />} />
+      <Route path="/dev/characters" element={<CharactersPage />} />
       <Route path="/dev/ui-frame" element={<FramePage />} />
       <Route path="*" element={<Navigate to={HOME_PATH} replace />} />
     </Routes>

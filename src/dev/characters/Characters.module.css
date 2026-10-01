@@ -1,0 +1,271 @@
+/* Вітрина /#/dev/characters. Загальні блоки (Section, Cell, Row) — із dev/ui/UiSection. */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-1) var(--kl-space-2);
+  align-items: center;
+  margin-bottom: var(--kl-space-2);
+}
+
+.note {
+  color: var(--kl-ink-soft);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.live {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--kl-space-4);
+  padding: var(--kl-space-3);
+  background: var(--kl-w1-50);
+  border-radius: var(--kl-radius-tile);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kl-space-1);
+  min-width: 260px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.field select,
+.field input {
+  min-height: var(--kl-target);
+  padding: 0 var(--kl-space-2);
+  color: var(--kl-ink);
+  font-family: var(--kl-font-ui);
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--kl-surface);
+  border: 2px solid var(--kl-ink-soft);
+  border-radius: var(--kl-radius-chip);
+}
+
+.poses {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: var(--kl-space-2);
+}
+
+.poseCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background: var(--kl-surface);
+  border: 2px solid var(--kl-surface-2);
+  border-radius: var(--kl-radius-tile);
+}
+
+.poseName {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.poseNote {
+  color: var(--kl-ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.accRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--kl-space-2);
+}
+
+/* команда: картка в кольорах світу, де цуценя — гість */
+.team {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--kl-space-2);
+}
+
+.member {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 3px solid var(--edge-color);
+  border-radius: var(--kl-radius-panel);
+  background: var(--bg-color);
+}
+
+.memberHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.memberName {
+  font-family: var(--kl-font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.worldChip {
+  padding: 3px 10px;
+  font-size: 15px;
+  font-weight: 800;
+  background: var(--kl-surface);
+  border: 2px solid var(--edge-color);
+  border-radius: var(--kl-radius-chip);
+}
+
+.figures {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.vehicleBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 168px;
+  background: var(--kl-surface);
+  border-radius: var(--kl-radius-tile);
+}
+
+.vest {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.swatch {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--kl-ink);
+  border-radius: 6px;
+}
+
+.silhouettes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-2);
+}
+
+.silhouette {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 6px 12px;
+  font-size: 15px;
+  font-weight: 800;
+  background: var(--kl-bg);
+  border-radius: 18px;
+}
+
+/* W6: уся команда разом у Mieście Setki */
+.together {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--kl-space-1);
+  padding: var(--kl-space-3) var(--kl-space-2) 0;
+  background: var(--kl-w6-50);
+  border-radius: var(--kl-radius-tile);
+  overflow: hidden;
+}
+
+.street {
+  width: 100%;
+  height: 28px;
+  margin-top: -2px;
+  background: #E4E0EA;
+  border-top: 3px solid var(--kl-locked);
+}
+
+/* цуценята */
+.pups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  gap: var(--kl-space-3);
+}
+
+.pupCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.pupFrame {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 176px;
+  height: 176px;
+  overflow: hidden;
+  background: var(--tint);
+  border: 3px solid var(--kl-ink);
+  border-radius: var(--kl-radius-panel);
+  box-shadow: 0 6px 0 var(--kl-neutral-edge);
+}
+
+.pupFrame img {
+  width: 144px;
+}
+
+.pupText {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.pupText span {
+  display: block;
+  color: var(--kl-ink-soft);
+  font-weight: 600;
+}
+
+/* MascotStage: клітинки станів на тлі світу */
+.stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: var(--kl-space-2);
+}
+
+.stageCell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.stageBox {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  height: 340px;
+  overflow: hidden;
+  background: var(--kl-w1-50);
+  border-radius: 18px;
+}
+
+.stagePlace {
+  position: absolute;
+  bottom: 14px;
+  left: 18px;
+}

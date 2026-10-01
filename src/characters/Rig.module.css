@@ -1,0 +1,76 @@
+/* Рух персонажів (BRIEF §11, design etap1/11): idle — «дихання» 3 с; кліпання — очі 120 мс раз на 4–6 с; talking — рот A/O/E
+   8–10 разів/с; happy — стрибок 12 px + хвіст ±15°, 350 мс ease-pop. Усе — через --kl-anim-* (motion.css): при reduced-motion
+   рух зникає, лишається зміна пози (поява за 150 мс). Частини знаходимо за data-part (id у розмітці замінено, див. rigMarkup.ts). */
+.rig {
+  --rig-h: var(--kl-kubik-h);
+  display: block;
+  flex: none;
+  height: var(--rig-h);
+  aspect-ratio: 200 / 250;
+  overflow: visible;
+  animation: var(--kl-anim-pose) 150ms ease-out;
+}
+
+/* дзеркало не через transform: його анімує стрибок */
+.flip {
+  scale: -1 1;
+}
+
+/* обертання/масштаб — за bbox вмісту (fill-box), а не за координатами пози: так не залежить від viewBox і атрибутів transform */
+.motion {
+  transform-box: fill-box;
+  transform-origin: 50% 100%; /* низ фігури — ґрунт під лапами */
+}
+
+.rig[data-animate='true'][data-motion='breathe'] .motion {
+  animation: var(--kl-anim-breathe-soft) 3s ease-in-out infinite;
+}
+
+/* стрибок — раз при появі пози; px екрана (анімується сам <svg>, а не група в одиницях viewBox) */
+.rig[data-animate='true'][data-motion='hop'] {
+  animation: var(--kl-anim-hop) 350ms var(--kl-ease-pop);
+}
+
+/* хвіст крутить обгортка <g data-wag> (див. wrapTail): нижній центр хвоста — біля його кореня */
+.rig [data-wag] {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.rig[data-animate='true'][data-motion='hop'] [data-wag] {
+  animation: var(--kl-anim-wag) 350ms ease-in-out 3;
+}
+
+/* кліпання лише у поз із відкритими очима */
+.rig[data-animate='true'][data-blink='true'] [data-part='eyes'] {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: var(--kl-anim-blink) var(--blink-every) linear var(--blink-offset) infinite;
+}
+
+/* рот: base — як у позі; a / o / e — говорить. Без руху — відкритий рот A */
+.rig [data-m='a'],
+.rig [data-m='o'],
+.rig [data-m='e'] {
+  visibility: hidden;
+}
+
+.rig[data-talking='true'] [data-m='base'] {
+  visibility: hidden;
+}
+
+.rig[data-talking='true'] [data-m='a'] {
+  visibility: visible;
+}
+
+.rig[data-talking='true'][data-animate='true'] [data-m='a'] {
+  animation: var(--kl-anim-mouth-a) 330ms steps(1, end) infinite;
+}
+
+.rig[data-talking='true'][data-animate='true'] [data-m='o'] {
+  animation: var(--kl-anim-mouth-o) 330ms steps(1, end) infinite;
+}
+
+.rig[data-talking='true'][data-animate='true'] [data-m='e'] {
+  animation: var(--kl-anim-mouth-e) 330ms steps(1, end) infinite;
+}

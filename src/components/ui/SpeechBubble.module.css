@@ -1,11 +1,21 @@
 .bubble {
   --bubble-bg: var(--kl-surface);
+  --bubble-edge: var(--kl-ink);
   position: relative;
   display: inline-flex;
 }
 
 .talking {
   --bubble-bg: var(--kl-w3-50);
+}
+
+.hint {
+  --bubble-bg: var(--kl-hub-50);
+}
+
+/* рамка #7F6CE0 (контраст ≥ 3:1); стрілку всередині фарбує той, хто її кладе */
+.retry {
+  --bubble-edge: var(--kl-retry-edge);
 }
 
 .body {
@@ -18,7 +28,7 @@
   min-height: 104px;
   padding: 0 18px;
   background: var(--bubble-bg);
-  border: 3px solid var(--kl-ink);
+  border: 3px solid var(--bubble-edge);
   border-radius: var(--kl-radius-panel);
   color: var(--kl-ink);
   font-family: var(--kl-font-display);
@@ -59,7 +69,7 @@
 
 .shape {
   fill: var(--bubble-bg);
-  stroke: var(--kl-ink);
+  stroke: var(--bubble-edge);
   stroke-width: 3;
   stroke-linejoin: round;
 }
