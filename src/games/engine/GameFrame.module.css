@@ -1,0 +1,234 @@
+/* Ігровий екран (design etap2/00–05). Три вигляди за медіа-запитами (збігаються з frameKind у frameMath.ts):
+   wide — альбом: панель 104 → сцена → підвал (лоток по центру, Kubik із лампочкою внизу ліворуч, «Gotowe» внизу праворуч);
+   portrait — панель → сцена-квадрат → лоток → нижній ряд (Kubik + лампочка ліворуч, «Gotowe» праворуч);
+   phone — телефон в альбомі: бічна смуга (HUD), сцена, праворуч лоток-стовпець із «Gotowe» поряд. Розміри плиток, кнопок і Kubika — з responsive.css. */
+.game {
+  --scene-bg: var(--kl-w1-50);
+  --scene-line: var(--kl-w1-100);
+  --decor-scale: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--kl-bg);
+}
+
+.game[data-world='w1'] { --scene-bg: var(--kl-w1-50); --scene-line: var(--kl-w1-100); }
+.game[data-world='w2'] { --scene-bg: var(--kl-w2-50); --scene-line: var(--kl-w2-100); }
+.game[data-world='w3'] { --scene-bg: var(--kl-w3-50); --scene-line: var(--kl-w3-100); }
+.game[data-world='w4'] { --scene-bg: var(--kl-w4-50); --scene-line: var(--kl-w4-100); }
+.game[data-world='w5'] { --scene-bg: var(--kl-w5-50); --scene-line: var(--kl-w5-100); }
+.game[data-world='w6'] { --scene-bg: var(--kl-w6-50); --scene-line: var(--kl-w6-100); }
+.game[data-world='w7'] { --scene-bg: var(--kl-w7-50); --scene-line: var(--kl-w7-100); }
+
+.body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* сцена ≈ 60 % висоти: тло світу, лінія ґрунту знизу, декор лише по краях */
+.scene {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--scene-bg);
+  border-bottom: 3px solid var(--scene-line);
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: 1;
+  width: min(100%, 1280px);
+  transform: translateX(-50%);
+}
+
+.decor {
+  position: absolute;
+  z-index: 0;
+  width: calc(var(--w) * var(--decor-scale));
+  height: calc(var(--h) * var(--decor-scale));
+  max-width: none;
+  pointer-events: none;
+}
+
+.decor[data-spot='bl'] {
+  bottom: calc(var(--h) * var(--decor-scale) * -.2);
+  left: calc(var(--w) * var(--decor-scale) * -.3);
+}
+
+.decor[data-spot='tr'] {
+  top: calc(46px * var(--decor-scale));
+  right: 0;
+}
+
+.decor[data-spot='br'] {
+  right: -12px;
+  bottom: 24px;
+}
+
+/* підвал: висота = лоток (плитка + 28) + по 18 px зверху й знизу; Kubik заходить на сцену на 24 px */
+.footer {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--kl-tile) + 28px + 36px);
+}
+
+.tray {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: calc(var(--kl-tile) + 28px);
+  padding: 14px 24px;
+  background: var(--kl-surface-2);
+  border-radius: 24px;
+}
+
+/* нижній ряд: Kubik і лампочка ліворуч, «Gotowe» праворуч; пустий простір не перехоплює дотиків до сцени */
+.bottom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 24px 24px 22px;
+  pointer-events: none;
+}
+
+.guide {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 27px;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.hintSlot {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.check {
+  display: flex;
+  pointer-events: auto;
+}
+
+/* ---------- Планшет і телефон у портреті: сцена-квадрат, лоток під нею, нижній ряд ---------- */
+@media (orientation: portrait) {
+  .game {
+    --decor-scale: .65;
+  }
+
+  .body {
+    padding-top: 8px;
+  }
+
+  .scene {
+    flex: 0 1 auto;
+    width: min(600px, calc(100% - 48px));
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
+    border: 0;
+    border-radius: 24px;
+  }
+
+  .footer {
+    flex: 1 0 auto;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: flex-start;
+    height: auto;
+    padding-top: 20px;
+  }
+
+  .tray {
+    gap: 16px;
+    padding: 14px 16px;
+  }
+
+  .bottom {
+    position: static;
+    width: 100%;
+    margin-top: auto;
+    padding: 0 20px 16px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 599px) and (orientation: portrait) {
+  .game {
+    --decor-scale: .55;
+  }
+
+  .tray {
+    gap: 16px;
+    padding: 12px 16px;
+    border-radius: 22px;
+  }
+}
+
+/* ---------- Телефон в альбомі (844×390): сцена праворуч від смуги, лоток-стовпець, «Gotowe» поряд; Kubik і лампочка — у смузі й поверх сцени ---------- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .game {
+    --decor-scale: .5;
+    flex-direction: row;
+  }
+
+  .body {
+    flex-direction: row;
+    gap: 16px;
+    padding: 24px 24px 24px 16px;
+  }
+
+  .scene {
+    border: 0;
+    border-radius: 24px;
+  }
+
+  .footer {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 16px;
+    align-items: stretch;
+    justify-content: end;
+    height: auto;
+  }
+
+  .tray {
+    flex-direction: column;
+    grid-column: 2;
+    gap: 12px;
+    align-self: start;
+    min-height: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .bottom {
+    position: static;
+    display: contents;
+  }
+
+  .guide {
+    display: none;
+  }
+
+  .check {
+    grid-column: 1;
+    align-self: end;
+  }
+}

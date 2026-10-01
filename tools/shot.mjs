@@ -37,7 +37,9 @@ const profile = mkdtempSync(path.join(tmpdir(), 'kl-chrome-'));
 const chrome = spawn(
   CHROME,
   ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, '--disable-gpu', '--hide-scrollbars',
-    '--no-first-run', '--no-default-browser-check', '--autoplay-policy=no-user-gesture-required', 'about:blank'],
+    '--no-first-run', '--no-default-browser-check', '--autoplay-policy=no-user-gesture-required',
+    // без цих прапорців таймери фонової вкладки округлюються до 1 с, і сценарії з паузами по 180–450 мс «повзуть»
+    '--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows', 'about:blank'],
   { stdio: 'ignore' },
 );
 

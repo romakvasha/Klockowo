@@ -16,5 +16,6 @@ export const DEV_PAGES: readonly DevPage[] = [
   { path: '/dev/data', title: 'Дані: профілі, прогрес і розблокування, програма, резервна копія', stage: 'M5', ready: true },
   { path: '/dev/path', title: 'Ścieżka świata: усі стани вузлів, ★-гілка, скриня, Kubik (?world=w4&done=6&stars=1&panel=0)', stage: 'M7', ready: true },
   { path: '/dev/mission', title: 'Wprowadzenie: композиція без голосу, фази card/idea і види демонстрації (?world=w3&phase=idea&kind=sum&stage=2&panel=0)', stage: 'M7', ready: true },
+  { path: '/dev/drag', title: 'Перетягування (Pointer Events) + заміна двома дотиками: яблука → тарілка', stage: 'M8', ready: true },
   { path: '/dev/characters', title: 'Персонажі: Kubik (17 поз, аксесуари, рот A/O/E), команда, 8 цуценят, MascotStage', stage: 'M4', ready: true },
 ];

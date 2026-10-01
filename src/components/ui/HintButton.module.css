@@ -1,0 +1,9 @@
+.hint {
+  pointer-events: auto;
+  animation: var(--kl-anim-pop-in) 350ms var(--kl-ease-pop) both;
+}
+
+/* підказка йде: кнопка залишається видимою, але не реагує (disabled) і злегка «горить» кільцем */
+.active {
+  box-shadow: var(--kl-shadow-block), var(--kl-highlight), 0 0 0 6px rgba(255, 194, 26, .45);
+}

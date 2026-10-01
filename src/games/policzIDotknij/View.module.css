@@ -1,0 +1,23 @@
+.scene {
+  position: relative;
+}
+
+/* бульбашка Kubika: предмет + «?» (design etap2/00) */
+.ask {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.ask img,
+.ask svg {
+  width: 56px;
+  height: 56px;
+}
+
+.ask b {
+  font-family: var(--kl-font-display);
+  font-size: 48px;
+  line-height: 1;
+}

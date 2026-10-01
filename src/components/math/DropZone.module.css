@@ -1,0 +1,57 @@
+/* Місце для предметів (design etap2/07): empty — пунктир ink-soft на surface-2; target — синя рамка, блакитне тло, кільце; filled — біле з контуром ink;
+   correct — зелена рамка. Предмет «сідає» за 250 мс ease-pop. */
+.zone {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  min-height: 64px;
+  cursor: pointer;
+  background: var(--kl-surface-2);
+  border: 4px dashed #8c87a8;
+  transition: transform var(--kl-dur-count) var(--kl-ease-pop), box-shadow var(--kl-dur-count) var(--kl-ease-out), background-color var(--kl-dur-count) var(--kl-ease-out);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.zone:focus-visible {
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 4px;
+}
+
+.plate {
+  border-radius: 999px;
+}
+
+.box {
+  border-radius: 20px;
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  pointer-events: none;
+}
+
+.zone[data-state='target'] {
+  background: #e0f1fd;
+  border: 4px solid #1f76cc;
+  box-shadow: 0 0 0 8px rgba(58, 160, 255, .2);
+  transform: scale(1.03);
+}
+
+.zone[data-state='filled'] {
+  background: #fff;
+  border: 4px solid var(--kl-ink);
+}
+
+.zone[data-state='correct'] {
+  background: #fff;
+  border: 4px solid #25964f;
+}

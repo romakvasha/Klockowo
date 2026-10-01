@@ -41,6 +41,7 @@
 @media (max-height: 500px) and (orientation: landscape) {
   .hud {
     position: relative;
+    z-index: 2; /* кісточки виступають на сцену праворуч від смуги */
     display: flex;
     flex: none;
     flex-direction: column;

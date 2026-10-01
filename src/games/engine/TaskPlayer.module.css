@@ -1,0 +1,18 @@
+/* Заглушка гри, якої ще немає (лише розробка) */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kl-space-3);
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: var(--kl-edge-safe);
+  font-size: var(--kl-fs-parent);
+  text-align: center;
+}
+
+.placeholder p {
+  max-width: 420px;
+  margin: 0;
+  color: var(--kl-ink-soft);
+}

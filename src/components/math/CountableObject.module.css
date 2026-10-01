@@ -1,0 +1,86 @@
+/* Предмет лічби (design etap2/07): кнопка = предмет + 4 px з кожного боку; номерок 42 px у правому верхньому куті. */
+.object {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.object:disabled {
+  cursor: default;
+}
+
+.object:focus-visible {
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--kl-surface);
+}
+
+.art {
+  display: block;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: opacity var(--kl-dur-slide) var(--kl-ease-out), box-shadow var(--kl-dur-slide) var(--kl-ease-out);
+}
+
+.img {
+  display: block;
+  max-width: none;
+}
+
+/* counted: підскок на 12 px за 250 мс (kl-pop з motion.css) — один раз, коли предмет став зарахованим */
+.object[data-state='counted'] .img {
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out);
+}
+
+/* highlighted: підказка й показ разом — тепле кільце */
+.object[data-state='highlighted'] .art {
+  background: rgba(255, 194, 26, .35);
+  box-shadow: 0 0 0 5px var(--kl-reward);
+}
+
+.object[data-state='dimmed'] .art {
+  opacity: .35;
+}
+
+/* selected: перший із двох дотиків (перетягування замінюється двома дотиками) */
+.object[data-state='selected'] .art {
+  box-shadow: 0 0 0 4px var(--kl-secondary-edge);
+}
+
+.object[data-state='dragging'] .art {
+  filter: drop-shadow(0 12px 10px rgba(45, 42, 74, .25));
+  transform: scale(1.1) rotate(-6deg);
+}
+
+/* правильна відповідь: усі предмети підстрибують разом (350 мс) */
+.object[data-celebrate='true'] .img {
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--badge);
+  height: var(--badge);
+  color: var(--kl-ink);
+  background: #fff;
+  border: 3px solid var(--kl-ink);
+  border-radius: var(--kl-radius-round);
+  box-sizing: border-box;
+  pointer-events: none;
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}

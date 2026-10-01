@@ -24,6 +24,14 @@
   color: var(--kl-retry-edge);
 }
 
+/* Портрет (борд etap2/03–04): бульбашка стоїть просто над Kubikom, а не правіше, — праворуч у нижньому ряду лоток і «Gotowe» */
+@media (orientation: portrait) {
+  .bubble {
+    bottom: calc(var(--kl-kubik-h) * 1.02);
+    left: 0;
+  }
+}
+
 /* Телефон, альбом (844×390): Kubik прихований, виїжджає знизу поверх сцени лише для hint і together */
 @media (max-height: 500px) and (orientation: landscape) {
   .stage {

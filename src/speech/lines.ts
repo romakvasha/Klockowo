@@ -25,6 +25,7 @@ export const LABELS = {
   placeTens: 'dziesiątki', // мат «dziesiątki | jedności»
   placeOnes: 'jedności',
   loading: 'Ładowanie…', // aria-label смужки завантаження (design etap1/13)
+  answers: 'Odpowiedzi', // aria-label лотка з плитками-відповідями (design etap2/00)
 } as const;
 
 /** aria-label островів Mapy przygody (design etap1/17): «Kosmiczna Droga — zablokowane», «Ogród Cyfr — ukończone», «Wyspa Dodawania — tutaj jesteśmy». */
