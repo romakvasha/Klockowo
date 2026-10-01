@@ -1,0 +1,130 @@
+/* Розміри всередині острова — з борда etap1/17 (190×208), помножені на --is (масштаб розкладки). */
+.node {
+  position: absolute;
+}
+
+.island {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--kl-dur-tap) var(--kl-ease-out);
+}
+
+.island img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.island:active {
+  transform: translateY(4px) scale(.96);
+}
+
+.island:focus-visible {
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 4px;
+  border-radius: var(--kl-radius-panel);
+  box-shadow: none;
+}
+
+/* заблокований лише хитається (±6 px, 300 мс) — без червоного */
+.island[data-shake='true'] {
+  animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
+}
+
+.flag {
+  position: absolute;
+  top: calc(5px * var(--is));
+  left: calc(125px * var(--is));
+  width: calc(54px * var(--is));
+  height: calc(63px * var(--is));
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pole {
+  fill: none;
+  stroke: var(--kl-ink);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.cloth {
+  fill: var(--kl-reward);
+  stroke: var(--kl-ink);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.tick {
+  fill: none;
+  stroke: var(--kl-ink);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* поточний світ: тепле сяйво під островом, пульсує повільно (2,4 с) */
+.glow {
+  position: absolute;
+  top: calc(92px * var(--is));
+  left: calc(-5px * var(--is));
+  width: calc(200px * var(--is));
+  height: calc(96px * var(--is));
+  pointer-events: none;
+  background: rgba(255, 194, 26, .45);
+  border-radius: var(--kl-radius-round);
+  box-shadow: 0 0 0 calc(12px * var(--is)) rgba(255, 194, 26, .2);
+  animation: var(--kl-anim-glow) 2.4s ease-in-out infinite;
+}
+
+/* Kubik на картингу стоїть ліворуч від острова, біля берега */
+.kart {
+  position: absolute;
+  top: calc(78px * var(--is));
+  left: calc(-69px * var(--is));
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ліва колонка портретної мапи: картинг праворуч, дзеркально */
+.node[data-kart='right'] .kart {
+  right: calc(-69px * var(--is));
+  left: auto;
+}
+
+.chip {
+  position: absolute;
+  top: calc(204px * var(--is));
+  left: 50%;
+  padding: 1px 12px;
+  color: var(--kl-ink);
+  font-size: max(12px, calc(16px * var(--is)));
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--kl-surface);
+  border: 2px solid var(--kl-ink);
+  border-radius: var(--kl-radius-chip);
+  transform: translateX(-50%);
+}
+
+.locked .chip {
+  color: var(--kl-ink-soft);
+  background: #f4f2f8;
+  border-color: var(--kl-locked-edge);
+}
+
+/* ім'я світу: кольорова рамка чипа — 700 його шкали (BRIEF §5) */
+.node[data-state='completed'] .chip,
+.node[data-state='current'] .chip,
+.node[data-state='open'] .chip {
+  border-color: var(--chip-edge, var(--kl-ink));
+}

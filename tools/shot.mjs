@@ -11,7 +11,7 @@
 //     --wait=1200                             скільки мс чекати після завантаження (рендер React, шрифти)
 //     --json=js                               виконати JS на сторінці й вивести результат (до взаємодій)
 //     --tab=N                                 натиснути Tab N разів (реальний :focus-visible)
-//     --hold=css                              притиснути мишу до елемента (реальний :active) і не відпускати
+//     --hold=css [--holdms=300]               притиснути мишу до елемента (реальний :active) на holdms мс і не відпускати (для довгих утримань — 3300)
 //     --after=js                              виконати JS і вивести результат ПІСЛЯ --tab / --hold
 //
 // Шлях --out пишіть із прямими слешами (C:/…). Скриншот потім можна відкрити інструментом Read.
@@ -123,7 +123,7 @@ try {
     );
     await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: pt.x, y: pt.y });
     await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: pt.x, y: pt.y, button: 'left', clickCount: 1 });
-    await sleep(300);
+    await sleep(num(args.holdms, 300));
   }
   if (args.after) console.log(JSON.stringify(await evaluate(args.after), null, 2));
 

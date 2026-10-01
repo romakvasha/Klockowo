@@ -1,0 +1,106 @@
+/* Twój piesek (design etap1/16): тло hub-50, підлога, Kubik із бульбашкою ліворуч, сітка 4×2 по центру, «Gotowe» праворуч унизу. */
+.page {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto minmax(160px, 1fr);
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--kl-hub-50);
+}
+
+.floor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: clamp(44px, 7vh, 50px);
+  background: var(--kl-hub-100);
+  border-top: 3px solid var(--kl-neutral-edge);
+}
+
+.guide {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  padding: 0 0 clamp(8px, 4vh, 32px) 36px;
+}
+
+.guide > svg {
+  position: relative;
+}
+
+.bubble {
+  position: absolute;
+  bottom: calc(var(--kl-kubik-h) * 1.1 + clamp(8px, 4vh, 32px));
+  left: 48px;
+  transform-origin: left bottom;
+  scale: var(--kl-kubik-scale);
+}
+
+.bubble > div {
+  min-width: 160px;
+  font-size: 52px;
+}
+
+.paw {
+  width: 54px;
+  height: 54px;
+}
+
+.picker {
+  z-index: 1;
+  align-self: start;
+  padding: clamp(24px, 13vh, 96px) 0 calc(clamp(44px, 7vh, 50px) + var(--kl-space-3));
+}
+
+.done {
+  z-index: 1;
+  align-self: end;
+  justify-self: end;
+  padding: 0 var(--kl-edge-safe) var(--kl-edge-safe) 0;
+}
+
+/* Портрет і вузький екран: сітка 2×4 зверху, Kubik і «Gotowe» в нижніх кутах поверх підлоги */
+@media (max-width: 899px) and (orientation: portrait), (max-width: 599px) {
+  .page {
+    display: block;
+  }
+
+  .picker {
+    padding-top: var(--kl-space-2);
+    padding-bottom: calc(var(--kl-kubik-h) * 1.05 + 82px);
+  }
+
+  .guide {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 0 0 8px 16px;
+  }
+
+  .bubble {
+    bottom: calc(var(--kl-kubik-h) * 1.05 + 8px);
+    left: 24px;
+  }
+
+  .done {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* Телефон, альбом: картки 120, Kubik менший, бульбашка — над ним */
+@media (max-height: 500px) and (orientation: landscape) {
+  .guide {
+    padding-left: 16px;
+  }
+
+  .bubble {
+    left: 16px;
+  }
+
+  .picker {
+    padding-top: var(--kl-space-3);
+  }
+}

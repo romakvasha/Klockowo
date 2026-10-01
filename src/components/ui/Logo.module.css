@@ -1,0 +1,8 @@
+.logo {
+  display: block;
+  width: min(600px, 84vw);
+  height: auto;
+  aspect-ratio: 818 / 146;
+  user-select: none;
+  -webkit-user-drag: none;
+}

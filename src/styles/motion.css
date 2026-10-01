@@ -20,6 +20,12 @@
   --kl-anim-mouth-o: kl-mouth-o;
   --kl-anim-mouth-e: kl-mouth-e;
   --kl-anim-drive-in: kl-drive-in;
+  /* екрани входу: кубик у смужці завантаження «вискакує» */
+  --kl-anim-slot: kl-slot-pop;
+  /* Mapa przygody: сяйво під поточним островом */
+  --kl-anim-glow: kl-glow;
+  /* Start: аватари «Kto dziś gra?» з'являються по черзі */
+  --kl-anim-pop-in: kl-pop-in;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -40,6 +46,9 @@
     --kl-anim-mouth-o: none;
     --kl-anim-mouth-e: none;
     --kl-anim-drive-in: kl-fade-in;
+    --kl-anim-slot: kl-fade-in;
+    --kl-anim-glow: none;
+    --kl-anim-pop-in: kl-fade-in;
   }
 }
 
@@ -60,6 +69,9 @@
   --kl-anim-mouth-o: none;
   --kl-anim-mouth-e: none;
   --kl-anim-drive-in: kl-fade-in;
+  --kl-anim-slot: kl-fade-in;
+  --kl-anim-glow: none;
+  --kl-anim-pop-in: kl-fade-in;
 }
 
 @keyframes kl-fade-in {
@@ -162,4 +174,23 @@
 @keyframes kl-drive-in {
   from { opacity: 0; transform: translateX(80px); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+/* Ładowanie: новий кубик смужки вискакує (scale 0 → 1,12 → 1, 250 мс ease-pop) */
+@keyframes kl-slot-pop {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* Mapa: сяйво поточного світу — повільна пульсація (2,4 с) */
+@keyframes kl-glow {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+/* Start: аватар з'являється scale .4 → 1 (350 мс, ease-pop) */
+@keyframes kl-pop-in {
+  from { opacity: 0; transform: scale(.4); }
+  to { opacity: 1; transform: scale(1); }
 }

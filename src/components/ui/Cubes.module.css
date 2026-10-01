@@ -1,0 +1,46 @@
+.light {
+  fill: #fff;
+  fill-opacity: .5;
+}
+
+.shade {
+  fill: var(--kl-ink);
+  fill-opacity: .3;
+}
+
+.shine {
+  fill: #fff;
+  fill-opacity: .55;
+}
+
+.edge {
+  fill: none;
+  stroke: var(--kl-ink);
+  stroke-linejoin: round;
+}
+
+.strip {
+  width: min(494px, 80vw);
+}
+
+.strip svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* порожній слот: пунктир ink-soft на тлі surface-2 */
+.empty {
+  fill: var(--kl-surface-2);
+  stroke: var(--kl-ink-soft);
+  stroke-width: 2.5;
+  stroke-dasharray: 5 4;
+}
+
+/* новий кубик «вискакує»: scale 0 → 1,12 → 1 (250 мс, ease-pop) від центру кубика */
+.pop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: var(--kl-anim-slot) var(--kl-dur-count) var(--kl-ease-pop) both;
+}

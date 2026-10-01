@@ -1,0 +1,39 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--kl-pup-cols), var(--kl-pup-card));
+  gap: var(--kl-pup-gap);
+  justify-content: center;
+}
+
+.slot {
+  position: relative;
+  width: var(--kl-pup-card);
+  height: var(--kl-pup-card);
+}
+
+.card {
+  --edge: var(--kl-neutral-edge);
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--kl-radius-panel);
+  background: var(--tint);
+  transition: transform var(--kl-dur-count) var(--kl-ease-pop), box-shadow var(--kl-dur-tap) var(--kl-ease-out);
+}
+
+.pup {
+  width: 85%;
+}
+
+/* обрана: піднята на 8 px, синє кільце 4 px (+ галочка); кільце фокуса не губиться (--kl-ring) */
+.card[data-selected='true'] {
+  transform: translateY(-8px);
+  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
+}
+
+/* галочка «обрано» — над кутом картки (design etap1/10: right −12, top −20) */
+.slot .badge {
+  top: -20px;
+  right: -12px;
+}

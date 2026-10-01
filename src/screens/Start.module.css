@@ -1,0 +1,179 @@
+/* Start (design etap1/14–15): небо W3-50, логотип зверху, «Graj!» чи аватари в центрі, «Baza Drużyny» з Kubikom унизу. */
+.start {
+  --base-h: min(clamp(220px, 79vh, 570px), 112vw);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--kl-w3-50);
+  isolation: isolate;
+}
+
+.cloud {
+  position: absolute;
+  z-index: 0;
+  height: auto;
+  pointer-events: none;
+}
+
+.cloudA {
+  top: 21vh;
+  left: 5.5vw;
+  width: min(190px, 24vw);
+}
+
+.cloudB {
+  top: 28vh;
+  right: 8vw;
+  width: min(150px, 20vw);
+}
+
+.cloudC {
+  top: 10vh;
+  right: 27vw;
+  width: min(110px, 14vw);
+}
+
+.gear {
+  position: absolute;
+  z-index: 5;
+  top: max(var(--kl-edge-safe), env(safe-area-inset-top));
+  right: max(var(--kl-edge-safe), env(safe-area-inset-right));
+}
+
+.top {
+  z-index: 2;
+  padding-top: clamp(16px, 5.5vh, 40px);
+}
+
+/* вузький екран: логотип нижче шестерні (24 px від краю + зона 64 px), щоб вони не накладалися */
+@media (max-width: 799px) {
+  .top {
+    padding-top: calc(var(--kl-edge-safe) + var(--kl-target) + var(--kl-space-1));
+  }
+}
+
+.center {
+  z-index: 3;
+  display: grid;
+  align-self: center;
+  padding: var(--kl-space-1) var(--kl-edge-safe);
+  place-items: center;
+}
+
+/* аватари «Kto dziś gra?»: до 4 в ряд, на вузькому екрані 2×2; з'являються по черзі */
+.avatars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-3) var(--kl-space-6);
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.avatar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  animation: var(--kl-anim-pop-in) 350ms var(--kl-ease-pop) both;
+}
+
+.name {
+  padding: 2px 14px;
+  font-size: 22px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, .85);
+  border-radius: var(--kl-radius-chip);
+}
+
+.name[data-empty='true'] {
+  color: transparent;
+  background: transparent;
+}
+
+.bottom {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: calc(var(--base-h) * .684);
+}
+
+.base {
+  position: absolute;
+  bottom: calc(var(--base-h) * -.316);
+  left: 50%;
+  width: calc(var(--base-h) * .9123);
+  height: var(--base-h);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Kubik стоїть ліворуч у «будиночка», трохи вище нижнього краю; бульбашка — над ним */
+.kubik {
+  position: absolute;
+  bottom: calc(var(--base-h) * .08);
+  left: calc(50% - var(--base-h) * .4562 + 20px);
+  display: flex;
+  align-items: flex-end;
+}
+
+.bubble {
+  position: absolute;
+  bottom: calc(var(--kl-kubik-h) * .93);
+  left: calc(var(--kl-kubik-h) * -.9);
+  min-width: 150px;
+  transform-origin: right bottom;
+  scale: var(--kl-kubik-scale);
+}
+
+.mini {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  background: var(--tint);
+  border: 2.5px solid var(--kl-ink);
+  border-radius: var(--kl-radius-round);
+}
+
+.mini img {
+  width: 34px;
+  height: 34px;
+}
+
+/* Телефон, альбом: місця мало — «будиночок» опускається, Kubik стоїть у кутку */
+@media (max-height: 500px) and (orientation: landscape) {
+  .start {
+    --base-h: 230px;
+  }
+
+  .base {
+    display: none;
+  }
+
+  .bottom {
+    height: calc(var(--kl-kubik-h) + 8px);
+  }
+
+  .kubik {
+    bottom: 4px;
+    left: var(--kl-edge-safe);
+  }
+
+  .bubble {
+    left: calc(var(--kl-kubik-h) * .7);
+    transform-origin: left bottom;
+  }
+
+  .cloudC {
+    display: none;
+  }
+}

@@ -1,0 +1,64 @@
+.loading {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100dvh;
+  padding: clamp(16px, 8vh, 64px) var(--kl-edge-safe) clamp(24px, 9vh, 76px);
+  overflow: hidden;
+  background: var(--kl-bg);
+}
+
+.logo {
+  width: min(520px, 78vw);
+}
+
+.builder {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, 3vw, 40px);
+}
+
+.tower {
+  width: clamp(56px, 10vh, 80px);
+  height: auto;
+  margin-bottom: 4px;
+}
+
+.strip {
+  margin-top: var(--kl-space-2);
+}
+
+/* острови W1 і хаб визирають із нижніх кутів — лише там, де є місце */
+.island {
+  position: absolute;
+  bottom: -52px;
+  width: 230px;
+  height: auto;
+  pointer-events: none;
+}
+
+.left {
+  left: -70px;
+}
+
+.right {
+  right: -110px;
+}
+
+@media (max-width: 799px), (max-height: 500px) {
+  .island {
+    display: none;
+  }
+}
+
+/* видимий лише екранним дикторам */
+.live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

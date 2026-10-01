@@ -27,6 +27,10 @@
   /* Kubik: висота фігури (BRIEF §7, §12: ПК 160–200, планшет 120–170, телефон 100) і масштаб бульбашки поруч */
   --kl-kubik-h: 184px;
   --kl-kubik-scale: 1;
+  /* PupPicker (design etap1/10): картка 176, 4×2; телефон — 2×4 по 150; альбом-телефон — 4×2 по 120 */
+  --kl-pup-card: 176px;
+  --kl-pup-cols: 4;
+  --kl-pup-gap: 24px;
 }
 
 /* 1440×900 і ширше: сцена по центру, плитки 140 */
@@ -52,6 +56,8 @@
   :root {
     --kl-kubik-h: 120px;
     --kl-kubik-scale: .65;
+    --kl-pup-card: 150px;
+    --kl-pup-gap: 16px;
   }
 }
 
@@ -77,6 +83,9 @@
     --kl-bone-icon-h: 30px;
     --kl-kubik-h: 100px;
     --kl-kubik-scale: .55;
+    --kl-pup-card: 150px;
+    --kl-pup-cols: 2;
+    --kl-pup-gap: 12px;
   }
 }
 
@@ -101,5 +110,7 @@
     --kl-bone-icon-h: 28px;
     --kl-kubik-h: 120px; /* Kubik прихований; виїжджає лише для hint і together */
     --kl-kubik-scale: .65;
+    --kl-pup-card: 120px;
+    --kl-pup-gap: 16px;
   }
 }

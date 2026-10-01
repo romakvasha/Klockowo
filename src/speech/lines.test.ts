@@ -7,7 +7,7 @@ import {
   SESSION_LINES, SPOKEN_LINES, START_LINES, WORLD_NAMES,
   addSentence, bonesLabel, breakLine, bridgeTen, confirmClear, confuses, countByTens, countOnPraise, countTouch, feedAnimal,
   findNumber, frogJump, gateQuestion, houseQuestion, howManyMissing, pairSum, placeValue, praiseCorrect, praiseEcho,
-  profileMapLabel, thereIs, tileLabel, twoGroups, whoHasMore,
+  changePlayerLabel, islandLabel, profileMapLabel, thereIs, tileLabel, twoGroups, whoHasMore,
 } from './lines';
 
 describe('шаблони дають дослівно приклади з BRIEF', () => {
@@ -214,5 +214,19 @@ describe('aria-підписи компонентів (design etap1/07, 08, 10)',
 
   it('аватар: «Ola — mapa»', () => {
     expect(profileMapLabel('Ola')).toBe('Ola — mapa');
+  });
+});
+
+describe('aria-підписи мапи (design etap1/17)', () => {
+  it('острови: замок, пройдено, «тут ми»; відкритий — лише назва', () => {
+    expect(islandLabel('Kosmiczna Droga', 'locked')).toBe('Kosmiczna Droga — zablokowane');
+    expect(islandLabel('Ogród Cyfr', 'completed')).toBe('Ogród Cyfr — ukończone');
+    expect(islandLabel('Wyspa Dodawania', 'current')).toBe('Wyspa Dodawania — tutaj jesteśmy');
+    expect(islandLabel('Plac Zabaw', 'open')).toBe('Plac Zabaw');
+  });
+
+  it('аватар на мапі: з іменем і без', () => {
+    expect(changePlayerLabel('Ola')).toBe('Ola — zmień gracza');
+    expect(changePlayerLabel(null)).toBe('Profil bez imienia — zmień gracza');
   });
 });

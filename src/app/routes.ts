@@ -58,8 +58,8 @@ export const SCREENS: readonly ScreenMeta[] = [
   { id: 'no-voice', path: '/no-voice', name: 'Brak polskiego głosu', stage: 'M21', brief: '§6 п.16' },
 ];
 
-/** Перший екран після запуску. Коли M6 зробить «Ładowanie», стане '/loading'. */
-export const HOME_PATH = '/start';
+/** Перший екран після запуску: «Ładowanie», що за 1–3 с веде на Start. */
+export const HOME_PATH = '/loading';
 
 export function screenById(id: ScreenId): ScreenMeta {
   const meta = SCREENS.find((s) => s.id === id);

@@ -24,7 +24,24 @@ export const LABELS = {
   abacus: 'liczydło', // рахівниця на 20 (BRIEF §10)
   placeTens: 'dziesiątki', // мат «dziesiątki | jedności»
   placeOnes: 'jedności',
+  loading: 'Ładowanie…', // aria-label смужки завантаження (design etap1/13)
 } as const;
+
+/** aria-label островів Mapy przygody (design etap1/17): «Kosmiczna Droga — zablokowane», «Ogród Cyfr — ukończone», «Wyspa Dodawania — tutaj jesteśmy». */
+export const ISLAND_STATE_LABELS = { locked: 'zablokowane', completed: 'ukończone', current: 'tutaj jesteśmy' } as const;
+export type IslandState = 'locked' | 'open' | 'current' | 'completed';
+
+export function islandLabel(name: string, state: IslandState): string {
+  return state === 'open' ? name : `${name} — ${ISLAND_STATE_LABELS[state]}`;
+}
+
+/** Аватар дитини на мапі: «Ola — zmień gracza»; без імені — «Profil bez imienia — zmień gracza». */
+export function changePlayerLabel(name: string | null): string {
+  return `${name ?? PROFILE_NO_NAME} — zmień gracza`;
+}
+
+/** Шестерня Strefa rodzica на екранах дитини: довге натискання, не клік (BRIEF §6.14). */
+export const PARENT_GEAR_LABEL = 'Strefa rodzica — przytrzymaj 3 sekundy';
 
 /** aria-label станів плитки й картки (design etap1/07): «siedem — dobrze», «osiem — spróbuj jeszcze raz», «zablokowane». */
 export const TILE_STATE_LABELS = { correct: 'dobrze', retry: 'spróbuj jeszcze raz', locked: 'zablokowane' } as const;
