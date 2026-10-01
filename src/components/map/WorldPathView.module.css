@@ -1,0 +1,209 @@
+/* Ścieżka świata (design etap2/14–16): тло світу --bg, сцена 1280×720 (альбом) за масштабом --s по центру; портрет і смуга — гортаються. */
+.page {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  isolation: isolate;
+}
+
+.fit {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scroller {
+  height: 100%;
+  overscroll-behavior: contain;
+}
+
+.page[data-kind='portrait'] .scroller {
+  overflow: hidden auto;
+}
+
+.page[data-kind='strip'] .scroller {
+  display: flex;
+  align-items: center;
+  overflow: auto hidden;
+}
+
+.sizer {
+  position: relative;
+  flex: none;
+  margin-inline: auto;
+}
+
+.page[data-kind='strip'] .sizer {
+  margin-inline: 0;
+}
+
+/* альбом: сцена по центру через translate (грід не центрує елемент, більший за контейнер) */
+.stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--s));
+}
+
+.page[data-kind='portrait'] .stage,
+.page[data-kind='strip'] .stage {
+  top: 0;
+  left: 0;
+  transform: scale(var(--s));
+  transform-origin: 0 0;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* дорога: темний контур + піщана смужка (відкрито), сіра (закрито), золота (★-гілка) — як на бордах */
+.edge,
+.top {
+  fill: none;
+  stroke-linecap: butt;
+}
+
+.edge {
+  stroke: var(--kl-ink);
+  stroke-width: 24;
+  stroke-dasharray: 22 2;
+  stroke-dashoffset: 3;
+}
+
+.top {
+  stroke: var(--kl-block-sand);
+  stroke-width: 18;
+  stroke-dasharray: 16 8;
+}
+
+g[data-open='false'] > .edge {
+  stroke: #8c87a8;
+}
+
+g[data-open='false'] > .top {
+  stroke: var(--kl-locked);
+}
+
+g[data-star='true'] > .edge {
+  stroke-width: 20;
+  stroke-dasharray: 16 12;
+  stroke-dashoffset: 0;
+}
+
+g[data-star='true'] > .top {
+  stroke: #ffe08a;
+  stroke-width: 14;
+  stroke-dasharray: 12 16;
+  stroke-dashoffset: -2;
+}
+
+g[data-star='true'][data-open='false'] > .top {
+  stroke: #e4e1ec;
+}
+
+.decor {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Kubik стоїть біля наступного вузла; крізь нього проходять дотики. Перехід між вузлами — «біг по стежці» (1,2 с) */
+.kubik {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  transition: left var(--kl-dur-path) var(--kl-ease-out), top var(--kl-dur-path) var(--kl-ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kubik {
+    transition: none;
+  }
+}
+
+:global(:root[data-reduce-motion='true']) .kubik {
+  transition: none;
+}
+
+/* верхня панель: «Mapa» (72/80 px) ліворуч у кутку, назва світу — чип по центру; відступи від країв ≥ 24 px з урахуванням safe-area */
+.chrome {
+  position: fixed;
+  z-index: 10;
+  top: max(var(--kl-edge-safe), env(safe-area-inset-top));
+  right: max(var(--kl-edge-safe), env(safe-area-inset-right));
+  left: max(var(--kl-edge-safe), env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.chrome > button {
+  pointer-events: auto;
+}
+
+.chip {
+  position: absolute;
+  left: 50%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px 0 7px;
+  font-size: 18px;
+  font-weight: 800;
+  white-space: nowrap;
+  background: var(--kl-surface);
+  border: 2px solid var(--chip-edge);
+  border-radius: 12px;
+  box-shadow: 0 4px 0 var(--chip-shadow);
+  transform: translateX(-50%);
+}
+
+.chipIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  background: var(--chip-dot);
+  border: 2px solid var(--kl-ink);
+  border-radius: var(--kl-radius-round);
+  box-sizing: border-box;
+}
+
+/* вузький екран і «смуга»: чип стоїть праворуч від кнопки «Mapa», а не посередині (там, де гортання ставить Kubika й наступний вузол) */
+@media (max-width: 599px) {
+  .chip {
+    left: calc(var(--kl-btn) + 12px);
+    transform: none;
+  }
+}
+
+.page[data-kind='strip'] .chip {
+  left: calc(var(--kl-btn) + 12px);
+  transform: none;
+}
+
+/* під панеллю вузли гортаються — м'яка «вуаль» кольору світу тримає кнопку й назву читабельними */
+.page[data-kind='portrait']::before,
+.page[data-kind='strip']::before {
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 112px;
+  pointer-events: none;
+  content: '';
+  background: linear-gradient(var(--bg) 50%, transparent);
+}

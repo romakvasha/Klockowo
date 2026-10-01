@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-70 -40 140 90"><defs><pattern id="px" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#FFFFFF" fill-opacity=".14"></rect><rect x="8" y="4" width="4" height="4" fill="#2D2A4A" fill-opacity=".07"></rect><rect x="4" y="12" width="4" height="4" fill="#2D2A4A" fill-opacity=".06"></rect><rect x="12" y="8" width="4" height="4" fill="#FFFFFF" fill-opacity=".1"></rect></pattern></defs><path d="M-64 0 L0 32 L0 42 L-64 10 Z" fill="#BB9C78" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M64 0 L0 32 L0 42 L64 10 Z" fill="#A48A71" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M0 -32 L64 0 L0 32 L-64 0 Z" fill="#F3D9A0" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M-64 0 L0 32 L0 42 L-64 10 Z" fill="url(#px)"></path>
+<path d="M64 0 L0 32 L0 42 L64 10 Z" fill="url(#px)"></path>
+<path d="M0 -32 L64 0 L0 32 L-64 0 Z" fill="url(#px)"></path>
+<path d="M0 -24.1 L48 -0.1 L0 23.9 L-48 -0.1 Z" fill="#4FB3F6" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-14 -6 q6 -4 12 0 t12 0 M4 10 q6 -4 12 0 t12 0" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"></path></svg>

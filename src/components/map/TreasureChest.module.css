@@ -1,0 +1,36 @@
+.chest {
+  position: absolute;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--kl-dur-tap) var(--kl-ease-out);
+}
+
+.chest img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.chest:active {
+  transform: translateY(4px) scale(.96);
+}
+
+.chest:focus-visible {
+  border-radius: 18px;
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 4px;
+}
+
+.chest[data-shake='true'] {
+  animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
+}
+
+/* готова скриня «дихає» (2,4 с): запрошує торкнутися */
+.chest[data-state='ready'] img {
+  animation: var(--kl-anim-breathe) 2.4s ease-in-out infinite;
+}

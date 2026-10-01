@@ -1,0 +1,55 @@
+/* Вузол стежки (design etap2/14–16): кнопка 96×104 з картинкою-платформою; натиснутий — вниз на 4 px і 0,94. */
+.node {
+  position: absolute;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--kl-dur-tap) var(--kl-ease-out);
+}
+
+.node svg {
+  position: relative; /* над сяйвом (позиціоновані елементи інакше малюються поверх непозиціонованих) */
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* сяйво «наступного» вузла ширше за коробку */
+  pointer-events: none;
+}
+
+.node:active {
+  transform: translateY(4px) scale(.94);
+}
+
+.node:focus-visible {
+  border-radius: 18px;
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px var(--kl-surface);
+}
+
+/* заблокований лише хитається (±6 px, 300 мс) — без червоного і спалахів */
+.node[data-shake='true'] {
+  animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
+}
+
+/* щойно відкритий вузол «вистрибує» (замок відкривається, 500 мс) */
+.node[data-fresh='true'] svg {
+  animation: var(--kl-anim-pop) 500ms var(--kl-ease-pop) both;
+}
+
+/* сяйво під наступним вузлом: жовтий овал 132×64 із кільцем 10 px, пульсує повільно (2,4 с); борд etap2/14 — зсув (−18; +37) від кута вузла */
+.glow {
+  position: absolute;
+  top: 37px;
+  left: -18px;
+  width: 132px;
+  height: 64px;
+  pointer-events: none;
+  background: rgba(255, 194, 26, .45);
+  border-radius: 999px;
+  box-shadow: 0 0 0 10px rgba(255, 194, 26, .2);
+  animation: var(--kl-anim-glow) 2.4s ease-in-out infinite;
+}

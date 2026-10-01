@@ -11,3 +11,11 @@ function find(sources: Record<string, string>, suffix: string): string {
 /** 'w1' … 'w7', 'hub' або 'locked'. */
 export const ISLAND_URL = (id: string): string => find(islands, `island-${id}.svg`);
 export const BASE_URL = (): string => find(bases, 'base-druzyna.svg');
+
+const chests = import.meta.glob<string>('../../assets/world/chest-*.svg', { query: '?url', import: 'default', eager: true });
+const decors = import.meta.glob<string>('../../assets/world/deco-*.svg', { query: '?url', import: 'default', eager: true });
+
+/** Скриня світу 132×155: 'locked' | 'ready' | 'open'. */
+export const CHEST_URL = (state: string): string => find(chests, `chest-${state}.svg`);
+/** Декор сцени стежки: 'meadow' (deco-w1-meadow), 'tree', 'pine', 'palm', 'rocks', 'pool'. */
+export const DECOR_URL = (kind: string): string => find(decors, kind === 'meadow' ? 'deco-w1-meadow.svg' : `deco-${kind}.svg`);

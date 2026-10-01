@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import {
   BREAK_EXERCISES, FROM_COPY_9, SPOKEN_LINES,
   addSentence, breakLine, bridgeTen, countByTens, countOnPraise, countTouch, feedAnimal, findNumber, frogJump, gateQuestion,
-  houseQuestion, howManyMissing, pairSum, placeValue, praiseCorrect, thereIs, twoGroups, whoHasMore,
+  houseQuestion, howManyMissing, missionLine, pairSum, placeValue, praiseCorrect, thereIs, twoGroups, whoHasMore,
 } from '../../speech/lines';
 import { ANIMALS, OBJECTS } from '../../speech/nouns';
 import { tts } from '../../speech/tts';
@@ -38,6 +38,9 @@ const TEMPLATE_EXAMPLES: readonly { label: string; text: string }[] = [
   { label: 'BRIEF §6.14 · бар’єр (без озвучення)', text: gateQuestion(7, 8) },
   { label: 'POLISH_COPY §9 · W4 ★', text: bridgeTen(8, 5) },
   { label: 'POLISH_COPY §8 · до двадцяти', text: howManyMissing(20) },
+  { label: 'M7 · місія [do sprawdzenia]', text: missionLine('biedronka', OBJECTS.biedronka) },
+  { label: 'M7 · місія [do sprawdzenia]', text: missionLine('jablko', OBJECTS.jablko) },
+  { label: 'M7 · місія [do sprawdzenia]', text: missionLine('rakieta', OBJECTS.rakieta) },
 ];
 
 /** Усі статичні репліки з lines.ts за групами + приклади шаблонів. Рядки з POLISH_COPY §9 позначено. */

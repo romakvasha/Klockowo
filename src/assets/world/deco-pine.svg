@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -100 80 116"><defs><pattern id="px" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#FFFFFF" fill-opacity=".14"></rect><rect x="8" y="4" width="4" height="4" fill="#2D2A4A" fill-opacity=".07"></rect><rect x="4" y="12" width="4" height="4" fill="#2D2A4A" fill-opacity=".06"></rect><rect x="12" y="8" width="4" height="4" fill="#FFFFFF" fill-opacity=".1"></rect></pattern></defs><path d="M-32 0 L0 16 L0 26 L-32 10 Z" fill="#90674E" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M32 0 L0 16 L0 26 L32 10 Z" fill="#805D4E" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M0 -16 L32 0 L0 16 L-32 0 Z" fill="#7BCB5A" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M-32 0 L0 16 L0 26 L-32 10 Z" fill="url(#px)"></path>
+<path d="M32 0 L0 16 L0 26 L32 10 Z" fill="url(#px)"></path>
+<path d="M0 -16 L32 0 L0 16 L-32 0 Z" fill="url(#px)"></path>
+<path d="M-8 -8 L0 -4 L0 4 L-8 0 Z" fill="#A4774E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M8 -8 L0 -4 L0 4 L8 0 Z" fill="#906B4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M0 -12 L8 -8 L0 -4 L-8 -8 Z" fill="#C09364" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-24 -20 L0 -8 L0 4 L-24 -8 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M24 -20 L0 -8 L0 4 L24 -8 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M0 -32 L24 -20 L0 -8 L-24 -20 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-16 -32 L0 -24 L0 -12 L-16 -20 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M16 -32 L0 -24 L0 -12 L16 -20 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M0 -40 L16 -32 L0 -24 L-16 -32 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-8 -44 L0 -40 L0 -28 L-8 -32 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M8 -44 L0 -40 L0 -28 L8 -32 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M0 -48 L8 -44 L0 -40 L-8 -44 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path></svg>

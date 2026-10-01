@@ -2,7 +2,7 @@
 // Числа в репліках — лише словами (numberWords.ts), узгодження — plural.ts + nouns.ts. Нові рядки додавай сюди,
 // не в компоненти; нову фразу, якої немає в брифі, познач «[do sprawdzenia]» і спитай власника.
 import type { SkillId } from '../curriculum/types';
-import type { Animal, Noun, WorldKey } from './nouns';
+import type { Animal, Noun, ObjectId, WorldKey } from './nouns';
 import { DZIESIATKA, JEDNOSC } from './nouns';
 import { numberGenitive, numberWords } from './numberWords';
 import { isAre, quantity, times } from './plural';
@@ -124,6 +124,25 @@ export const LEVEL_LINES = {
   diligence: 'Nie poddajesz się!', // значок за старанність
 } as const;
 
+/** aria-label вузлів «Ścieżka świata» (design etap2/14–16) і скрині світу (etap2/06). */
+export const NODE_LABELS = {
+  done: 'Poziom ukończony — zagraj jeszcze raz', next: 'Następny poziom', locked: 'Poziom zablokowany',
+  star: 'Zadanie dodatkowe', starLocked: 'Zadanie dodatkowe — zablokowane', review: LABELS.review,
+} as const;
+export const CHEST_LABELS = { locked: 'Skrzynia zamknięta', ready: 'Skrzynia gotowa', open: 'Skrzynia otwarta' } as const;
+
+/** Вступ до світу (POLISH_COPY §3): звучить, коли дитина вперше заходить на стежку світу. */
+export const WORLD_INTROS: Readonly<Record<WorldKey | 'hub', string>> = {
+  w1: 'Witaj na Łące Liczenia! Tu liczymy biedronki i kwiatki.',
+  w2: 'To Ogród Cyfr. Każda cyfra ma tu swoją grządkę.',
+  w3: 'Płyniemy na Wyspę Dodawania! Sprawdzimy, ile jest razem.',
+  w4: 'Przed nami Most Dwudziestki. Idziemy krok po kroku aż do dwudziestu!',
+  w5: 'W Lesie Dziesiątek pakujemy wszystko po dziesięć.',
+  w6: 'Witaj w Mieście Setki! Tu mieszkają liczby od jednego do stu.',
+  w7: 'Trzy, dwa, jeden… start! Lecimy rakietą aż do stu!',
+  hub: 'Plac Zabaw! Tu bawisz się tym, co już umiesz.',
+};
+
 export const SESSION_LINES = { breakTime: 'Czas na przerwę!', endOfDay: 'Koniec na dziś. Do zobaczenia!' } as const;
 export const ERROR_LINES = { oops: 'Ups! Spróbujmy jeszcze raz.' } as const;
 
@@ -205,6 +224,19 @@ const cap = (s: string): string => s.charAt(0).toLocaleUpperCase('pl') + s.slice
 /** «Jest jedna biedronka!», «Są trzy biedronki!», «Jest siedem biedronek!», «Nie ma jabłek.» */
 export function thereIs(n: number, noun: Noun): string {
   return n === 0 ? `Nie ma ${noun.many}.` : `${isAre(n)} ${quantity(n, noun)}!`;
+}
+
+/** Місія рівня (Wprowadzenie): для kaczuszek і rybek — дослівно BRIEF §6.6 і POLISH_COPY §9; для решти предметів — шаблон
+ *  «Biedronki czekają na ciebie! Pomożesz je policzyć?» [do sprawdzenia] (теперішній час, безособово щодо дитини). */
+export function missionLine(id: ObjectId, noun: Noun): string {
+  if (id === 'kaczuszka') return MISSION_LINES.ducklings;
+  if (id === 'rybka') return MISSION_LINES.fish;
+  return `${cap(noun.few)} czekają na ciebie! Pomożesz je policzyć?`;
+}
+
+/** Підпис наліпки-тваринки для екранного диктора: «Naklejka — miś». */
+export function stickerLabel(animal: Noun): string {
+  return `Naklejka — ${animal.one}`;
 }
 
 /** «Brawo! Pięć jabłek.» — голос повторює відповідь (BRIEF §7 «Правильно»). */
@@ -325,6 +357,7 @@ export const SPOKEN_LINES: readonly SpokenLine[] = [
   ...entries('PRAISE', PRAISE),
   ...entries('FEEDBACK', FEEDBACK_LINES),
   ...entries('LEVEL', LEVEL_LINES),
+  ...entries('WORLD', WORLD_INTROS),
   ...entries('SESSION', SESSION_LINES),
   ...entries('ERROR', ERROR_LINES),
   ...entries('GAME', GAME_PROMPTS),

@@ -7,7 +7,8 @@ import {
   SESSION_LINES, SPOKEN_LINES, START_LINES, WORLD_NAMES,
   addSentence, bonesLabel, breakLine, bridgeTen, confirmClear, confuses, countByTens, countOnPraise, countTouch, feedAnimal,
   findNumber, frogJump, gateQuestion, houseQuestion, howManyMissing, pairSum, placeValue, praiseCorrect, praiseEcho,
-  changePlayerLabel, islandLabel, profileMapLabel, thereIs, tileLabel, twoGroups, whoHasMore,
+  CHEST_LABELS, NODE_LABELS, WORLD_INTROS, changePlayerLabel, islandLabel, missionLine, profileMapLabel, stickerLabel, thereIs, tileLabel,
+  twoGroups, whoHasMore,
 } from './lines';
 
 describe('шаблони дають дослівно приклади з BRIEF', () => {
@@ -228,5 +229,42 @@ describe('aria-підписи мапи (design etap1/17)', () => {
   it('аватар на мапі: з іменем і без', () => {
     expect(changePlayerLabel('Ola')).toBe('Ola — zmień gracza');
     expect(changePlayerLabel(null)).toBe('Profil bez imienia — zmień gracza');
+  });
+});
+
+describe('стежка світу, місія, кінець рівня (M7)', () => {
+  it('підписи вузлів і скрині — дослівно з бордів дизайну', () => {
+    expect(NODE_LABELS.done).toBe('Poziom ukończony — zagraj jeszcze raz');
+    expect(NODE_LABELS.next).toBe('Następny poziom');
+    expect(NODE_LABELS.locked).toBe('Poziom zablokowany');
+    expect(NODE_LABELS.star).toBe('Zadanie dodatkowe');
+    expect(NODE_LABELS.starLocked).toBe('Zadanie dodatkowe — zablokowane');
+    expect(NODE_LABELS.review).toBe('Do powtórki');
+    expect(CHEST_LABELS).toEqual({ locked: 'Skrzynia zamknięta', ready: 'Skrzynia gotowa', open: 'Skrzynia otwarta' });
+  });
+
+  it('вступи до світів — POLISH_COPY §3, для всіх 7 світів і хаба', () => {
+    expect(Object.keys(WORLD_INTROS).sort()).toEqual(['hub', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7']);
+    expect(WORLD_INTROS.w1).toBe('Witaj na Łące Liczenia! Tu liczymy biedronki i kwiatki.');
+    expect(WORLD_INTROS.w7).toBe('Trzy, dwa, jeden… start! Lecimy rakietą aż do stu!');
+    expect(SPOKEN_LINES.filter((l) => l.group === 'WORLD')).toHaveLength(8);
+  });
+
+  it('місія: kaczuszki й rybki — дослівно BRIEF/POLISH_COPY, решта — шаблон у теперішньому часі', () => {
+    expect(missionLine('kaczuszka', OBJECTS.kaczuszka)).toBe('Kaczuszki się zgubiły! Pomożesz je policzyć?');
+    expect(missionLine('rybka', OBJECTS.rybka)).toBe('Rybki zgubiły drogę do domu! Pomożesz?');
+    expect(missionLine('biedronka', OBJECTS.biedronka)).toBe('Biedronki czekają na ciebie! Pomożesz je policzyć?');
+    expect(missionLine('jablko', OBJECTS.jablko)).toBe('Jabłka czekają na ciebie! Pomożesz je policzyć?');
+    expect(missionLine('rakieta', OBJECTS.rakieta)).toBe('Rakiety czekają na ciebie! Pomożesz je policzyć?');
+  });
+
+  it('жодна місія не звертається до дитини в минулому часі (-ł/-ła щодо дитини)', () => {
+    for (const id of Object.keys(OBJECTS) as (keyof typeof OBJECTS)[]) {
+      expect(missionLine(id, OBJECTS[id]), id).not.toMatch(/(łeś|łaś)/);
+    }
+  });
+
+  it('підпис наліпки', () => {
+    expect(stickerLabel(ANIMALS.mis)).toBe('Naklejka — miś');
   });
 });

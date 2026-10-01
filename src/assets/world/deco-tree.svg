@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -100 80 116"><defs><pattern id="px" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#FFFFFF" fill-opacity=".14"></rect><rect x="8" y="4" width="4" height="4" fill="#2D2A4A" fill-opacity=".07"></rect><rect x="4" y="12" width="4" height="4" fill="#2D2A4A" fill-opacity=".06"></rect><rect x="12" y="8" width="4" height="4" fill="#FFFFFF" fill-opacity=".1"></rect></pattern></defs><path d="M-32 0 L0 16 L0 26 L-32 10 Z" fill="#90674E" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M32 0 L0 16 L0 26 L32 10 Z" fill="#805D4E" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M0 -16 L32 0 L0 16 L-32 0 Z" fill="#7BCB5A" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M-32 0 L0 16 L0 26 L-32 10 Z" fill="url(#px)"></path>
+<path d="M32 0 L0 16 L0 26 L32 10 Z" fill="url(#px)"></path>
+<path d="M0 -16 L32 0 L0 16 L-32 0 Z" fill="url(#px)"></path>
+<path d="M-8 -22 L0 -18 L0 4 L-8 0 Z" fill="#A4774E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M8 -22 L0 -18 L0 4 L8 0 Z" fill="#906B4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M0 -26 L8 -22 L0 -18 L-8 -22 Z" fill="#C09364" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-28 -46 L0 -32 L0 -8 L-28 -22 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M28 -46 L0 -32 L0 -8 L28 -22 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M0 -60 L28 -46 L0 -32 L-28 -46 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-28 -46 L0 -32 L0 -8 L-28 -22 Z" fill="url(#px)"></path>
+<path d="M28 -46 L0 -32 L0 -8 L28 -22 Z" fill="url(#px)"></path>
+<path d="M0 -60 L28 -46 L0 -32 L-28 -46 Z" fill="url(#px)"></path></svg>

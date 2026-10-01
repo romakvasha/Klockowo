@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-56 -120 112 150"><defs><pattern id="px" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#FFFFFF" fill-opacity=".14"></rect><rect x="8" y="4" width="4" height="4" fill="#2D2A4A" fill-opacity=".07"></rect><rect x="4" y="12" width="4" height="4" fill="#2D2A4A" fill-opacity=".06"></rect><rect x="12" y="8" width="4" height="4" fill="#FFFFFF" fill-opacity=".1"></rect></pattern></defs><path d="M-48 0 L0 24 L0 36 L-48 12 Z" fill="#BB9C78" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M48 0 L0 24 L0 36 L48 12 Z" fill="#A48A71" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M0 -24 L48 0 L0 24 L-48 0 Z" fill="#F3D9A0" stroke="#2D2A4A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M-48 0 L0 24 L0 36 L-48 12 Z" fill="url(#px)"></path>
+<path d="M48 0 L0 24 L0 36 L48 12 Z" fill="url(#px)"></path>
+<path d="M0 -24 L48 0 L0 24 L-48 0 Z" fill="url(#px)"></path>
+<path d="M-10 -10 L-2 -6 L-2 5 L-10 1 Z" fill="#A4774E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M6 -10 L-2 -6 L-2 5 L6 1 Z" fill="#906B4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-2 -14 L6 -10 L-2 -6 L-10 -10 Z" fill="#C09364" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-7 -21 L1 -17 L1 -6 L-7 -10 Z" fill="#A4774E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M9 -21 L1 -17 L1 -6 L9 -10 Z" fill="#906B4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M1 -25 L9 -21 L1 -17 L-7 -21 Z" fill="#C09364" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-4 -32 L4 -28 L4 -17 L-4 -21 Z" fill="#A4774E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M12 -32 L4 -28 L4 -17 L12 -21 Z" fill="#906B4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M4 -36 L12 -32 L4 -28 L-4 -32 Z" fill="#C09364" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-1 -43 L7 -39 L7 -28 L-1 -32 Z" fill="#A4774E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M15 -43 L7 -39 L7 -28 L15 -32 Z" fill="#906B4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M7 -47 L15 -43 L7 -39 L-1 -43 Z" fill="#C09364" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-15 -51 L-5 -46 L-5 -39 L-15 -44 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M3 -50 L-5 -46 L-5 -39 L3 -43 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-7 -55 L3 -50 L-5 -46 L-15 -51 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M3 -50 L11 -46 L11 -39 L3 -43 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M21 -51 L11 -46 L11 -39 L21 -44 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M13 -55 L21 -51 L11 -46 L3 -50 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M3 -42 L13 -37 L13 -30 L3 -35 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M21 -41 L13 -37 L13 -30 L21 -34 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M11 -46 L21 -41 L13 -37 L3 -42 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-15 -41 L-7 -37 L-7 -30 L-15 -34 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M3 -42 L-7 -37 L-7 -30 L3 -35 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-5 -46 L3 -42 L-7 -37 L-15 -41 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M-7 -49 L3 -44 L3 -36 L-7 -41 Z" fill="#3C8E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M13 -49 L3 -44 L3 -36 L13 -41 Z" fill="#397E4E" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M3 -54 L13 -49 L3 -44 L-7 -49 Z" fill="#55AA64" stroke="#2D2A4A" stroke-width="2" stroke-linejoin="round"></path></svg>
