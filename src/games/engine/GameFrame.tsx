@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { useElementSize, type ElementSize } from '../../app/useElementSize';
 import { useViewport } from '../../app/useViewport';
 import { MascotStage } from '../../characters/MascotStage';
@@ -11,13 +11,16 @@ import { HintButton } from '../../components/ui/HintButton';
 import { cssVars } from '../../components/ui/cx';
 import type { WorldKey } from '../../curriculum/types';
 import { LABELS } from '../../speech/lines';
-import { frameKind, sceneReserved } from './frameMath';
+import { frameKind, sceneReserved, type FrameKind } from './frameMath';
 import type { Rect } from './layoutObjects';
 import styles from './GameFrame.module.css';
 
 export interface FrameScene {
   area: ElementSize;
   reserved: Rect[];
+  kind: FrameKind;
+  /** Лоток: у іграх-конструкторах сцена виносить у нього зони для предметів (портал); у іграх із плитками — null. */
+  tray: HTMLElement | null;
 }
 
 export interface GameFrameProps {
@@ -45,12 +48,13 @@ export interface GameFrameProps {
   children: (scene: FrameScene) => ReactNode;
 }
 
-/** Блоковий декор лише по краях сцени (BRIEF §7, борд etap2/00): три предмети з набору світу — унизу ліворуч, угорі праворуч, унизу праворуч. */
+/** Блоковий декор лише по краях сцени (BRIEF §7, борд etap2/00): три предмети з набору світу — унизу ліворуч, угорі праворуч, унизу праворуч.
+ *  Власний шар із overflow: hidden — тоді сама сцена не обрізає предмет, який дитина перетягує на тарілку в лотку. */
 function Decor({ world }: { world: WorldKey }) {
   const kinds = pathLayoutFor(world, 'landscape').decor;
   const spots = ['bl', 'tr', 'br'] as const;
   return (
-    <>
+    <div className={styles.decorLayer}>
       {spots.map((spot, i) => {
         const d = kinds[i];
         if (!d) return null;
@@ -62,7 +66,7 @@ function Decor({ world }: { world: WorldKey }) {
           />
         );
       })}
-    </>
+    </div>
   );
 }
 
@@ -76,6 +80,7 @@ export function GameFrame({ world, filled, arriving, listenPulse, onMap, onListe
   // на широких екранах предмети лежать у «сцені» ≤ 1280 px по центру (борд etap2/01); ділянка Kubika рахується від лівого краю сторінки
   const left = kind === 'wide' ? Math.max(0, (viewport.width - area.w) / 2) : 0;
   const reserved = useMemo(() => sceneReserved(kind, viewport.width, area, left), [kind, viewport.width, area, left]);
+  const [trayEl, setTrayEl] = useState<HTMLElement | null>(null);
   const hintButton = <HintButton visible={hint.visible} active={hint.active} onPress={hint.onPress} />;
 
   return (
@@ -85,11 +90,11 @@ export function GameFrame({ world, filled, arriving, listenPulse, onMap, onListe
         <section className={styles.scene} role="group" aria-label={sceneLabel}>
           <Decor world={world} />
           <div ref={sceneRef} className={styles.content}>
-            {area.w > 0 && area.h > 0 && children({ area, reserved })}
+            {area.w > 0 && area.h > 0 && children({ area, reserved, kind, tray: trayEl })}
           </div>
         </section>
         <footer className={styles.footer}>
-          <div className={styles.tray} role="group" aria-label={LABELS.answers}>
+          <div ref={setTrayEl} className={styles.tray} role="group" aria-label={LABELS.answers}>
             {tray}
           </div>
           <div className={styles.bottom}>

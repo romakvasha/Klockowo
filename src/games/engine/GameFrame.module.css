@@ -36,9 +36,17 @@
   position: relative;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
   background: var(--scene-bg);
   border-bottom: 3px solid var(--scene-line);
+}
+
+/* декор обрізається по краях сцени, а самі предмети гри (перетягування) можуть виходити за неї */
+.decorLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .content {

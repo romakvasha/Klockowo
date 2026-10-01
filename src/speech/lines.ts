@@ -26,6 +26,8 @@ export const LABELS = {
   placeOnes: 'jedności',
   loading: 'Ładowanie…', // aria-label смужки завантаження (design etap1/13)
   answers: 'Odpowiedzi', // aria-label лотка з плитками-відповідями (design etap2/00)
+  dotCard: 'karta z kropkami', // «Błysk!»: картка з крапками (aria-label без числа, щоб не видати відповідь)
+  plate: 'talerz', // «Nakarm zwierzaka»: тарілка
 } as const;
 
 /** aria-label островів Mapy przygody (design etap1/17): «Kosmiczna Droga — zablokowane», «Ogród Cyfr — ukończone», «Wyspa Dodawania — tutaj jesteśmy». */
@@ -238,6 +240,19 @@ export function missionLine(id: ObjectId, noun: Noun): string {
 /** Підпис наліпки-тваринки для екранного диктора: «Naklejka — miś». */
 export function stickerLabel(animal: Noun): string {
   return `Naklejka — ${animal.one}`;
+}
+
+/** «Trzy i dwa to pięć.» — «Błysk!»: картка повертається з обведеними групами (POLISH_COPY §5: «{a} i {b} to {n}.»); одна група — просто «Jeden.» */
+export function flashReveal(groups: readonly number[]): string {
+  const [a, b] = groups;
+  if (a === undefined) return '';
+  if (b === undefined) return `${cap(numberWords(a))}.`;
+  return `${cap(numberWords(a))} i ${numberWords(b)} to ${numberWords(a + b)}.`;
+}
+
+/** «Pięć jabłek.» — підсумок показу «разом» у «Nakarm zwierzaka». */
+export function quantityLine(n: number, noun: Noun): string {
+  return `${cap(quantity(n, noun))}.`;
 }
 
 /** «Brawo! Pięć jabłek.» — голос повторює відповідь (BRIEF §7 «Правильно»). */

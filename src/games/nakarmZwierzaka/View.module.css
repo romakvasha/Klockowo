@@ -1,0 +1,77 @@
+.scene {
+  position: relative;
+}
+
+.animal {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* бульбашка тваринки: число (W1 — з крапками); хвостик показує на тваринку */
+.bubble {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.want {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* тарілка в лотку: предмети в ряд зі зсувом по краях, «сідають» за 250 мс */
+.plate {
+  flex: none;
+}
+
+.platedItem {
+  display: flex;
+}
+
+.platedItem > * {
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}
+
+.platedItem[data-hl='true'] {
+  background: rgba(255, 194, 26, .35);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px var(--kl-reward);
+}
+
+.platedItem[data-celebrate='true'] > * {
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+/* слоти рамки-десятки (2-га підказка чи level.slots): 10 пунктирних комірок, предмети лягають по порядку */
+.slots {
+  display: grid;
+  gap: 2px;
+  justify-content: center;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #8c87a8;
+  border-radius: 50%;
+}
+
+.slot[data-filled='true'] {
+  border-color: transparent;
+}
+
+.plated {
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}
+
+/* бульбашка Kubika: їжа, яку треба дати */
+.ask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

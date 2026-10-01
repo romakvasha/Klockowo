@@ -33,12 +33,14 @@ export interface TileSpec {
   dots?: number;
 }
 
-/** Допомога Kubika, яку показує сцена: hint — перший крок («Patrz, pokażę ci.»), together — повний розв'язок після другої помилки.
- *  `step` — скільки кроків показано (сенс залежить від гри). */
-export type AssistMode = 'none' | 'hint' | 'together';
+/** Допомога Kubika, яку показує сцена: hint — підказка «Pomóż mi» («Patrz, pokażę ci.»), together — повний розв'язок після другої помилки,
+ *  intro — вступний показ гри після інструкції (напр., спалах картки в «Błysk!»). `step` — скільки кроків показано (сенс залежить від гри),
+ *  `level` — номер підказки (1-ша, 2-га…): гра може підсилювати допомогу. */
+export type AssistMode = 'none' | 'hint' | 'together' | 'intro';
 export interface Assist {
   mode: AssistMode;
   step: number;
+  level?: number;
 }
 export const NO_ASSIST: Assist = { mode: 'none', step: 0 };
 
@@ -50,10 +52,21 @@ export interface AssistContext extends ScriptApi {
 /** play — дитина діє; feedback — звучить відгук, дотики вимкнено; done — завдання розв'язано. */
 export type TaskPhase = 'play' | 'feedback' | 'done';
 
+/** Що знає гра про хід завдання, коли Kubik допомагає: номер підказки й остання відповідь дитини (у іграх-конструкторах — те, що зібрано). */
+export interface HelpInfo {
+  /** 1 — перша підказка, 2 — друга…; для показу «разом» — кількість підказок, що вже були. */
+  nth: number;
+  response: number | null;
+}
+
+/** Вигляд екрана: wide (альбом), portrait, phone (телефон в альбомі) — для сцен, що змінюють розкладку. */
+export type SceneKind = 'wide' | 'portrait' | 'phone';
+
 /** Область сцени: розмір, ділянки під Kubika (предмети туди не ставимо) і стан завдання. */
 export interface SceneProps<I extends TaskBase> {
   instance: I;
   world: WorldKey;
+  kind: SceneKind;
   area: { w: number; h: number };
   reserved: readonly { x: number; y: number; w: number; h: number }[];
   assist: Assist;
@@ -62,11 +75,17 @@ export interface SceneProps<I extends TaskBase> {
   celebrating: boolean;
   /** Сцена повідомляє про свою активність (дотик до предмета): рушій знімає «Posłuchaj» і гасить зайвий голос. */
   onTouch?: () => void;
+  /** Лише для ігор-конструкторів (`kind: 'build'`): що зараз зібрано (число); null — нічого. Рушій вмикає «Gotowe», коли воно є. */
+  onRespond?: (value: number | null) => void;
+  /** Лоток: DOM-вузол, у який конструктор виносить місця для предметів (тарілку) через портал; у іграх із плитками — null. */
+  tray: HTMLElement | null;
 }
 
-/** Гра-модуль: усе, що рушій має знати про одну з 14 ігор. M8 — «choice» (відповідь із плиток лотка + «Gotowe»). */
+/** Гра-модуль: усе, що рушій має знати про одну з 14 ігор. choice — відповідь із плиток лотка + «Gotowe»; build — дитина щось збирає на сцені
+ *  (кладе їжу на тарілку), сцена повідомляє результат через onRespond, лоток — місце для зон (портал), а «Gotowe» перевіряє зібране. */
 export interface GameDef<I extends TaskBase = TaskBase> {
   id: GameId;
+  kind: 'choice' | 'build';
   generate(spec: TaskSpec, ctx: GenContext): I;
   /** Репліка-інструкція (BRIEF §7). */
   prompt(instance: I): string;
@@ -80,9 +99,11 @@ export interface GameDef<I extends TaskBase = TaskBase> {
   check(instance: I, value: number): Verdict;
   /** Репліка після правильної відповіді; `praise` — слово похвали («Brawo!»). */
   praise(instance: I, praise: string): string;
-  /** Перший крок допомоги: лише початок, відповідь дитина дає сама. */
-  hint(instance: I, ctx: AssistContext): Promise<void>;
+  /** Вступний показ після інструкції (необов'язково): напр., спалах картки. Керує сценою через ctx.setAssist({ mode: 'intro', … }). */
+  intro?(instance: I, ctx: AssistContext): Promise<void>;
+  /** Підказка «Pomóż mi»: перший крок допомоги (з номером підказки в `info.nth` гра може підсилювати її), відповідь дитина дає сама. */
+  hint(instance: I, ctx: AssistContext, info: HelpInfo): Promise<void>;
   /** Повний розв'язок після другої помилки. */
-  together(instance: I, ctx: AssistContext): Promise<void>;
+  together(instance: I, ctx: AssistContext, info: HelpInfo): Promise<void>;
   Scene: ComponentType<SceneProps<I>>;
 }

@@ -32,6 +32,8 @@
   --kl-anim-reveal: kl-reveal;
   /* перехід між екранами: ковзання 350 мс */
   --kl-anim-slide: kl-slide-in;
+  /* картка «Błysk!» повертається (лицем / зворотом) */
+  --kl-anim-flip: kl-flip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -59,6 +61,7 @@
     --kl-anim-fly: kl-fade-in;
     --kl-anim-reveal: kl-fade-in;
     --kl-anim-slide: kl-fade-in;
+    --kl-anim-flip: kl-fade-in;
   }
 }
 
@@ -86,6 +89,7 @@
   --kl-anim-fly: kl-fade-in;
   --kl-anim-reveal: kl-fade-in;
   --kl-anim-slide: kl-fade-in;
+  --kl-anim-flip: kl-fade-in;
 }
 
 @keyframes kl-fade-in {
@@ -235,4 +239,10 @@
 @keyframes kl-slide-in {
   from { opacity: 0; transform: translateX(5%); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+/* Картка повертається: стискається до тонкої смужки й розкривається з іншого боку (300 мс) */
+@keyframes kl-flip {
+  0% { transform: scaleX(.1); }
+  100% { transform: scaleX(1); }
 }

@@ -7,7 +7,7 @@ import {
   SESSION_LINES, SPOKEN_LINES, START_LINES, WORLD_NAMES,
   addSentence, bonesLabel, breakLine, bridgeTen, confirmClear, confuses, countByTens, countOnPraise, countTouch, feedAnimal,
   findNumber, frogJump, gateQuestion, houseQuestion, howManyMissing, pairSum, placeValue, praiseCorrect, praiseEcho,
-  CHEST_LABELS, NODE_LABELS, WORLD_INTROS, changePlayerLabel, islandLabel, missionLine, profileMapLabel, stickerLabel, thereIs, tileLabel,
+  CHEST_LABELS, NODE_LABELS, flashReveal, quantityLine, WORLD_INTROS, changePlayerLabel, islandLabel, missionLine, profileMapLabel, stickerLabel, thereIs, tileLabel,
   twoGroups, whoHasMore,
 } from './lines';
 
@@ -266,5 +266,26 @@ describe('стежка світу, місія, кінець рівня (M7)', ()
 
   it('підпис наліпки', () => {
     expect(stickerLabel(ANIMALS.mis)).toBe('Naklejka — miś');
+  });
+});
+
+describe('«Błysk!» і «Nakarm zwierzaka» (M9)', () => {
+  it('flashReveal: «{a} i {b} to {n}.» (POLISH_COPY §5)', () => {
+    expect(flashReveal([3, 2])).toBe('Trzy i dwa to pięć.');
+    expect(flashReveal([2, 2])).toBe('Dwa i dwa to cztery.');
+    expect(flashReveal([5, 3])).toBe('Pięć i trzy to osiem.');
+    expect(flashReveal([1, 2])).toBe('Jeden i dwa to trzy.');
+    expect(flashReveal([4])).toBe('Cztery.');
+    expect(flashReveal([])).toBe('');
+  });
+
+  it('quantityLine: «Pięć jabłek.», «Jedna gruszka.», «Dwie gruszki.»', () => {
+    expect(quantityLine(5, OBJECTS.jablko)).toBe('Pięć jabłek.');
+    expect(quantityLine(1, OBJECTS.gruszka)).toBe('Jedna gruszka.');
+    expect(quantityLine(2, OBJECTS.gruszka)).toBe('Dwie gruszki.');
+  });
+
+  it('feedAnimal: «Daj misiowi pięć jabłek.» (BRIEF §7 гра 5)', () => {
+    expect(feedAnimal(ANIMALS.mis, 5, OBJECTS.jablko)).toBe('Daj misiowi pięć jabłek.');
   });
 });

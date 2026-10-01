@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import type { MascotState } from '../../characters/poses';
 import { AnswerTile } from '../../components/ui/AnswerTile';
 import { IconButton } from '../../components/ui/IconButton';
@@ -38,15 +38,16 @@ export interface TaskPlayerProps {
   onMap: () => void;
 }
 
-interface ChoiceProps extends Omit<TaskPlayerProps, 'planned'> {
+interface PlayProps extends Omit<TaskPlayerProps, 'planned'> {
   def: GameDef;
   instance: TaskBase;
   index: number;
 }
 
-/** Завдання з вибором відповіді (BRIEF §7 «Спільні правила»): інструкція голосом → дитина діє → вибір плитки → «Gotowe» → правильно /
- *  1-ша помилка («Spróbujmy jeszcze raz!», плитка тьмяніє) / 2-га помилка (Kubik показує «разом», дитина завершує сама). Голос і кісточка — за сценарієм. */
-function ChoiceTask({ level, def, instance, index, filled, onSolved, onMap }: ChoiceProps) {
+/** Завдання (BRIEF §7 «Спільні правила»): інструкція голосом [+ вступний показ гри] → дитина діє → відповідь (плитка чи зібране на сцені) → «Gotowe» →
+ *  правильно / 1-ша помилка («Spróbujmy jeszcze raz!») / 2-га помилка (Kubik показує «разом», дитина завершує сама). Голос і кісточка — за сценарієм.
+ *  choice — відповіді-плитки в лотку; build — дитина збирає відповідь на сцені (сцена пише її через onRespond, лоток — місце для зон). */
+function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: PlayProps) {
   const speaking = useTts().speaking;
   const { run, stop } = useScriptRunner();
   const [state, dispatch] = useReducer(taskReducer, INITIAL_TASK);
@@ -56,24 +57,38 @@ function ChoiceTask({ level, def, instance, index, filled, onSolved, onMap }: Ch
   const [replay, setReplay] = useState(0);
   const [celebrating, setCelebrating] = useState(false);
   const startedAt = useRef(Date.now());
+  /** Остання відповідь дитини (вибрана плитка чи зібране число): потрібна підказкам, навіть коли після помилки вибір скинуто. */
+  const responseRef = useRef<number | null>(null);
   const answer = def.answer(instance);
 
-  // Інструкція: голос читає завдання, «Posłuchaj» повторює її й пульсує, коли голос договорив. Один сценарій на раз — відгук обриває інструкцію.
+  // Інструкція: голос читає завдання (+ вступний показ гри), «Posłuchaj» повторює її й пульсує, коли голос договорив. Один сценарій на раз —
+  // відгук обриває інструкцію, а не перетинається з нею.
   useEffect(() => {
     run(async ({ say, wait }) => {
       setListenPulse(false);
       setMood('talking');
       await wait(replay === 0 ? 450 : 100);
       await say(def.prompt(instance), { interrupt: true });
+      if (def.intro) {
+        setMood('idle');
+        await def.intro(instance, { say, wait, setAssist });
+        setAssist(NO_ASSIST);
+      }
       setMood('idle');
       setListenPulse(true);
     });
   }, [replay, run, def, instance]);
 
+  const respond = useCallback((value: number | null) => {
+    responseRef.current = value;
+    dispatch({ type: 'respond', value });
+  }, []);
+
   const select = (value: number) => {
     if (state.phase !== 'play' || state.wrong.includes(value)) return;
     stop();
     setMood('idle');
+    responseRef.current = value;
     dispatch({ type: 'select', value });
     void tts.speak(numberWords(value), { interrupt: true });
   };
@@ -122,7 +137,7 @@ function ChoiceTask({ level, def, instance, index, filled, onSolved, onMap }: Ch
       setMood('together');
       sfx.play('retry');
       await say(FEEDBACK_LINES.together, { interrupt: true });
-      await def.together(instance, { say, wait, setAssist });
+      await def.together(instance, { say, wait, setAssist }, { nth: state.hints, response: responseRef.current });
       setAssist(NO_ASSIST);
       dispatch({ type: 'feedbackDone' });
       setMood('pointing');
@@ -132,26 +147,30 @@ function ChoiceTask({ level, def, instance, index, filled, onSolved, onMap }: Ch
   // «Pomóż mi» (після першої помилки): «Patrz, pokażę ci.» і лише перший крок — відповідь дитина дає сама
   const help = () => {
     if (!hintAvailable(state) || state.phase !== 'play') return;
+    const nth = state.hints + 1;
     dispatch({ type: 'hint' });
     run(async ({ say, wait }) => {
       setMood('hint');
       await say(FEEDBACK_LINES.show, { interrupt: true });
-      await def.hint(instance, { say, wait, setAssist });
+      await def.hint(instance, { say, wait, setAssist }, { nth, response: responseRef.current });
       setAssist(NO_ASSIST);
       dispatch({ type: 'feedbackDone' });
       setMood('idle');
     });
   };
 
-  const tray = def.tiles(instance).map((tile) => (
-    <AnswerTile
-      key={tile.value}
-      value={tile.value}
-      dots={tile.dots}
-      state={tileView(state, tile.value, answer)}
-      onClick={() => select(tile.value)} // під час відгуку дотик ігнорується в select; плитки не вимикаємо, щоб вони не тьмяніли (40 % — лише хибна)
-    />
-  ));
+  const tray =
+    def.kind === 'choice'
+      ? def.tiles(instance).map((tile) => (
+          <AnswerTile
+            key={tile.value}
+            value={tile.value}
+            dots={tile.dots}
+            state={tileView(state, tile.value, answer)}
+            onClick={() => select(tile.value)} // під час відгуку дотик ігнорується в select; плитки не вимикаємо, щоб вони не тьмяніли (40 % — лише хибна)
+          />
+        ))
+      : null;
 
   return (
     <GameFrame
@@ -172,15 +191,18 @@ function ChoiceTask({ level, def, instance, index, filled, onSolved, onMap }: Ch
       tray={tray}
       check={{ enabled: canCheck(state), onPress: check }}
     >
-      {({ area, reserved }) => (
+      {({ area, reserved, kind, tray: trayEl }) => (
         <def.Scene
           instance={instance}
           world={level.world}
+          kind={kind}
           area={area}
           reserved={reserved}
           assist={assist}
           phase={state.phase}
           celebrating={celebrating}
+          tray={trayEl}
+          onRespond={def.kind === 'build' ? respond : undefined}
           onTouch={() => {
             stop();
             setMood('idle');
@@ -191,7 +213,7 @@ function ChoiceTask({ level, def, instance, index, filled, onSolved, onMap }: Ch
   );
 }
 
-/** Заглушка для гри, якої ще немає (M9–M19): «Dalej» зараховує завдання без запису відповіді. Лише на час розробки. */
+/** Заглушка для гри, якої ще немає (M10–M19): «Dalej» зараховує завдання без запису відповіді. Лише на час розробки. */
 function PlaceholderTaskView({ level, task, filled, onSolved, onMap }: Omit<TaskPlayerProps, 'planned'> & { task: PlaceholderTask }) {
   return (
     <GameFrame
@@ -210,7 +232,7 @@ function PlaceholderTaskView({ level, task, filled, onSolved, onMap }: Omit<Task
     >
       {() => (
         <div className={styles.placeholder}>
-          <p>Гру «{GAME_TITLES[task.game]}» ще не реалізовано (етапи M9–M19) — це тимчасова заглушка для розробки.</p>
+          <p>Гру «{GAME_TITLES[task.game]}» ще не реалізовано (етапи M10–M19) — це тимчасова заглушка для розробки.</p>
           <IconButton
             icon="next"
             label={BUTTONS.next}
@@ -226,5 +248,5 @@ function PlaceholderTaskView({ level, task, filled, onSolved, onMap }: Omit<Task
 
 export function TaskPlayer({ planned, ...rest }: TaskPlayerProps) {
   if (!planned.def) return <PlaceholderTaskView {...rest} task={planned.instance as PlaceholderTask} />;
-  return <ChoiceTask {...rest} def={planned.def} instance={planned.instance} index={planned.index} />;
+  return <PlayTask {...rest} def={planned.def} instance={planned.instance} index={planned.index} />;
 }

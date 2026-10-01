@@ -1,0 +1,74 @@
+.card {
+  display: block;
+  flex: none;
+  max-width: none;
+  overflow: visible;
+  animation: var(--kl-anim-flip) 300ms var(--kl-ease-out) both;
+}
+
+/* контури не масштабуються разом із карткою: однакові 4 / 3 / 2 px на будь-якому розмірі (на 260 px 3,5 одиниці були б товстими 9 px) */
+.paper,
+.frame rect,
+.group,
+.backFill {
+  vector-effect: non-scaling-stroke;
+}
+
+.paper {
+  fill: #fff;
+  stroke: var(--kl-ink);
+  stroke-width: 4px;
+}
+
+.dot {
+  fill: var(--kl-ink);
+}
+
+.frame rect {
+  fill: none;
+  stroke: var(--kl-ink-soft);
+  stroke-width: 2px;
+}
+
+/* обведення груп: ліва (перша) — синя, права (друга) — помаранчева; тінь заливки 12 % */
+.group {
+  fill: rgba(58, 160, 255, .12);
+  stroke: var(--kl-secondary-edge);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.group[data-group='1'] {
+  fill: rgba(255, 138, 61, .14);
+  stroke: var(--kl-primary-edge);
+}
+
+/* сорочка: блоковий візерунок кольору світу */
+.backFill {
+  fill: var(--back);
+  stroke: var(--kl-ink);
+  stroke-width: 3px;
+}
+
+.backCell {
+  fill: rgba(255, 255, 255, .22);
+}
+
+.backCell[data-odd='true'] {
+  fill: rgba(45, 42, 74, .14);
+}
+
+.question {
+  fill: var(--kl-ink);
+  font-family: var(--kl-font-display);
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.card[data-world='w1'] { --back: var(--kl-w1-500); }
+.card[data-world='w2'] { --back: var(--kl-w2-500); }
+.card[data-world='w3'] { --back: var(--kl-w3-500); }
+.card[data-world='w4'] { --back: var(--kl-w4-500); }
+.card[data-world='w5'] { --back: var(--kl-w5-500); }
+.card[data-world='w6'] { --back: var(--kl-w6-500); }
+.card[data-world='w7'] { --back: var(--kl-w7-500); }

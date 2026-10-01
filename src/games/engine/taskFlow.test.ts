@@ -101,6 +101,22 @@ describe('підказка «Pomóż mi»', () => {
   });
 });
 
+describe('гра-конструктор (respond)', () => {
+  it('зібране число вмикає «Gotowe»; хибне значення з минулого разу не блокує', () => {
+    const afterWrong = run([{ type: 'respond', value: 4 }, BAD, { type: 'feedbackDone' }]);
+    expect(afterWrong.selected).toBeNull();
+    expect(canCheck(afterWrong)).toBe(false);
+    expect(run([{ type: 'respond', value: 4 }], afterWrong).selected).toBe(4); // те саме число знову можна зібрати
+    expect(canCheck(run([{ type: 'respond', value: 5 }], afterWrong))).toBe(true);
+  });
+
+  it('null знімає готовність; під час відгуку зміни ігноруються', () => {
+    expect(canCheck(run([{ type: 'respond', value: 3 }, { type: 'respond', value: null }]))).toBe(false);
+    const fb = run([{ type: 'respond', value: 3 }, OK]);
+    expect(run([{ type: 'respond', value: 9 }], fb)).toEqual(fb);
+  });
+});
+
 describe('вигляд плитки', () => {
   it('хибна — retry, вибрана — selected, інша — default', () => {
     const s = run([{ type: 'select', value: 8 }, BAD, { type: 'feedbackDone' }, { type: 'select', value: 7 }]);

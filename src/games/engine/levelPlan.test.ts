@@ -9,6 +9,7 @@ import type { GameDef, GenContext, TaskBase } from './types';
 const seen: (readonly number[])[] = [];
 const fake: GameDef = {
   id: 'policzIDotknij',
+  kind: 'choice',
   generate: (spec: TaskSpec, ctx: GenContext) => {
     seen.push(ctx.previous);
     return { game: spec.game, skill: spec.skill, review: spec.review === true, n: ctx.rng.int(1, 5) } as TaskBase & { n: number };

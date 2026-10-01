@@ -21,6 +21,8 @@ export interface TaskState {
 
 export type TaskEvent =
   | { type: 'select'; value: number }
+  /** Гра-конструктор повідомила, що зібрано `value` (null — нічого): на відміну від select, не блокується попередніми хибними відповідями. */
+  | { type: 'respond'; value: number | null }
   | { type: 'check'; verdict: Verdict }
   | { type: 'hint' }
   | { type: 'feedbackDone' };
@@ -31,6 +33,10 @@ export function taskReducer(state: TaskState, event: TaskEvent): TaskState {
   switch (event.type) {
     case 'select':
       if (state.phase !== 'play' || state.wrong.includes(event.value)) return state;
+      return { ...state, selected: event.value };
+
+    case 'respond':
+      if (state.phase !== 'play') return state;
       return { ...state, selected: event.value };
 
     case 'check': {

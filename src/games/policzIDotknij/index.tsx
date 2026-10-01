@@ -11,6 +11,7 @@ import styles from './View.module.css';
 /** «Policz i dotknij» (BRIEF §7 гра 1): «Policz biedronki. Dotykaj po kolei. Ile jest biedronek?» → вибір із 3 плиток → «Gotowe». */
 export const policzIDotknij: GameDef<CountInstance> = {
   id: 'policzIDotknij',
+  kind: 'choice',
   generate: generateFromSpec,
   prompt: (i) => countTouch(OBJECTS[i.object]),
   bubble: (i) => (
