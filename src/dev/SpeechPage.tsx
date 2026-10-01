@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { LinesList } from './speech/LinesList';
+import { MusicPanel } from './speech/MusicPanel';
 import { NumberGrid } from './speech/NumberGrid';
 import { PhraseLab } from './speech/PhraseLab';
 import { SfxPanel } from './speech/SfxPanel';
@@ -7,7 +8,7 @@ import { VoicePanel } from './speech/VoicePanel';
 import devStyles from './Dev.module.css';
 import styles from './speech/Speech.module.css';
 
-/** /#/dev/speech — голос і звуки (M2): стан, число + предмет → фраза → озвучення, усі числа 0–100, репліки, ефекти. */
+/** /#/dev/speech — голос, звуки (M2) і музика (M2b): стан, число + предмет → фраза → озвучення, числа 0–100, репліки, ефекти, музика. */
 export function SpeechPage() {
   return (
     <main className={devStyles.page}>
@@ -23,6 +24,7 @@ export function SpeechPage() {
         <NumberGrid />
         <LinesList />
         <SfxPanel />
+        <MusicPanel />
       </div>
     </main>
   );

@@ -1,6 +1,7 @@
 // Звук, голос і музика вмикаються лише після першого дотику (CLAUDE.md): до нього екран беззвучний.
 // Слухачі лишаються на весь сеанс: unlock() дешеві й ідемпотентні, а на iOS/Safari вони ще й «будять»
 // AudioContext після згортання вкладки.
+import { music } from './music';
 import { sfx } from './sfx';
 import { tts } from './tts';
 
@@ -13,10 +14,12 @@ export function installAudioUnlock(target: Window = window, doc: Document = docu
   const onGesture = (): void => {
     tts.unlock();
     sfx.unlock();
+    music.unlock(); // після sfx: музика грає через його AudioContext
   };
-  // Голос не має звучати у схованій вкладці
+  // Голос не має звучати у схованій вкладці, а музика — на паузі
   const onVisibility = (): void => {
     if (doc.hidden) tts.cancel();
+    music.setHidden(doc.hidden);
   };
   for (const type of GESTURES) target.addEventListener(type, onGesture, { capture: true, passive: true });
   doc.addEventListener('visibilitychange', onVisibility);
