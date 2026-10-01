@@ -1,6 +1,7 @@
 // УСІ польські рядки сайту (CLAUDE.md): дослівно з docs/BRIEF.md; рядки, яких там немає, — з docs/POLISH_COPY.md §9.
 // Числа в репліках — лише словами (numberWords.ts), узгодження — plural.ts + nouns.ts. Нові рядки додавай сюди,
 // не в компоненти; нову фразу, якої немає в брифі, познач «[do sprawdzenia]» і спитай власника.
+import type { SkillId } from '../curriculum/types';
 import type { Animal, Noun, WorldKey } from './nouns';
 import { DZIESIATKA, JEDNOSC } from './nouns';
 import { numberGenitive, numberWords } from './numberWords';
@@ -125,6 +126,40 @@ export const BREAK_EXERCISES = [
 ] as const;
 
 // ---------- Текст для дорослого (не озвучується) ----------
+/** Назви навичок для «Mapa umiejętności» (Strefa rodzica, M22). [do sprawdzenia] — укладено разом із навчальною програмою M5,
+ *  у BRIEF їх немає; польську перевірити й доповнити українським перекладом у M22. */
+export const SKILL_NAMES: Readonly<Record<SkillId, string>> = {
+  'count-line': 'Liczenie przedmiotów w rzędzie',
+  'count-scatter': 'Liczenie rozsypanych przedmiotów',
+  'subitize-5': 'Rozpoznawanie 1–5 jednym spojrzeniem',
+  'give-n': 'Odliczanie podanej liczby',
+  'digit-quantity': 'Cyfra i ilość',
+  zero: 'Zero',
+  'order-around': 'Przed i po',
+  'compare-10': 'Więcej, mniej, tyle samo',
+  'add-combine': 'Łączenie zbiorów',
+  'plus-equals': 'Znaki + i =',
+  'count-on': 'Liczenie dalej',
+  'bonds-5-10': 'Skład liczby 5 i 10',
+  doubles: 'Dodawanie takich samych liczb',
+  teens: 'Liczby 11–20 jako 10 + n',
+  'count-from-any': 'Liczenie od dowolnej liczby',
+  'add-no-bridge-20': 'Dodawanie bez przekraczania dziesiątki',
+  'bridge-ten': 'Dodawanie z przekraczaniem dziesiątki',
+  'count-by-tens': 'Liczenie dziesiątkami',
+  'bundle-ten': 'Pakowanie po dziesięć',
+  'compose-2digit': 'Liczby dwucyfrowe',
+  'count-on-100': 'Liczenie dalej do 100',
+  neighbors: 'Sąsiedzi ±1 i ±10',
+  'chart-patterns': 'Wzory w tablicy stu',
+  'compare-2digit': 'Porównywanie liczb dwucyfrowych',
+  'add-tens': 'Dodawanie dziesiątek',
+  'plus-ten': 'Dodawanie 10 do dowolnej liczby',
+  'add-2digit-1digit': 'Dodawanie liczby jednocyfrowej do dwucyfrowej',
+  'add-with-bridge': 'Dodawanie z przekraczaniem dziesiątki (do 100)',
+  'story-problems': 'Zadania tekstowe (historyjki)',
+};
+
 export const NO_VOICE_MESSAGE = 'Brak polskiego głosu w tej przeglądarce. Zobacz: Strefa rodzica → Ustawienia → Głos.';
 
 export const PARENT = {

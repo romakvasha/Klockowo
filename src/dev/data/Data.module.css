@@ -1,0 +1,119 @@
+/* Вітрина /#/dev/data (M5): профілі, прогрес, програма, резервна копія. Службова сторінка для власника. */
+.wide {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.table th,
+.table td {
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--kl-surface-2);
+}
+
+.swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  border: 2px solid var(--kl-ink);
+  border-radius: 6px;
+}
+
+.profiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-2);
+  margin-bottom: var(--kl-space-2);
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: var(--kl-space-2);
+  border: 3px solid var(--kl-surface-2);
+  border-radius: var(--kl-radius-tile);
+}
+
+.profile[data-active='true'] {
+  border-color: var(--kl-secondary-edge);
+}
+
+.worldRow {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr;
+  gap: var(--kl-space-1) var(--kl-space-2);
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid var(--kl-surface-2);
+}
+
+.worldName {
+  display: flex;
+  flex-direction: column;
+  font-weight: 800;
+}
+
+.worldName span {
+  color: var(--kl-ink-soft);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  min-width: 40px;
+  padding: 4px 8px;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+  background: var(--kl-locked);
+  border: 2px solid var(--kl-ink);
+  border-radius: var(--kl-radius-chip);
+}
+
+.chip[data-state='done'] { background: var(--kl-success); }
+.chip[data-state='next'] { background: var(--kl-primary); }
+.chip[data-state='star'] { background: var(--kl-reward); }
+.chip[data-state='review'] { background: var(--kl-retry); }
+.chip[data-state='hidden'] { background: transparent; border-style: dashed; }
+
+.area {
+  width: 100%;
+  min-height: 160px;
+  padding: 10px;
+  color: var(--kl-ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+  background: var(--kl-bg);
+  border: 2px solid var(--kl-ink-soft);
+  border-radius: var(--kl-radius-chip);
+}
+
+.result {
+  min-height: 28px;
+  font-weight: 800;
+}
+
+.pre {
+  max-height: 320px;
+  overflow: auto;
+  padding: 10px;
+  font-size: 13px;
+  background: var(--kl-bg);
+  border-radius: var(--kl-radius-chip);
+}

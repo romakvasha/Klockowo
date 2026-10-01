@@ -8,5 +8,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
+    // tokens.css читають тести узгодженості (кольори світів); решту CSS Vitest замінює порожнім рядком
+    css: { include: [/styles[\\/]tokens\.css/] },
   },
 });
