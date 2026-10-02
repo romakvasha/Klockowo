@@ -162,8 +162,8 @@ export interface SumTask extends TaskBase {
 /** «Skoki żabki» — жабка на листках латаття 0–10/0–20, «Skacze trzy razy. Gdzie wyląduje?»; вибір із 3 плиток. (Ракета на прямій 0–100 — W7, M19.) */
 export interface JumpTask extends TaskBase {
   game: 'skokiZabki';
-  /** Скільки листків: 10 → 0–10, 20 → 0–20. */
-  max: 10 | 20;
+  /** Скільки листків: 10 → 0–10, 20 → 0–20; 100 — ракета на прямій 0–100 (W7). */
+  max: 10 | 20 | 100;
   /** Листок, з якого стартує жабка (межі; зменшуються, щоб жабка не вистрибнула за край). */
   start: Range;
   /** Скільки стрибків (межі). */
@@ -172,6 +172,10 @@ export interface JumpTask extends TaskBase {
   pads: 'numbered' | 'landmarks';
   /** true — жабка стрибає від дотику дитини (конкретна дія); false — дитина спершу передбачає, а стрибки з'являються лише як підказка. */
   tapJumps: boolean;
+  /** frog (за замовчуванням) — жабка на листках; rocket — ракета на прямій 0–100 з позначками десятків: «Rakieta jest na liczbie trzydzieści cztery. Leci o dziesięć dalej.» (W7). */
+  vehicle?: 'frog' | 'rocket';
+  /** Ракета: вид додавання — десятки (30 + 20), +10 (34 + 10), одиниці без переходу (42 + 5), через десяток (38 + 5, ★). `start` обмежує перший доданок; `jumps` не використовується. */
+  addend?: 'tens' | 'ten' | 'ones' | 'bridge';
   answers: AnswerStyle;
 }
 
@@ -199,6 +203,8 @@ export interface StoryTask extends TaskBase {
   kind: StoryKind;
   /** W4: перший доданок ≥ 11, сума до 20 — десяток не переходимо (13 + 4). */
   noBridge?: boolean;
+  /** W7: двоцифрові числа в межах 100 — десятки (30 + 20), +10 (34 + 10), одиниці без переходу (42 + 5), через десяток (38 + 5, ★). Має перевагу над `sum`/`noBridge`; кадри показують стовпчики й кубики. */
+  addend?: 'tens' | 'ten' | 'ones' | 'bridge';
   answers: AnswerStyle;
 }
 

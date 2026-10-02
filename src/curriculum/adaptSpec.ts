@@ -85,6 +85,8 @@ function adaptSum(spec: SumTask, step: number, hi: number): SumTask {
 /** «Skoki żabki»: крок униз — менше стрибків, цифри на всіх листках, жабка стрибає від дотику; вгору — більше стрибків, а з кроку 1 дитина передбачає «в думці»
  *  (стрибки лише як підказка), з кроку 2 — цифри лише на віхах. */
 function adaptJump(spec: JumpTask, step: number): JumpTask {
+  // ракета (W7): вид додавання лишається, крок діє на допомогу — униз ракета летить від дотику, вгору дитина передбачає «в думці»
+  if (spec.vehicle === 'rocket') return { ...spec, tapJumps: step < 0 ? true : step > 0 ? false : spec.tapJumps };
   const cap = spec.max === 20 ? 8 : 6;
   const [j0, j1] = spec.jumps;
   if (step < 0) return { ...spec, jumps: [j0, Math.max(j0, j1 + step)], pads: 'numbered', tapJumps: true };
@@ -101,6 +103,8 @@ function adaptTen(spec: TenTask, step: number): TenTask {
 
 /** «Historyjki»: крок униз — менша сума й лише «прийшло ще» (join); вгору — більша сума, з кроку 1 ще й задачі «разом» на двох наборах. */
 function adaptStory(spec: StoryTask, step: number, hi: number): StoryTask {
+  // двоцифрові історії (W7): вид додавання фіксований; крок униз — лише «прийшло ще»
+  if (spec.addend) return step < 0 ? { ...spec, kind: 'join' } : spec;
   if (step < 0) return { ...spec, sum: shiftMax(spec.sum, step, hi), kind: 'join' };
   return { ...spec, sum: shiftMax(spec.sum, step, hi), kind: spec.kind === 'join' && step >= 1 ? 'mixed' : spec.kind };
 }

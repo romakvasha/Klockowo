@@ -49,6 +49,10 @@ const chart = (over: Partial<Extract<TaskSpec, { game: 'tajemniczaTablica' }>> =
   game: 'tajemniczaTablica', skill: 'count-on-100', mode: 'find', range: [1, 100], leaves: 0, step: 'one', direction: 'more', answers: 'digit', ...over,
 });
 
+const rocket = (addend: 'tens' | 'ten' | 'ones' | 'bridge', over: Partial<Extract<TaskSpec, { game: 'skokiZabki' }>> = {}): TaskSpec => ({
+  game: 'skokiZabki', skill: 'add-tens', vehicle: 'rocket', addend, max: 100, start: [11, 99], jumps: [1, 1], pads: 'numbered', tapJumps: true, answers: 'digit', ...over,
+});
+
 export const PRESETS: readonly GamePreset[] = [
   { id: 'wagon-end', title: 'Wagonik: бракує останнього, 1–10, 5 вагонів', world: 'w2', spec: train({ gap: 'end' }) },
   { id: 'wagon-mid', title: 'Wagonik: бракує посередині, 1–10, 6 вагонів', world: 'w2', spec: train({ gap: 'middle', length: 6 }) },
@@ -121,6 +125,14 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'chart-paint-100', title: 'Tablica: розфарбувати до 100 (W6)', world: 'w6', spec: chart({ mode: 'paint', skill: 'chart-patterns' }) },
   { id: 'chart-hidden', title: 'Tablica: «Co kryje się pod listkiem?» (W6)', world: 'w6', spec: chart({ mode: 'hidden', skill: 'chart-patterns', leaves: 2 }) },
   { id: 'kto-2digit', title: 'Kto ma więcej?: двоцифрові, мат розрядів у підказці (W6)', world: 'w6', spec: compare({ skill: 'compare-2digit', count: [21, 99], diff: [1, 15], equal: 0.15, ask: 'mixed', show: 'digits' }) },
+  { id: 'rocket-tens', title: 'Ракета на прямій 0–100: десятки, 30 + 20 (W7)', world: 'w7', spec: rocket('tens') },
+  { id: 'rocket-ten', title: 'Ракета: +10 від будь-якого числа, 34 + 10 (W7)', world: 'w7', spec: rocket('ten', { skill: 'plus-ten' }) },
+  { id: 'rocket-ones', title: 'Ракета: 42 + 5 без переходу (W7)', world: 'w7', spec: rocket('ones', { skill: 'add-2digit-1digit' }) },
+  { id: 'rocket-mental', title: 'Ракета: «в думці» (дотики лише після підказки), 42 + 5 (W7)', world: 'w7', spec: rocket('ones', { skill: 'add-2digit-1digit', tapJumps: false }) },
+  { id: 'rocket-bridge', title: 'Ракета ★: 38 + 5 через десяток (W7★)', world: 'w7', spec: rocket('bridge', { skill: 'add-with-bridge' }) },
+  { id: 'story-big-ten', title: 'Historyjki: двоцифрові, +10 (кадри — стовпчики й кубики) (W7)', world: 'w7', spec: story({ skill: 'story-problems', addend: 'ten', sum: [21, 99] }) },
+  { id: 'story-big-tens', title: 'Historyjki: двоцифрові, десятки (W7)', world: 'w7', spec: story({ skill: 'story-problems', addend: 'tens', sum: [21, 99], kind: 'mixed' }) },
+  { id: 'story-big-bridge', title: 'Historyjki ★: двоцифрові через десяток (W7★)', world: 'w7', spec: story({ skill: 'add-with-bridge', addend: 'bridge', sum: [21, 99] }) },
   { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
 ];
 

@@ -1,0 +1,208 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: var(--kl-edge-safe);
+  gap: var(--kl-space-2);
+  background: var(--kl-hub-50, #FFF5DA);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--kl-space-2);
+}
+
+.title {
+  margin: 0;
+  font: 700 clamp(26px, 5vw, 40px) / 1.1 var(--kl-font-display);
+  color: var(--kl-ink);
+}
+
+/* меню трьох активностей: великі блокові плитки */
+.menu {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: var(--kl-space-3);
+  align-items: center;
+  justify-content: center;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: min(280px, 100%);
+  min-height: 200px;
+  padding: 16px;
+  color: var(--kl-ink);
+  border-radius: 28px;
+}
+
+.tile[data-kind='review'] {
+  --edge: var(--kl-reward-edge);
+  background: var(--kl-reward);
+}
+
+.tile[data-kind='paint'] {
+  --edge: var(--kl-w3-700);
+  background: var(--kl-w3-500);
+}
+
+.tile[data-kind='count'] {
+  --edge: var(--kl-w6-700);
+  background: var(--kl-w6-500);
+}
+
+.tileArt {
+  font: 700 40px / 1 var(--kl-font-display);
+  letter-spacing: 2px;
+}
+
+.tileLabel {
+  font: 700 22px / 1.1 var(--kl-font-display);
+  text-align: center;
+}
+
+/* активність із таблицею: сцена займає весь вільний простір, під нею — палітра чи кнопки лічби */
+.activity {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  gap: var(--kl-space-2);
+}
+
+.stageArea {
+  position: relative;
+  flex: 1;
+  min-height: 240px;
+}
+
+.stage {
+  position: absolute;
+  transform-origin: 0 0;
+}
+
+.abs {
+  position: absolute;
+}
+
+.mini {
+  position: absolute;
+}
+
+.rowFrame {
+  position: absolute;
+  left: 3px;
+  box-sizing: border-box;
+  border: 3px solid var(--kl-ink);
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px var(--kl-surface);
+  pointer-events: none;
+  transition: top 250ms var(--kl-ease-out);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--kl-ink);
+  background: var(--kl-secondary);
+  border-radius: 20px;
+}
+
+.nav svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav:disabled {
+  opacity: .4;
+}
+
+.palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-2);
+  align-items: center;
+  justify-content: center;
+  padding-bottom: var(--kl-space-1);
+}
+
+/* колір: кругла блокова кнопка 72 px; вибраний має товсте кільце й галочку-крапку (не лише колір) */
+.swatch {
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.swatch[data-active='true'] {
+  box-shadow: 0 0 0 4px var(--kl-surface), 0 0 0 8px var(--kl-ink);
+}
+
+.swatch[data-active='true']::after {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-ink);
+  border-radius: 50%;
+}
+
+.song {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  min-height: 72px;
+  padding: 0 16px;
+  font: 700 26px / 1 var(--kl-font-display);
+  color: var(--kl-ink);
+  background: var(--kl-w6-500);
+  border-radius: 24px;
+  --edge: var(--kl-w6-700);
+}
+
+.song[data-active='true'] {
+  background: var(--kl-reward);
+  --edge: var(--kl-reward-edge);
+}
+
+.song:disabled {
+  opacity: .6;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kl-space-3);
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: var(--kl-edge-safe);
+  font: 700 24px / 1.3 var(--kl-font-display);
+  text-align: center;
+  color: var(--kl-ink);
+}
+
+.back {
+  min-width: 160px;
+  min-height: 72px;
+  padding: 0 24px;
+  font: 700 22px / 1 var(--kl-font-display);
+  color: var(--kl-ink);
+  background: var(--kl-reward);
+  border-radius: 24px;
+  --edge: var(--kl-reward-edge);
+}

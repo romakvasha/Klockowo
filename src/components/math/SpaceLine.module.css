@@ -1,0 +1,65 @@
+.root {
+  position: relative;
+  color: var(--kl-ink);
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+}
+
+.axis {
+  stroke: var(--kl-ink);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.tick {
+  stroke: var(--kl-ink-soft);
+  stroke-width: 2;
+}
+
+.tick[data-major='true'] {
+  stroke: var(--kl-ink);
+  stroke-width: 4;
+}
+
+.visited {
+  fill: var(--kl-reward);
+  stroke: var(--kl-ink);
+  stroke-width: 3;
+}
+
+.glow {
+  fill: var(--kl-reward);
+  stroke: var(--kl-reward-edge);
+  stroke-width: 4;
+  animation: var(--kl-anim-pulse) 1s ease-in-out 2;
+}
+
+.label {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+/* число старту й посадки: біла підкладка з рамкою, під десятками */
+.mark {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  background: var(--kl-surface);
+  border: 2.5px solid var(--kl-ink);
+  border-radius: 12px;
+  transform: translateX(-50%);
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out);
+}
+
+/* зупинка маршруту-підказки: порожнє пунктирне кільце */
+.ghost {
+  fill: var(--kl-surface);
+  stroke: var(--kl-ink-soft);
+  stroke-width: 3;
+  stroke-dasharray: 4 3;
+}

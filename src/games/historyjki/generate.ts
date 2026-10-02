@@ -4,7 +4,9 @@ import type { AnswerStyle, StoryKind, StoryTask, TaskSpec } from '../../curricul
 import type { ObjectId } from '../../speech/nouns';
 import { STORY_OBJECTS } from '../../speech/stories';
 import type { GenContext, TaskBase, Verdict } from '../engine/types';
+import { pickBigPair } from '../bigAdd';
 import { NO_BRIDGE_MIN_SUM, pickSumOptions, splitNoBridge } from '../ileRazem/generate';
+import { pickRocketOptions } from '../skokiZabki/generate';
 
 export const STORY_SUM_MIN = 2;
 export const STORY_SUM_MAX = 20;
@@ -26,7 +28,27 @@ export interface StoryInstance extends TaskBase {
 
 export const storyAnswer = (instance: Pick<StoryInstance, 'a' | 'b'>): number => instance.a + instance.b;
 
+/** Двоцифрова історія (сума понад 20, W7): кадри показують стовпчики й кубики, лічба — «від числа» зупинками. */
+export const isBigStory = (instance: Pick<StoryInstance, 'a' | 'b'>): boolean => instance.a + instance.b > 20;
+
+/** Двоцифрова історія: пара за видом додавання (30 + 20, 34 + 10, 42 + 5, 38 + 5), сума в межах `sum`; плитки — «не ті десятки» і «не ті одиниці». */
+function generateBig(spec: StoryTask & { addend: NonNullable<StoryTask['addend']> }, ctx: GenContext): StoryInstance {
+  const { rng } = ctx;
+  const last = ctx.previous[ctx.previous.length - 1];
+  const inRange = (a: number, b: number) => a + b >= spec.sum[0] && a + b <= spec.sum[1] && a + b !== last;
+  let [a, b] = pickBigPair(spec.addend, rng);
+  for (let attempt = 0; attempt < 40 && !inRange(a, b); attempt++) [a, b] = pickBigPair(spec.addend, rng);
+  const kind = spec.kind === 'mixed' ? (rng.next() < 0.5 ? 'join' : 'combine') : spec.kind;
+  const object = rng.pick(STORY_OBJECTS);
+  const other = kind === 'combine' ? rng.pick(STORY_OBJECTS.filter((o) => o !== object)) : object;
+  return {
+    game: 'historyjki', skill: spec.skill, review: spec.review === true, kind, object, other, a, b, answers: spec.answers,
+    options: pickRocketOptions(a + b, spec.addend, rng),
+  };
+}
+
 export function generateStory(spec: StoryTask, ctx: GenContext): StoryInstance {
+  if (spec.addend) return generateBig({ ...spec, addend: spec.addend }, ctx);
   const { rng } = ctx;
   const lo = Math.max(spec.noBridge ? NO_BRIDGE_MIN_SUM : STORY_SUM_MIN, spec.sum[0]);
   const hi = Math.max(lo, Math.min(STORY_SUM_MAX, spec.sum[1]));

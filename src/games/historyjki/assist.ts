@@ -3,9 +3,10 @@
 // далі, фішка за фішкою. Показ «разом» — те саме, що 2-га, плюс «Dwa dodać trzy równa się pięć.»; потім у третьому кадрі з'являється картка з прикладом.
 // Сцена бачить `assist.step` (скільки вже названо) і `assist.level`.
 import { addSentence, startFrom } from '../../speech/lines';
+import { landings } from '../bigAdd';
 import { numberWords } from '../../speech/numberWords';
 import type { AssistContext, HelpInfo } from '../engine/types';
-import { storyAnswer, type StoryInstance } from './generate';
+import { isBigStory, storyAnswer, type StoryInstance } from './generate';
 
 const BETWEEN_MS = 240;
 const SHOW_MS = 500;
@@ -23,9 +24,27 @@ async function countOn(instance: StoryInstance, ctx: AssistContext, mode: 'hint'
   }
 }
 
-/** «Pomóż mi». nth = 1: лічба всіх предметів історії з номерками; nth ≥ 2: рамка-десятка й лічба «від числа». */
+/** Двоцифрова історія (W7): Kubik називає зупинки на шляху до суми — десятки по +10, потім одиниці (34 + 10 → «czterdzieści cztery»; 38 + 5 → «czterdzieści, czterdzieści jeden…»). Сцена
+ *  показує у третьому кадрі стовпчики й кубики поточного числа (з кроку 2 підказки — ще й мат з цифрами розрядів). */
+async function bigLegs(instance: StoryInstance, ctx: AssistContext, mode: 'hint' | 'together', level: number): Promise<void> {
+  const stops = landings(instance.a, instance.b);
+  ctx.setAssist({ mode, step: 0, level });
+  await ctx.wait(SHOW_MS);
+  await ctx.say(startFrom(instance.a), { interrupt: true });
+  for (let n = 1; n <= stops.length; n++) {
+    ctx.setAssist({ mode, step: n, level });
+    await ctx.say(numberWords(stops[n - 1]!), { interrupt: true });
+    await ctx.wait(BETWEEN_MS);
+  }
+}
+
+/** «Pomóż mi». nth = 1: лічба всіх предметів історії з номерками; nth ≥ 2: рамка-десятка й лічба «від числа». Двоцифрова історія — зупинки зі стовпчиками й кубиками. */
 export async function hintStory(instance: StoryInstance, ctx: AssistContext, info: HelpInfo): Promise<void> {
   const level = Math.max(1, info.nth);
+  if (isBigStory(instance)) {
+    await bigLegs(instance, ctx, 'hint', level);
+    return;
+  }
   if (level >= 2) {
     await countOn(instance, ctx, 'hint', level);
     return;
@@ -40,6 +59,11 @@ export async function hintStory(instance: StoryInstance, ctx: AssistContext, inf
 
 /** Показ разом: лічба «від числа» на рамці й «Dwa dodać trzy równa się pięć.». */
 export async function togetherStory(instance: StoryInstance, ctx: AssistContext): Promise<void> {
+  if (isBigStory(instance)) {
+    await bigLegs(instance, ctx, 'together', 2);
+    await ctx.say(addSentence(instance.a, instance.b), { interrupt: true });
+    return;
+  }
   await countOn(instance, ctx, 'together', 2);
   await ctx.say(addSentence(instance.a, instance.b), { interrupt: true });
 }

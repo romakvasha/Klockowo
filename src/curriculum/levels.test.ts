@@ -7,6 +7,7 @@ import { W3_LEVELS } from './levels/w3';
 import { W4_LEVELS } from './levels/w4';
 import { W5_LEVELS } from './levels/w5';
 import { W6_LEVELS } from './levels/w6';
+import { W7_LEVELS } from './levels/w7';
 import { skillInfo } from './skills';
 import { WORLD_KEYS, parseLevelId, worldById } from './worlds';
 
@@ -33,13 +34,10 @@ describe('усі рівні програми', () => {
     expect(() => levelById('w1-13')).toThrow('Unknown level');
   });
 
-  it('W7 — заготовки (draft, без завдань); W1–W6 — описано повністю', () => {
+  it('усі світи W1–W7 описано повністю (заготовок не лишилось): кожен рівень має 6 завдань', () => {
     for (const l of LEVELS) {
-      if (l.world === 'w1' || l.world === 'w2' || l.world === 'w3' || l.world === 'w4' || l.world === 'w5' || l.world === 'w6') expect(l.draft, l.id).toBe(false);
-      else {
-        expect(l.draft, l.id).toBe(true);
-        expect(l.tasks, l.id).toEqual([]);
-      }
+      expect(l.draft, l.id).toBe(false);
+      expect(l.tasks, l.id).toHaveLength(6);
     }
   });
 });
@@ -422,5 +420,55 @@ describe('W6 «Miasto Setki» — 12 рівнів по 6 завдань', () => 
     expect(last.skills).toEqual(['count-on-100', 'neighbors', 'chart-patterns', 'compare-2digit']);
     const fresh = last.tasks.filter((t) => !t.review);
     expect(fresh.map((t) => (t.game === 'tajemniczaTablica' ? t.mode : t.game))).toEqual(['find', 'neighbors', 'hidden', 'ktoMaWiecej']);
+  });
+});
+
+describe('W7 «Kosmiczna Oś» — 12 основних рівнів + ★-гілка з 4, по 6 завдань', () => {
+  const w7 = worldById('w7');
+  const main = W7_LEVELS.filter((l) => l.kind === 'main');
+  const star = W7_LEVELS.filter((l) => l.kind === 'star');
+
+  it('12 основних і 4 ★-рівні, кожен — місія з 6 завдань, 2 з них — повторення', () => {
+    expect(main).toHaveLength(12);
+    expect(star.map((l) => l.id)).toEqual(['w7-s1', 'w7-s2', 'w7-s3', 'w7-s4']);
+    for (const l of W7_LEVELS) {
+      expect(l.tasks, l.id).toHaveLength(6);
+      expect(l.draft, l.id).toBe(false);
+      expect(l.tasks.filter((t) => t.review).length, l.id).toBe(2);
+    }
+  });
+
+  it('нові завдання — з ігор W7 і з навичкою, заявленою в рівні', () => {
+    for (const l of W7_LEVELS) {
+      for (const t of l.tasks.filter((x) => !x.review)) {
+        expect(w7.games, `${l.id} ${t.game}`).toContain(t.game);
+        expect(l.skills, `${l.id} ${t.skill}`).toContain(t.skill);
+      }
+    }
+  });
+
+  it('порядок ідей: десятки (1) → +10 (3) → одиниці без переходу (5) → історії (7); ★ — через десяток', () => {
+    expect(main.filter((l) => l.newIdea).map((l) => l.index)).toEqual([1, 3, 5, 7]);
+    expect(star.filter((l) => l.newIdea).map((l) => l.index)).toEqual([1]);
+    const firstOf = (pick: (t: TaskSpec) => boolean) => main.find((l) => l.tasks.some((t) => !t.review && pick(t)))?.index;
+    expect(firstOf((t) => t.game === 'skokiZabki' && t.addend === 'tens')).toBe(1);
+    expect(firstOf((t) => t.game === 'skokiZabki' && t.addend === 'ten')).toBe(3);
+    expect(firstOf((t) => t.game === 'skokiZabki' && t.addend === 'ones')).toBe(5);
+    expect(firstOf((t) => t.game === 'historyjki')).toBe(7);
+  });
+
+  it('основний шлях без переходу через десяток; «bridge» лише в ★ (ракета, історії, рамка)', () => {
+    for (const l of main) for (const t of l.tasks.filter((x) => !x.review)) {
+      if (t.game === 'skokiZabki' || t.game === 'historyjki') expect(t.addend, l.id).not.toBe('bridge');
+      expect(t.game === 'zrobDziesiatke', l.id).toBe(false);
+    }
+    for (const l of star) expect(l.tasks.filter((t) => !t.review).some((t) => (t.game === 'skokiZabki' || t.game === 'historyjki') && t.addend === 'bridge') || l.tasks.some((t) => t.game === 'zrobDziesiatke'), l.id).toBe(true);
+  });
+
+  it('ракета — на прямій 0–100; підсумковий рівень 12 перевіряє десятки, +10, одиниці й історію', () => {
+    for (const l of W7_LEVELS) for (const t of l.tasks) if (t.game === 'skokiZabki' && t.vehicle === 'rocket') expect(t.max, l.id).toBe(100);
+    const last = main[11]!;
+    expect(last.skills).toEqual(['add-tens', 'plus-ten', 'add-2digit-1digit', 'story-problems']);
+    expect(last.tasks.filter((t) => !t.review).map((t) => t.game)).toEqual(['skokiZabki', 'skokiZabki', 'skokiZabki', 'historyjki']);
   });
 });

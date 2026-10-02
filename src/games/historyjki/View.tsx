@@ -1,5 +1,7 @@
 import { useMemo, type ReactNode } from 'react';
 import { ObjectArt } from '../../components/math/ObjectArt';
+import { PlaceBlocks } from '../../components/math/PlaceBlocks';
+import { PlaceValueMat } from '../../components/math/PlaceValueMat';
 import { TenFrame } from '../../components/math/TenFrame';
 import { fitGrid, gridCell } from '../../components/math/fitGrid';
 import { Digits } from '../../components/ui/Digits';
@@ -10,7 +12,8 @@ import type { ObjectId } from '../../speech/nouns';
 import { placeContent } from '../engine/placeContent';
 import type { SceneKind, SceneProps } from '../engine/types';
 import { storyFrame, storyMarks } from './assist';
-import { storyAnswer, type StoryInstance } from './generate';
+import { landings } from '../bigAdd';
+import { isBigStory, storyAnswer, type StoryInstance } from './generate';
 import styles from './View.module.css';
 
 /** Три кадри історії: «було» → «прийшло ще» → «?». У альбомі — в ряд, у портреті — стовпчиком (design-px). */
@@ -42,6 +45,8 @@ function Group({ object, count, marks, delay, panel }: { object: ObjectId; count
   const w = panel.w - 2 * PAD;
   const h = panel.h - 2 * PAD;
   const fit = useMemo(() => fitGrid(count, w, h, 6, OBJECT_MAX), [count, w, h]);
+  // понад 20 предметів — стовпчики й кубики (двоцифрові числа W7)
+  if (count > 20) return <div className={styles.group} style={{ left: PAD, top: PAD, width: w, height: h }}><PlaceBlocks tens={Math.floor(count / 10)} ones={count % 10} w={w} h={h} /></div>;
   return (
     <div className={styles.group} style={{ left: PAD, top: PAD, width: w, height: h }}>
       {Array.from({ length: count }, (_, i) => {
@@ -85,7 +90,10 @@ export function StoryScene({ instance, world, kind, area, reserved, assist, cele
 
   const counting = assist.mode === 'hint' && (assist.level ?? 1) <= 1 ? assist.step : 0;
   const marks = storyMarks(a, b, counting);
-  const frameOn = (assist.mode === 'hint' && (assist.level ?? 1) >= 2) || assist.mode === 'together';
+  const big = isBigStory(instance);
+  const stops = big ? landings(a, b) : [];
+  const running = big && assist.mode !== 'none' && assist.step >= 1 ? stops[Math.min(assist.step, stops.length) - 1]! : null;
+  const frameOn = !big && ((assist.mode === 'hint' && (assist.level ?? 1) >= 2) || assist.mode === 'together');
   const step = frameOn ? assist.step : 0;
   const cells = sum > 10 ? 20 : 10;
   const frameCell = column ? 22 : 30;
@@ -120,6 +128,12 @@ export function StoryScene({ instance, world, kind, area, reserved, assist, cele
                 <Operator kind="equals" style={{ height: opH }} />
                 <Digits value={sum} style={{ height: digitH }} />
               </span>
+            ) : running !== null ? (
+              (assist.level ?? 1) >= 2 || assist.mode === 'together' ? (
+                <PlaceValueMat tens={Math.floor(running / 10)} ones={running % 10} cell={column ? 6 : 8} digits={false} />
+              ) : (
+                <PlaceBlocks tens={Math.floor(running / 10)} ones={running % 10} w={panel.w - 2 * PAD} h={panel.h - 2 * PAD} />
+              )
             ) : frameOn ? (
               <TenFrame cells={cells} state={storyFrame(a, sum, step)} world={world} cell={frameCell} marks={frameMarks} />
             ) : (

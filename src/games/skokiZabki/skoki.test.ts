@@ -15,7 +15,7 @@ const spec = (over: Partial<JumpTask> = {}): JumpTask => ({
   game: 'skokiZabki', skill: 'count-on', max: 10, start: [0, 7], jumps: [1, 3], pads: 'numbered', tapJumps: true, answers: 'digit', ...over,
 });
 const instance = (over: Partial<JumpInstance> = {}): JumpInstance => ({
-  game: 'skokiZabki', skill: 'count-on', review: false, max: 10, start: 4, jumps: 3, pads: 'numbered', tapJumps: true, answers: 'digit', options: [6, 7, 8], ...over,
+  game: 'skokiZabki', skill: 'count-on', review: false, vehicle: 'frog', max: 10, addend: null, start: 4, jumps: 3, pads: 'numbered', tapJumps: true, answers: 'digit', options: [6, 7, 8], ...over,
 });
 
 describe('відповідь «Skoki żabki»', () => {

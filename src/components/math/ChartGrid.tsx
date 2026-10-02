@@ -17,6 +17,8 @@ export interface ChartGridProps {
   state: (n: number) => ChartCell;
   /** Числа в клітинках (на мініатюрі дрібніших за 24 px їх не показують). */
   showNumbers?: boolean;
+  /** Яким із 4 кольорів розфарбовано клітинку (0–3) — лише для стану painted: вільне розфарбовування в «Plac Zabaw». */
+  paint?: (n: number) => number;
   /** Дотик по клітинці; без нього клітинки — звичайні елементи. */
   onPress?: (n: number) => void;
   /** aria-label клітинки (зі словами, не цифрами: диктор читає число). */
@@ -27,7 +29,10 @@ export interface ChartGridProps {
 
 /** Таблиця 100 і її шматки (BRIEF §10, §12): клітинки без проміжків, між ними лінії; число SVG-цифрами; стани — не лише кольором (листочок має «?», вибране — кільце,
  *  розфарбоване — заливка кольору світу + галочка-крапка). Той самий компонент малює мініатюру всієї таблиці (cell 15–40) і лупу-рядок (cell ≥ 64). */
-export function ChartGrid({ numbers, cols, cell, world, state, showNumbers = true, onPress, labelOf, className, label }: ChartGridProps) {
+/** Чотири кольори розфарбовування: зелений, помаранчевий, блакитний, кораловий (кольори світів W1–W4). */
+export const PAINT_COLORS = ['var(--kl-w1-500)', 'var(--kl-w2-500)', 'var(--kl-w3-500)', 'var(--kl-w4-500)'] as const;
+
+export function ChartGrid({ numbers, cols, cell, world, state, showNumbers = true, paint, onPress, labelOf, className, label }: ChartGridProps) {
   const rows = Math.ceil(numbers.length / cols);
   const digit = Math.round(cell * 0.42);
   return (
@@ -50,7 +55,8 @@ export function ChartGrid({ numbers, cols, cell, world, state, showNumbers = tru
           ) : showNumbers ? (
             <Digits value={n} style={{ height: digit }} />
           ) : null;
-        const common = { className: styles.cell, 'data-state': st } as const;
+        const paintIdx = st === 'painted' ? paint?.(n) : undefined;
+        const common = { className: styles.cell, 'data-state': st, style: paintIdx === undefined ? undefined : { background: PAINT_COLORS[paintIdx % PAINT_COLORS.length] } } as const;
         return onPress ? (
           <button key={n} type="button" {...common} aria-label={labelOf?.(n)} onClick={() => onPress(n)}>
             {inner}

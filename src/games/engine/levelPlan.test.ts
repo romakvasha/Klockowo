@@ -63,9 +63,6 @@ describe('planLevel', () => {
     expect(placeholder?.instance).toMatchObject({ placeholder: true, game: 'blysk' });
   });
 
-  it('заготовки без завдань (W7) дають порожній план', () => {
-    expect(planLevel(levelById('w7-1'), 1, resolve)).toEqual([]);
-  });
 });
 
 describe('summarize, resumeIndex, isLevelFinished', () => {

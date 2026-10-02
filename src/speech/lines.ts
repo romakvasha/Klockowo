@@ -59,6 +59,9 @@ export const LABELS = {
   frameAdd: 'Dołóż żeton', // «Zrób dziesiątkę»: pusta komórka ramki [do sprawdzenia]
   frameRemove: 'Zdejmij żeton',
   pond: 'Staw z liśćmi lilii', // «Skoki żabki»: підпис сцени [do sprawdzenia]
+  spaceLine: 'Oś liczbowa od zera do stu', // ракета W7: пряма 0–100 [do sprawdzenia]
+  rocket: 'rakieta',
+  fly: 'Leć', // ракета: дотик = один етап польоту
   jump: 'Skocz', // жабка: дотик = один стрибок
   basket: 'koszyk', // «Ile razem?»: кошик [do sprawdzenia]
   basketLid: 'koszyk z przykrywką',
@@ -218,6 +221,20 @@ export const GAME_PROMPTS = {
   bridgeFirst: 'Najpierw zrób dziesiątkę.', // ★ через десяток (W4) [do sprawdzenia]
   hiddenNumber: 'Jaka liczba się schowała?', // W6 «Tajemnicza tablica» (§9)
   storyExample: 'Na gałęzi siedzą dwa ptaszki. Przylatują jeszcze trzy. Ile ptaszków jest teraz?', // приклад BRIEF §7.14
+} as const;
+
+/** Plac Zabaw (BRIEF §6 п.13): мішане повторення й вільна гра [do sprawdzenia] — підписи й aria-label; озвучуються лише числа лічби. */
+export const PLAYGROUND = {
+  title: 'Plac Zabaw',
+  review: 'Powtórka',
+  paint: 'Pomaluj tablicę',
+  count: 'Liczymy do stu',
+  ones: 'Po jednym',
+  tens: 'Dziesiątkami',
+  stop: 'Stop',
+  clear: 'Wyczyść',
+  colour: 'Kolor',
+  empty: 'Zagraj najpierw kilka poziomów, a tu będzie powtórka!',
 } as const;
 
 /** Вправи для «Czas na przerwę!» (BRIEF §6.11). */
@@ -405,6 +422,11 @@ export function padLabel(n: number): string {
 /** aria-label дуги стрибка: «skok trzy» (порядковий номер стрибка, не листка) [do sprawdzenia]. */
 export function jumpLabel(n: number): string {
   return `skok ${numberWords(n)}`;
+}
+
+/** «Rakieta jest na liczbie trzydzieści cztery. Leci o dziesięć dalej. Gdzie wyląduje?» (POLISH_COPY §5, гра 10 — W7) */
+export function rocketFlight(start: number, k: number): string {
+  return `Rakieta jest na liczbie ${numberWords(start)}. Leci o ${numberWords(k)} dalej. Gdzie wyląduje?`;
 }
 
 /** «Żabka jest na liczbie cztery. Skacze trzy razy. Gdzie wyląduje?» */
