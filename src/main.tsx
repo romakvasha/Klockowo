@@ -8,12 +8,15 @@ import './styles/motion.css';
 import './styles/block.css';
 import { App } from './app/App';
 import { installAudioUnlock } from './speech/unlock';
+import { registerOffline } from './app/registerOffline';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('#root not found');
 
 // Звук і голос — лише після першого дотику
 installAudioUnlock();
+// Офлайн: service worker лише в production-збірці
+registerOffline();
 
 createRoot(root).render(
   <StrictMode>

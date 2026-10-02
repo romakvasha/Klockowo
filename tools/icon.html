@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>icon</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #FFF7E8; }
+  body { display: grid; place-items: center; color: #FF8A3D; }
+  #logo svg { display: block; height: var(--h, 72vh); width: auto; }
+</style>
+<body><div id="logo"></div>
+<script>
+  // ?pad=0.72 — висота логотипа як частка квадрата (maskable: 0.56, звичайна: 0.72); логотип — K з кубиків із favicon.svg кольору #FF8A3D
+  const pad = new URLSearchParams(location.search).get('pad') || '0.72';
+  document.documentElement.style.setProperty('--h', Number(pad) * 100 + 'vh');
+  fetch('/favicon.svg').then((r) => r.text()).then((t) => { document.getElementById('logo').innerHTML = t; });
+</script></body>

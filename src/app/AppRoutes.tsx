@@ -1,18 +1,5 @@
-import type { ComponentType } from 'react';
+import { lazy, Suspense, type ComponentType } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
-import { DevIndex } from '../dev/DevIndex';
-import { SpeechPage } from '../dev/SpeechPage';
-import { TokensPage } from '../dev/TokensPage';
-import { FramePage } from '../dev/ui/FramePage';
-import { UiPage } from '../dev/ui/UiPage';
-import { CharactersPage } from '../dev/characters/CharactersPage';
-import { DataPage } from '../dev/data/DataPage';
-import { DragPage } from '../dev/drag/DragPage';
-import { GamesPage } from '../dev/games/GamesPage';
-import { BlocksPage } from '../dev/blocks/BlocksPage';
-import { RackPage } from '../dev/rack/RackPage';
-import { MissionPage } from '../dev/mission/MissionPage';
-import { PathPage } from '../dev/path/PathPage';
 import { AdventureMap } from '../screens/AdventureMap';
 import { Badges } from '../screens/Badges';
 import { BreakTime } from '../screens/BreakTime';
@@ -55,6 +42,9 @@ const COMPONENTS: Record<ScreenId, ComponentType> = {
   'no-voice': NoVoice,
 };
 
+/** Службові сторінки розробника — лише в dev-збірці (у production умова стає `false`, і ліниво підключений файл у збірку не потрапляє). */
+const DevRoutes = import.meta.env.DEV ? lazy(() => import('./DevRoutes')) : null;
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -63,19 +53,7 @@ export function AppRoutes() {
         const Screen = COMPONENTS[id];
         return <Route key={id} path={path} element={<Screen />} />;
       })}
-      <Route path="/dev" element={<DevIndex />} />
-      <Route path="/dev/tokens" element={<TokensPage />} />
-      <Route path="/dev/speech" element={<SpeechPage />} />
-      <Route path="/dev/ui" element={<UiPage />} />
-      <Route path="/dev/characters" element={<CharactersPage />} />
-      <Route path="/dev/data" element={<DataPage />} />
-      <Route path="/dev/path" element={<PathPage />} />
-      <Route path="/dev/drag" element={<DragPage />} />
-      <Route path="/dev/games" element={<GamesPage />} />
-      <Route path="/dev/rack" element={<RackPage />} />
-      <Route path="/dev/blocks" element={<BlocksPage />} />
-      <Route path="/dev/mission" element={<MissionPage />} />
-      <Route path="/dev/ui-frame" element={<FramePage />} />
+      {DevRoutes && <Route path="/dev/*" element={<Suspense fallback={null}><DevRoutes /></Suspense>} />}
       <Route path="*" element={<Navigate to={HOME_PATH} replace />} />
     </Routes>
   );
