@@ -35,12 +35,13 @@ export interface TileSpec {
 
 /** Допомога Kubika, яку показує сцена: hint — підказка «Pomóż mi» («Patrz, pokażę ci.»), together — повний розв'язок після другої помилки,
  *  intro — вступний показ гри після інструкції (напр., спалах картки в «Błysk!»). `step` — скільки кроків показано (сенс залежить від гри),
- *  `level` — номер підказки (1-ша, 2-га…): гра може підсилювати допомогу. */
+ *  `level` — номер підказки (1-ша, 2-га…): гра може підсилювати допомогу, `focus` — про яку саме річ (набір, вагон…) зараз мова. */
 export type AssistMode = 'none' | 'hint' | 'together' | 'intro';
 export interface Assist {
   mode: AssistMode;
   step: number;
   level?: number;
+  focus?: number;
 }
 export const NO_ASSIST: Assist = { mode: 'none', step: 0 };
 
@@ -73,10 +74,13 @@ export interface SceneProps<I extends TaskBase> {
   phase: TaskPhase;
   /** Правильну відповідь щойно дано: предмети радіють. */
   celebrating: boolean;
+  /** Що сталося останнім (для сцен, які реагують на помилку: прибрати хибні зв'язки): wrong1 / wrong2 — щойно перевірено хибно. */
+  last: 'none' | 'correct' | 'wrong1' | 'wrong2' | 'hint';
   /** Сцена повідомляє про свою активність (дотик до предмета): рушій знімає «Posłuchaj» і гасить зайвий голос. */
   onTouch?: () => void;
-  /** Лише для ігор-конструкторів (`kind: 'build'`): що зараз зібрано (число); null — нічого. Рушій вмикає «Gotowe», коли воно є. */
-  onRespond?: (value: number | null) => void;
+  /** Лише для ігор-конструкторів (`kind: 'build'`): що зараз зібрано (число); null — нічого. Рушій вмикає «Gotowe», коли воно є.
+   *  `ready = false` — зібрано лише частину: «Gotowe» лишається вимкненою, але значення потрапляє в підказки (HelpInfo.response). */
+  onRespond?: (value: number | null, ready?: boolean) => void;
   /** Лоток: DOM-вузол, у який конструктор виносить місця для предметів (тарілку) через портал; у іграх із плитками — null. */
   tray: HTMLElement | null;
 }
@@ -86,6 +90,8 @@ export interface SceneProps<I extends TaskBase> {
 export interface GameDef<I extends TaskBase = TaskBase> {
   id: GameId;
   kind: 'choice' | 'build';
+  /** false — відповідь не є числом, яке можна порівнювати (з'єднання пар): в історію відповідей не пишемо answer і wrong. */
+  recordsAnswer?: boolean;
   generate(spec: TaskSpec, ctx: GenContext): I;
   /** Репліка-інструкція (BRIEF §7). */
   prompt(instance: I): string;

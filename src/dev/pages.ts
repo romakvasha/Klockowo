@@ -17,5 +17,6 @@ export const DEV_PAGES: readonly DevPage[] = [
   { path: '/dev/path', title: 'Ścieżka świata: усі стани вузлів, ★-гілка, скриня, Kubik (?world=w4&done=6&stars=1&panel=0)', stage: 'M7', ready: true },
   { path: '/dev/mission', title: 'Wprowadzenie: композиція без голосу, фази card/idea і види демонстрації (?world=w3&phase=idea&kind=sum&stage=2&panel=0)', stage: 'M7', ready: true },
   { path: '/dev/drag', title: 'Перетягування (Pointer Events) + заміна двома дотиками: яблука → тарілка', stage: 'M8', ready: true },
+  { path: '/dev/games', title: 'Ігри на вигаданому рівні: пресети Wagonik і Cyfra i obrazek, нове зерно (?preset=wagon-mid&seed=3&panel=0)', stage: 'M10', ready: true },
   { path: '/dev/characters', title: 'Персонажі: Kubik (17 поз, аксесуари, рот A/O/E), команда, 8 цуценят, MascotStage', stage: 'M4', ready: true },
 ];

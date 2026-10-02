@@ -8,6 +8,7 @@ import { UiPage } from '../dev/ui/UiPage';
 import { CharactersPage } from '../dev/characters/CharactersPage';
 import { DataPage } from '../dev/data/DataPage';
 import { DragPage } from '../dev/drag/DragPage';
+import { GamesPage } from '../dev/games/GamesPage';
 import { MissionPage } from '../dev/mission/MissionPage';
 import { PathPage } from '../dev/path/PathPage';
 import { AdventureMap } from '../screens/AdventureMap';
@@ -68,6 +69,7 @@ export function AppRoutes() {
       <Route path="/dev/data" element={<DataPage />} />
       <Route path="/dev/path" element={<PathPage />} />
       <Route path="/dev/drag" element={<DragPage />} />
+      <Route path="/dev/games" element={<GamesPage />} />
       <Route path="/dev/mission" element={<MissionPage />} />
       <Route path="/dev/ui-frame" element={<FramePage />} />
       <Route path="*" element={<Navigate to={HOME_PATH} replace />} />

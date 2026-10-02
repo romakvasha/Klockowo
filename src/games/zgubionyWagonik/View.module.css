@@ -1,0 +1,27 @@
+.scene {
+  position: relative;
+}
+
+/* вагони й паровозик стоять на колії; позицію задає trainLayout */
+.item {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* колія — блоковий брус каменю під колесами (під усім рядом) */
+.rail {
+  position: absolute;
+  z-index: 0;
+  height: 12px;
+  background: var(--kl-locked-edge);
+  border-radius: 5px;
+  box-shadow: 0 5px 0 #8C87A8;
+}
+
+/* бульбашка Kubika: порожнє місце «?» на потязі */
+.ask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

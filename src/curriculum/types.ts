@@ -68,12 +68,43 @@ export interface FeedTask extends TaskBase {
   slots: boolean;
 }
 
-/** Ігри, чиї параметри опишуть етапи M10–M19: поки лише гра й навичка. */
-export interface PendingTask extends TaskBase {
-  game: Exclude<GameId, 'policzIDotknij' | 'blysk' | 'nakarmZwierzaka'>;
+/** Як показано кількість у наборі «Cyfra i obrazek»: предмети, крапки, пальці рук, рамка-десятка; mixed — різні способи в одному завданні. */
+export type SetStyle = 'objects' | 'dots' | 'fingers' | 'tenFrame' | 'mixed';
+
+/** «Cyfra i obrazek» — з'єднати 2–4 набори-картинки з цифрами (дотик по набору, дотик по цифрі). */
+export interface MatchTask extends TaskBase {
+  game: 'cyfraIObrazek';
+  /** Скільки пар (2–4). */
+  pairs: number;
+  /** З яких чисел набори (у W2 разом із 0). */
+  numbers: Range;
+  set: SetStyle;
 }
 
-export type TaskSpec = CountTask | FlashTask | FeedTask | PendingTask;
+/** Де в потязі бракує вагона: end — останнього, middle — посередині, start — першого, any — навмання. */
+export type TrainGap = 'end' | 'middle' | 'start' | 'any';
+
+/** «Zgubiony wagonik» — потяг із номерами на вагонах, одного бракує; вибір із 3 плиток. */
+export interface TrainTask extends TaskBase {
+  game: 'zgubionyWagonik';
+  /** Межі чисел, які бувають на вагонах. */
+  range: Range;
+  /** Скільки вагонів у потязі (разом із тим, якого бракує): 5–7. */
+  length: number;
+  gap: TrainGap;
+  /** Крок між вагонами: 1 або 10. */
+  step: 1 | 10;
+  /** Лічба назад (★): номери вагонів спадають. */
+  backwards?: boolean;
+  answers: AnswerStyle;
+}
+
+/** Ігри, чиї параметри опишуть етапи M11–M19: поки лише гра й навичка. */
+export interface PendingTask extends TaskBase {
+  game: Exclude<GameId, 'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik'>;
+}
+
+export type TaskSpec = CountTask | FlashTask | FeedTask | MatchTask | TrainTask | PendingTask;
 
 export type LevelKind = 'main' | 'star';
 

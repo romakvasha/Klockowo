@@ -10,8 +10,8 @@ export interface EntryInput {
   instance: TaskBase;
   level: Level;
   state: Pick<TaskState, 'mistakes' | 'hints' | 'together' | 'wrong'>;
-  /** Правильна відповідь завдання (число). */
-  answer: number;
+  /** Правильна відповідь завдання (число); null — відповідь не число (з'єднання пар): answer і wrong не записуються. */
+  answer: number | null;
   /** Скільки мс від початку завдання до відповіді. */
   ms: number;
   now: Date;
@@ -29,8 +29,8 @@ export function buildEntry({ instance, level, state, answer, ms, now }: EntryInp
     hints: state.hints,
     together: state.together,
     ms: Math.max(0, Math.round(ms)),
-    answer,
-    ...(state.wrong.length > 0 ? { wrong: [...state.wrong] } : {}),
+    ...(answer === null ? {} : { answer }),
+    ...(answer !== null && state.wrong.length > 0 ? { wrong: [...state.wrong] } : {}),
   };
 }
 

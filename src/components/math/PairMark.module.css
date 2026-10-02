@@ -1,0 +1,7 @@
+.mark {
+  display: block;
+  flex: none;
+  overflow: visible;
+  pointer-events: none;
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}

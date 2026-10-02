@@ -1,0 +1,32 @@
+/* Службова панель dev-вітрини ігор: плаває в куті й не заважає грі (на телефоні — згорнута до одного ряду). */
+.panel {
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  max-width: min(560px, calc(100vw - 16px));
+  padding: 6px 8px;
+  font: 600 13px/1.2 var(--kl-font-ui);
+  background: rgba(255, 255, 255, .92);
+  border: 2px solid var(--kl-ink);
+  border-radius: 12px;
+  opacity: .85;
+}
+
+.panel select,
+.panel button {
+  min-height: 32px;
+  font: inherit;
+}
+
+.panel select {
+  max-width: 260px;
+}
+
+.link {
+  color: var(--kl-secondary-edge);
+}

@@ -15,6 +15,8 @@ export interface DotCardProps {
   world: WorldKey;
   /** Підпис для екранного диктора (без числа, щоб не видати відповідь). */
   label: string;
+  /** Без власного білого паперу й анімації появи: картка лежить усередині іншої (набір у «Cyfra i obrazek»). */
+  bare?: boolean;
   className?: string;
 }
 
@@ -23,14 +25,14 @@ const px = (v: number): number => 10 + v * 80;
 
 /** DotCard (design etap2/07): біла картка з контуром ink і крапками; сорочка — блоковий візерунок кольору світу; групи обводяться двома рамками.
  *  Рамка-десятка малює комірки 5×2. Поворот лицем/зворотом — 300 мс (kl-flip). */
-export function DotCard({ layout, face, groups = false, size, world, label, className }: DotCardProps) {
+export function DotCard({ layout, face, groups = false, size, world, label, bare = false, className }: DotCardProps) {
   const n = layout.dots.length;
   const r = layout.frame ? 5.6 : n >= 7 ? 6.6 : 8.4;
   const boxes = groups && face === 'front' ? groupBoxes(layout.dots, layout.groups, r / 80, 0.045) : [];
   return (
     <svg
       key={face}
-      className={cx(styles.card, className)}
+      className={cx(styles.card, bare && styles.bare, className)}
       data-face={face}
       data-world={world}
       viewBox="0 0 100 100"
@@ -40,7 +42,7 @@ export function DotCard({ layout, face, groups = false, size, world, label, clas
       aria-label={label}
       focusable="false"
     >
-      <rect className={styles.paper} x="2.5" y="2.5" width="95" height="95" rx="14" />
+      {!bare && <rect className={styles.paper} x="2.5" y="2.5" width="95" height="95" rx="14" />}
       {face === 'front' ? (
         <>
           {layout.frame && (

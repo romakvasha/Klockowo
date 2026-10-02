@@ -1,0 +1,41 @@
+// Пресети dev-вітрини /#/dev/games: готові TaskSpec для ігор (службові підписи українською — для власника).
+// Кожен пресет — один вигаданий рівень із 6 однакових завдань; ще не реалізованих ігор тут нема.
+import type { TaskSpec, WorldKey } from '../../curriculum/types';
+
+export interface GamePreset {
+  id: string;
+  title: string;
+  world: WorldKey;
+  spec: TaskSpec;
+}
+
+const train = (over: Partial<Extract<TaskSpec, { game: 'zgubionyWagonik' }>> = {}): TaskSpec => ({
+  game: 'zgubionyWagonik', skill: 'order-around', range: [1, 10], length: 5, gap: 'any', step: 1, answers: 'digit', ...over,
+});
+const match = (over: Partial<Extract<TaskSpec, { game: 'cyfraIObrazek' }>> = {}): TaskSpec => ({
+  game: 'cyfraIObrazek', skill: 'digit-quantity', pairs: 3, numbers: [1, 5], set: 'objects', ...over,
+});
+
+export const PRESETS: readonly GamePreset[] = [
+  { id: 'wagon-end', title: 'Wagonik: бракує останнього, 1–10, 5 вагонів', world: 'w2', spec: train({ gap: 'end' }) },
+  { id: 'wagon-mid', title: 'Wagonik: бракує посередині, 1–10, 6 вагонів', world: 'w2', spec: train({ gap: 'middle', length: 6 }) },
+  { id: 'wagon-start', title: 'Wagonik: бракує першого, 0–10', world: 'w2', spec: train({ gap: 'start', range: [0, 10] }) },
+  { id: 'wagon-long', title: 'Wagonik: 7 вагонів, 1–20 (W4)', world: 'w4', spec: train({ range: [1, 20], length: 7 }) },
+  { id: 'wagon-tens', title: 'Wagonik: десятки, 10–100, 6 вагонів (W5)', world: 'w5', spec: train({ range: [10, 100], length: 6, step: 10 }) },
+  { id: 'wagon-back', title: 'Wagonik ★: лічба назад, 1–20', world: 'w4', spec: train({ range: [1, 20], length: 6, gap: 'middle', backwards: true }) },
+  { id: 'wagon-hundred', title: 'Wagonik: 7 вагонів, 1–100 (W6)', world: 'w6', spec: train({ range: [1, 100], length: 7 }) },
+  { id: 'match-2', title: 'Cyfra: 2 пари, предмети, 1–5', world: 'w2', spec: match({ pairs: 2 }) },
+  { id: 'match-3', title: 'Cyfra: 3 пари, предмети, 1–5', world: 'w2', spec: match() },
+  { id: 'match-zero', title: 'Cyfra: 3 пари з нулем, 0–5, змішані', world: 'w2', spec: match({ skill: 'zero', numbers: [0, 5], set: 'mixed' }) },
+  { id: 'match-4', title: 'Cyfra: 4 пари, змішані, 0–10', world: 'w2', spec: match({ pairs: 4, numbers: [0, 10], set: 'mixed' }) },
+  { id: 'match-dots', title: 'Cyfra: 3 пари, крапки, 1–6', world: 'w2', spec: match({ numbers: [1, 6], set: 'dots' }) },
+  { id: 'match-fingers', title: 'Cyfra: 3 пари, пальці, 0–10', world: 'w2', spec: match({ numbers: [0, 10], set: 'fingers' }) },
+  { id: 'match-frame', title: 'Cyfra: 3 пари, рамка-десятка, 1–10', world: 'w2', spec: match({ numbers: [1, 10], set: 'tenFrame' }) },
+  { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
+];
+
+export const DEFAULT_PRESET = PRESETS[0]!;
+
+export function presetById(id: string | null): GamePreset {
+  return PRESETS.find((p) => p.id === id) ?? DEFAULT_PRESET;
+}

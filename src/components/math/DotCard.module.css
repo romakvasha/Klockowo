@@ -6,6 +6,10 @@
   animation: var(--kl-anim-flip) 300ms var(--kl-ease-out) both;
 }
 
+.bare {
+  animation: none;
+}
+
 /* контури не масштабуються разом із карткою: однакові 4 / 3 / 2 px на будь-якому розмірі (на 260 px 3,5 одиниці були б товстими 9 px) */
 .paper,
 .frame rect,

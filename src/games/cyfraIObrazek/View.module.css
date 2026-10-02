@@ -1,0 +1,29 @@
+.scene {
+  position: relative;
+}
+
+.slot {
+  position: absolute;
+}
+
+/* плитка-цифра в лотку + позначка пари в її лівому верхньому куті */
+.tileWrap {
+  position: relative;
+  display: flex;
+  flex: none;
+}
+
+.tileMark {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  z-index: 1;
+}
+
+/* бульбашка Kubika: предмет + «?» */
+.ask {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,66 @@
+/* Вагон і паровозик «Zgubiony wagonik»: позицію задає сцена (absolute), тут — вигляд станів. Рух — через --kl-anim-* (reduced-motion → згасання). */
+.wagon {
+  display: block;
+  flex: none;
+  transition: transform var(--kl-dur-count) var(--kl-ease-pop);
+}
+
+.wagon svg {
+  display: block;
+  overflow: visible;
+}
+
+.wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* порожнє місце: пунктирний контур і «?» — сигнал не лише кольором */
+.slot {
+  fill: rgba(255, 255, 255, .45);
+  stroke: #8C87A8;
+  stroke-width: 3;
+  stroke-dasharray: 9 7;
+}
+
+.question {
+  font-family: var(--kl-font-display);
+  font-size: 46px;
+  font-weight: 700;
+  fill: var(--kl-ink-soft);
+}
+
+/* золота рамка — вагон, який зараз читає Kubik */
+.glow {
+  fill: none;
+  stroke: var(--kl-reward);
+  stroke-width: 6;
+  opacity: 0;
+}
+
+.wagon[data-state='reading'] {
+  transform: translateY(-8px) scale(1.05);
+}
+
+.wagon[data-state='reading'] .glow {
+  opacity: 1;
+}
+
+/* підказка вказує на прогалину: золотий пунктир і «дихання» */
+.wagon[data-state='gapHint'] {
+  animation: var(--kl-anim-breathe) 1.2s ease-in-out infinite;
+}
+
+.wagon[data-state='gapHint'] .slot {
+  fill: rgba(255, 194, 26, .3);
+  stroke: var(--kl-reward-edge);
+  stroke-width: 5;
+}
+
+.wagon[data-state='arriving'] {
+  animation: var(--kl-anim-drop) 600ms var(--kl-ease-pop) both;
+}
+
+.wagon[data-state='arriving'] .wheel {
+  animation: var(--kl-anim-spin) 600ms ease-out;
+}

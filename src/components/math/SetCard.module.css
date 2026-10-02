@@ -1,0 +1,117 @@
+/* Набір-картинка «Cyfra i obrazek»: біла блокова картка (контур 3 px, край кольору пари, коли набір з'єднано). */
+.card {
+  --edge: var(--kl-neutral-edge);
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--size);
+  height: var(--size);
+  background: var(--kl-surface);
+  border-radius: 14%;
+}
+
+.card[data-linked='true'] {
+  --edge: var(--pair-edge);
+}
+
+/* selected: кільце 4 px і невеликий підйом */
+.card[data-state='selected'],
+.card[data-state='selected']:active:not(:disabled) {
+  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
+  transform: translateY(-4px);
+}
+
+/* допомога Kubika вказує сюди: золота рамка й сяйво */
+.card[data-focus='true'] {
+  --edge: var(--kl-reward-edge);
+  box-shadow: 0 6px 0 var(--edge), 0 0 0 4px var(--kl-reward), 0 0 0 12px rgba(255, 194, 26, .28), var(--kl-ring);
+}
+
+/* хибна пара: фіолетова рамка, хитання; картинка лишається яскравою — її треба перелічити */
+.card[data-state='retry'] {
+  --edge: var(--kl-retry-edge);
+  border-color: var(--kl-retry-edge);
+  animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
+}
+
+.card[data-state='correct'] {
+  --edge: var(--kl-success-edge);
+  background: #EAF8EF;
+}
+
+.face {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.face[data-celebrate='true'] {
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+.object {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+.dots {
+  display: block;
+}
+
+/* порожній набір (нуль): пунктирне коло посередині картки */
+.empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  border: 3px dashed var(--kl-locked-edge);
+  border-radius: var(--kl-radius-round);
+  transform: translate(-50%, -50%);
+}
+
+/* пальці: одна чи дві руки в ряд; друга дзеркально, як права й ліва */
+.hands {
+  display: flex;
+  gap: 2%;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.hand {
+  display: block;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 50%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.hand[data-mirror='true'] {
+  transform: scaleX(-1);
+}
+
+.mark {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+}
+
+/* лічильник підказки: біле коло з цифрою в правому нижньому куті */
+.counter {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color: var(--kl-ink);
+  background: #fff;
+  border: 3px solid var(--kl-ink);
+  border-radius: var(--kl-radius-round);
+  pointer-events: none;
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}

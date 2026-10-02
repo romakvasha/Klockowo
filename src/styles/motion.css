@@ -34,6 +34,9 @@
   --kl-anim-slide: kl-slide-in;
   /* картка «Błysk!» повертається (лицем / зворотом) */
   --kl-anim-flip: kl-flip;
+  /* «Zgubiony wagonik»: вагончик падає на місце, колеса крутяться */
+  --kl-anim-drop: kl-drop;
+  --kl-anim-spin: kl-spin;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -62,6 +65,8 @@
     --kl-anim-reveal: kl-fade-in;
     --kl-anim-slide: kl-fade-in;
     --kl-anim-flip: kl-fade-in;
+    --kl-anim-drop: kl-fade-in;
+    --kl-anim-spin: none;
   }
 }
 
@@ -90,6 +95,8 @@
   --kl-anim-reveal: kl-fade-in;
   --kl-anim-slide: kl-fade-in;
   --kl-anim-flip: kl-fade-in;
+  --kl-anim-drop: kl-fade-in;
+  --kl-anim-spin: none;
 }
 
 @keyframes kl-fade-in {
@@ -245,4 +252,16 @@
 @keyframes kl-flip {
   0% { transform: scaleX(.1); }
   100% { transform: scaleX(1); }
+}
+
+/* «Zgubiony wagonik»: загублений вагончик падає в прогалину й «сідає» (600 мс); колеса роблять один оберт */
+@keyframes kl-drop {
+  0% { transform: translateY(-70px); opacity: 0; }
+  55% { transform: translateY(8px); opacity: 1; }
+  80% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes kl-spin {
+  to { transform: rotate(360deg); }
 }

@@ -28,7 +28,16 @@ export const LABELS = {
   answers: 'Odpowiedzi', // aria-label лотка з плитками-відповідями (design etap2/00)
   dotCard: 'karta z kropkami', // «Błysk!»: картка з крапками (aria-label без числа, щоб не видати відповідь)
   plate: 'talerz', // «Nakarm zwierzaka»: тарілка
+  train: 'Pociąg z brakującym wagonem', // «Zgubiony wagonik»: підпис сцени [do sprawdzenia]
+  engine: 'lokomotywa',
+  wagonGap: 'brakujący wagon',
+  set: 'obrazek', // «Cyfra i obrazek»: картка-набір (без числа, щоб не видати відповідь) [do sprawdzenia]
 } as const;
+
+/** aria-label вагона з номером: «wagon pięć» («Zgubiony wagonik»). */
+export function wagonLabel(n: number): string {
+  return `wagon ${numberWords(n)}`;
+}
 
 /** aria-label островів Mapy przygody (design etap1/17): «Kosmiczna Droga — zablokowane», «Ogród Cyfr — ukończone», «Wyspa Dodawania — tutaj jesteśmy». */
 export const ISLAND_STATE_LABELS = { locked: 'zablokowane', completed: 'ukończone', current: 'tutaj jesteśmy' } as const;
@@ -153,7 +162,11 @@ export const ERROR_LINES = { oops: 'Ups! Spróbujmy jeszcze raz.' } as const;
 export const GAME_PROMPTS = {
   blink: 'Patrz uważnie! Ile kropek?',
   match: 'Połącz obrazki z liczbami.',
+  matchEmpty: 'Tu nic nie ma.', // підказка: лічба порожнього набору (нуль) [do sprawdzenia]
   wagon: 'Jakiej liczby brakuje w pociągu?',
+  wagonBack: 'Pociąg jedzie do tyłu. Czego brakuje?', // ★ лічба назад (POLISH_COPY §5)
+  wagonNext: 'I co dalej?', // підказка: потяг прочитав вагони перед прогалиною (POLISH_COPY §5: «…{n−2}, {n−1}… i co dalej?»)
+  wagonBefore: 'A co jest przed nimi?', // підказка, коли бракує першого вагона: перед ним нічого читати [do sprawdzenia]
   busFree: 'Ile miejsc jest wolnych?',
   hiddenNumber: 'Jaka liczba się schowała?', // W6 «Tajemnicza tablica» (§9)
   storyExample: 'Na gałęzi siedzą dwa ptaszki. Przylatują jeszcze trzy. Ile ptaszków jest teraz?', // приклад BRIEF §7.14

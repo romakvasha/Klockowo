@@ -79,9 +79,9 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
     });
   }, [replay, run, def, instance]);
 
-  const respond = useCallback((value: number | null) => {
+  const respond = useCallback((value: number | null, ready: boolean = value !== null) => {
     responseRef.current = value;
-    dispatch({ type: 'respond', value });
+    dispatch({ type: 'respond', value: ready ? value : null });
   }, []);
 
   const select = (value: number) => {
@@ -104,7 +104,7 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
       const ms = Date.now() - startedAt.current;
       const result: SolvedResult = {
         outcome: taskOutcome(next),
-        entry: buildEntry({ instance, level, state: next, answer, ms, now: new Date() }),
+        entry: buildEntry({ instance, level, state: next, answer: def.recordsAnswer === false ? null : answer, ms, now: new Date() }),
         minutes: playMinutes(ms),
       };
       run(async ({ say, wait }) => {
@@ -201,6 +201,7 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
           assist={assist}
           phase={state.phase}
           celebrating={celebrating}
+          last={state.last}
           tray={trayEl}
           onRespond={def.kind === 'build' ? respond : undefined}
           onTouch={() => {

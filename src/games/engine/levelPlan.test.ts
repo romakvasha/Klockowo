@@ -109,6 +109,13 @@ describe('buildEntry', () => {
   it('більше трьох помилок усе одно 3 спроби; від’ємний час — нуль', () => {
     expect(buildEntry({ instance, level, state: { mistakes: 5, hints: 0, together: true, wrong: [1] }, answer: 3, ms: -5, now })).toMatchObject({ attempts: 3, ms: 0 });
   });
+
+  it('відповідь не число (з’єднання пар): answer і wrong не записуються, решта — як завжди', () => {
+    const e = buildEntry({ instance, level, state: { mistakes: 1, hints: 1, together: false, wrong: [37] }, answer: null, ms: 5000, now });
+    expect(e).not.toHaveProperty('answer');
+    expect(e).not.toHaveProperty('wrong');
+    expect(e).toMatchObject({ firstTry: false, attempts: 2, hints: 1, ms: 5000 });
+  });
 });
 
 describe('playMinutes', () => {
