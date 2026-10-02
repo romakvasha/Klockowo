@@ -28,7 +28,7 @@ const NATURAL = /natural|neural|online/i;
 const FRIENDLY: Readonly<Record<Lang, RegExp>> = {
   pl: /zofia|zosia|paulina|ewa|agnieszka|maja|google polski/i,
   uk: /lesya|polina|natalia|olena|google українська|google ukrainian/i,
-  en: /sonia|libby|jenny|aria|samantha|karen|moira|google uk english female|google us english/i,
+  en: /sonia|libby|jenny|aria|zira|hazel|susan|samantha|karen|moira|google uk english female|google us english/i,
 };
 
 export function isVoiceFor(v: VoiceLike, lang: Lang): boolean {
