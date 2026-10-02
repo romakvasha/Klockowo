@@ -2,14 +2,16 @@ import { Navigate, useNavigate } from 'react-router';
 import { parentAccess } from '../parent/access';
 import { panelText } from '../parent/text';
 import { selectActiveProfile, selectActiveProgress, useAppStore } from '../store';
+import { BackupSection } from './parent/BackupSection';
 import { OverviewSection } from './parent/OverviewSection';
+import { ProfilesSection } from './parent/ProfilesSection';
 import { ProgressSection } from './parent/ProgressSection';
 import { SettingsSection } from './parent/SettingsSection';
 import { SkillsSection } from './parent/SkillsSection';
 import styles from './parent/Parent.module.css';
 
 /** Strefa rodzica (BRIEF §6 п.15): спокійний дорослий стиль (текст 18 px, кнопки від 44 px), перемикач «Język panelu: Polski / Українська». Сюди веде лише Bramka rodzica (дозвіл на 15 хв
- *  у sessionStorage). Розділи: Podsumowanie, Ostatnia sesja, Mapa umiejętności, Postępy, Trudności, Ustawienia; профілі й копія — наступним етапом. */
+ *  у sessionStorage). Розділи: Podsumowanie, Ostatnia sesja, Mapa umiejętności, Postępy, Trudności, Ustawienia, Profile, Kopia zapasowa. */
 export function ParentZone() {
   const navigate = useNavigate();
   const profile = useAppStore(selectActiveProfile);
@@ -45,6 +47,8 @@ export function ParentZone() {
       <SkillsSection progress={progress} t={t} lang={lang} />
       <ProgressSection progress={progress} t={t} lang={lang} />
       <SettingsSection t={t} />
+      <ProfilesSection t={t} />
+      <BackupSection t={t} />
     </main>
   );
 }
