@@ -27,8 +27,13 @@ export const PACK_BUTTON = 80;
 export const CELL = 17;
 export const MAT_CELL = 20;
 export const BUILD_BUTTON = 96;
-const MAT = placeValueMatSize(MAT_CELL);
-export const BUILD_DESIGN = { w: MAT.w + 24 + BUILD_BUTTON, h: MAT.h } as const;
+/** Мат у режимі «Zbuduj»: на ПК клітинка 20, на вузьких екранах — 14 (мат вужчий, тож кнопки «+10» і «+1» лишаються ≥ 64 px після масштабування). */
+export const MAT_CELL_NARROW = 14;
+export function buildDesign(cell: number): { w: number; h: number } {
+  const mat = placeValueMatSize(cell);
+  return { w: mat.w + 24 + BUILD_BUTTON, h: mat.h };
+}
+export const BUILD_DESIGN = buildDesign(MAT_CELL);
 const MAX_SCALE = 1.4;
 
 /** Позиція i-ї коробки в сітці 3×3 правої зони (design-px). */
@@ -190,13 +195,15 @@ function PackScene({ instance, area, reserved, assist, phase, celebrating, onTou
 
 /** Сцена «Paczki po dziesięć», режим build: «Zbuduj liczbę czterdzieści siedem.» Мат «dziesiątki | jedności», праворуч — «+10» і «+1» (96 px). Десять кубиків-одиниць самі зчіплюються
  *  в стовпчик-десяток; дотик по блоку знімає його. Дитина бачить, скільки вже зібрано, цифрами розрядів; «Gotowe» перевіряє число. */
-function BuildScene({ instance, area, reserved, assist, phase, celebrating, onRespond, onTouch }: SceneProps<PackInstance>) {
+function BuildScene({ instance, kind, area, reserved, assist, phase, celebrating, onRespond, onTouch }: SceneProps<PackInstance>) {
   const target = digitsOf(instance.total);
+  const cell = kind === 'wide' ? MAT_CELL : MAT_CELL_NARROW;
+  const design = buildDesign(cell);
   const place = useMemo(
-    () => placeContent(area, reserved, BUILD_DESIGN, { maxScale: MAX_SCALE }),
+    () => placeContent(area, reserved, design, { maxScale: MAX_SCALE, margin: 4 }),
     // reserved береться за вмістом: його ідентичність щоразу нова
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [area.w, area.h, JSON.stringify(reserved)],
+    [area.w, area.h, cell, JSON.stringify(reserved)],
   );
   const [tens, setTens] = useState(0);
   const [ones, setOnes] = useState(0);
@@ -255,18 +262,18 @@ function BuildScene({ instance, area, reserved, assist, phase, celebrating, onRe
     <div className={styles.scene} style={{ width: area.w, height: area.h }}>
       <div
         className={styles.stage}
-        style={{ left: place.x, top: place.y, width: BUILD_DESIGN.w, height: BUILD_DESIGN.h, transform: `scale(${place.scale})` }}
+        style={{ left: place.x, top: place.y, width: design.w, height: design.h, transform: `scale(${place.scale})` }}
       >
         <PlaceValueMat
           tens={tens}
           ones={ones}
-          cell={MAT_CELL}
+          cell={cell}
           highlight={highlight}
           celebrate={celebrating}
           onRodPress={interactive ? removeRod : undefined}
           onCubePress={interactive ? removeCube : undefined}
         />
-        <div className={styles.buttons} style={{ left: BUILD_DESIGN.w - BUILD_BUTTON }}>
+        <div className={styles.buttons} style={{ left: design.w - BUILD_BUTTON }}>
           <button type="button" className={`kl-block ${styles.add}`} data-place="tens" aria-label={LABELS.addTen} disabled={!interactive || tens >= 9} onClick={addTen}>
             <Operator kind="plus" style={{ height: 32 }} />
             <Digits value={10} style={{ height: 36 }} />

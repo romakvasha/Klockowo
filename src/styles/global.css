@@ -58,6 +58,13 @@ svg {
   box-shadow: var(--kl-focus);
 }
 
+/* Фокус із клавіатури (M23): кільце бачить навіть там, де компонент має власну box-shadow (клітинки таблиці, коробки, вкладки): суцільний контур ink поверх
+   подвійного кільця з токена. :where() не додає специфічності, тож компоненти з власним outline (острови мапи) його зберігають. */
+:where(button, a[href], input, select, textarea, summary, [role='radio'], [role='switch'], [tabindex]):focus-visible {
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 3px;
+}
+
 /* «Mniej animacji» (прапорець на <html>) і системне prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *,

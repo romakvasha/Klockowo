@@ -245,3 +245,11 @@
   display: flex;
   justify-content: center;
 }
+
+/* телефон: цілі дотику вкладок і лотка — від 80 px (BRIEF §12) */
+@media (max-width: 600px), (max-height: 500px) {
+  .tab {
+    width: 80px;
+    height: 80px;
+  }
+}

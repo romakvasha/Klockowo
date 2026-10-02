@@ -69,14 +69,21 @@ function FreeScene({ animals }: { animals: readonly AnimalId[] }) {
   const [placed, setPlaced] = useState<readonly Placed[]>([]);
   const [next, setNext] = useState(1);
 
-  const put = (e: React.MouseEvent<HTMLDivElement>) => {
+  const place = (x: number, y: number) => {
     if (selected === null) return;
-    const box = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - box.left) / box.width) * 100;
-    const y = ((e.clientY - box.top) / box.height) * 100;
     sfx.play('pop');
     setPlaced((list) => [...list, { id: next, animal: selected, x, y }]);
     setNext(next + 1);
+  };
+  const put = (e: React.MouseEvent<HTMLDivElement>) => {
+    const box = e.currentTarget.getBoundingClientRect();
+    place(((e.clientX - box.left) / box.width) * 100, ((e.clientY - box.top) / box.height) * 100);
+  };
+  // з клавіатури: Enter чи пробіл ставить наліпку на випадкове місце полотна (дотик по місцю недоступний)
+  const putByKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    place(15 + ((next * 37) % 70), 20 + ((next * 53) % 60));
   };
 
   return (
@@ -101,7 +108,7 @@ function FreeScene({ animals }: { animals: readonly AnimalId[] }) {
         ))}
         <IconButton icon="retry" label={ALBUM.clear} variant="retry" size={72} onClick={() => setPlaced([])} />
       </div>
-      <div className={styles.canvas} onClick={put} role="presentation">
+      <div className={styles.canvas} onClick={put} onKeyDown={putByKey} role="group" aria-label={ALBUM.scene} tabIndex={0}>
         {placed.map((p) => (
           <button
             key={p.id}

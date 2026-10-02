@@ -41,7 +41,7 @@ button.cell {
 .cell[data-state='painted'] {
   background: var(--cg-500);
   box-shadow: inset 0 0 0 3px var(--kl-surface);
-  color: var(--kl-surface);
+  color: var(--kl-ink);
 }
 
 .cell[data-state='selected'] {
@@ -58,7 +58,7 @@ button.cell {
   background: var(--cg-500);
   border: 2px solid var(--kl-ink);
   border-radius: 28% 6% 28% 6%;
-  color: var(--kl-surface);
+  color: var(--kl-ink);
 }
 
 .leaf b {

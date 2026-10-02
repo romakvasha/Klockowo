@@ -8,7 +8,7 @@ import type { Assist, AssistContext, GenContext, SceneKind } from '../engine/typ
 import { boxesFor, hintPack, tensCount, togetherPack } from './assist';
 import { LOOSE_MAX, PACK_MAX, PACK_MIN, checkPack, digitsOf, generatePack, packAnswer, pickPackOptions, swapDigits, type PackInstance } from './generate';
 import { paczkiPoDziesiec, promptOf } from './index';
-import { BOX, BOX_GAP, BUILD_BUTTON, BUILD_DESIGN, CELL, LOOSE_ZONE, PACK_BUTTON, PACK_DESIGN, RIGHT_X, boxPosition } from './View';
+import { BOX, BOX_GAP, BUILD_BUTTON, MAT_CELL_NARROW, buildDesign, CELL, LOOSE_ZONE, PACK_BUTTON, PACK_DESIGN, RIGHT_X, boxPosition } from './View';
 
 const level: Level = { id: 'w5-3', world: 'w5', index: 3, kind: 'main', newIdea: true, skills: ['bundle-ten'], tasks: [], draft: false };
 const ctxFor = (seed: number, previous: readonly number[] = []): GenContext => ({ level, world: 'w5', index: previous.length, rng: createRng(seed), previous });
@@ -225,11 +225,11 @@ describe('композиція', () => {
     expect(placeValueMatSize(CELL).h).toBeLessThanOrEqual(PACK_DESIGN.h);
     for (const { kind, vw, area } of cases) {
       const reserved = sceneReserved(kind, vw, area);
-      const p = placeContent(area, reserved, BUILD_DESIGN, { maxScale: 1.4 });
+      const p = placeContent(area, reserved, buildDesign(kind === 'wide' ? 20 : MAT_CELL_NARROW), { maxScale: 1.4, margin: 4 });
       expect(p.x + p.w, kind).toBeLessThanOrEqual(area.w);
       expect(p.y + p.h, kind).toBeLessThanOrEqual(area.h);
       for (const r of reserved) expect(intersects({ x: p.x, y: p.y, w: p.w, h: p.h }, r), kind).toBe(false);
-      expect(BUILD_BUTTON * p.scale, kind).toBeGreaterThanOrEqual(kind === 'wide' ? 64 : 56);
+      expect(BUILD_BUTTON * p.scale, kind).toBeGreaterThanOrEqual(64);
     }
   });
 });

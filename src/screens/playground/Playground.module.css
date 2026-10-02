@@ -206,3 +206,10 @@
   border-radius: 24px;
   --edge: var(--kl-reward-edge);
 }
+
+@media (max-width: 600px), (max-height: 500px) {
+  .swatch {
+    width: 80px;
+    height: 80px;
+  }
+}

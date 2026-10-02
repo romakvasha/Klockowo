@@ -47,7 +47,7 @@ export function chartLayouts(rows: number): ChartLayout[] {
   };
 
   // B «stack»: зверху «вгору» · мініатюра · «вниз», знизу рядок у два шматки по 5
-  const b = mk(150);
+  const b = mk(130);
   const bW = Math.max(lineW(5), NAV_BUTTON * 2 + 12 * 2 + b.size);
   const bTop = Math.max(b.h, NAV_BUTTON);
   const bMagY = bTop + 16;
@@ -80,7 +80,7 @@ export function chartLayouts(rows: number): ChartLayout[] {
 export function pickChartLayout(area: { w: number; h: number }, reserved: readonly Rect[], rows: number): { layout: ChartLayout; place: Placed } {
   let best: { layout: ChartLayout; place: Placed } | null = null;
   for (const layout of chartLayouts(rows)) {
-    const place = placeContent(area, reserved, layout.design, { maxScale: 1.25 });
+    const place = placeContent(area, reserved, layout.design, { maxScale: 1.25, margin: 4 });
     if (place.scale >= 1) return { layout, place };
     if (best === null || place.scale > best.place.scale + 1e-9) best = { layout, place };
   }

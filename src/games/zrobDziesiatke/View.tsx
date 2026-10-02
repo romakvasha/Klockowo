@@ -18,6 +18,8 @@ export const CELL = 64;
 export const EQUATION_H = 64;
 export const FRAME_H = 2 * CELL + 6;
 export const DESIGN = { w: 332, h: FRAME_H + 8 + EQUATION_H } as const;
+/** Рамка з видимими відомими фішками: рівняння не потрібне — композиція нижча, тож масштаб (а з ним і комірки) більший. */
+export const DESIGN_FRAME = { w: 332, h: FRAME_H + 8 } as const;
 export const DESIGN_BRIDGE = { w: 332, h: 2 * FRAME_H + 8 + 8 + EQUATION_H } as const;
 const MAX_SCALE = 1.7;
 
@@ -27,12 +29,12 @@ export const capacity = (known: number, knownShown: boolean, cells: number = TEN
 /** Сцена «Zrób dziesiątkę»: рамка-десятка (через десяток — дві). Дотик по порожній комірці докладає фішку (завжди в наступну вільну — лічимо по одній, голос називає скільки докладено),
  *  дотик по докладеній фішці знімає останню. Рамка повна — спалахує золотим. У режимі цифр (рамка порожня) відомі фішки з'являються як допомога. */
 export function TenScene({ instance, world, area, reserved, assist, phase, celebrating, onRespond, onTouch }: SceneProps<TenInstance>) {
-  const design = instance.bridge ? DESIGN_BRIDGE : DESIGN;
+  const design = instance.bridge ? DESIGN_BRIDGE : instance.show === 'digit' ? DESIGN : DESIGN_FRAME;
   const place = useMemo(
-    () => placeContent(area, reserved, design, { maxScale: MAX_SCALE }),
+    () => placeContent(area, reserved, design, { maxScale: MAX_SCALE, margin: 4 }),
     // reserved береться за вмістом: його ідентичність щоразу нова
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [area.w, area.h, instance.bridge, JSON.stringify(reserved)],
+    [area.w, area.h, instance.bridge, instance.show, JSON.stringify(reserved)],
   );
   const { known } = instance;
   const need = missing(instance);
@@ -93,6 +95,7 @@ export function TenScene({ instance, world, area, reserved, assist, phase, celeb
         className={styles.stage}
         style={{ left: place.x, top: place.y, width: design.w, height: design.h, transform: `scale(${place.scale})` }}
       >
+        {showEquation && (
         <div className={styles.equation} style={{ height: EQUATION_H }} role="img" aria-label={LABELS.equation} data-visible={showEquation}>
           {instance.bridge ? (
             <>
@@ -112,6 +115,7 @@ export function TenScene({ instance, world, area, reserved, assist, phase, celeb
             </>
           )}
         </div>
+        )}
         <TenFrame
           cells={cellsTotal}
           state={view.cells}
