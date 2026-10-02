@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { LEVELS, findLevel, levelById, levelsOfWorld } from './levels';
 import { W1_LEVELS } from './levels/w1';
+import { W2_LEVELS } from './levels/w2';
 import { skillInfo } from './skills';
 import { WORLD_KEYS, parseLevelId, worldById } from './worlds';
 
@@ -27,9 +28,9 @@ describe('усі рівні програми', () => {
     expect(() => levelById('w1-13')).toThrow('Unknown level');
   });
 
-  it('W2–W7 — заготовки (draft, без завдань); W1 — описано повністю', () => {
+  it('W3–W7 — заготовки (draft, без завдань); W1 і W2 — описано повністю', () => {
     for (const l of LEVELS) {
-      if (l.world === 'w1') expect(l.draft, l.id).toBe(false);
+      if (l.world === 'w1' || l.world === 'w2') expect(l.draft, l.id).toBe(false);
       else {
         expect(l.draft, l.id).toBe(true);
         expect(l.tasks, l.id).toEqual([]);
@@ -117,5 +118,75 @@ describe('світи без ★ чи з ★', () => {
       expect(levels.filter((l) => l.kind === 'main')).toHaveLength(worldById(w).mainLevels);
       expect(levels.filter((l) => l.kind === 'star')).toHaveLength(worldById(w).starLevels);
     }
+  });
+});
+
+describe('W2 «Ogród Cyfr» — 12 рівнів по 6 завдань', () => {
+  const w2 = worldById('w2');
+
+  it('12 рівнів, кожен — місія з 6 завдань', () => {
+    expect(W2_LEVELS).toHaveLength(12);
+    W2_LEVELS.forEach((l, i) => {
+      expect(l.index, l.id).toBe(i + 1);
+      expect(l.tasks, l.id).toHaveLength(6);
+      expect(l.draft, l.id).toBe(false);
+    });
+  });
+
+  it('спіральне повторення: у кожному рівні рівно 2 з 6 завдань (≈ 30 %)', () => {
+    for (const l of W2_LEVELS) expect(l.tasks.filter((t) => t.review).length, l.id).toBe(2);
+  });
+
+  it('ігри W2 — лише з каталогу світу; нові завдання мають навичку, заявлену в рівні', () => {
+    for (const l of W2_LEVELS) {
+      for (const t of l.tasks) expect(w2.games, `${l.id} ${t.game}`).toContain(t.game);
+      for (const t of l.tasks.filter((x) => !x.review)) expect(l.skills, `${l.id} ${t.skill}`).toContain(t.skill);
+    }
+  });
+
+  it('діапазони чисел — 0–10; плитки W2 — цифри (крапки лише на перших двох рівнях)', () => {
+    for (const l of W2_LEVELS) {
+      for (const t of l.tasks) {
+        const range = 'count' in t ? t.count : 'numbers' in t ? t.numbers : 'range' in t ? t.range : null;
+        if (range) {
+          expect(range[0], `${l.id} ${t.game}`).toBeGreaterThanOrEqual(0);
+          expect(range[1], `${l.id} ${t.game}`).toBeLessThanOrEqual(10);
+        }
+        if ((t.game === 'policzIDotknij' || t.game === 'blysk') && l.index > 2) expect(t.answers, l.id).not.toBe('digitDots');
+      }
+    }
+  });
+
+  it('нові ідеї: цифра↔кількість (1), нуль (3), порівняння (4), автобус (7); перша нова гра — за грою демонстрації', () => {
+    expect(W2_LEVELS.filter((l) => l.newIdea).map((l) => l.index)).toEqual([1, 3, 4, 7]);
+    const first = (i: number) => W2_LEVELS[i - 1]?.tasks.find((t) => !t.review)?.game;
+    expect(first(4)).toBe('ktoMaWiecej');
+    expect(first(7)).toBe('autobusDziesiatka');
+  });
+
+  it('усі нові ігри M11 і нуль присутні: порівняння з «Tyle samo», підступ і цифри, автобус із миготінням, нуль у вагонах і наборах', () => {
+    const all = W2_LEVELS.flatMap((l) => l.tasks);
+    expect(all.some((t) => t.game === 'ktoMaWiecej' && (t.equal ?? 0) > 0)).toBe(true);
+    expect(all.some((t) => t.game === 'ktoMaWiecej' && t.show === 'sizeTrick')).toBe(true);
+    expect(all.some((t) => t.game === 'ktoMaWiecej' && t.show === 'digits')).toBe(true);
+    expect(all.some((t) => t.game === 'ktoMaWiecej' && t.ask !== 'more')).toBe(true);
+    expect(all.some((t) => t.game === 'autobusDziesiatka' && t.exposureMs > 0)).toBe(true);
+    expect(all.some((t) => t.game === 'autobusDziesiatka' && t.ask !== 'full')).toBe(true);
+    expect(all.some((t) => t.game === 'zgubionyWagonik' && t.range[0] === 0)).toBe(true);
+    expect(all.some((t) => t.game === 'cyfraIObrazek' && t.numbers[0] === 0)).toBe(true);
+  });
+
+  it("«Tyle samo» з'являється лише після того, як порівняння вже знайоме (не раніше рівня 9)", () => {
+    for (const l of W2_LEVELS) {
+      const hasEqual = l.tasks.some((t) => t.game === 'ktoMaWiecej' && !t.review && (t.equal ?? 0) > 0);
+      if (l.index < 9) expect(hasEqual, l.id).toBe(false);
+    }
+  });
+
+  it('підсумковий рівень 12 (скриня): цифра↔кількість, вагони, порівняння цифр', () => {
+    const last = W2_LEVELS[11];
+    expect(last?.skills).toEqual(['digit-quantity', 'order-around', 'compare-10']);
+    const games = new Set(last?.tasks.filter((t) => !t.review).map((t) => t.game));
+    expect(games).toEqual(new Set(['cyfraIObrazek', 'zgubionyWagonik', 'ktoMaWiecej']));
   });
 });

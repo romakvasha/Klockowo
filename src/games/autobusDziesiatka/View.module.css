@@ -1,0 +1,22 @@
+.scene {
+  position: relative;
+}
+
+.bus {
+  position: absolute;
+}
+
+/* бульбашка Kubika: тваринка й «?» */
+.ask {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.askAnimal {
+  display: block;
+  width: 56px;
+  height: 64px;
+  object-fit: contain;
+}

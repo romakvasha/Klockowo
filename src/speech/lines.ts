@@ -32,7 +32,17 @@ export const LABELS = {
   engine: 'lokomotywa',
   wagonGap: 'brakujący wagon',
   set: 'obrazek', // «Cyfra i obrazek»: картка-набір (без числа, щоб не видати відповідь) [do sprawdzenia]
+  compare: 'Dwie kupki do porównania', // «Kto ma więcej?»: підпис сцени [do sprawdzenia]
+  bus: 'autobus', // «Autobus dziesiątka»: автобус 2×5 місць [do sprawdzenia]
+  seatFree: 'wolne miejsce',
+  seatTaken: 'zajęte miejsce',
+  seatHidden: 'zakryte miejsce',
 } as const;
+
+/** aria-label купки-картки «Kto ma więcej?»: «miś — kupka» без числа, щоб не видати відповідь [do sprawdzenia]. */
+export function pileLabel(animal: Animal): string {
+  return `${animal.one} — kupka`;
+}
 
 /** aria-label вагона з номером: «wagon pięć» («Zgubiony wagonik»). */
 export function wagonLabel(n: number): string {
@@ -167,7 +177,11 @@ export const GAME_PROMPTS = {
   wagonBack: 'Pociąg jedzie do tyłu. Czego brakuje?', // ★ лічба назад (POLISH_COPY §5)
   wagonNext: 'I co dalej?', // підказка: потяг прочитав вагони перед прогалиною (POLISH_COPY §5: «…{n−2}, {n−1}… i co dalej?»)
   wagonBefore: 'A co jest przed nimi?', // підказка, коли бракує першого вагона: перед ним нічого читати [do sprawdzenia]
+  busFull: 'Ile zwierzątek jedzie autobusem?', // POLISH_COPY §5 (гра 7)
   busFree: 'Ile miejsc jest wolnych?',
+  orSame: 'A może tyle samo?', // POLISH_COPY §5 (гра 6)
+  busRow: 'Pełny rząd to pięć. Policz resztę.', // POLISH_COPY §6, підказка 3
+  busCount: 'Policz zwierzątka.', // [do sprawdzenia]: підказка, коли в автобусі менше за п'ять
   hiddenNumber: 'Jaka liczba się schowała?', // W6 «Tajemnicza tablica» (§9)
   storyExample: 'Na gałęzi siedzą dwa ptaszki. Przylatują jeszcze trzy. Ile ptaszków jest teraz?', // приклад BRIEF §7.14
 } as const;
@@ -294,6 +308,22 @@ export function feedAnimal(animal: Animal, n: number, noun: Noun): string {
 /** «Kto ma więcej marchewek?» */
 export function whoHasMore(noun: Noun): string {
   return `Kto ma więcej ${noun.many}?`;
+}
+
+/** «Kto ma mniej marchewek?» (POLISH_COPY §5) */
+export function whoHasLess(noun: Noun): string {
+  return `Kto ma mniej ${noun.many}?`;
+}
+
+/** «Miś ma siedem.» — підказка в режимі цифр: Kubik називає кількість у кожної тваринки [do sprawdzenia]. */
+export function animalHas(animal: Animal, n: number): string {
+  return `${cap(animal.one)} ma ${numberWords(n)}.`;
+}
+
+/** Відповідь «Kto ma więcej?» без крапки: «miś ma więcej marchewek», «zajączek ma mniej jabłek», «tyle samo» — для похвали й показу «разом»
+ *  (складено з шаблонів POLISH_COPY §5 [do sprawdzenia]). */
+export function compareAnswer(winner: Animal | null, more: boolean, noun: Noun): string {
+  return winner === null ? 'tyle samo' : `${winner.one} ma ${more ? 'więcej' : 'mniej'} ${noun.many}`;
 }
 
 /** «Siedem i trzy to dziesięć.» */

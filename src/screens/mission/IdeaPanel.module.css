@@ -21,6 +21,9 @@
 .panel[data-world='w7'] { --panel-line: var(--kl-w7-100); }
 
 .item,
+.mover,
+.animal,
+.busSlot,
 .drop,
 .badge,
 .tile,
@@ -157,4 +160,33 @@
   width: 100%;
   height: 100%;
   fill: var(--kl-ink);
+}
+
+/* «Kto ma więcej?»: предмет летить зі своєї купки в пару за 600 мс; зайвий після цього світиться золотим кільцем */
+.mover {
+  display: block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  transition: left 600ms var(--kl-ease-out), top 600ms var(--kl-ease-out), box-shadow 300ms var(--kl-ease-out);
+}
+
+.mover img,
+.mover svg {
+  max-width: none;
+}
+
+.mover[data-extra='true'] {
+  background: rgba(255, 194, 26, .35);
+  box-shadow: 0 0 0 4px var(--kl-reward), 0 0 0 10px rgba(255, 194, 26, .28);
+}
+
+.animal {
+  object-fit: contain;
+}
+
+/* автобус по центру панелі */
+.busSlot {
+  top: 26px;
+  left: 170px;
 }

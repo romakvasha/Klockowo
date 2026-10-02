@@ -24,7 +24,7 @@ function MissionScreen({ level }: { level: Level }) {
   const object = missionObject(level);
   const noun = OBJECTS[object];
   const line = missionLine(object, noun);
-  const kind = demoKindFor(level.skills);
+  const kind = demoKindFor(level.skills, level.tasks);
   const steps = useMemo(() => demoSteps(kind, noun), [kind, noun]);
 
   const [phase, setPhase] = useState<MissionPhase>('card');

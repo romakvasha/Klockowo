@@ -1,6 +1,7 @@
 import { WORLD_KEYS, levelId, mainLevelIds, starLevelIds, worldById } from '../worlds';
 import type { Level, LevelId, WorldKey } from '../types';
 import { W1_LEVELS } from './w1';
+import { W2_LEVELS } from './w2';
 
 /** Заготовка рівня: структура світу відома (номер, вид), завдання опише етап зі PLAN (M9 → W2 … M19 → W7). */
 function stub(world: WorldKey, index: number, kind: Level['kind']): Level {
@@ -9,6 +10,7 @@ function stub(world: WorldKey, index: number, kind: Level['kind']): Level {
 
 function buildWorld(world: WorldKey): readonly Level[] {
   if (world === 'w1') return W1_LEVELS;
+  if (world === 'w2') return W2_LEVELS;
   const w = worldById(world);
   return [
     ...Array.from({ length: w.mainLevels }, (_, i) => stub(world, i + 1, 'main')),

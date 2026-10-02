@@ -1,10 +1,12 @@
 import type { CSSProperties } from 'react';
-import { itemUrl } from '../../components/math/art';
+import { BusFrame } from '../../components/math/BusFrame';
+import { animalUrl, itemUrl } from '../../components/math/art';
 import { Digits } from '../../components/ui/Digits';
 import { Icon } from '../../components/ui/Icon';
 import type { WorldKey } from '../../curriculum/types';
 import type { ObjectId } from '../../speech/nouns';
-import { DEMO_COUNT, DEMO_SUM, type DemoKind } from './ideaDemo';
+import { seatMarks } from '../../games/autobusDziesiatka/assist';
+import { DEMO_ANIMALS, DEMO_BUS, DEMO_COUNT, DEMO_PILES, DEMO_SUM, type DemoKind } from './ideaDemo';
 import styles from './IdeaPanel.module.css';
 
 export interface IdeaPanelProps {
@@ -136,6 +138,53 @@ function Sum({ object, world, stage }: Omit<IdeaPanelProps, 'kind'>) {
   );
 }
 
+/** «Kto ma więcej?»: дві тваринки з купками (4 і 2); купки стають парами, зайві світяться (стадії 0 → 1 → 2). */
+const PILE_SPOTS: readonly (readonly Spot[])[] = [
+  [{ x: 150, y: 50 }, { x: 225, y: 50 }, { x: 150, y: 125 }, { x: 225, y: 125 }],
+  [{ x: 420, y: 60 }, { x: 495, y: 60 }],
+];
+const PAIR_SPOTS: readonly (readonly Spot[])[] = [
+  [{ x: 215, y: 70 }, { x: 215, y: 150 }, { x: 385, y: 70 }, { x: 385, y: 150 }],
+  [{ x: 295, y: 70 }, { x: 295, y: 150 }],
+];
+
+function Compare({ object, world, stage }: Omit<IdeaPanelProps, 'kind'>) {
+  const paired = stage >= 1;
+  return (
+    <>
+      {DEMO_ANIMALS.map((id, side) => (
+        <img key={id} className={styles.animal} src={animalUrl(id)} alt="" draggable={false} style={{ left: side === 0 ? 24 : 576, top: 24, width: 100, height: 113 }} />
+      ))}
+      {DEMO_PILES.flatMap((count, side) =>
+        Array.from({ length: count }, (_, i) => {
+          const spot = (paired ? PAIR_SPOTS : PILE_SPOTS)[side]![i]!;
+          return (
+            <span key={`${side}-${i}`} className={styles.mover} data-extra={stage >= 2 && side === 0 && i >= DEMO_PILES[1]} style={{ left: spot.x, top: spot.y }}>
+              <Token object={object} size={64} world={world} />
+            </span>
+          );
+        }),
+      )}
+    </>
+  );
+}
+
+/** «Autobus dziesiątka»: автобус із 7 тваринками; Kubik лічить вільні місця (стадія 1), відповідь — плитка з цифрою (стадія 2). */
+function Bus({ world, stage }: Pick<IdeaPanelProps, 'world' | 'stage'>) {
+  const seats = Array.from({ length: 10 }, (_, i) => (i < DEMO_BUS ? DEMO_ANIMALS[i % 2]! : null));
+  const free = Array.from({ length: 10 - DEMO_BUS }, (_, i) => DEMO_BUS + i);
+  return (
+    <>
+      <span className={styles.busSlot}>
+        <BusFrame seats={seats} world={world} width={360} marks={stage >= 1 ? seatMarks(free, 3) : undefined} />
+      </span>
+      <span className={styles.tile} data-show={stage >= 2} style={{ left: 560, top: 90 }}>
+        <Digits value={10 - DEMO_BUS} style={{ height: 72 }} />
+      </span>
+    </>
+  );
+}
+
 /** Панель «Patrz, pokażę ci.» 700×300 (design etap2/18): коротка демонстрація нової ідеї рівня. Лише показ: стадії змінює сценарій у такт голосу. */
 export function IdeaPanel(props: IdeaPanelProps) {
   const { kind, world } = props;
@@ -145,6 +194,8 @@ export function IdeaPanel(props: IdeaPanelProps) {
       {kind === 'plate' && <Plate {...props} />}
       {kind === 'flash' && <Flash stage={props.stage} />}
       {kind === 'sum' && <Sum {...props} />}
+      {kind === 'compare' && <Compare {...props} />}
+      {kind === 'bus' && <Bus world={world} stage={props.stage} />}
     </div>
   );
 }

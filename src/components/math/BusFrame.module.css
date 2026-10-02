@@ -1,0 +1,126 @@
+/* Автобус «Autobus dziesiątka»: кузов кольору світу, місця-вікна, колеса. Розміри задає busLayout (inline). */
+.bus {
+  position: relative;
+  flex: none;
+}
+
+.body {
+  position: absolute;
+  inset: 0 0 auto 0;
+  overflow: hidden;
+  background: var(--bus-100);
+  border: 3px solid var(--kl-ink);
+  border-radius: 22px;
+  box-shadow: 0 5px 0 var(--bus-700);
+}
+
+/* смуга даху кольору світу */
+.roof {
+  background: var(--bus-500);
+  border-bottom: 3px solid var(--kl-ink);
+}
+
+.wheel {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  background: var(--kl-ink);
+  border: 5px solid var(--kl-ink-soft);
+  border-radius: 50%;
+}
+
+.seat {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(255, 255, 255, .55);
+  border: 3px dashed var(--kl-locked-edge);
+  border-radius: 12px;
+  transition: background 200ms var(--kl-ease-out);
+}
+
+/* зайняте місце: суцільна біла комірка з тваринкою */
+.seat[data-taken='true'] {
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-ink);
+}
+
+.seat[data-marked='true'] {
+  background: rgba(255, 194, 26, .45);
+  border-color: var(--kl-reward-edge);
+  box-shadow: 0 0 0 3px var(--kl-reward);
+}
+
+.animal {
+  display: block;
+  width: 88%;
+  height: 94%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.seat[data-celebrate='true'] .animal {
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+/* номер, який Kubik щойно назвав на цьому місці */
+.mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-ink);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out);
+}
+
+/* «завіса»: місця закриті блоковою ширмою кольору світу з «?» */
+.cover {
+  position: absolute;
+  z-index: 3;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bus-500);
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .22) 0 14px, transparent 14px 28px);
+  border: 3px solid var(--kl-ink);
+  border-radius: 14px;
+}
+
+.cover b {
+  font: 700 72px / 1 var(--kl-font-display);
+  color: var(--kl-surface);
+  text-shadow: 0 3px 0 var(--kl-ink);
+}
+
+/* рамка ряду, що пульсує («повний ряд — п'ять»), із числом-значком */
+.row {
+  position: absolute;
+  z-index: 4;
+  box-sizing: border-box;
+  border: 4px solid var(--kl-reward-edge);
+  border-radius: 14px;
+  box-shadow: 0 0 0 4px rgba(255, 194, 26, .5);
+  pointer-events: none;
+  animation: var(--kl-anim-pulse) 1s ease-in-out 3;
+}
+
+.rowBadge {
+  position: absolute;
+  top: -22px;
+  right: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kl-reward);
+  border: 3px solid var(--kl-ink);
+  border-radius: 50%;
+}

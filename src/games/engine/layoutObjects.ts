@@ -27,6 +27,8 @@ export interface LayoutInput {
   reserved?: readonly Rect[];
   /** Відступ від країв області, px. */
   margin?: number;
+  /** Найменша сторона предмета, до якої дозволено стискати (типово MIN_SIZE = 40): у вузьких картках «Kto ma więcej?» потрібні менші. */
+  minSize?: number;
 }
 
 export interface Layout {
@@ -215,15 +217,16 @@ export function layoutObjects(input: LayoutInput): Layout {
   const { count, arrangement } = input;
   if (count <= 0) return { size: input.size, items: [] };
   const margin = input.margin ?? 8;
+  const floor = Math.min(MIN_SIZE, input.minSize ?? MIN_SIZE);
   let size = input.size;
   for (let attempt = 0; attempt < 14; attempt++) {
     const items = MAKERS[arrangement](input, size, margin);
     if (items && items.length === count) return { size, items };
-    size = Math.max(MIN_SIZE, Math.floor(size * 0.92));
-    if (size === MIN_SIZE && attempt > 8) break;
+    size = Math.max(floor, Math.floor(size * 0.92));
+    if (size === floor && attempt > 8) break;
   }
-  const items = lineLayout({ ...input, reserved: [] }, MIN_SIZE, margin) ?? Array.from({ length: count }, (_, i): Point => ({ x: margin + (i % 10) * (MIN_SIZE + GAP), y: margin + Math.floor(i / 10) * (MIN_SIZE + GAP) }));
-  return { size: MIN_SIZE, items };
+  const items = lineLayout({ ...input, reserved: [] }, floor, margin) ?? Array.from({ length: count }, (_, i): Point => ({ x: margin + (i % 10) * (floor + GAP), y: margin + Math.floor(i / 10) * (floor + GAP) }));
+  return { size: floor, items };
 }
 
 /** У якому порядку Kubik лічить предмети в підказці: рядок — зліва направо (рядки зверху вниз), коло — за годинниковою стрілкою від верху,

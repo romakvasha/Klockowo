@@ -99,12 +99,43 @@ export interface TrainTask extends TaskBase {
   answers: AnswerStyle;
 }
 
-/** Ігри, чиї параметри опишуть етапи M11–M19: поки лише гра й навичка. */
-export interface PendingTask extends TaskBase {
-  game: Exclude<GameId, 'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik'>;
+/** Як показано купки в «Kto ma więcej?»: objects — предмети; sizeTrick — підступ: на меншій купці предмети більші; digits — спершу лише цифри (купки з'являються як підказка). */
+export type CompareShow = 'objects' | 'sizeTrick' | 'digits';
+
+/** «Kto ma więcej?» — дві тваринки з купками; більша купка («więcej»), менша («mniej») або «Tyle samo». */
+export interface CompareTask extends TaskBase {
+  game: 'ktoMaWiecej';
+  /** Скільки в кожній купці: межі (у W2 разом із 0). */
+  count: Range;
+  /** Різниця між купками, коли вони не рівні (≥ 1): велика → 1. */
+  diff: Range;
+  /** Ймовірність «Tyle samo» (0…1); 0 — купки завжди різні, і кнопки «Tyle samo» у лотку нема. */
+  equal?: number;
+  ask: 'more' | 'less' | 'mixed';
+  show: CompareShow;
 }
 
-export type TaskSpec = CountTask | FlashTask | FeedTask | MatchTask | TrainTask | PendingTask;
+/** «Autobus dziesiątka» — автобус 2×5 місць із тваринками: скільки їде чи скільки місць вільних; вибір із 3 плиток. */
+export interface BusTask extends TaskBase {
+  game: 'autobusDziesiatka';
+  /** Скільки тваринок їде (0…10). */
+  count: Range;
+  /** full — «Ile zwierzątek jedzie autobusem?»; empty — «Ile miejsc jest wolnych?»; mixed — навмання. */
+  ask: 'full' | 'empty' | 'mixed';
+  /** 0 — автобус видно весь час; інакше — видно стільки мс, потім місця закриваються (вступний показ). */
+  exposureMs: number;
+  answers: AnswerStyle;
+}
+
+/** Ігри, чиї параметри опишуть етапи M13–M19: поки лише гра й навичка. */
+export interface PendingTask extends TaskBase {
+  game: Exclude<
+    GameId,
+    'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik' | 'ktoMaWiecej' | 'autobusDziesiatka'
+  >;
+}
+
+export type TaskSpec = CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | PendingTask;
 
 export type LevelKind = 'main' | 'star';
 

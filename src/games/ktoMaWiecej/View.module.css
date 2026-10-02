@@ -1,0 +1,150 @@
+.scene {
+  position: relative;
+}
+
+/* картка-кнопка: тваринка + купка предметів; вміст (тваринка, предмети) лежить зверху й не ловить дотики */
+.card {
+  --edge: var(--kl-neutral-edge);
+  position: absolute;
+  z-index: 0;
+  padding: 0;
+  background: var(--kl-surface);
+  border-radius: 24px;
+}
+
+.card[data-state='selected'],
+.card[data-state='selected']:active:not(:disabled) {
+  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
+}
+
+.card[data-state='correct'] {
+  --edge: var(--kl-success-edge);
+  background: #EAF8EF;
+}
+
+/* спробуй ще: лавандова рамка + стрілка; вміст лишається яскравим — купки треба перелічити */
+.card[data-state='retry'] {
+  border: 4px solid var(--kl-retry-edge);
+  box-shadow: none;
+  animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
+}
+
+.card[data-state='highlighted'] {
+  --edge: var(--kl-reward-edge);
+  background: var(--kl-hub-50);
+  box-shadow: 0 6px 0 var(--edge), 0 0 0 4px var(--kl-reward), 0 0 0 12px rgba(255, 194, 26, .28), var(--kl-ring);
+}
+
+.card:disabled:not([data-state='retry']):not([data-state='correct']):not([data-state='highlighted']) {
+  opacity: 1; /* під час відгуку картки не тьмяніють: вимкнено лише дотик */
+}
+
+.animal {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* цифра замість купки (режим digits) */
+.numeral {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: opacity var(--kl-dur-slide) var(--kl-ease-out);
+}
+
+.numeral[data-visible='false'] {
+  opacity: 0;
+}
+
+/* предмет купки: переміщується в пару за 600 мс (reduced-motion: global.css скорочує до 150 мс) */
+.item {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  pointer-events: none;
+  border-radius: 50%;
+  transition:
+    left 600ms var(--kl-ease-out),
+    top 600ms var(--kl-ease-out),
+    width 600ms var(--kl-ease-out),
+    height 600ms var(--kl-ease-out),
+    opacity var(--kl-dur-slide) var(--kl-ease-out),
+    box-shadow 300ms var(--kl-ease-out);
+}
+
+.item[data-visible='false'] {
+  opacity: 0;
+}
+
+/* зайві предмети після об'єднання в пари: золоте сяйво (форма — кільце, не лише колір) */
+.item[data-extra='true'] {
+  background: rgba(255, 194, 26, .35);
+  box-shadow: 0 0 0 4px var(--kl-reward), 0 0 0 10px rgba(255, 194, 26, .28);
+  animation: var(--kl-anim-pulse) 1.2s ease-in-out 600ms 2;
+}
+
+.item[data-celebrate='true'] img {
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out) 600ms;
+}
+
+/* кнопка «Tyle samo» у лотку (розмір плитки лотка) */
+.same {
+  --edge: var(--kl-neutral-edge);
+  position: relative;
+  flex: none;
+  width: var(--kl-tile);
+  height: var(--kl-tile);
+  border-radius: var(--kl-radius-tile);
+  background: var(--kl-surface);
+}
+
+.sameIcon {
+  width: 60%;
+  height: 60%;
+}
+
+.same[data-state='selected'],
+.same[data-state='selected']:active:not(:disabled) {
+  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
+}
+
+.same[data-state='correct'] {
+  --edge: var(--kl-success-edge);
+  background: var(--kl-success);
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+.same[data-state='retry'] {
+  background: var(--kl-surface);
+  border: 4px solid var(--kl-retry-edge);
+  box-shadow: none;
+  animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
+}
+
+.same[data-state='retry'] .sameIcon {
+  opacity: .4;
+}
+
+.same[data-state='highlighted'] {
+  --edge: var(--kl-reward-edge);
+  background: var(--kl-hub-50);
+  box-shadow: 0 6px 0 var(--edge), 0 0 0 4px var(--kl-reward), 0 0 0 12px rgba(255, 194, 26, .28), var(--kl-ring);
+}
+
+.same:disabled:not([data-state='retry']):not([data-state='correct']):not([data-state='highlighted']) {
+  opacity: .4;
+}
+
+/* бульбашка Kubika: предмет + «?» */
+.ask {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}

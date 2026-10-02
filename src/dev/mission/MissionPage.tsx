@@ -11,7 +11,7 @@ import type { DemoKind } from '../../screens/mission/ideaDemo';
 import type { MissionPhase } from '../../screens/mission/missionLayout';
 import styles from '../path/Path.module.css';
 
-const KINDS: readonly DemoKind[] = ['count', 'flash', 'plate', 'sum'];
+const KINDS: readonly DemoKind[] = ['count', 'flash', 'plate', 'sum', 'compare', 'bus'];
 const num = (v: string | null, d: number) => (v === null || Number.isNaN(Number(v)) ? d : Number(v));
 
 /** /#/dev/mission?world=w3&phase=idea&kind=sum&stage=2&object=rybka&scatter=1&panel=0 — композиція Wprowadzenie без голосу й сценарію (етап M7):

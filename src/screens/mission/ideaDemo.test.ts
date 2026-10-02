@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { LEVELS } from '../../curriculum/levels';
+import type { TaskSpec } from '../../curriculum/types';
 import { OBJECTS } from '../../speech/nouns';
 import { DEMO_COUNT, demoKindFor, demoPausesMs, demoSteps, type DemoKind } from './ideaDemo';
 
@@ -12,6 +13,15 @@ describe('вид демонстрації', () => {
     expect(demoKindFor(['count-line'])).toBe('count');
     expect(demoKindFor(['count-scatter'])).toBe('count');
     expect(demoKindFor([])).toBe('count');
+  });
+
+  it('гра нового завдання важливіша за навичку: «Kto ma więcej?» → compare, «Autobus dziesiątka» → bus (навіть із навичкою bonds-5-10)', () => {
+    const task = (game: 'ktoMaWiecej' | 'autobusDziesiatka', review = false) => ({ game, skill: 'compare-10', review }) as unknown as TaskSpec;
+    expect(demoKindFor(['compare-10'], [task('ktoMaWiecej')])).toBe('compare');
+    expect(demoKindFor(['bonds-5-10'], [task('autobusDziesiatka')])).toBe('bus');
+    // перше НОВЕ завдання: повторення (review) не рахується
+    expect(demoKindFor(['count-line'], [task('ktoMaWiecej', true)])).toBe('count');
+    expect(demoKindFor(['bonds-5-10'], [])).toBe('sum');
   });
 
   it('усі рівні W1 з новою ідеєю мають зрозумілу демонстрацію', () => {
@@ -46,8 +56,19 @@ describe('кроки демонстрації', () => {
     expect(steps[2]?.say).toBe('Trzy dodać dwa równa się pięć.');
   });
 
+  it('Kto ma więcej?: питання, пари, «Miś ma więcej jabłek.»', () => {
+    const steps = demoSteps('compare', OBJECTS.jablko);
+    expect(steps.map((s) => s.say)).toEqual(['Kto ma więcej jabłek?', undefined, 'Miś ma więcej jabłek.']);
+    expect(steps.map((s) => s.stage)).toEqual([0, 1, 2]);
+  });
+
+  it('Autobus: питання про вільні місця, лічба, «Siedem i trzy to dziesięć.»', () => {
+    const steps = demoSteps('bus', OBJECTS.jablko);
+    expect(steps.map((s) => s.say)).toEqual(['Ile miejsc jest wolnych?', undefined, 'Siedem i trzy to dziesięć.']);
+  });
+
   it('репліки без цифр і без минулого часу щодо дитини', () => {
-    for (const kind of ['count', 'flash', 'plate', 'sum'] as DemoKind[]) {
+    for (const kind of ['count', 'flash', 'plate', 'sum', 'compare', 'bus'] as DemoKind[]) {
       for (const s of demoSteps(kind, noun)) {
         if (s.say) {
           expect(s.say).not.toMatch(/\d/);
@@ -58,7 +79,7 @@ describe('кроки демонстрації', () => {
   });
 
   it('паузи між кроками коротші за 4 с — решту часу забирає голос (вступ ≤ 20 с)', () => {
-    for (const kind of ['count', 'flash', 'plate', 'sum'] as DemoKind[]) {
+    for (const kind of ['count', 'flash', 'plate', 'sum', 'compare', 'bus'] as DemoKind[]) {
       expect(demoPausesMs(demoSteps(kind, noun))).toBeLessThan(4000);
     }
   });

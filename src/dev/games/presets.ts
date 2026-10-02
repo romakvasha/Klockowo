@@ -16,6 +16,13 @@ const match = (over: Partial<Extract<TaskSpec, { game: 'cyfraIObrazek' }>> = {})
   game: 'cyfraIObrazek', skill: 'digit-quantity', pairs: 3, numbers: [1, 5], set: 'objects', ...over,
 });
 
+const compare = (over: Partial<Extract<TaskSpec, { game: 'ktoMaWiecej' }>> = {}): TaskSpec => ({
+  game: 'ktoMaWiecej', skill: 'compare-10', count: [1, 6], diff: [3, 5], ask: 'more', show: 'objects', ...over,
+});
+const bus = (over: Partial<Extract<TaskSpec, { game: 'autobusDziesiatka' }>> = {}): TaskSpec => ({
+  game: 'autobusDziesiatka', skill: 'bonds-5-10', count: [1, 9], ask: 'full', exposureMs: 0, answers: 'digit', ...over,
+});
+
 export const PRESETS: readonly GamePreset[] = [
   { id: 'wagon-end', title: 'Wagonik: бракує останнього, 1–10, 5 вагонів', world: 'w2', spec: train({ gap: 'end' }) },
   { id: 'wagon-mid', title: 'Wagonik: бракує посередині, 1–10, 6 вагонів', world: 'w2', spec: train({ gap: 'middle', length: 6 }) },
@@ -31,6 +38,15 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'match-dots', title: 'Cyfra: 3 пари, крапки, 1–6', world: 'w2', spec: match({ numbers: [1, 6], set: 'dots' }) },
   { id: 'match-fingers', title: 'Cyfra: 3 пари, пальці, 0–10', world: 'w2', spec: match({ numbers: [0, 10], set: 'fingers' }) },
   { id: 'match-frame', title: 'Cyfra: 3 пари, рамка-десятка, 1–10', world: 'w2', spec: match({ numbers: [1, 10], set: 'tenFrame' }) },
+  { id: 'kto-more', title: 'Kto ma więcej?: «więcej», різниця 3–5, без «Tyle samo»', world: 'w2', spec: compare() },
+  { id: 'kto-mixed', title: 'Kto ma więcej?: «więcej»/«mniej», різниця 2–4', world: 'w2', spec: compare({ count: [1, 8], diff: [2, 4], ask: 'mixed' }) },
+  { id: 'kto-same', title: 'Kto ma więcej?: з «Tyle samo» і нулем, різниця 1–3', world: 'w2', spec: compare({ count: [0, 8], diff: [1, 3], equal: 0.4, ask: 'mixed' }) },
+  { id: 'kto-digits', title: 'Kto ma więcej?: цифри замість купок, 0–10', world: 'w2', spec: compare({ count: [0, 10], diff: [1, 4], equal: 0.3, ask: 'mixed', show: 'digits' }) },
+  { id: 'kto-trick', title: 'Kto ma więcej?: підступ (більші предмети — менша купка)', world: 'w2', spec: compare({ count: [1, 8], diff: [1, 3], equal: 0.2, ask: 'mixed', show: 'sizeTrick' }) },
+  { id: 'bus-full', title: 'Autobus: скільки їде, 1–9', world: 'w2', spec: bus() },
+  { id: 'bus-free', title: 'Autobus: скільки вільних, 0–10', world: 'w2', spec: bus({ count: [0, 10], ask: 'empty' }) },
+  { id: 'bus-small', title: 'Autobus: їде менше за п’ять (лічба тваринок)', world: 'w2', spec: bus({ count: [1, 4], ask: 'mixed' }) },
+  { id: 'bus-flash', title: 'Autobus: миготіння 2,5 с, цифра з крапками', world: 'w2', spec: bus({ ask: 'mixed', exposureMs: 2500, answers: 'digitDots' }) },
   { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
 ];
 
