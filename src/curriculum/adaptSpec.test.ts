@@ -175,3 +175,19 @@ describe('adaptSpec: «Historyjki»', () => {
     expect(adaptSpec({ ...story, kind: 'join' }, 1, [1, 10])).toMatchObject({ sum: [4, 9] });
   });
 });
+
+describe('«Nakarm zwierzaka» з коробками по 10 (W5)', () => {
+  const boxes: FeedTask = { game: 'nakarmZwierzaka', skill: 'compose-2digit', count: [21, 49], slots: false, boxes: true };
+  const W5: [number, number] = [10, 100];
+
+  it('крок міняє верхню межу на 10, але не вище 59 і не вужче за 3 числа; коробки лишаються', () => {
+    expect(adaptSpec(boxes, 1, W5)).toMatchObject({ count: [21, 59], boxes: true, slots: false });
+    expect(adaptSpec(boxes, 2, W5)).toMatchObject({ count: [21, 59], boxes: true });
+    expect(adaptSpec(boxes, -1, W5)).toMatchObject({ count: [21, 39], boxes: true });
+    expect(adaptSpec(boxes, -2, W5)).toMatchObject({ count: [21, 29], boxes: true });
+  });
+
+  it('на найнижчому кроці з труднощами — «Paczki», режим «Zbuduj liczbę…»', () => {
+    expect(altSpec(boxes, 'w5')).toMatchObject({ game: 'paczkiPoDziesiec', mode: 'build', total: [21, 49], skill: 'compose-2digit', answers: 'digit' });
+  });
+});

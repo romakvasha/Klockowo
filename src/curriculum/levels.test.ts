@@ -332,11 +332,16 @@ describe('W5 «Las Dziesiątek» — 12 рівнів по 6 завдань', () 
     });
   });
 
-  it('нові завдання — з ігор W5 (вагони й пакування) і з навичкою, заявленою в рівні', () => {
+  it('нові завдання — з ігор W5 (вагони, пакування, «Nakarm» з коробками) і з навичкою, заявленою в рівні', () => {
     for (const l of W5_LEVELS) {
       for (const t of l.tasks.filter((x) => !x.review)) {
         expect(w5.games, `${l.id} ${t.game}`).toContain(t.game);
-        expect(['zgubionyWagonik', 'paczkiPoDziesiec'], `${l.id} ${t.game}`).toContain(t.game);
+        expect(['zgubionyWagonik', 'paczkiPoDziesiec', 'nakarmZwierzaka'], `${l.id} ${t.game}`).toContain(t.game);
+        if (t.game === 'nakarmZwierzaka') {
+          expect(t.boxes, `${l.id}: у W5 «Nakarm» лише з коробками по 10`).toBe(true);
+          expect(t.count[0], l.id).toBeGreaterThanOrEqual(11);
+          expect(t.count[1], l.id).toBeLessThanOrEqual(59); // запас має вміститися на сцені
+        }
         expect(l.skills, `${l.id} ${t.skill}`).toContain(t.skill);
       }
     }

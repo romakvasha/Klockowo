@@ -1,11 +1,15 @@
 import { ObjectArt } from '../../components/math/ObjectArt';
 import { feedAnimal, praiseCorrect } from '../../speech/lines';
 import { ANIMALS, OBJECTS } from '../../speech/nouns';
-import type { GameDef } from '../engine/types';
+import type { GameDef, SceneProps } from '../engine/types';
 import { hintFeed, togetherFeed } from './assist';
 import { checkFeed, generateFromSpec, type FeedInstance } from './generate';
+import { BoxFeedScene } from './BoxView';
 import { FeedScene } from './View';
 import styles from './View.module.css';
+
+/** W5 — запас із коробками по 10 (`boxes`), інакше — предмети поштучно. */
+const FeedOrBoxes = (props: SceneProps<FeedInstance>) => (props.instance.boxes ? <BoxFeedScene {...props} /> : <FeedScene {...props} />);
 
 /** «Nakarm zwierzaka» (BRIEF §7 гра 5): «Daj misiowi pięć jabłek.» → дитина кладе їжу на тарілку → «Gotowe». Дотик до тарілки знімає один предмет. */
 export const nakarmZwierzaka: GameDef<FeedInstance> = {
@@ -27,5 +31,5 @@ export const nakarmZwierzaka: GameDef<FeedInstance> = {
   praise: (i, praise) => praiseCorrect(i.n, OBJECTS[i.food], praise),
   hint: hintFeed,
   together: togetherFeed,
-  Scene: FeedScene,
+  Scene: FeedOrBoxes,
 };

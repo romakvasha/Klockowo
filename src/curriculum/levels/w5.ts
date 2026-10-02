@@ -1,9 +1,9 @@
 // W5 «Las Dziesiątek» (десятки до 100): 12 рівнів по 6 завдань (PLAN M17). Прогресія за PEDAGOGY §1–§2: лічба десятками (вагони 10, 20, 30…) → пучки й коробки по 10
 // («Paczki po dziesięć»: прочитати, потім упакувати) → складання числа з десятків і одиниць (зворотний режим «Zbuduj liczbę…») → контраст 26 ↔ 62 → змішане → підсумок.
-// Предмети W5 — jagoda, szyszka, grzybek, patyczek. У кожному рівні 2 з 6 завдань — повторення (W4 і раніше). «Nakarm zwierzaka» з коробками по 10 — окремий етап M17b.
+// Предмети W5 — jagoda, szyszka, grzybek, patyczek. У кожному рівні 2 з 6 завдань — повторення (W4 і раніше). «Nakarm zwierzaka» з коробками по 10 (M17b) — у рівнях 7, 8 і 11 замість одного завдання «Zbuduj liczbę…».
 import { levelId } from '../worlds';
 import type {
-  AnswerStyle, HouseTask, Level, PackMode, PackTask, SkillId, StoryTask, SumTask, TaskSpec, TrainTask,
+  AnswerStyle, FeedTask, HouseTask, Level, PackMode, PackTask, SkillId, StoryTask, SumTask, TaskSpec, TrainTask,
 } from '../types';
 import type { Range } from '../types';
 
@@ -15,6 +15,9 @@ const tens = (over: Partial<TrainTask> = {}): TrainTask => ({
 const pack = (mode: PackMode, total: Range, over: Partial<PackTask> = {}): PackTask => ({
   game: 'paczkiPoDziesiec', skill: mode === 'build' ? 'compose-2digit' : 'bundle-ten', total, mode, contrast: false, answers, ...over,
 });
+
+/** «Nakarm zwierzaka» із запасом у коробках по 10 і поштучно: «Daj misiowi trzydzieści cztery jabłka.» (запас вміщається на сцені — до 59). */
+const feedBoxes = (count: Range): FeedTask => ({ game: 'nakarmZwierzaka', skill: 'compose-2digit', count, slots: false, boxes: true });
 
 // повторення (W4 і раніше)
 const w4sum = (): SumTask => ({
@@ -55,12 +58,12 @@ const DRAFTS: readonly Draft[] = [
   // 7. Збирати 20–59, читати 30–79
   {
     newIdea: false, skills: ['compose-2digit', 'bundle-ten'],
-    tasks: [pack('build', [20, 59]), pack('build', [20, 59]), pack('packed', [30, 79]), pack('packed', [30, 79]), again(pack('loose', [21, 49])), again(w4sum())],
+    tasks: [pack('build', [20, 59]), feedBoxes([21, 59]), pack('packed', [30, 79]), pack('packed', [30, 79]), again(pack('loose', [21, 49])), again(w4sum())],
   },
   // 8. Усі числа до 99: читати 21–99, збирати 30–89
   {
     newIdea: false, skills: ['compose-2digit', 'bundle-ten'],
-    tasks: [pack('packed', [21, 99]), pack('packed', [21, 99]), pack('build', [30, 89]), pack('build', [30, 89]), again(tens({ gap: 'any', length: 6 })), again(pack('loose', [31, 59]))],
+    tasks: [pack('packed', [21, 99]), pack('packed', [21, 99]), pack('build', [30, 89]), feedBoxes([31, 59]), again(tens({ gap: 'any', length: 6 })), again(pack('loose', [31, 59]))],
   },
   // 9. Контраст 26 ↔ 62: серед плиток — число з переставленими цифрами
   {
@@ -83,7 +86,7 @@ const DRAFTS: readonly Draft[] = [
   {
     newIdea: false, skills: ['count-by-tens', 'bundle-ten', 'compose-2digit'],
     tasks: [
-      tens({ gap: 'any', length: 6 }), pack('loose', [21, 59], { contrast: true }), pack('packed', [21, 99], { contrast: true }), pack('build', [21, 99]),
+      tens({ gap: 'any', length: 6 }), pack('loose', [21, 59], { contrast: true }), pack('packed', [21, 99], { contrast: true }), feedBoxes([21, 59]),
       again(w4sum()), again(w4train()),
     ],
   },

@@ -1,0 +1,86 @@
+/* коробка на десять у запасі: рамка кольору десятків, усередині 5 × 2 предметів (як у «Paczki po dziesięć») */
+.box {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+  background: var(--kl-surface);
+  border: 4px solid var(--kl-tens);
+  border-radius: 14px;
+  box-shadow: 0 4px 0 var(--kl-tens-digit);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow var(--kl-dur-slide) var(--kl-ease-out);
+}
+
+.box:disabled {
+  cursor: default;
+}
+
+.box:focus-visible {
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 2px;
+}
+
+.box[data-state='selected'] {
+  box-shadow: 0 0 0 4px var(--kl-secondary-edge), 0 4px 0 var(--kl-tens-digit);
+}
+
+.box[data-state='dragging'] {
+  filter: drop-shadow(0 12px 10px rgba(45, 42, 74, .25));
+  transform: scale(1.08) rotate(-4deg);
+}
+
+/* підказка: коробка, яку ще треба взяти */
+.box[data-state='highlighted'] {
+  border-color: var(--kl-reward-edge);
+  box-shadow: 0 0 0 4px var(--kl-reward), 0 4px 0 var(--kl-reward-edge);
+}
+
+.boxItems {
+  display: grid;
+  gap: 2px;
+  pointer-events: none;
+}
+
+/* тарілка: фішки-десятки й предмети в ряд із переносом */
+.plateItems {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  max-width: 100%;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color: var(--kl-tens-digit);
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-tens);
+  border-radius: 10px;
+  box-shadow: 0 3px 0 var(--kl-tens-digit);
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}
+
+.chip[data-hl='true'] {
+  border-color: var(--kl-reward-edge);
+  box-shadow: 0 0 0 4px var(--kl-reward), 0 3px 0 var(--kl-reward-edge);
+}
+
+.chip[data-celebrate='true'] {
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+/* вузька смуга тваринки (телефон): бульбашка без мінімальної висоти 104, щоб не накривати коробки */
+.compactBubble > div:first-child {
+  min-width: 0;
+  min-height: 0;
+  padding: 2px 16px;
+}

@@ -116,6 +116,8 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'pack-contrast', title: 'Paczki: контраст 26 ↔ 62 (W5)', world: 'w5', spec: pack({ mode: 'packed', total: [21, 69], contrast: true, skill: 'compose-2digit' }) },
   { id: 'pack-build', title: 'Paczki: «Zbuduj liczbę…», +10 / +1, 11–49 (W5)', world: 'w5', spec: pack({ mode: 'build', total: [11, 49], skill: 'compose-2digit' }) },
   { id: 'pack-build-99', title: 'Paczki: «Zbuduj liczbę…» до 99 (W5)', world: 'w5', spec: pack({ mode: 'build', total: [30, 99], skill: 'compose-2digit' }) },
+  { id: 'feed-boxes', title: 'Nakarm: коробки по 10 і поштучно, 11–29 (W5)', world: 'w5', spec: { game: 'nakarmZwierzaka', skill: 'compose-2digit', count: [11, 29], slots: false, boxes: true } },
+  { id: 'feed-boxes-big', title: 'Nakarm: коробки по 10 і поштучно, 31–59 (W5)', world: 'w5', spec: { game: 'nakarmZwierzaka', skill: 'compose-2digit', count: [31, 59], slots: false, boxes: true } },
   { id: 'chart-find-30', title: 'Tablica: «Znajdź liczbę…», 1–30 (W6)', world: 'w6', spec: chart({ range: [1, 30] }) },
   { id: 'chart-find', title: 'Tablica: «Znajdź liczbę…» до 100 (W6)', world: 'w6', spec: chart() },
   { id: 'chart-find-leaves', title: 'Tablica: знайти число, 4 листочки-перешкоди (W6)', world: 'w6', spec: chart({ leaves: 4 }) },

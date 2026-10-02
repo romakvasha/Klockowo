@@ -5,9 +5,11 @@ import { ANIMAL_IDS } from '../../speech/nouns';
 import { createRng } from '../engine/rng';
 import type { Assist, AssistContext, GenContext } from '../engine/types';
 import { hintFeed, togetherFeed } from './assist';
+import { boxCounts, boxStepWords } from './assistBoxes';
+import { trayBox } from './BoxView';
 import { FOOD_IDS, checkFeed, generateFeed, type FeedInstance } from './generate';
 import { nakarmZwierzaka } from './index';
-import { supplyCount } from './layout';
+import { boxSupply, supplyCount } from './layout';
 import { plateBox, plateItemSize } from './View';
 
 const ctxFor = (id: Parameters<typeof levelById>[0], seed: number, previous: readonly number[] = []): GenContext => {
@@ -17,7 +19,7 @@ const ctxFor = (id: Parameters<typeof levelById>[0], seed: number, previous: rea
 const feedTasks = LEVELS.filter((l) => l.world === 'w1').flatMap((l) => l.tasks.filter((t): t is FeedTask => t.game === 'nakarmZwierzaka').map((t) => ({ level: l, task: t })));
 
 const instance = (over: Partial<FeedInstance> = {}): FeedInstance => ({
-  game: 'nakarmZwierzaka', skill: 'give-n', review: false, animal: 'mis', food: 'jablko', n: 5, slots: false, supply: 8, seed: 1, ...over,
+  game: 'nakarmZwierzaka', skill: 'give-n', review: false, animal: 'mis', food: 'jablko', n: 5, slots: false, supply: 8, boxes: false, supplyBoxes: 0, seed: 1, ...over,
 });
 
 describe('generateFeed', () => {
@@ -128,5 +130,81 @@ describe('тарілка в лотку', () => {
     expect(plateItemSize(50, 3)).toBe(50);
     expect(plateItemSize(50, 6)).toBe(50);
     expect(plateItemSize(50, 7)).toBe(40);
+  });
+});
+
+describe('режим boxes (W5): коробки по 10 і предмети поштучно', () => {
+  const boxTask: FeedTask = { game: 'nakarmZwierzaka', skill: 'compose-2digit', count: [11, 59], slots: false, boxes: true };
+
+  it('запас: десятків + 1 коробок (не більше 6) і одиниць + 3 предмети; відповідь — єдина комбінація', () => {
+    for (let seed = 1; seed <= 60; seed++) {
+      const i = generateFeed(boxTask, ctxFor('w5-7', seed));
+      expect(i.boxes).toBe(true);
+      expect(i.n).toBeGreaterThanOrEqual(11);
+      expect(i.n).toBeLessThanOrEqual(59);
+      expect(i.supplyBoxes).toBe(Math.floor(i.n / 10) + 1);
+      expect(i.supply).toBe(supplyCount(i.n % 10));
+      // із запасу не набрати ні N інакше, ні більше: після десятків лишається менше 10 одиниць
+      expect(i.supply).toBeLessThan(10 + (i.n % 10));
+      expect(i.slots).toBe(false);
+    }
+  });
+
+  it('boxSupply: n = 34 → 4 коробки і 7 предметів', () => {
+    expect(boxSupply(34)).toEqual({ boxes: 4, singles: 7 });
+    expect(boxSupply(59)).toEqual({ boxes: 6, singles: 12 });
+    expect(boxSupply(20)).toEqual({ boxes: 3, singles: 4 });
+  });
+
+  it('інструкція, похвала й відповідь — словами: «Daj misiowi trzydzieści cztery jabłka.»', () => {
+    const i = instance({ n: 34, boxes: true, supplyBoxes: 4, supply: 6 });
+    expect(nakarmZwierzaka.prompt(i)).toBe('Daj misiowi trzydzieści cztery jabłka.');
+    expect(nakarmZwierzaka.praise(i, 'Brawo!')).toBe('Brawo! Trzydzieści cztery jabłka.');
+    expect(nakarmZwierzaka.answer(i)).toBe(34);
+    expect(nakarmZwierzaka.check(i, 34)).toEqual({ ok: true });
+    expect(nakarmZwierzaka.check(i, 24)).toEqual({ ok: false, almost: false });
+  });
+
+  it('лічба по кроках: десятки, потім одиниці «від десятків»', () => {
+    expect([1, 2, 3, 4, 5, 6, 7].map((k) => boxStepWords(k, 3))).toEqual(['dziesięć', 'dwadzieścia', 'trzydzieści', 'trzydzieści jeden', 'trzydzieści dwa', 'trzydzieści trzy', 'trzydzieści cztery']);
+    expect(boxCounts(2, 3, 4)).toEqual({ boxes: 2, ones: 0 });
+    expect(boxCounts(5, 3, 4)).toEqual({ boxes: 3, ones: 2 });
+    expect(boxCounts(99, 3, 4)).toEqual({ boxes: 3, ones: 4 });
+  });
+
+  const recorder = () => {
+    const said: string[] = [];
+    const assists: Assist[] = [];
+    const ctx: AssistContext = { say: async (t) => { said.push(t); }, wait: async () => undefined, setAssist: (a) => { assists.push(a); } };
+    return { said, assists, ctx };
+  };
+
+  it('1-ша підказка лічить тарілку десятками, далі одиницями', async () => {
+    const { said, assists, ctx } = recorder();
+    await hintFeed(instance({ n: 34, boxes: true }), ctx, { nth: 1, response: 23 });
+    expect(said).toEqual(['dziesięć', 'dwadzieścia', 'dwadzieścia jeden', 'dwadzieścia dwa', 'dwadzieścia trzy']);
+    expect(assists.map((a) => a.step)).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  it('порожня тарілка — підказка нагадує завдання; 2-га підказка читає розряди', async () => {
+    const a = recorder();
+    await hintFeed(instance({ n: 34, boxes: true }), a.ctx, { nth: 1, response: null });
+    expect(a.said).toEqual(['Daj misiowi trzydzieści cztery jabłka.']);
+    const b = recorder();
+    await hintFeed(instance({ n: 34, boxes: true }), b.ctx, { nth: 2, response: 10 });
+    expect(b.assists).toEqual([{ mode: 'hint', step: 0, level: 2 }]);
+    expect(b.said).toEqual(['Trzy dziesiątki i cztery jedności to trzydzieści cztery.']);
+  });
+
+  it('показ разом: коробки, потім предмети, підсумок «Trzydzieści cztery jabłka.»', async () => {
+    const { said, assists, ctx } = recorder();
+    await togetherFeed(instance({ n: 34, boxes: true }), ctx);
+    expect(said).toEqual(['dziesięć', 'dwadzieścia', 'trzydzieści', 'trzydzieści jeden', 'trzydzieści dwa', 'trzydzieści trzy', 'trzydzieści cztery', 'Trzydzieści cztery jabłka.']);
+    expect(assists.map((a) => a.step)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+  });
+
+  it('тарілка-таця: розміри за виглядом', () => {
+    expect(trayBox('wide')).toMatchObject({ width: 360, height: 108 });
+    expect(trayBox('phone')).toMatchObject({ width: 88, height: 220 });
   });
 });

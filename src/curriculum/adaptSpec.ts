@@ -43,6 +43,8 @@ function adaptFlash(spec: FlashTask, step: number, hi: number): FlashTask {
 }
 
 function adaptFeed(spec: FeedTask, step: number, hi: number): FeedTask {
+  // коробки по 10: крок міняє верхню межу на 10 (не нижче 3 чисел діапазону й не вище 59 — запас має вміститися на сцені)
+  if (spec.boxes) return { ...spec, count: shiftMax(spec.count, 10 * step, Math.min(hi, 59)), slots: false };
   if (step < 0) return { ...spec, count: shiftMax(spec.count, 2 * step, hi), slots: true };
   return { ...spec, count: shiftMax(spec.count, 2 * step, hi), slots: step > 0 ? false : spec.slots };
 }
@@ -156,8 +158,11 @@ export function altSpec(spec: TaskSpec, world: WorldKey): TaskSpec | null {
   switch (spec.game) {
     // лічба → «дати стільки» з рамкою-десяткою на тарілці
     case 'policzIDotknij': return { ...base, game: 'nakarmZwierzaka', count: [Math.max(1, spec.count[0]), Math.max(1, spec.count[1])], slots: true };
-    // «дати N», «побачити одразу», «цифра ↔ кількість» → лічба в рядку
+    // «дати N» із коробками по 10 → зібрати число на мату розрядів
     case 'nakarmZwierzaka':
+      if (spec.boxes) return { ...base, game: 'paczkiPoDziesiec', total: spec.count, mode: 'build', contrast: false, answers };
+      return line([Math.max(1, spec.count[0]), Math.max(1, spec.count[1])]);
+    // «побачити одразу», «цифра ↔ кількість» → лічба в рядку
     case 'blysk': return line([Math.max(1, spec.count[0]), Math.max(1, spec.count[1])]);
     case 'cyfraIObrazek': return line([Math.max(1, spec.numbers[0]), Math.max(1, spec.numbers[1])]);
     default: return null;

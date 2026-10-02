@@ -13,6 +13,10 @@ export interface FeedLayout {
   supply: { x: number; y: number }[];
   /** Сторона предмета запасу. */
   size: number;
+  /** Коробки по 10 (режим boxes): лівий верхній кут кожної; порожньо, коли коробок нема. */
+  boxes: { x: number; y: number }[];
+  /** Сторона коробки (0, коли коробок нема). */
+  boxSize: number;
 }
 
 export const BUBBLE_W = 150;
@@ -26,7 +30,27 @@ export function supplyCount(n: number): number {
   return Math.max(4, Math.min(12, n + 3));
 }
 
-export function feedLayout(area: { w: number; h: number }, count: number, reserved: readonly Rect[], rng: Rng): FeedLayout {
+/** Коробки на десять у запасі (режим boxes): стільки, скільки десятків треба, і ще одна; не більше 6. Предметів поштучно — як для одиниць (`supplyCount` від одиниць). */
+export function boxSupply(n: number): { boxes: number; singles: number } {
+  return { boxes: Math.min(6, Math.floor(n / 10) + 1), singles: supplyCount(n % 10) };
+}
+
+const BOX_MAX = 84;
+const BOX_GAP = 8;
+
+/** Коробки в один ряд (чи два, якщо ряд вузький) у верхній частині області запасу; сторона не менша за 64, коли вміщається. */
+export function boxGrid(region: { w: number; h: number }, boxes: number): { size: number; cols: number; rows: number } {
+  let best = { size: 0, cols: boxes, rows: 1 };
+  for (const rows of [1, 2]) {
+    const cols = Math.ceil(boxes / rows);
+    const size = Math.max(0, Math.min(BOX_MAX, Math.floor((region.w + BOX_GAP) / cols) - BOX_GAP, Math.floor((region.h * 0.5 + BOX_GAP) / rows) - BOX_GAP));
+    best = { size, cols, rows };
+    if (size >= 64) break;
+  }
+  return best;
+}
+
+export function feedLayout(area: { w: number; h: number }, count: number, reserved: readonly Rect[], rng: Rng, boxCount = 0): FeedLayout {
   const wide = area.w / area.h >= 1.35 && area.w >= 700; // вузька область (телефон в альбомі) — тваринка згори, запас знизу
   const topStrip = reserved.filter((r) => r.y === 0).reduce((m, r) => Math.max(m, r.h), 0); // ряд кісточок угорі сцени (телефон)
 
@@ -44,7 +68,8 @@ export function feedLayout(area: { w: number; h: number }, count: number, reserv
     bubble = { x: animal.x + Math.round(aw * 0.78), y: Math.max(topStrip + MARGIN, animal.y - Math.round(BUBBLE_H * 0.45)), w: BUBBLE_W, h: BUBBLE_H };
     region = { x: colW + MARGIN, y: topStrip + MARGIN, w: area.w - colW - 2 * MARGIN, h: area.h - topStrip - 2 * MARGIN };
   } else {
-    const bandH = Math.round(Math.min(area.h * 0.42, 180));
+    // із коробками по 10 тваринці лишається вужча смуга: місце потрібне коробкам і предметам поштучно
+    const bandH = Math.round(boxCount > 0 ? Math.min(area.h * 0.27, 96) : Math.min(area.h * 0.42, 180));
     const ah = bandH - 12;
     const aw = Math.round((ah * 120) / 136);
     animal = { x: MARGIN, y: topStrip + 8, w: aw, h: ah };
@@ -52,6 +77,15 @@ export function feedLayout(area: { w: number; h: number }, count: number, reserv
     bubble = { x: animal.x + aw + 10, y: topStrip + 14, w: bw, h: Math.min(BUBBLE_H, ah) };
     region = { x: MARGIN, y: topStrip + bandH + 8, w: area.w - 2 * MARGIN, h: area.h - topStrip - bandH - 8 - MARGIN };
   }
+
+  // коробки по 10 займають верх області, предмети поштучно — решту під ними
+  const grid = boxCount > 0 ? boxGrid(region, boxCount) : { size: 0, cols: 0, rows: 0 };
+  const boxes = Array.from({ length: boxCount }, (_, i) => ({
+    x: region.x + (i % grid.cols) * (grid.size + BOX_GAP),
+    y: region.y + Math.floor(i / grid.cols) * (grid.size + BOX_GAP),
+  }));
+  const band = boxCount > 0 ? grid.rows * (grid.size + BOX_GAP) + 4 : 0;
+  region = { x: region.x, y: region.y + band, w: region.w, h: region.h - band };
 
   const size = itemSize({ w: region.w, h: region.h });
   const local = reserved
@@ -63,5 +97,7 @@ export function feedLayout(area: { w: number; h: number }, count: number, reserv
     bubble,
     supply: placed.items.map((p) => ({ x: Math.round(p.x + region.x), y: Math.round(p.y + region.y) })),
     size: placed.size,
+    boxes,
+    boxSize: grid.size,
   };
 }
