@@ -3,8 +3,10 @@ import type { GameId } from '../curriculum/types';
 import { autobusDziesiatka } from './autobusDziesiatka';
 import { blysk } from './blysk';
 import { cyfraIObrazek } from './cyfraIObrazek';
+import { domekLiczb } from './domekLiczb';
 import type { GameResolver } from './engine/levelPlan';
 import type { GameDef } from './engine/types';
+import { ileRazem } from './ileRazem';
 import { ktoMaWiecej } from './ktoMaWiecej';
 import { nakarmZwierzaka } from './nakarmZwierzaka';
 import { policzIDotknij } from './policzIDotknij';
@@ -19,6 +21,8 @@ const GAMES: Partial<Record<GameId, GameDef>> = {
   cyfraIObrazek: cyfraIObrazek as unknown as GameDef,
   ktoMaWiecej: ktoMaWiecej as unknown as GameDef,
   autobusDziesiatka: autobusDziesiatka as unknown as GameDef,
+  domekLiczb: domekLiczb as unknown as GameDef,
+  ileRazem: ileRazem as unknown as GameDef,
 };
 
 export const resolveGame: GameResolver = (game) => GAMES[game];

@@ -1,0 +1,58 @@
+/* Рамка-десятка: комірки 5×2 (на 20 — дві рамки), фішки кольору світу. Розмір комірки задає inline-стиль. */
+.root {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.frame {
+  display: grid;
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-ink);
+  border-radius: 12px;
+  box-shadow: 0 4px 0 var(--kl-neutral-edge);
+  overflow: hidden;
+}
+
+.root[data-gold='true'] .frame {
+  border-color: var(--kl-reward-edge);
+  box-shadow: 0 0 0 4px var(--kl-reward);
+  animation: var(--kl-anim-pulse) 1s ease-in-out 2;
+}
+
+.cell {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--kl-locked-edge);
+}
+
+.counter {
+  box-sizing: border-box;
+  width: 76%;
+  height: 76%;
+  background: var(--tf-500);
+  border: 3px solid var(--kl-ink);
+  border-radius: 50%;
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}
+
+/* тьмяна фішка: світла, пунктирний контур (не лише колір) */
+.counter[data-state='dim'] {
+  background: transparent;
+  border: 3px dashed var(--kl-ink-soft);
+  opacity: .75;
+}
+
+.mark {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kl-surface);
+  border: 2.5px solid var(--kl-ink);
+  border-radius: 50%;
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out);
+}

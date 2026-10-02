@@ -1,0 +1,62 @@
+.scene {
+  position: relative;
+}
+
+/* композиція в дизайнових px (600 × 344); масштабується цілим */
+.stage {
+  position: absolute;
+  transform-origin: 0 0;
+}
+
+.equation {
+  position: absolute;
+  left: 0;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: var(--kl-ink);
+}
+
+.unknown {
+  font: 700 72px / 1 var(--kl-font-display);
+  color: var(--kl-ink-soft);
+}
+
+.sum {
+  color: var(--kl-success-edge);
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+.basket {
+  position: absolute;
+}
+
+.basket[data-merged] {
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}
+
+/* кошик, що нахиляється до спільного й зникає (прикраса) */
+.ghost {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transform-origin: 30% 100%;
+  animation: var(--kl-anim-pour) 650ms ease-in-out both;
+}
+
+/* «Wsyp!»: 80 px у координатах сцени (не масштабується разом із композицією) */
+.pour {
+  position: absolute;
+  z-index: 3;
+}
+
+/* бульбашка Kubika: «a + b» (лише цифри й знак) */
+.ask {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  color: var(--kl-ink);
+}

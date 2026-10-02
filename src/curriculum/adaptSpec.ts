@@ -2,7 +2,7 @@
 // крок униз: менший діапазон і більше опори). Чисті функції над TaskSpec: генератори ігор лишаються незмінними.
 import { STEP_MIN, clampStep, type Struggle } from './adaptivity';
 import type {
-  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, MatchTask, Range, TaskSpec, TrainTask, WorldKey,
+  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, MatchTask, Range, SumTask, TaskSpec, TrainTask, WorldKey,
 } from './types';
 import { worldById } from './worlds';
 
@@ -70,6 +70,18 @@ function adaptBus(spec: BusTask, step: number): BusTask {
   return step >= 2 && spec.ask === 'full' ? { ...spec, ask: 'mixed' } : spec;
 }
 
+/** «Domek liczb»: крок униз — менше ціле, предмети під будиночком одразу, порожнє віконце завжди праворуч; вгору — більше ціле, лише цифри, віконце навмання. */
+function adaptHouse(spec: HouseTask, step: number, hi: number): HouseTask {
+  if (step < 0) return { ...spec, whole: shiftMax(spec.whole, 2 * step, hi), show: 'pictures', missing: 'right' };
+  return { ...spec, whole: shiftMax(spec.whole, 2 * step, hi), show: step >= 2 ? 'digits' : spec.show, missing: step >= 2 ? 'any' : spec.missing };
+}
+
+/** «Ile razem?»: крок униз — менша сума, без кришки й лише символів, більший доданок першим; вгору — більша сума, а з кроку 2 — кришка на першому кошику. */
+function adaptSum(spec: SumTask, step: number, hi: number): SumTask {
+  if (step < 0) return { ...spec, sum: shiftMax(spec.sum, step, hi), lid: false, symbols: false, order: spec.doubles ? spec.order : 'bigFirst' };
+  return { ...spec, sum: shiftMax(spec.sum, step, hi), lid: step >= 2 ? true : spec.lid };
+}
+
 /** Завдання з урахуванням кроку складності навички. `range` — діапазон чисел світу (верхня межа не перевищується). */
 export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec {
   const s = clampStep(step);
@@ -83,6 +95,8 @@ export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec 
     case 'zgubionyWagonik': return adaptTrain(spec, s);
     case 'ktoMaWiecej': return adaptCompare(spec, s);
     case 'autobusDziesiatka': return adaptBus(spec, s);
+    case 'domekLiczb': return adaptHouse(spec, s, hi);
+    case 'ileRazem': return adaptSum(spec, s, hi);
     default: return spec;
   }
 }

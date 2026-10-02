@@ -23,6 +23,13 @@ const bus = (over: Partial<Extract<TaskSpec, { game: 'autobusDziesiatka' }>> = {
   game: 'autobusDziesiatka', skill: 'bonds-5-10', count: [1, 9], ask: 'full', exposureMs: 0, answers: 'digit', ...over,
 });
 
+const house = (over: Partial<Extract<TaskSpec, { game: 'domekLiczb' }>> = {}): TaskSpec => ({
+  game: 'domekLiczb', skill: 'bonds-5-10', whole: [5, 10], missing: 'any', show: 'digits', answers: 'digit', ...over,
+});
+const sum = (over: Partial<Extract<TaskSpec, { game: 'ileRazem' }>> = {}): TaskSpec => ({
+  game: 'ileRazem', skill: 'add-combine', sum: [3, 8], lid: false, order: 'any', doubles: false, symbols: false, answers: 'digit', ...over,
+});
+
 export const PRESETS: readonly GamePreset[] = [
   { id: 'wagon-end', title: 'Wagonik: бракує останнього, 1–10, 5 вагонів', world: 'w2', spec: train({ gap: 'end' }) },
   { id: 'wagon-mid', title: 'Wagonik: бракує посередині, 1–10, 6 вагонів', world: 'w2', spec: train({ gap: 'middle', length: 6 }) },
@@ -47,6 +54,16 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'bus-free', title: 'Autobus: скільки вільних, 0–10', world: 'w2', spec: bus({ count: [0, 10], ask: 'empty' }) },
   { id: 'bus-small', title: 'Autobus: їде менше за п’ять (лічба тваринок)', world: 'w2', spec: bus({ count: [1, 4], ask: 'mixed' }) },
   { id: 'bus-flash', title: 'Autobus: миготіння 2,5 с, цифра з крапками', world: 'w2', spec: bus({ ask: 'mixed', exposureMs: 2500, answers: 'digitDots' }) },
+  { id: 'house-5', title: 'Domek liczb: ціле 3–5, предмети під будиночком', world: 'w3', spec: house({ whole: [3, 5], show: 'pictures', missing: 'right' }) },
+  { id: 'house-10', title: 'Domek liczb: ціле 5–10, лише цифри', world: 'w3', spec: house() },
+  { id: 'house-left', title: 'Domek liczb: ціле 6–10, порожнє віконце ліворуч', world: 'w3', spec: house({ whole: [6, 10], missing: 'left' }) },
+  { id: 'house-20', title: 'Domek liczb: ціле 11–20, дві рамки (W4)', world: 'w4', spec: house({ skill: 'teens', whole: [11, 20] }) },
+  { id: 'sum-5', title: 'Ile razem?: сума 3–5, предмети, «Wsyp!»', world: 'w3', spec: sum({ sum: [3, 5], order: 'bigFirst' }) },
+  { id: 'sum-10', title: 'Ile razem?: сума 4–10', world: 'w3', spec: sum({ sum: [4, 10] }) },
+  { id: 'sum-lid', title: 'Ile razem?: кришка на першому кошику (лічба від числа)', world: 'w3', spec: sum({ skill: 'count-on', sum: [5, 10], lid: true, order: 'bigFirst' }) },
+  { id: 'sum-doubles', title: 'Ile razem?: подвоєння 2–10', world: 'w3', spec: sum({ skill: 'doubles', sum: [2, 10], doubles: true }) },
+  { id: 'sum-symbols', title: 'Ile razem?: лише символи «3 + 2 = ?»', world: 'w3', spec: sum({ skill: 'plus-equals', symbols: true }) },
+  { id: 'sum-20', title: 'Ile razem?: сума 11–20, без переходу (W4)', world: 'w4', spec: sum({ skill: 'add-no-bridge-20', sum: [11, 20], order: 'bigFirst' }) },
   { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
 ];
 

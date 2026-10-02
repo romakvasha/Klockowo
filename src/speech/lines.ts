@@ -37,6 +37,16 @@ export const LABELS = {
   seatFree: 'wolne miejsce',
   seatTaken: 'zajęte miejsce',
   seatHidden: 'zakryte miejsce',
+  house: 'domek liczb', // «Domek liczb»: будиночок з блоків [do sprawdzenia]
+  roof: 'dach',
+  window: 'okienko',
+  windowEmpty: 'puste okienko',
+  yard: 'przedmioty pod domkiem',
+  frame: 'ramka dziesiątki',
+  basket: 'koszyk', // «Ile razem?»: кошик [do sprawdzenia]
+  basketLid: 'koszyk z przykrywką',
+  basketMerged: 'wspólny koszyk',
+  equation: 'działanie',
 } as const;
 
 /** aria-label купки-картки «Kto ma więcej?»: «miś — kupka» без числа, щоб не видати відповідь [do sprawdzenia]. */
@@ -346,6 +356,16 @@ export function houseQuestion(whole: number, part: number): string {
 /** «Trzy jabłka i dwa jabłka. Ile razem?» */
 export function twoGroups(a: number, b: number, noun: Noun): string {
   return `${cap(quantity(a, noun))} i ${quantity(b, noun)}. Ile razem?`;
+}
+
+/** «Ile to jest trzy dodać dwa?» — запитання про дії лише з символами (POLISH_COPY §8). */
+export function sumQuestion(a: number, b: number): string {
+  return `Ile to jest ${numberWords(a)} dodać ${numberWords(b)}?`;
+}
+
+/** Підказка 2 (POLISH_COPY §6): «Zacznij od trzech i licz dalej.» — лічба «від числа». */
+export function startFrom(n: number): string {
+  return `Zacznij od ${numberGenitive(n)} i licz dalej.`;
 }
 
 /** «Trzy dodać dwa równa się pięć.» — «dodać», не «plus» (POLISH_COPY §8). */

@@ -37,6 +37,8 @@
   /* «Zgubiony wagonik»: вагончик падає на місце, колеса крутяться */
   --kl-anim-drop: kl-drop;
   --kl-anim-spin: kl-spin;
+  /* «Ile razem?»: кошик нахиляється й висипає предмети в спільний */
+  --kl-anim-pour: kl-pour;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -67,6 +69,7 @@
     --kl-anim-flip: kl-fade-in;
     --kl-anim-drop: kl-fade-in;
     --kl-anim-spin: none;
+    --kl-anim-pour: kl-fade-out;
   }
 }
 
@@ -97,6 +100,7 @@
   --kl-anim-flip: kl-fade-in;
   --kl-anim-drop: kl-fade-in;
   --kl-anim-spin: none;
+  --kl-anim-pour: kl-fade-out;
 }
 
 @keyframes kl-fade-in {
@@ -260,6 +264,18 @@
   55% { transform: translateY(8px); opacity: 1; }
   80% { transform: translateY(-3px); }
   100% { transform: translateY(0); }
+}
+
+/* порожній кошик нахиляється до спільного й зникає */
+@keyframes kl-pour {
+  0% { transform: none; opacity: 1; }
+  55% { transform: translateX(-110px) rotate(-24deg); opacity: 1; }
+  100% { transform: translateX(-110px) rotate(-24deg); opacity: 0; }
+}
+
+@keyframes kl-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 @keyframes kl-spin {

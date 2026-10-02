@@ -4,7 +4,7 @@ import { resolveGame } from '../games/registry';
 import { STEP_MAX, STEP_MIN, type Struggle } from './adaptivity';
 import { adaptSpec, adaptTask, altSpec } from './adaptSpec';
 import { levelsOfWorld } from './levels';
-import type { BusTask, CompareTask, CountTask, FeedTask, FlashTask, MatchTask, TaskSpec, TrainTask } from './types';
+import type { BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, MatchTask, SumTask, TaskSpec, TrainTask } from './types';
 
 const count: CountTask = { game: 'policzIDotknij', skill: 'count-scatter', count: [1, 8], arrangement: 'scatter', look: 'similar', answers: 'digitDots' };
 const flash: FlashTask = { game: 'blysk', skill: 'subitize-5', count: [1, 5], pattern: 'random', exposureMs: 1200, answers: 'digitDots' };
@@ -13,11 +13,13 @@ const match: MatchTask = { game: 'cyfraIObrazek', skill: 'digit-quantity', pairs
 const train: TrainTask = { game: 'zgubionyWagonik', skill: 'order-around', range: [1, 10], length: 6, gap: 'end', step: 1, answers: 'digit' };
 const compare: CompareTask = { game: 'ktoMaWiecej', skill: 'compare-10', count: [1, 8], diff: [2, 3], ask: 'more', show: 'sizeTrick' };
 const bus: BusTask = { game: 'autobusDziesiatka', skill: 'bonds-5-10', count: [1, 9], ask: 'empty', exposureMs: 1500, answers: 'digit' };
+const house: HouseTask = { game: 'domekLiczb', skill: 'bonds-5-10', whole: [6, 10], missing: 'left', show: 'digits', answers: 'digit' };
+const sum: SumTask = { game: 'ileRazem', skill: 'add-combine', sum: [4, 8], lid: false, order: 'any', doubles: false, symbols: true, answers: 'digit' };
 const W1: readonly [number, number] = [1, 10];
 
 describe('adaptSpec: крок униз — менше чисел і більше опори, крок угору — більше чисел і менше опори', () => {
   it('крок 0 — завдання без змін', () => {
-    for (const spec of [count, flash, feed, match, train, compare, bus]) expect(adaptSpec(spec, 0, W1)).toBe(spec);
+    for (const spec of [count, flash, feed, match, train, compare, bus, house, sum]) expect(adaptSpec(spec, 0, W1)).toBe(spec);
   });
 
   it('«Policz i dotknij»', () => {
@@ -65,6 +67,38 @@ describe('adaptSpec: крок униз — менше чисел і більше
     expect(adaptTask(count, { step: 0, struggle: 1 }, 0, 'w1').game).toBe('policzIDotknij');
     expect(adaptTask(count, { step: 0, struggle: 0 }, 1, 'w1')).toEqual(adaptSpec(count, -1, W1));
     expect(adaptTask(count, undefined, 0, 'w1')).toBe(count);
+  });
+});
+
+describe('adaptSpec: «Domek liczb» і «Ile razem?»', () => {
+  it('«Domek liczb»: крок униз — менше ціле, предмети, порожнє віконце праворуч; вгору — більше ціле, лише цифри, віконце навмання', () => {
+    expect(adaptSpec(house, -1, [1, 10])).toMatchObject({ whole: [6, 8], show: 'pictures', missing: 'right' });
+    expect(adaptSpec({ ...house, show: 'pictures', missing: 'right' }, 1, [1, 20])).toMatchObject({ whole: [6, 12], show: 'pictures', missing: 'right' });
+    expect(adaptSpec({ ...house, show: 'pictures', missing: 'right' }, 2, [1, 20])).toMatchObject({ show: 'digits', missing: 'any' });
+  });
+
+  it('«Ile razem?»: крок униз — менша сума, без кришки й символів, більший доданок першим; вгору — більша сума, з кроку 2 — кришка', () => {
+    expect(adaptSpec({ ...sum, lid: true }, -1, [1, 10])).toMatchObject({ sum: [4, 7], lid: false, symbols: false, order: 'bigFirst' });
+    expect(adaptSpec({ ...sum, doubles: true }, -2, [1, 10])).toMatchObject({ order: 'any', doubles: true });
+    expect(adaptSpec(sum, 1, [1, 10])).toMatchObject({ sum: [4, 9], lid: false });
+    expect(adaptSpec(sum, 2, [1, 10])).toMatchObject({ sum: [4, 10], lid: true });
+  });
+
+  it('адаптовані завдання W3-подібних рівнів плануються на всіх кроках з правильною відповіддю серед плиток', () => {
+    for (const spec of [house, sum]) {
+      for (let step = STEP_MIN; step <= STEP_MAX; step++) {
+        const adapted = adaptSpec(spec, step, [1, 10]);
+        const level = { id: 'w3-1', world: 'w3', index: 1, kind: 'main', newIdea: false, skills: [spec.skill], tasks: Array.from({ length: 6 }, () => adapted), draft: false } as const;
+        for (let seed = 1; seed <= 20; seed++) {
+          for (const task of planLevel(level, seed, resolveGame)) {
+            const def = task.def!;
+            const answer = def.answer(task.instance);
+            expect(def.check(task.instance, answer)).toEqual({ ok: true });
+            expect(def.tiles(task.instance).map((t) => t.value)).toContain(answer);
+          }
+        }
+      }
+    }
   });
 });
 

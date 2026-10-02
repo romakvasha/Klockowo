@@ -127,15 +127,43 @@ export interface BusTask extends TaskBase {
   answers: AnswerStyle;
 }
 
-/** Ігри, чиї параметри опишуть етапи M13–M19: поки лише гра й навичка. */
+/** «Domek liczb» — будиночок із блоків: на даху ціле, одне з двох віконець порожнє («Osiem to trzy i ile?»); вибір із 3 плиток. */
+export interface HouseTask extends TaskBase {
+  game: 'domekLiczb';
+  /** Ціле (дах): 3–20. */
+  whole: Range;
+  /** Яке віконце порожнє: left, right або навмання. */
+  missing: 'left' | 'right' | 'any';
+  /** pictures — під будиночком одразу лежать предмети цілого; digits — лише цифри (предмети з'являються як підказка). */
+  show: 'pictures' | 'digits';
+  answers: AnswerStyle;
+}
+
+/** «Ile razem?» — два кошики над «3 + 2 = ?»; «Wsyp!» зсипає їх в один; вибір із 3 плиток. */
+export interface SumTask extends TaskBase {
+  game: 'ileRazem';
+  /** Межі суми (2–20). */
+  sum: Range;
+  /** Перший кошик закритий кришкою з числом: предметів не видно, дитина рахує далі від числа (лічба «від числа»). */
+  lid: boolean;
+  /** Який доданок першим: більший, менший чи навмання (при `doubles` ігнорується). */
+  order: 'any' | 'bigFirst' | 'smallFirst';
+  /** Лише подвоєння (3 + 3): доданки рівні, сума парна. */
+  doubles: boolean;
+  /** Лише символи: «3 + 2 = ?» без кошиків (кошики з'являються як підказка). */
+  symbols: boolean;
+  answers: AnswerStyle;
+}
+
+/** Ігри, чиї параметри опишуть етапи M14–M19: поки лише гра й навичка. */
 export interface PendingTask extends TaskBase {
   game: Exclude<
     GameId,
-    'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik' | 'ktoMaWiecej' | 'autobusDziesiatka'
+    'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik' | 'ktoMaWiecej' | 'autobusDziesiatka' | 'domekLiczb' | 'ileRazem'
   >;
 }
 
-export type TaskSpec = CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | PendingTask;
+export type TaskSpec = CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | PendingTask;
 
 export type LevelKind = 'main' | 'star';
 

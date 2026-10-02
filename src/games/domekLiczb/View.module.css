@@ -1,0 +1,72 @@
+.scene {
+  position: relative;
+}
+
+/* композиція в дизайнових px (440 × 432); масштабується цілим */
+.stage {
+  position: absolute;
+  transform-origin: 0 0;
+}
+
+.yard {
+  position: absolute;
+  left: 0;
+}
+
+.objects {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: 50%;
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}
+
+/* відома частина: золоте кільце (не лише колір — кільце й тло) */
+.item[data-known='true'] {
+  background: rgba(255, 194, 26, .3);
+  box-shadow: 0 0 0 3px var(--kl-reward-edge);
+}
+
+.item[data-celebrate='true'] {
+  animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
+}
+
+.badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kl-surface);
+  border: 2.5px solid var(--kl-ink);
+  border-radius: 50%;
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out);
+}
+
+.frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* бульбашка Kubika: «ціле = частина + ?» (лише цифри й знаки) */
+.ask {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  color: var(--kl-ink);
+}
+
+.ask b {
+  font: 700 34px / 1 var(--kl-font-display);
+}
