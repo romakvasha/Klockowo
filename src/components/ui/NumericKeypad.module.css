@@ -1,0 +1,30 @@
+.pad {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(64px, 88px));
+  gap: 12px;
+}
+
+.key {
+  min-width: 64px;
+  min-height: 64px;
+  padding: 0;
+  font: 700 28px / 1 var(--kl-font-display);
+  color: var(--kl-ink);
+  background: var(--kl-surface);
+  border-radius: 18px;
+}
+
+.key:disabled {
+  opacity: .5;
+}
+
+.back {
+  font-size: 30px;
+}
+
+.submit {
+  font-size: 20px;
+  color: var(--kl-ink);
+  background: var(--kl-reward);
+  --edge: var(--kl-reward-edge);
+}
