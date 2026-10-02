@@ -1,0 +1,60 @@
+/* Блоки розрядів: кубик, стовпчик, плита, пучок. Кольори — токени розрядів (--kl-tens, --kl-ones). */
+.cube {
+  display: inline-block;
+  box-sizing: border-box;
+  background: var(--kl-ones);
+  border: 3px solid var(--kl-ink);
+  border-radius: 22%;
+  box-shadow: inset 0 -3px 0 rgba(45, 42, 74, .18), inset 3px 3px 0 rgba(255, 255, 255, .45);
+}
+
+.cube[data-tone='tens'] {
+  background: var(--kl-tens);
+}
+
+.cube[data-tone='plain'] {
+  background: var(--kl-surface);
+}
+
+.rod {
+  display: inline-flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--kl-tens);
+  border: 3px solid var(--kl-ink);
+  border-radius: 12px;
+}
+
+.segment {
+  flex: none;
+  border-bottom: 2px solid rgba(45, 42, 74, .55);
+  background: linear-gradient(90deg, rgba(255, 255, 255, .4) 0 18%, transparent 18%);
+}
+
+.segment:last-child {
+  border-bottom: 0;
+}
+
+.plate {
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: var(--kl-tens);
+  background-image:
+    linear-gradient(to right, rgba(45, 42, 74, .55) 2px, transparent 2px),
+    linear-gradient(to bottom, rgba(45, 42, 74, .55) 2px, transparent 2px);
+  border: 3px solid var(--kl-ink);
+  border-radius: 10px;
+}
+
+.stick {
+  fill: #E3CFA8;
+  stroke: var(--kl-ink);
+  stroke-width: 2.5;
+}
+
+.band {
+  fill: var(--kl-tens);
+  stroke: var(--kl-ink);
+  stroke-width: 2.5;
+}

@@ -41,6 +41,10 @@ const story = (over: Partial<Extract<TaskSpec, { game: 'historyjki' }>> = {}): T
   game: 'historyjki', skill: 'add-combine', sum: [3, 6], kind: 'join', answers: 'digit', ...over,
 });
 
+const pack = (over: Partial<Extract<TaskSpec, { game: 'paczkiPoDziesiec' }>> = {}): TaskSpec => ({
+  game: 'paczkiPoDziesiec', skill: 'bundle-ten', total: [21, 49], mode: 'loose', contrast: false, answers: 'digit', ...over,
+});
+
 export const PRESETS: readonly GamePreset[] = [
   { id: 'wagon-end', title: 'Wagonik: бракує останнього, 1–10, 5 вагонів', world: 'w2', spec: train({ gap: 'end' }) },
   { id: 'wagon-mid', title: 'Wagonik: бракує посередині, 1–10, 6 вагонів', world: 'w2', spec: train({ gap: 'middle', length: 6 }) },
@@ -98,6 +102,12 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'story-nobridge', title: 'Historyjki: 13 + 4 без переходу (W4)', world: 'w4', spec: story({ skill: 'add-no-bridge-20', sum: [12, 19], noBridge: true, kind: 'mixed' }) },
   { id: 'ten-bridge', title: 'Zrób dziesiątkę ★: 8 + 5 через десяток, відомих 8–9 (W4★)', world: 'w4', spec: ten({ skill: 'bridge-ten', bridge: true, known: [8, 9], add: [3, 5] }) },
   { id: 'ten-bridge-wide', title: 'Zrób dziesiątkę ★: через десяток, відомих 6–9, докласти 3–9', world: 'w4', spec: ten({ skill: 'bridge-ten', bridge: true, known: [6, 9], add: [3, 9] }) },
+  { id: 'pack-loose', title: 'Paczki: розсипані, «Zapakuj», 11–29 (W5)', world: 'w5', spec: pack({ total: [11, 29] }) },
+  { id: 'pack-loose-big', title: 'Paczki: розсипані, 31–59 (W5)', world: 'w5', spec: pack({ total: [31, 59] }) },
+  { id: 'pack-packed', title: 'Paczki: уже в коробках, прочитати 21–69 (W5)', world: 'w5', spec: pack({ mode: 'packed', total: [21, 69] }) },
+  { id: 'pack-contrast', title: 'Paczki: контраст 26 ↔ 62 (W5)', world: 'w5', spec: pack({ mode: 'packed', total: [21, 69], contrast: true, skill: 'compose-2digit' }) },
+  { id: 'pack-build', title: 'Paczki: «Zbuduj liczbę…», +10 / +1, 11–49 (W5)', world: 'w5', spec: pack({ mode: 'build', total: [11, 49], skill: 'compose-2digit' }) },
+  { id: 'pack-build-99', title: 'Paczki: «Zbuduj liczbę…» до 99 (W5)', world: 'w5', spec: pack({ mode: 'build', total: [30, 99], skill: 'compose-2digit' }) },
   { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
 ];
 

@@ -10,6 +10,7 @@ import { historyjki } from './historyjki';
 import { ileRazem } from './ileRazem';
 import { ktoMaWiecej } from './ktoMaWiecej';
 import { nakarmZwierzaka } from './nakarmZwierzaka';
+import { paczkiPoDziesiec } from './paczkiPoDziesiec';
 import { policzIDotknij } from './policzIDotknij';
 import { skokiZabki } from './skokiZabki';
 import { zgubionyWagonik } from './zgubionyWagonik';
@@ -29,6 +30,7 @@ const GAMES: Partial<Record<GameId, GameDef>> = {
   skokiZabki: skokiZabki as unknown as GameDef,
   zrobDziesiatke: zrobDziesiatke as unknown as GameDef,
   historyjki: historyjki as unknown as GameDef,
+  paczkiPoDziesiec: paczkiPoDziesiec as unknown as GameDef,
 };
 
 export const resolveGame: GameResolver = (game) => GAMES[game];

@@ -24,6 +24,14 @@ export const LABELS = {
   abacus: 'liczydło', // рахівниця на 20 (BRIEF §10)
   placeTens: 'dziesiątki', // мат «dziesiątki | jedności»
   placeOnes: 'jedności',
+  placeMat: 'mata dziesiątek i jedności', // «Paczki po dziesięć»: мат розрядів [do sprawdzenia]
+  removeRod: 'Zdejmij dziesiątkę',
+  removeCube: 'Zdejmij jedność',
+  addTen: 'Dodaj dziesiątkę',
+  addOne: 'Dodaj jedność',
+  box: 'pudełko po dziesięć',
+  looseItems: 'rozsypane przedmioty',
+  looseItem: 'przedmiot',
   loading: 'Ładowanie…', // aria-label смужки завантаження (design etap1/13)
   answers: 'Odpowiedzi', // aria-label лотка з плитками-відповідями (design etap2/00)
   dotCard: 'karta z kropkami', // «Błysk!»: картка з крапками (aria-label без числа, щоб не видати відповідь)
@@ -407,6 +415,21 @@ export function howManyMissing(to: number): string {
 export function countByTens(bundles: number): string {
   if (!Number.isInteger(bundles) || bundles < 1 || bundles > 10) throw new RangeError(`countByTens: expected 1–10, got ${bundles}`);
   return Array.from({ length: bundles }, (_, i) => numberWords((i + 1) * 10)).join(', ');
+}
+
+/** «Zapakuj jagody po dziesięć.» (POLISH_COPY §5, гра 12) */
+export function packInstruction(noun: Noun): string {
+  return `Zapakuj ${noun.few} po dziesięć.`;
+}
+
+/** «Ile jest jagód razem?» (POLISH_COPY §5) */
+export function howManyTogether(noun: Noun): string {
+  return `Ile jest ${noun.many} razem?`;
+}
+
+/** «Zbuduj liczbę czterdzieści siedem.» — зворотний режим (POLISH_COPY §5) */
+export function buildNumber(n: number): string {
+  return `Zbuduj liczbę ${numberWords(n)}.`;
 }
 
 /** «Cztery dziesiątki i siedem jedności to czterdzieści siedem.» */

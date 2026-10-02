@@ -2,7 +2,7 @@
 // крок униз: менший діапазон і більше опори). Чисті функції над TaskSpec: генератори ігор лишаються незмінними.
 import { STEP_MIN, clampStep, type Struggle } from './adaptivity';
 import type {
-  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, Range, StoryTask, SumTask, TaskSpec, TenTask, TrainTask, WorldKey,
+  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, PackTask, Range, StoryTask, SumTask, TaskSpec, TenTask, TrainTask, WorldKey,
 } from './types';
 import { worldById } from './worlds';
 
@@ -105,6 +105,14 @@ function adaptStory(spec: StoryTask, step: number, hi: number): StoryTask {
   return { ...spec, sum: shiftMax(spec.sum, step, hi), kind: spec.kind === 'join' && step >= 1 ? 'mixed' : spec.kind };
 }
 
+/** «Paczki po dziesięć»: крок униз — менші числа (мін. 11) і без контрасту 26 ↔ 62; вгору — більші числа до 99, а з кроку 1 — контраст. */
+function adaptPack(spec: PackTask, step: number): PackTask {
+  const [lo, hi] = spec.total;
+  const cap = spec.mode === 'loose' ? 59 : 99;
+  if (step < 0) return { ...spec, total: [lo, clamp(hi + 10 * step, Math.min(hi, Math.max(lo, 11) + 8), hi)], contrast: false };
+  return { ...spec, total: [lo, clamp(hi + 10 * step, hi, Math.max(hi, cap))], contrast: spec.mode === 'build' ? spec.contrast : step >= 1 ? true : spec.contrast };
+}
+
 /** Завдання з урахуванням кроку складності навички. `range` — діапазон чисел світу (верхня межа не перевищується). */
 export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec {
   const s = clampStep(step);
@@ -123,6 +131,7 @@ export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec 
     case 'skokiZabki': return adaptJump(spec, s);
     case 'zrobDziesiatke': return adaptTen(spec, s);
     case 'historyjki': return adaptStory(spec, s, hi);
+    case 'paczkiPoDziesiec': return adaptPack(spec, s);
     default: return spec;
   }
 }

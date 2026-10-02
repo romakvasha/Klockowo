@@ -202,17 +202,32 @@ export interface StoryTask extends TaskBase {
   answers: AnswerStyle;
 }
 
-/** Ігри, чиї параметри опишуть етапи M16–M19: поки лише гра й навичка. */
+/** «Paczki po dziesięć»: loose — розсипані предмети, дитина пакує їх по 10 («Zapakuj»), лічить десятками й далі поштучно; packed — уже в коробках і поштучно, лише порахувати;
+ *  build — зворотний режим: «Zbuduj liczbę czterdzieści siedem.» кнопками «+10» і «+1» на мату «dziesiątki | jedności». */
+export type PackMode = 'loose' | 'packed' | 'build';
+
+/** «Paczki po dziesięć» (W5, W6) — розряди: десятки й одиниці. Вибір із 3 плиток (loose, packed) чи збирання числа (build). */
+export interface PackTask extends TaskBase {
+  game: 'paczkiPoDziesiec';
+  /** Скільки всього (11–99; у loose — до 59: розсипані предмети мусять уміститись на сцені). */
+  total: Range;
+  mode: PackMode;
+  /** Серед плиток — число з переставленими цифрами (26 ↔ 62); у build не діє. */
+  contrast: boolean;
+  answers: AnswerStyle;
+}
+
+/** Ігри, чиї параметри опишуть етапи M18–M19: поки лише гра й навичка. */
 export interface PendingTask extends TaskBase {
   game: Exclude<
     GameId,
     | 'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik' | 'ktoMaWiecej' | 'autobusDziesiatka' | 'domekLiczb' | 'ileRazem'
-    | 'skokiZabki' | 'zrobDziesiatke' | 'historyjki'
+    | 'skokiZabki' | 'zrobDziesiatke' | 'historyjki' | 'paczkiPoDziesiec'
   >;
 }
 
 export type TaskSpec =
-  | CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | JumpTask | TenTask | StoryTask | PendingTask;
+  | CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | JumpTask | TenTask | StoryTask | PackTask | PendingTask;
 
 export type LevelKind = 'main' | 'star';
 

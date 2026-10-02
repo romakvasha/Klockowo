@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import type { TaskSpec } from './types';
 import { LEVELS, findLevel, levelById, levelsOfWorld } from './levels';
 import { W1_LEVELS } from './levels/w1';
 import { W2_LEVELS } from './levels/w2';
 import { W3_LEVELS } from './levels/w3';
 import { W4_LEVELS } from './levels/w4';
+import { W5_LEVELS } from './levels/w5';
 import { skillInfo } from './skills';
 import { WORLD_KEYS, parseLevelId, worldById } from './worlds';
 
@@ -30,9 +32,9 @@ describe('усі рівні програми', () => {
     expect(() => levelById('w1-13')).toThrow('Unknown level');
   });
 
-  it('W5–W7 — заготовки (draft, без завдань); W1–W4 — описано повністю', () => {
+  it('W6–W7 — заготовки (draft, без завдань); W1–W5 — описано повністю', () => {
     for (const l of LEVELS) {
-      if (l.world === 'w1' || l.world === 'w2' || l.world === 'w3' || l.world === 'w4') expect(l.draft, l.id).toBe(false);
+      if (l.world === 'w1' || l.world === 'w2' || l.world === 'w3' || l.world === 'w4' || l.world === 'w5') expect(l.draft, l.id).toBe(false);
       else {
         expect(l.draft, l.id).toBe(true);
         expect(l.tasks, l.id).toEqual([]);
@@ -315,5 +317,59 @@ describe('W4 «Most Dwudziestki» — 12 основних рівнів + ★-г�
     const last = main[11]!;
     expect(last.skills).toEqual(['add-no-bridge-20', 'teens', 'count-from-any']);
     expect(new Set(last.tasks.filter((t) => !t.review).map((t) => t.game))).toEqual(new Set(['ileRazem', 'historyjki', 'domekLiczb', 'zgubionyWagonik']));
+  });
+});
+
+describe('W5 «Las Dziesiątek» — 12 рівнів по 6 завдань', () => {
+  const w5 = worldById('w5');
+
+  it('12 рівнів, кожен — місія з 6 завдань, 2 з них — повторення', () => {
+    expect(W5_LEVELS).toHaveLength(12);
+    W5_LEVELS.forEach((l, i) => {
+      expect(l.index, l.id).toBe(i + 1);
+      expect(l.tasks, l.id).toHaveLength(6);
+      expect(l.draft, l.id).toBe(false);
+      expect(l.tasks.filter((t) => t.review).length, l.id).toBe(2);
+    });
+  });
+
+  it('нові завдання — з ігор W5 (вагони й пакування) і з навичкою, заявленою в рівні', () => {
+    for (const l of W5_LEVELS) {
+      for (const t of l.tasks.filter((x) => !x.review)) {
+        expect(w5.games, `${l.id} ${t.game}`).toContain(t.game);
+        expect(['zgubionyWagonik', 'paczkiPoDziesiec'], `${l.id} ${t.game}`).toContain(t.game);
+        expect(l.skills, `${l.id} ${t.skill}`).toContain(t.skill);
+      }
+    }
+  });
+
+  it('вагони — з кроком 10; пакування в loose — до 59, у решті — до 99', () => {
+    for (const l of W5_LEVELS) {
+      for (const t of l.tasks.filter((x) => !x.review)) {
+        if (t.game === 'zgubionyWagonik') expect(t.step, l.id).toBe(10);
+        if (t.game === 'paczkiPoDziesiec') {
+          expect(t.total[1], l.id).toBeLessThanOrEqual(t.mode === 'loose' ? 59 : 99);
+          expect(t.total[0], l.id).toBeGreaterThanOrEqual(11);
+        }
+      }
+    }
+  });
+
+  it('порядок ідей: десятки (1) → читання в коробках (3) → пакування (4) → «Zbuduj» (6) → контраст (9)', () => {
+    expect(W5_LEVELS.filter((l) => l.newIdea).map((l) => l.index)).toEqual([1, 3, 4, 6, 9]);
+    const firstOf = (pick: (t: TaskSpec) => boolean) => W5_LEVELS.find((l) => l.tasks.some((t) => !t.review && pick(t)))?.index;
+    expect(firstOf((t) => t.game === 'paczkiPoDziesiec' && t.mode === 'packed')).toBe(3);
+    expect(firstOf((t) => t.game === 'paczkiPoDziesiec' && t.mode === 'loose')).toBe(4);
+    expect(firstOf((t) => t.game === 'paczkiPoDziesiec' && t.mode === 'build')).toBe(6);
+    expect(firstOf((t) => t.game === 'paczkiPoDziesiec' && t.contrast)).toBe(9);
+  });
+
+  it('підсумковий рівень 12 (скриня): десятки, пакування, збирання, контраст', () => {
+    const last = W5_LEVELS[11]!;
+    expect(last.skills).toEqual(['count-by-tens', 'bundle-ten', 'compose-2digit']);
+    const fresh = last.tasks.filter((t) => !t.review);
+    expect(fresh.some((t) => t.game === 'zgubionyWagonik')).toBe(true);
+    expect(fresh.some((t) => t.game === 'paczkiPoDziesiec' && t.mode === 'build')).toBe(true);
+    expect(fresh.some((t) => t.game === 'paczkiPoDziesiec' && t.contrast)).toBe(true);
   });
 });

@@ -65,6 +65,7 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
   /** Остання відповідь дитини (вибрана плитка чи зібране число): потрібна підказкам, навіть коли після помилки вибір скинуто. */
   const responseRef = useRef<number | null>(null);
   const answer = def.answer(instance);
+  const answerKind = def.kindOf?.(instance) ?? def.kind;
 
   // Інструкція: голос читає завдання (+ вступний показ гри), «Posłuchaj» повторює її й пульсує, коли голос договорив. Один сценарій на раз —
   // відгук обриває інструкцію, а не перетинається з нею.
@@ -172,7 +173,7 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
   };
 
   const tray =
-    def.kind === 'choice'
+    answerKind === 'choice'
       ? def.tiles(instance).map((tile) => (
           <AnswerTile
             key={tile.value}
@@ -215,7 +216,7 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
           celebrating={celebrating}
           last={state.last}
           tray={trayEl}
-          onRespond={def.kind === 'build' ? respond : undefined}
+          onRespond={answerKind === 'build' ? respond : undefined}
           onTouch={() => {
             stop();
             setMood('idle');

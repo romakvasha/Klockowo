@@ -90,6 +90,8 @@ export interface SceneProps<I extends TaskBase> {
 export interface GameDef<I extends TaskBase = TaskBase> {
   id: GameId;
   kind: 'choice' | 'build';
+  /** Гра, у якій спосіб відповіді залежить від завдання («Paczki po dziesięć»: плитки чи збирання числа): повертає kind для цього завдання. */
+  kindOf?(instance: I): 'choice' | 'build';
   /** false — відповідь не є числом, яке можна порівнювати (з'єднання пар): в історію відповідей не пишемо answer і wrong. */
   recordsAnswer?: boolean;
   generate(spec: TaskSpec, ctx: GenContext): I;

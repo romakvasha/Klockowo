@@ -6,10 +6,10 @@ import { worldById } from '../../curriculum/worlds';
 import { resolveGame } from '../registry';
 import { planLevel } from './levelPlan';
 
-const WORLDS: readonly WorldKey[] = ['w2', 'w3', 'w4'];
+const WORLDS: readonly WorldKey[] = ['w2', 'w3', 'w4', 'w5'];
 const STEPS = [-2, 0, 2] as const;
 
-describe('усі рівні W2–W4 (основні й ★) планується з багатьох зерен і кроків складності', () => {
+describe('усі рівні W2–W5 (основні й ★) планується з багатьох зерен і кроків складності', () => {
   for (const world of WORLDS) {
     it(`${world}: 6 завдань, гра реалізована, правильна відповідь проходить перевірку, плитки містять відповідь, репліка без цифр`, () => {
       const range = worldById(world).range;
@@ -24,7 +24,7 @@ describe('усі рівні W2–W4 (основні й ★) планується
               const def = task.def!;
               const answer = def.answer(task.instance);
               expect(def.check(task.instance, answer), where).toEqual({ ok: true });
-              if (def.kind === 'choice') expect(def.tiles(task.instance).map((t) => t.value), where).toContain(answer);
+              if ((def.kindOf?.(task.instance) ?? def.kind) === 'choice') expect(def.tiles(task.instance).map((t) => t.value), where).toContain(answer);
               expect(def.prompt(task.instance), where).toMatch(/\S/);
               expect(def.prompt(task.instance), where).not.toMatch(/\d/);
               expect(def.praise(task.instance, 'Brawo!'), where).not.toMatch(/\d|undefined|NaN/);

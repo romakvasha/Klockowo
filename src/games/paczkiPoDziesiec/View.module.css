@@ -1,0 +1,157 @@
+.scene {
+  position: relative;
+}
+
+/* композиція в дизайнових px; масштабується цілим */
+.stage {
+  position: absolute;
+  transform-origin: 0 0;
+}
+
+.loose {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.single {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* пораховано: світла підкладка з рамкою (не лише колір) */
+.single[data-counted='true'] {
+  background: rgba(255, 194, 26, .3);
+  box-shadow: 0 0 0 3px var(--kl-reward-edge);
+}
+
+.single[data-hl='true'] {
+  background: rgba(255, 194, 26, .45);
+  box-shadow: 0 0 0 4px var(--kl-reward-edge);
+}
+
+.slot {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}
+
+/* коробка на десять: рамка кольору десятків, усередині 5 × 2 предметів */
+.box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: var(--kl-surface);
+  border: 4px solid var(--kl-tens);
+  border-radius: 14px;
+  box-shadow: 0 4px 0 var(--kl-tens-digit);
+  cursor: pointer;
+}
+
+span.box {
+  cursor: default;
+}
+
+.box[data-hl='true'] {
+  border-color: var(--kl-reward-edge);
+  box-shadow: 0 0 0 4px var(--kl-reward), 0 4px 0 var(--kl-reward-edge);
+}
+
+.boxItems {
+  display: grid;
+  grid-template-columns: repeat(5, 15px);
+  gap: 3px;
+}
+
+/* число, яке щойно назвали на коробці: «10», «20»… */
+.boxCount {
+  position: absolute;
+  right: -8px;
+  bottom: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  color: var(--kl-tens-digit);
+  background: var(--kl-surface);
+  border: 2.5px solid var(--kl-ink);
+  border-radius: 14px;
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out);
+}
+
+.matSlot {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* «Zapakuj»: 80 px у координатах сцени */
+.pack {
+  position: absolute;
+  z-index: 3;
+}
+
+.buttons {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  height: 100%;
+}
+
+/* «+10» і «+1»: блокові кнопки 96 px у кольорах розрядів */
+.add {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  padding: 0;
+  color: var(--kl-ink);
+  border-radius: 20px;
+}
+
+.add[data-place='tens'] {
+  --edge: var(--kl-tens-digit);
+  background: var(--kl-tens);
+}
+
+.add[data-place='ones'] {
+  --edge: var(--kl-ones-digit);
+  background: var(--kl-ones);
+}
+
+.add:disabled {
+  opacity: .4;
+}
+
+/* бульбашка Kubika: «?» або число для збирання */
+.ask {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  color: var(--kl-ink);
+}
+
+.ask b {
+  font: 700 34px / 1 var(--kl-font-display);
+}
