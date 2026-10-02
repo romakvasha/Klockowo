@@ -9,7 +9,8 @@ import { boxCounts, boxStepWords } from './assistBoxes';
 import { trayBox } from './BoxView';
 import { FOOD_IDS, checkFeed, generateFeed, type FeedInstance } from './generate';
 import { nakarmZwierzaka } from './index';
-import { boxSupply, supplyCount } from './layout';
+import { supplyCount } from './layout';
+import { EMPTY_PLATE, MAX_TENS_ON_PLATE, addOne, addTen, plateTotal, removeOne } from './boxPlate';
 import { plateBox, plateItemSize } from './View';
 
 const ctxFor = (id: Parameters<typeof levelById>[0], seed: number, previous: readonly number[] = []): GenContext => {
@@ -19,7 +20,7 @@ const ctxFor = (id: Parameters<typeof levelById>[0], seed: number, previous: rea
 const feedTasks = LEVELS.filter((l) => l.world === 'w1').flatMap((l) => l.tasks.filter((t): t is FeedTask => t.game === 'nakarmZwierzaka').map((t) => ({ level: l, task: t })));
 
 const instance = (over: Partial<FeedInstance> = {}): FeedInstance => ({
-  game: 'nakarmZwierzaka', skill: 'give-n', review: false, animal: 'mis', food: 'jablko', n: 5, slots: false, supply: 8, boxes: false, supplyBoxes: 0, seed: 1, ...over,
+  game: 'nakarmZwierzaka', skill: 'give-n', review: false, animal: 'mis', food: 'jablko', n: 5, slots: false, supply: 8, boxes: false, seed: 1, ...over,
 });
 
 describe('generateFeed', () => {
@@ -136,28 +137,42 @@ describe('тарілка в лотку', () => {
 describe('режим boxes (W5): коробки по 10 і предмети поштучно', () => {
   const boxTask: FeedTask = { game: 'nakarmZwierzaka', skill: 'compose-2digit', count: [11, 59], slots: false, boxes: true };
 
-  it('запас: десятків + 1 коробок (не більше 6) і одиниць + 3 предмети; відповідь — єдина комбінація', () => {
+  it('число 11–59, без слотів; запас необмежений — стос коробок і купка їжі (supply = 0)', () => {
     for (let seed = 1; seed <= 60; seed++) {
       const i = generateFeed(boxTask, ctxFor('w5-7', seed));
       expect(i.boxes).toBe(true);
       expect(i.n).toBeGreaterThanOrEqual(11);
       expect(i.n).toBeLessThanOrEqual(59);
-      expect(i.supplyBoxes).toBe(Math.floor(i.n / 10) + 1);
-      expect(i.supply).toBe(supplyCount(i.n % 10));
-      // із запасу не набрати ні N інакше, ні більше: після десятків лишається менше 10 одиниць
-      expect(i.supply).toBeLessThan(10 + (i.n % 10));
+      expect(i.supply).toBe(0);
       expect(i.slots).toBe(false);
     }
   });
 
-  it('boxSupply: n = 34 → 4 коробки і 7 предметів', () => {
-    expect(boxSupply(34)).toEqual({ boxes: 4, singles: 7 });
-    expect(boxSupply(59)).toEqual({ boxes: 6, singles: 12 });
-    expect(boxSupply(20)).toEqual({ boxes: 3, singles: 4 });
+  it('тарілка: +10, +1; десятий предмет стає коробкою; дотик знімає предмет, потім коробку', () => {
+    let p = EMPTY_PLATE;
+    p = addTen(p)!;
+    p = addTen(p)!;
+    for (let k = 0; k < 9; k++) p = addOne(p)!.plate;
+    expect(p).toEqual({ tens: 2, ones: 9 });
+    expect(plateTotal(p)).toBe(29);
+    const merged = addOne(p)!;
+    expect(merged).toEqual({ plate: { tens: 3, ones: 0 }, merged: true });
+    expect(removeOne({ tens: 3, ones: 2 })).toEqual({ tens: 3, ones: 1 });
+    expect(removeOne({ tens: 3, ones: 0 })).toEqual({ tens: 2, ones: 0 });
+    expect(removeOne(EMPTY_PLATE)).toBeNull();
+  });
+
+  it('коробок на тарілці не більше за MAX_TENS_ON_PLATE (5 десятків для 59 і дві зайві)', () => {
+    let p = EMPTY_PLATE;
+    for (let k = 0; k < 20; k++) p = addTen(p) ?? p;
+    expect(p.tens).toBe(MAX_TENS_ON_PLATE);
+    expect(MAX_TENS_ON_PLATE).toBeGreaterThanOrEqual(6);
+    for (let k = 0; k < 9; k++) p = addOne(p)?.plate ?? p;
+    expect(addOne(p)).toBeNull(); // 9 предметів і повна тарілка — злити нікуди
   });
 
   it('інструкція, похвала й відповідь — словами: «Daj misiowi trzydzieści cztery jabłka.»', () => {
-    const i = instance({ n: 34, boxes: true, supplyBoxes: 4, supply: 6 });
+    const i = instance({ n: 34, boxes: true, supply: 0 });
     expect(nakarmZwierzaka.prompt(i)).toBe('Daj misiowi trzydzieści cztery jabłka.');
     expect(nakarmZwierzaka.praise(i, 'Brawo!')).toBe('Brawo! Trzydzieści cztery jabłka.');
     expect(nakarmZwierzaka.answer(i)).toBe(34);

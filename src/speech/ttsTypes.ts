@@ -33,6 +33,8 @@ export interface Tts {
   speak(text: string, opts?: SpeakOptions): Promise<SpeakResult>;
   /** Зупиняє поточну фразу й очищає чергу; усі очікувані Promise вирішуються як 'cancelled'. */
   cancel(): void;
+  /** Вкладку сховано / знову видно: схована — голос замовкає, очікувані Promise вирішуються як 'skipped' (сценарії йдуть далі), нові фрази не звучать. */
+  setHidden(hidden: boolean): void;
   /** Викликати в обробнику першого дотику (installAudioUnlock робить це сам). */
   unlock(): void;
   setRate(rate: number): void;

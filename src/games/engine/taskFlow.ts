@@ -70,6 +70,12 @@ export function taskOutcome(state: TaskState): TaskOutcome {
   return state.mistakes > 0 ? 'retry' : 'first';
 }
 
+/** Дотик до сцени гасить лише інструкцію завдання (фаза play). Відгук, підказку й показ «разом» обривати не можна: їхній сценарій завершує фазу feedback,
+ *  і без нього завдання зависло б — плитки, «Gotowe» й «Pomóż mi» працюють лише у фазі play. */
+export function touchStopsScript(state: Pick<TaskState, 'phase'>): boolean {
+  return state.phase === 'play';
+}
+
 /** «Gotowe» активна лише тоді, коли дитина щось вибрала й нічого не звучить. */
 export function canCheck(state: TaskState): boolean {
   return state.phase === 'play' && state.selected !== null;

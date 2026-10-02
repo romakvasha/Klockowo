@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { INITIAL_TASK, canCheck, hintAvailable, taskOutcome, taskReducer, tileView, type TaskEvent, type TaskState } from './taskFlow';
+import { INITIAL_TASK, canCheck, hintAvailable, taskOutcome, taskReducer, tileView, touchStopsScript, type TaskEvent, type TaskState } from './taskFlow';
 
 const run = (events: readonly TaskEvent[], from: TaskState = INITIAL_TASK): TaskState => events.reduce(taskReducer, from);
 const OK = { type: 'check', verdict: { ok: true } } as const;
@@ -136,5 +136,19 @@ describe('вигляд плитки', () => {
     expect(tileView(s, 7, 7)).toBe('highlighted');
     expect(tileView(s, 8, 7)).toBe('retry');
     expect(tileView(s, 6, 7)).toBe('retry');
+  });
+});
+
+describe('дотик до сцени під час відгуку', () => {
+  it('гасить лише інструкцію (play); відгук, підказку й «разом» — ні, інакше завдання зависло б у feedback', () => {
+    expect(touchStopsScript(INITIAL_TASK)).toBe(true);
+    const wrong = run([{ type: 'select', value: 8 }, BAD]);
+    expect(wrong.phase).toBe('feedback');
+    expect(touchStopsScript(wrong)).toBe(false);
+    const correct = run([{ type: 'select', value: 7 }, OK]);
+    expect(touchStopsScript(correct)).toBe(false);
+    const hint = run([{ type: 'select', value: 8 }, BAD, { type: 'feedbackDone' }, { type: 'hint' }]);
+    expect(touchStopsScript(hint)).toBe(false);
+    expect(touchStopsScript(run([{ type: 'feedbackDone' }], hint))).toBe(true);
   });
 });

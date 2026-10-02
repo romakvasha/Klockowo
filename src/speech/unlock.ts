@@ -16,9 +16,9 @@ export function installAudioUnlock(target: Window = window, doc: Document = docu
     sfx.unlock();
     music.unlock(); // після sfx: музика грає через його AudioContext
   };
-  // Голос не має звучати у схованій вкладці, а музика — на паузі
+  // Голос не має звучати у схованій вкладці, а музика — на паузі. Голос саме замовкає (не скасовується): сценарій відгуку мусить дійти до кінця
   const onVisibility = (): void => {
-    if (doc.hidden) tts.cancel();
+    tts.setHidden(doc.hidden);
     music.setHidden(doc.hidden);
   };
   for (const type of GESTURES) target.addEventListener(type, onGesture, { capture: true, passive: true });

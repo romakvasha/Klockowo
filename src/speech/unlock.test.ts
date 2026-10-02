@@ -37,9 +37,11 @@ describe('installAudioUnlock', () => {
     }
   });
 
-  it('коли вкладку ховають, голос скасовується (без помилок)', () => {
+  it('коли вкладку ховають, голос замовкає (без помилок), а коли показують — знову доступний', () => {
     const { doc, off } = setup();
     doc.hidden = true;
+    expect(() => doc.dispatchEvent(new Event('visibilitychange'))).not.toThrow();
+    doc.hidden = false;
     expect(() => doc.dispatchEvent(new Event('visibilitychange'))).not.toThrow();
     off();
   });

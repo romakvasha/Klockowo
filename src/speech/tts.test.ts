@@ -4,6 +4,7 @@ import {
   createTts, watchdogMs, DEFAULT_RATE,
   type AudioLike, type ClipEnv, type SynthLike, type TtsConfig, type UtteranceLike,
 } from './tts';
+import { startScript } from './script';
 import { isPolishVoice, pickVoice, polishVoices, type VoiceLike } from './voices';
 
 // ---------- Підробки, що повторюють поведінку браузера ----------
@@ -258,6 +259,51 @@ describe('tts: interrupt і cancel', () => {
     expect(synth.real.map((u) => u.text)).toEqual(['A', 'B']);
     synth.end();
     await expect(b).resolves.toBe('spoken');
+  });
+});
+
+describe('tts: застосунок згорнуто (setHidden)', () => {
+  it('голос замовкає, але фрази вирішуються як «skipped», а не «cancelled»', async () => {
+    const { synth, tts } = setup();
+    tts.unlock();
+    const a = tts.speak('A');
+    const b = tts.speak('B');
+    tts.setHidden(true);
+    await expect(a).resolves.toBe('skipped');
+    await expect(b).resolves.toBe('skipped');
+    expect(synth.cancelCount).toBeGreaterThan(0);
+    await vi.advanceTimersByTimeAsync(100);
+    expect(tts.getState().speaking).toBe(false);
+  });
+
+  it('поки сховано, нові фрази не звучать; після повернення — знову звучать', async () => {
+    const { synth, tts } = setup();
+    tts.unlock();
+    tts.setHidden(true);
+    await expect(tts.speak('A')).resolves.toBe('skipped');
+    expect(synth.real).toHaveLength(0);
+    tts.setHidden(false);
+    const b = tts.speak('B');
+    await vi.advanceTimersByTimeAsync(100);
+    expect(synth.real.map((u) => u.text)).toEqual(['B']);
+    synth.end();
+    await expect(b).resolves.toBe('spoken');
+  });
+
+  it('сценарій (похвала → далі) доходить до кінця, якщо застосунок згорнули посеред фрази', async () => {
+    const { tts } = setup();
+    tts.unlock();
+    const steps: string[] = [];
+    startScript({ speak: (t, o) => tts.speak(t, o), sleep: (ms) => new Promise((r) => setTimeout(r, ms)) }, async ({ say, wait }) => {
+      await say('Brawo! Trzy rybki.');
+      steps.push('after-praise');
+      await wait(500);
+      steps.push('next-task');
+    });
+    await flush();
+    tts.setHidden(true);
+    await vi.advanceTimersByTimeAsync(600);
+    expect(steps).toEqual(['after-praise', 'next-task']);
   });
 });
 

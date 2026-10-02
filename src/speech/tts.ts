@@ -3,6 +3,7 @@
 //    (або фразу скасовано, або голосу немає) — на цьому тримається правило «наступне завдання — лише коли голос договорив»;
 //  • до першого дотику (unlock) — тиша: браузер не дозволяє озвучувати без жесту, а застарілі фрази не мають «вибухнути» після нього;
 //  • немає польського голосу → status 'no-voice' (екран NoVoice), speak() тихо повертає 'skipped';
+//  • застосунок згорнуто (setHidden) — голос замовкає, але сценарії не обриваються: фрази вирішуються як 'skipped', не 'cancelled';
 //  • окрему фразу можна замінити записаним mp3 з public/audio/ (clips.ts);
 //  • subscribe() — для React (useTts) і для музики, що стихає під голосом (M2b).
 import { clipSlug, clipUrl, loadClipManifest } from './clips';
@@ -63,6 +64,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   const queue: Job[] = [];
   let active: Active | null = null;
   let coolingDown = false;
+  let hidden = false;
   let voicesSettled = !synth;
   let voiceWaiters: (() => void)[] = [];
   let clipSet: ReadonlySet<string> = new Set();
@@ -203,14 +205,15 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     audio.play().catch(fallback);
   }
 
-  function cancelAll(): void {
-    for (const job of queue.splice(0)) job.resolve('cancelled');
+  function stopAll(result: SpeakResult): void {
+    for (const job of queue.splice(0)) job.resolve(result);
     const a = active;
     if (!a) return;
     startCooldown();
-    finish(a, 'cancelled'); // спершу вирішуємо: синхронний error від cancel() нічого не змінить
+    finish(a, result); // спершу вирішуємо: синхронний error від cancel() нічого не змінить
     a.stop();
   }
+  const cancelAll = (): void => stopAll('cancelled');
 
   // ---------- Публічне API ----------
   function speak(text: string, opts: SpeakOptions = {}): Promise<SpeakResult> {
@@ -218,7 +221,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     if (import.meta.env.DEV && /\d/.test(clean)) {
       console.warn(`tts.speak: у тексті цифри («${clean}») — числа озвучуємо словами (numberWords.ts)`);
     }
-    if (!clean || !state.unlocked) return Promise.resolve('skipped');
+    if (!clean || !state.unlocked || hidden) return Promise.resolve('skipped');
     if (opts.interrupt) cancelAll();
     return new Promise<SpeakResult>((resolve) => {
       queue.push({ text: clean, rate: opts.rate ?? 1, clip: opts.clip ?? clipSlug(clean), resolve });
@@ -240,9 +243,18 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     }, PRIME_CLEANUP_MS);
   }
 
+  /** Вкладку сховано (застосунок згорнуто, екран заблоковано): голос замовкає, а фрази, що звучали чи чекали, вирішуються як 'skipped' —
+   *  сценарій (похвала, підказка, показ «разом») іде далі без голосу, а не обривається, інакше завдання зависло б у фазі відгуку.
+   *  Поки вкладку сховано, нові фрази теж не звучать. */
+  function setHidden(next: boolean): void {
+    hidden = next;
+    if (next) stopAll('skipped');
+  }
+
   return {
     speak,
     cancel: cancelAll,
+    setHidden,
     unlock,
     setRate: (rate) => patch({ rate: clamp(rate, 0.5, 1.5) }),
     setVolume: (volume) => patch({ volume: clamp(volume, 0, 1) }),

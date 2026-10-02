@@ -4,7 +4,7 @@ import type { FeedTask, TaskSpec } from '../../curriculum/types';
 import { ANIMAL_IDS, WORLD_OBJECT_IDS, type AnimalId, type ObjectId } from '../../speech/nouns';
 import type { GenContext, TaskBase, Verdict } from '../engine/types';
 import { pickCount } from '../policzIDotknij/generate';
-import { boxSupply, supplyCount } from './layout';
+import { supplyCount } from './layout';
 
 /** Їжа для тваринок: фрукти й овочі W2 (намальовані в дизайні). */
 export const FOOD_IDS: readonly ObjectId[] = WORLD_OBJECT_IDS.w2;
@@ -17,19 +17,16 @@ export interface FeedInstance extends TaskBase {
   n: number;
   /** Слоти рамки-десятки на тарілці видно одразу (інакше — лише як 2-га підказка). */
   slots: boolean;
-  /** Скільки предметів поштучно у запасі (у режимі boxes — лише для одиниць). */
+  /** Скільки предметів у запасі (у режимі boxes запас необмежений — 0). */
   supply: number;
-  /** W5: запас — коробки по 10 і предмети поштучно (дотик по коробці = +10, по предмету = +1). */
+  /** W5: замість розсипаного запасу — стос коробок по 10 і купка їжі (дотик = +10 чи +1), див. layout.boxSourcesLayout. */
   boxes: boolean;
-  /** Скільки коробок по 10 у запасі (0, коли `boxes` вимкнено). */
-  supplyBoxes: number;
   seed: number;
 }
 
 export function generateFeed(spec: FeedTask, ctx: GenContext): FeedInstance {
   const n = pickCount(spec.count, ctx.previous, ctx.rng);
   const boxes = spec.boxes === true;
-  const stock = boxes ? boxSupply(n) : { boxes: 0, singles: supplyCount(n) };
   return {
     game: 'nakarmZwierzaka',
     skill: spec.skill,
@@ -38,9 +35,8 @@ export function generateFeed(spec: FeedTask, ctx: GenContext): FeedInstance {
     food: ctx.rng.pick(FOOD_IDS),
     n,
     slots: boxes ? false : spec.slots,
-    supply: stock.singles,
+    supply: boxes ? 0 : supplyCount(n),
     boxes,
-    supplyBoxes: stock.boxes,
     seed: ctx.rng.int(0, 2 ** 31 - 1),
   };
 }

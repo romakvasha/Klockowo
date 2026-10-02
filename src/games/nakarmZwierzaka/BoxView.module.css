@@ -1,49 +1,87 @@
-/* коробка на десять у запасі: рамка кольору десятків, усередині 5 × 2 предметів (як у «Paczki po dziesięć») */
-.box {
+/* джерела запасу (W5): стос коробок по 10 і купка їжі — великі кнопки (BRIEF §12: від 64 px, на телефоні від 80) */
+.source {
+  position: absolute;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 18px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--kl-dur-count) var(--kl-ease-pop), box-shadow var(--kl-dur-slide) var(--kl-ease-out);
+}
+
+.source:active:not(:disabled) {
+  transform: scale(.96);
+}
+
+.source:disabled {
+  cursor: default;
+}
+
+.source:focus-visible {
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 4px;
+}
+
+/* 2-га підказка: з цього джерела ще треба взяти (тепле кільце, як у підказках інших ігор) */
+.source[data-hl='true'] {
+  background: rgba(255, 194, 26, .25);
+  box-shadow: 0 0 0 6px var(--kl-reward);
+}
+
+/* коробка на десять: рамка кольору десятків, усередині 5 × 2 предметів (як у «Paczki po dziesięć»); у стосі — три зі зсувом */
+.tenBox {
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 0;
   background: var(--kl-surface);
   border: 4px solid var(--kl-tens);
   border-radius: 14px;
   box-shadow: 0 4px 0 var(--kl-tens-digit);
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition: box-shadow var(--kl-dur-slide) var(--kl-ease-out);
-}
-
-.box:disabled {
-  cursor: default;
-}
-
-.box:focus-visible {
-  outline: 3px solid var(--kl-ink);
-  outline-offset: 2px;
-}
-
-.box[data-state='selected'] {
-  box-shadow: 0 0 0 4px var(--kl-secondary-edge), 0 4px 0 var(--kl-tens-digit);
-}
-
-.box[data-state='dragging'] {
-  filter: drop-shadow(0 12px 10px rgba(45, 42, 74, .25));
-  transform: scale(1.08) rotate(-4deg);
-}
-
-/* підказка: коробка, яку ще треба взяти */
-.box[data-state='highlighted'] {
-  border-color: var(--kl-reward-edge);
-  box-shadow: 0 0 0 4px var(--kl-reward), 0 4px 0 var(--kl-reward-edge);
+  pointer-events: none;
 }
 
 .boxItems {
   display: grid;
   gap: 2px;
+}
+
+/* купка їжі: плитка кольору одиниць, два предмети позаду й один більший спереду */
+.pile {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--kl-surface);
+  border: 4px solid var(--kl-ones);
+  border-radius: 18px;
+  box-shadow: 0 4px 0 var(--kl-ones-digit);
   pointer-events: none;
+}
+
+.pileBack,
+.pileFront {
+  position: absolute;
+}
+
+.pileBack:nth-child(1) {
+  top: 12%;
+  left: 12%;
+}
+
+.pileBack:nth-child(2) {
+  top: 12%;
+  right: 12%;
+}
+
+.pileFront {
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* тарілка: фішки-десятки й предмети в ряд із переносом */
@@ -76,11 +114,4 @@
 
 .chip[data-celebrate='true'] {
   animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
-}
-
-/* вузька смуга тваринки (телефон): бульбашка без мінімальної висоти 104, щоб не накривати коробки */
-.compactBubble > div:first-child {
-  min-width: 0;
-  min-height: 0;
-  padding: 2px 16px;
 }

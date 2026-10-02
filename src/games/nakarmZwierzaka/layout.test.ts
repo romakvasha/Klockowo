@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Rect } from '../engine/layoutObjects';
 import { createRng } from '../engine/rng';
 import { sceneReserved } from '../engine/frameMath';
-import { boxGrid, boxSupply, feedLayout, supplyCount } from './layout';
+import { boxSourcesLayout, feedLayout, supplyCount } from './layout';
 
 const intersects = (a: Rect, b: Rect): boolean => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
 
@@ -80,45 +80,35 @@ describe('вигляд за пропорцією', () => {
   });
 });
 
-describe.each(CASES)('feedLayout з коробками по 10: $name', ({ kind, vw, area }) => {
+describe.each(CASES)('boxSourcesLayout (W5, коробки по 10): $name', ({ kind, vw, area }) => {
   const reserved = sceneReserved(kind, vw, area);
+  const l = boxSourcesLayout(area, reserved);
 
-  it('коробки й предмети: потрібна кількість, не перекриваються, усередині області, поза ділянками, тваринкою й бульбашкою', () => {
-    for (const n of [11, 20, 34, 47, 59]) {
-      const stock = boxSupply(n);
-      const l = feedLayout(area, stock.singles, reserved, createRng(n), stock.boxes);
-      expect(l.boxes, `${n}`).toHaveLength(stock.boxes);
-      expect(l.supply, `${n}`).toHaveLength(stock.singles);
-      const rects: Rect[] = [
-        ...l.boxes.map((p) => ({ x: p.x, y: p.y, w: l.boxSize, h: l.boxSize })),
-        ...l.supply.map((p) => ({ x: p.x, y: p.y, w: l.size, h: l.size })),
-      ];
-      for (const b of rects) {
-        expect(b.x, `${n}`).toBeGreaterThanOrEqual(0);
-        expect(b.y, `${n}`).toBeGreaterThanOrEqual(0);
-        expect(b.x + b.w, `${n}`).toBeLessThanOrEqual(area.w + 1);
-        expect(b.y + b.h, `${n}`).toBeLessThanOrEqual(area.h + 1);
-        for (const r of [...reserved, l.animal, l.bubble]) expect(intersects(b, r), `${n}: ${JSON.stringify(b)} × ${JSON.stringify(r)}`).toBe(false);
-      }
-      for (let i = 0; i < rects.length; i++) {
-        for (let j = i + 1; j < rects.length; j++) expect(intersects(rects[i] as Rect, rects[j] as Rect), `${n}: ${i}×${j}`).toBe(false);
-      }
-    }
+  it('стос коробок і купка їжі — великі цілі дотику (від 88 px; на ПК — 132), не перекриваються', () => {
+    expect(l.tens.w).toBeGreaterThanOrEqual(88);
+    expect(l.ones.w).toBe(l.tens.w);
+    expect(l.tens.h).toBe(l.tens.w);
+    if (kind === 'wide') expect(l.tens.w).toBe(132);
+    expect(intersects(l.tens, l.ones)).toBe(false);
+    expect(l.ones.x - (l.tens.x + l.tens.w)).toBeGreaterThanOrEqual(16); // проміжок від 16 px (BRIEF §12)
   });
 
-  it('коробка не менша за 56 px (на ПК — 64+); предмети не менші за 40', () => {
-    for (const n of [11, 34, 59]) {
-      const stock = boxSupply(n);
-      const l = feedLayout(area, stock.singles, reserved, createRng(n), stock.boxes);
-      expect(l.boxSize, `${n}`).toBeGreaterThanOrEqual(kind === "wide" ? 64 : 52);
-      expect(l.size, `${n}`).toBeGreaterThanOrEqual(40);
+  it('усередині області, поза ділянками Kubika й кісточок, не накривають тваринку й бульбашку', () => {
+    for (const r of [l.tens, l.ones]) {
+      expect(r.x).toBeGreaterThanOrEqual(0);
+      expect(r.y).toBeGreaterThanOrEqual(0);
+      expect(r.x + r.w).toBeLessThanOrEqual(area.w);
+      expect(r.y + r.h).toBeLessThanOrEqual(area.h);
+      for (const z of [...reserved, l.animal, l.bubble]) expect(intersects(r, z), `${JSON.stringify(r)} × ${JSON.stringify(z)}`).toBe(false);
     }
   });
 });
 
-describe('boxGrid', () => {
-  it('один ряд, поки коробки ≥ 64 px; вузька область — два ряди', () => {
-    expect(boxGrid({ w: 900, h: 400 }, 4)).toMatchObject({ rows: 1, cols: 4, size: 84 });
-    expect(boxGrid({ w: 342, h: 300 }, 6)).toMatchObject({ rows: 2, cols: 3 });
+describe('boxSourcesLayout: вузька широка сцена', () => {
+  it('ділянка Kubika внизу ліворуч — джерела піднімаються над нею', () => {
+    const area = { w: 800, h: 440 };
+    const reserved = [{ x: 0, y: 340, w: 600, h: 100 }];
+    const l = boxSourcesLayout(area, reserved);
+    for (const r of [l.tens, l.ones]) expect(intersects(r, reserved[0]!)).toBe(false);
   });
 });

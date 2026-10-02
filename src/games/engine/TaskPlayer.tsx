@@ -14,7 +14,7 @@ import type { AnswerEntry, TaskOutcome } from '../../store/types';
 import { buildEntry, playMinutes } from './entry';
 import { GameFrame } from './GameFrame';
 import type { PlaceholderTask, PlannedTask } from './levelPlan';
-import { INITIAL_TASK, canCheck, hintAvailable, taskOutcome, taskReducer, tileView } from './taskFlow';
+import { INITIAL_TASK, canCheck, hintAvailable, taskOutcome, taskReducer, tileView, touchStopsScript } from './taskFlow';
 import type { Assist, GameDef, TaskBase } from './types';
 import { NO_ASSIST } from './types';
 import styles from './TaskPlayer.module.css';
@@ -218,6 +218,8 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
           tray={trayEl}
           onRespond={answerKind === 'build' ? respond : undefined}
           onTouch={() => {
+            // лише інструкцію: обірваний відгук чи підказка лишили б завдання у фазі feedback назавжди
+            if (!touchStopsScript(state)) return;
             stop();
             setMood('idle');
           }}
