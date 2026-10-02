@@ -27,8 +27,8 @@ export type SkillId =
 /** [мін, макс] — число для завдання вибирає генератор у цьому діапазоні. */
 export type Range = readonly [min: number, max: number];
 
-/** Як розкладено предмети: рядок → коло → розсип (PEDAGOGY §2 п.1). */
-export type Arrangement = 'line' | 'circle' | 'scatter';
+/** Як розкладено предмети: рядок → коло → розсип (PEDAGOGY §2 п.1); tens — «десять і ще n»: перша десятка блоком 5×2, решта поруч (W4: 13 = 10 + 3). */
+export type Arrangement = 'line' | 'circle' | 'scatter' | 'tens';
 
 /** Що на плитках-відповідях: у W1 — цифра разом із крапками (BRIEF §7), далі — лише цифри. */
 export type AnswerStyle = 'digitDots' | 'digit' | 'dots';
@@ -118,13 +118,15 @@ export interface CompareTask extends TaskBase {
 /** «Autobus dziesiątka» — автобус 2×5 місць із тваринками: скільки їде чи скільки місць вільних; вибір із 3 плиток. */
 export interface BusTask extends TaskBase {
   game: 'autobusDziesiatka';
-  /** Скільки тваринок їде (0…10). */
+  /** Скільки тваринок їде (0…10, у двоповерховому 0…20). */
   count: Range;
   /** full — «Ile zwierzątek jedzie autobusem?»; empty — «Ile miejsc jest wolnych?»; mixed — навмання. */
   ask: 'full' | 'empty' | 'mixed';
   /** 0 — автобус видно весь час; інакше — видно стільки мс, потім місця закриваються (вступний показ). */
   exposureMs: number;
   answers: AnswerStyle;
+  /** Поверхів: 1 — 10 місць (за замовчуванням), 2 — двоповерховий на 20 (W4). */
+  floors?: 1 | 2;
 }
 
 /** «Domek liczb» — будиночок із блоків: на даху ціле, одне з двох віконець порожнє («Osiem to trzy i ile?»); вибір із 3 плиток. */
@@ -152,6 +154,8 @@ export interface SumTask extends TaskBase {
   doubles: boolean;
   /** Лише символи: «3 + 2 = ?» без кошиків (кошики з'являються як підказка). */
   symbols: boolean;
+  /** W4: перший доданок — «-надцять» (≥ 11), сума до 20, десяток не переходимо (13 + 4): доданки розкладає генератор, `order` і `doubles` ігноруються. */
+  noBridge?: boolean;
   answers: AnswerStyle;
 }
 
@@ -178,6 +182,10 @@ export interface TenTask extends TaskBase {
   known: Range;
   /** frame — відомі фішки видно, дитина докладає решту; digit — рамка порожня, є лише цифра: дитина сама вираховує, скільки докласти. */
   show: 'frame' | 'digit';
+  /** ★ через десяток (W4): дві рамки, відомі фішки видно, дитина докладає `add` фішок (8 + 5): спершу добиває першу рамку до десяти, решта лягає в другу. */
+  bridge?: boolean;
+  /** Скільки докласти в режимі `bridge` (межі; сума з відомими — 11…20 і понад десяток). */
+  add?: Range;
 }
 
 /** Тип задачі «Historyjki»: join — було `a`, прийшло ще `b`; combine — два набори різних предметів («Na obrazku są…»); mixed — навмання. (Порівняння «о 2 більше» — W4/W7.) */
@@ -189,6 +197,8 @@ export interface StoryTask extends TaskBase {
   /** Межі суми (2–10 у W3; 11–20 у W4). */
   sum: Range;
   kind: StoryKind;
+  /** W4: перший доданок ≥ 11, сума до 20 — десяток не переходимо (13 + 4). */
+  noBridge?: boolean;
   answers: AnswerStyle;
 }
 

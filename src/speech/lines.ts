@@ -201,6 +201,7 @@ export const GAME_PROMPTS = {
   busCount: 'Policz zwierzątka.', // [do sprawdzenia]: підказка, коли в автобусі менше за п'ять
   makeTen: 'Dołóż tyle, żeby było dziesięć.', // POLISH_COPY §5 (гра 11)
   untilTen: 'Ile brakuje do pełnej dziesiątki?', // POLISH_COPY §6, підказка 4
+  bridgeFirst: 'Najpierw zrób dziesiątkę.', // ★ через десяток (W4) [do sprawdzenia]
   hiddenNumber: 'Jaka liczba się schowała?', // W6 «Tajemnicza tablica» (§9)
   storyExample: 'Na gałęzi siedzą dwa ptaszki. Przylatują jeszcze trzy. Ile ptaszków jest teraz?', // приклад BRIEF §7.14
 } as const;

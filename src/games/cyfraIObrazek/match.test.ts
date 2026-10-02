@@ -88,13 +88,15 @@ describe('генератор', () => {
     expect(() => pickNumbers([1, 2], 3, false, createRng(1))).toThrow(RangeError);
   });
 
-  it('pickKind: заданий спосіб; понад 10 — предмети; mixed — без повторів, поки є вибір', () => {
+  it('pickKind: заданий спосіб; понад 10 — предмети, рамка — до 20; mixed — без повторів, поки є вибір', () => {
     expect(pickKind('dots', 5, [], createRng(1))).toBe('dots');
     expect(pickKind('dots', 14, [], createRng(1))).toBe('objects');
     expect(pickKind('fingers', 10, [], createRng(1))).toBe('fingers');
     const used = ['objects', 'dots', 'fingers'] as const;
     expect(pickKind('mixed', 5, used, createRng(1))).toBe('tenFrame');
-    expect(pickKind('mixed', 15, [], createRng(1))).toBe('objects');
+    expect(pickKind('dots', 20, [], createRng(1))).toBe('objects');
+    expect(pickKind('tenFrame', 17, [], createRng(1))).toBe('tenFrame');
+    for (let seed = 1; seed <= 30; seed++) expect(['objects', 'tenFrame']).toContain(pickKind('mixed', 15, [], createRng(seed)));
     for (let seed = 1; seed <= 30; seed++) expect(kindAllowed(pickKind('mixed', 9, [], createRng(seed)), 9)).toBe(true);
   });
 

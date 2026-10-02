@@ -124,3 +124,13 @@
   border: 3px solid var(--kl-ink);
   border-radius: 50%;
 }
+
+/* двоповерховий (20 місць): перекриття між поверхами */
+.deck {
+  position: absolute;
+  z-index: 1;
+  height: 6px;
+  background: var(--bus-500);
+  border: 2px solid var(--kl-ink);
+  border-radius: 3px;
+}

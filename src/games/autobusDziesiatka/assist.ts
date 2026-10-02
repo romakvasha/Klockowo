@@ -11,11 +11,12 @@ const ROW_HOLD_MS = 1400;
 const ROW = 5;
 
 /** Місця, які лічить допомога, у порядку лічби: питають «скільки їде» — зайняті, «скільки вільних» — вільні. */
-export function countedSeats(instance: Pick<BusInstance, 'passengers' | 'ask'>): number[] {
+export function countedSeats(instance: Pick<BusInstance, 'passengers' | 'ask'> & { capacity?: number }): number[] {
   const { passengers, ask } = instance;
+  const capacity = instance.capacity ?? BUS_CAPACITY;
   return ask === 'full'
     ? Array.from({ length: passengers }, (_, i) => i)
-    : Array.from({ length: BUS_CAPACITY - passengers }, (_, i) => passengers + i);
+    : Array.from({ length: capacity - passengers }, (_, i) => passengers + i);
 }
 
 /** Перша підказка пульсує першим рядом як «5», лише коли ряд повний (їде ≥ 5); інакше лічимо тваринок. */
@@ -24,8 +25,8 @@ export function usesRowHint(instance: Pick<BusInstance, 'passengers'>): boolean 
 }
 
 /** Що лічить допомога зараз: перша підказка для малого автобуса — зайняті місця, інакше — `countedSeats`. */
-export function helpCountSeats(instance: Pick<BusInstance, 'passengers' | 'ask'>, assist: Pick<Assist, 'mode' | 'level'>): number[] {
-  if (assist.mode === 'hint' && (assist.level ?? 1) <= 1) return usesRowHint(instance) ? [] : countedSeats({ passengers: instance.passengers, ask: 'full' });
+export function helpCountSeats(instance: Pick<BusInstance, 'passengers' | 'ask'> & { capacity?: number }, assist: Pick<Assist, 'mode' | 'level'>): number[] {
+  if (assist.mode === 'hint' && (assist.level ?? 1) <= 1) return usesRowHint(instance) ? [] : countedSeats({ passengers: instance.passengers, ask: 'full', capacity: instance.capacity });
   return countedSeats(instance);
 }
 
@@ -66,7 +67,7 @@ export async function hintBus(instance: BusInstance, ctx: AssistContext, info: H
       return;
     }
     await ctx.say(GAME_PROMPTS.busCount, { interrupt: true });
-    await countAloud(countedSeats({ passengers: instance.passengers, ask: 'full' }), ctx, 'hint', level);
+    await countAloud(countedSeats({ passengers: instance.passengers, ask: 'full', capacity: instance.capacity }), ctx, 'hint', level);
     return;
   }
   await countAloud(countedSeats(instance), ctx, 'hint', level);
@@ -75,8 +76,8 @@ export async function hintBus(instance: BusInstance, ctx: AssistContext, info: H
 /** Показ разом: лічимо те, про що питають, і підсумовуємо: «Siedem i trzy to dziesięć.». */
 export async function togetherBus(instance: BusInstance, ctx: AssistContext): Promise<void> {
   await countAloud(countedSeats(instance), ctx, 'together', 1);
-  await ctx.say(pairSum(instance.passengers, BUS_CAPACITY - instance.passengers), { interrupt: true });
+  await ctx.say(pairSum(instance.passengers, instance.capacity - instance.passengers), { interrupt: true });
 }
 
 /** Відповідь завдання (для тестів і сцени). */
-export const answerOf = (instance: Pick<BusInstance, 'passengers' | 'ask'>): number => busAnswer(instance.passengers, instance.ask);
+export const answerOf = (instance: Pick<BusInstance, 'passengers' | 'ask'> & { capacity?: number }): number => busAnswer(instance.passengers, instance.ask, instance.capacity);

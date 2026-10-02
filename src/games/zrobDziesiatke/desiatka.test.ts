@@ -4,23 +4,23 @@ import { sceneReserved } from '../engine/frameMath';
 import { createRng } from '../engine/rng';
 import { placeContent } from '../engine/placeContent';
 import type { Assist, AssistContext, GenContext, SceneKind } from '../engine/types';
-import { frameView, hintTen, togetherTen } from './assist';
-import { TEN, checkTen, generateTen, missing, type TenInstance } from './generate';
+import { frameView, hintCount, hintTen, togetherTen } from './assist';
+import { TEN, checkTen, frameCells, generateTen, missing, toTen, type TenInstance } from './generate';
 import { zrobDziesiatke } from './index';
-import { CELL, DESIGN, capacity } from './View';
+import { CELL, DESIGN, DESIGN_BRIDGE, capacity } from './View';
 
 const level: Level = { id: 'w3-1', world: 'w3', index: 1, kind: 'main', newIdea: false, skills: ['bonds-5-10'], tasks: [], draft: false };
 const ctxFor = (seed: number, previous: readonly number[] = []): GenContext => ({ level, world: 'w3', index: previous.length, rng: createRng(seed), previous });
 const spec = (over: Partial<TenTask> = {}): TenTask => ({ game: 'zrobDziesiatke', skill: 'bonds-5-10', known: [4, 9], show: 'frame', ...over });
-const instance = (over: Partial<TenInstance> = {}): TenInstance => ({ game: 'zrobDziesiatke', skill: 'bonds-5-10', review: false, known: 7, show: 'frame', ...over });
+const instance = (over: Partial<TenInstance> = {}): TenInstance => ({ game: 'zrobDziesiatke', skill: 'bonds-5-10', review: false, known: 7, show: 'frame', add: 3, bridge: false, ...over });
 
 describe('відповідь «Zrób dziesiątkę»', () => {
   it('бракує 10 − відомих; check: правильно, на 1 поряд — «Prawie!», далі — хибно', () => {
-    expect(missing({ known: 7 })).toBe(3);
-    expect(checkTen({ known: 7 }, 3)).toEqual({ ok: true });
-    expect(checkTen({ known: 7 }, 2)).toEqual({ ok: false, almost: true });
-    expect(checkTen({ known: 7 }, 4)).toEqual({ ok: false, almost: true });
-    expect(checkTen({ known: 7 }, 1)).toEqual({ ok: false, almost: false });
+    expect(missing({ add: 3 })).toBe(3);
+    expect(checkTen({ add: 3 }, 3)).toEqual({ ok: true });
+    expect(checkTen({ add: 3 }, 2)).toEqual({ ok: false, almost: true });
+    expect(checkTen({ add: 3 }, 4)).toEqual({ ok: false, almost: true });
+    expect(checkTen({ add: 3 }, 1)).toEqual({ ok: false, almost: false });
   });
 });
 
@@ -170,6 +170,94 @@ describe('рамка у сцені', () => {
       for (const r of reserved) expect(p.x < r.x + r.w && r.x < p.x + p.w && p.y < r.y + r.h && r.y < p.y + p.h, kind).toBe(false);
       // дитині на телефоні потрібно ≥ 64 px у реальних пікселях
       expect(CELL * p.scale, kind).toBeGreaterThanOrEqual(kind === 'phone' || kind === 'portrait' ? 56 : 64);
+    }
+  });
+});
+
+describe('★ через десяток: 8 + 5', () => {
+  const bridgeSpec = (over: Partial<TenTask> = {}): TenTask => spec({ bridge: true, known: [6, 9], add: [3, 9], skill: 'bridge-ten', ...over });
+  const bridge = (over: Partial<TenInstance> = {}): TenInstance => instance({ known: 8, add: 5, bridge: true, skill: 'bridge-ten', ...over });
+
+  it('сума справді переходить через десяток: known + add ∈ 11…20 і add > 10 − known; детерміновано', () => {
+    for (let seed = 1; seed <= 300; seed++) {
+      const i = generateTen(bridgeSpec(), ctxFor(seed));
+      expect(i.bridge).toBe(true);
+      expect(i.show).toBe('frame');
+      expect(i.known).toBeGreaterThanOrEqual(6);
+      expect(i.known).toBeLessThanOrEqual(9);
+      expect(i.known + i.add).toBeGreaterThanOrEqual(11);
+      expect(i.known + i.add).toBeLessThanOrEqual(20);
+      expect(i.add).toBeGreaterThan(toTen(i));
+      expect(generateTen(bridgeSpec(), ctxFor(seed))).toEqual(i);
+    }
+  });
+
+  it('усі відомі 1–9 у bridge-режимі дають коректну пару, навіть коли діапазон add «не влазить»', () => {
+    for (let known = 1; known <= 9; known++) {
+      for (let seed = 1; seed <= 20; seed++) {
+        const i = generateTen(bridgeSpec({ known: [known, known], add: [1, 2] }), ctxFor(seed));
+        expect(i.known + i.add).toBeGreaterThan(10);
+        expect(i.known + i.add).toBeLessThanOrEqual(20);
+      }
+    }
+  });
+
+  it('відповідь — скільки докласти (8 + 5 → 5); рамок 20 комірок; toTen — 2', () => {
+    expect(missing(bridge())).toBe(5);
+    expect(checkTen(bridge(), 5)).toEqual({ ok: true });
+    expect(checkTen(bridge(), 2)).toEqual({ ok: false, almost: false });
+    expect(frameCells(bridge())).toBe(20);
+    expect(frameCells(instance())).toBe(10);
+    expect(toTen(bridge())).toBe(2);
+  });
+
+  it('репліка й похвала: «Ile to jest osiem dodać pięć? Najpierw zrób dziesiątkę.» / «…Osiem i dwa to dziesięć. I jeszcze trzy — trzynaście.»', () => {
+    expect(zrobDziesiatke.prompt(bridge())).toBe('Ile to jest osiem dodać pięć? Najpierw zrób dziesiątkę.');
+    expect(zrobDziesiatke.praise(bridge(), 'Brawo!')).toBe('Brawo! Osiem i dwa to dziesięć. I jeszcze trzy — trzynaście.');
+  });
+
+  it('допомога: підказка 2 лічить лише комірки до десяти й додає «Osiem i dwa to dziesięć.»', async () => {
+    const said: string[] = [];
+    const assists: Assist[] = [];
+    const ctx: AssistContext = { say: async (t) => { said.push(t); }, wait: async () => undefined, setAssist: (a) => { assists.push(a); } };
+    expect(hintCount(bridge())).toBe(2);
+    await hintTen(bridge(), ctx, { nth: 2, response: null });
+    expect(said).toEqual(['jeden', 'dwa', 'Osiem i dwa to dziesięć.']);
+  });
+
+  it('показ разом: докладає всі 5 фішок і каже «Osiem i dwa to dziesięć. I jeszcze trzy — trzynaście.»', async () => {
+    const said: string[] = [];
+    const ctx: AssistContext = { say: async (t) => { said.push(t); }, wait: async () => undefined, setAssist: () => undefined };
+    await togetherTen(bridge(), ctx);
+    expect(said).toEqual(['jeden', 'dwa', 'trzy', 'cztery', 'pięć', 'Osiem i dwa to dziesięć. I jeszcze trzy — trzynaście.']);
+  });
+
+  it('frameView на 20 комірках: докладені переходять з першої рамки в другу; підказка не виходить за hintLimit', () => {
+    const v = frameView(8, 5, { knownShown: true, hintStep: 0, togetherStep: 0, cells: 20 });
+    expect(v.cells).toHaveLength(20);
+    expect(v.cells.slice(0, 13).every((c) => c === 'solid')).toBe(true);
+    expect(v.cells[13]).toBe('empty');
+    const hint = frameView(8, 0, { knownShown: true, hintStep: 9, togetherStep: 0, cells: 20, hintLimit: 2 });
+    expect(hint.marks.filter((m) => m !== null)).toEqual([1, 2]);
+  });
+
+  it('capacity: на двох рамках — 20 − відомі', () => {
+    expect(capacity(8, true, 20)).toBe(12);
+  });
+
+  it('дві рамки вміщуються в сцену, не заходять на Kubika', () => {
+    const cases: { kind: SceneKind; vw: number; area: { w: number; h: number } }[] = [
+      { kind: 'wide', vw: 1280, area: { w: 1152, h: 430 } },
+      { kind: 'portrait', vw: 390, area: { w: 366, h: 366 } },
+      { kind: 'phone', vw: 844, area: { w: 560, h: 280 } },
+    ];
+    for (const { kind, vw, area } of cases) {
+      const reserved = sceneReserved(kind, vw, area);
+      const p = placeContent(area, reserved, DESIGN_BRIDGE, { maxScale: 1.7 });
+      expect(p.x + p.w, kind).toBeLessThanOrEqual(area.w);
+      expect(p.y + p.h, kind).toBeLessThanOrEqual(area.h);
+      for (const r of reserved) expect(p.x < r.x + r.w && r.x < p.x + p.w && p.y < r.y + r.h && r.y < p.y + p.h, kind).toBe(false);
+      expect(p.scale, kind).toBeGreaterThan(0.3);
     }
   });
 });

@@ -3,6 +3,7 @@ import { LEVELS, findLevel, levelById, levelsOfWorld } from './levels';
 import { W1_LEVELS } from './levels/w1';
 import { W2_LEVELS } from './levels/w2';
 import { W3_LEVELS } from './levels/w3';
+import { W4_LEVELS } from './levels/w4';
 import { skillInfo } from './skills';
 import { WORLD_KEYS, parseLevelId, worldById } from './worlds';
 
@@ -29,9 +30,9 @@ describe('усі рівні програми', () => {
     expect(() => levelById('w1-13')).toThrow('Unknown level');
   });
 
-  it('W4–W7 — заготовки (draft, без завдань); W1–W3 — описано повністю', () => {
+  it('W5–W7 — заготовки (draft, без завдань); W1–W4 — описано повністю', () => {
     for (const l of LEVELS) {
-      if (l.world === 'w1' || l.world === 'w2' || l.world === 'w3') expect(l.draft, l.id).toBe(false);
+      if (l.world === 'w1' || l.world === 'w2' || l.world === 'w3' || l.world === 'w4') expect(l.draft, l.id).toBe(false);
       else {
         expect(l.draft, l.id).toBe(true);
         expect(l.tasks, l.id).toEqual([]);
@@ -246,5 +247,73 @@ describe('W3 «Wyspa Dodawania» — 15 рівнів по 6 завдань', () 
     const last = W3_LEVELS[14];
     expect(last?.skills).toEqual(['add-combine', 'count-on', 'bonds-5-10', 'doubles']);
     expect(new Set(last?.tasks.filter((t) => !t.review).map((t) => t.game))).toEqual(new Set(['ileRazem', 'historyjki', 'domekLiczb', 'skokiZabki']));
+  });
+});
+
+describe('W4 «Most Dwudziestki» — 12 основних рівнів + ★-гілка з 4, по 6 завдань', () => {
+  const w4 = worldById('w4');
+  const main = W4_LEVELS.filter((l) => l.kind === 'main');
+  const star = W4_LEVELS.filter((l) => l.kind === 'star');
+
+  it('12 основних і 4 ★-рівні, кожен — місія з 6 завдань, 2 з них — повторення', () => {
+    expect(main).toHaveLength(12);
+    expect(star).toHaveLength(4);
+    expect(star.map((l) => l.id)).toEqual(['w4-s1', 'w4-s2', 'w4-s3', 'w4-s4']);
+    for (const l of W4_LEVELS) {
+      expect(l.tasks, l.id).toHaveLength(6);
+      expect(l.draft, l.id).toBe(false);
+      expect(l.tasks.filter((t) => t.review).length, l.id).toBe(2);
+    }
+  });
+
+  it('нові завдання — з ігор W4 і з навичкою, заявленою в рівні; ★-рівні вчать лише «через десяток»', () => {
+    for (const l of W4_LEVELS) {
+      for (const t of l.tasks.filter((x) => !x.review)) {
+        expect(w4.games, `${l.id} ${t.game}`).toContain(t.game);
+        expect(l.skills, `${l.id} ${t.skill}`).toContain(t.skill);
+      }
+    }
+    for (const l of star) expect(l.skills, l.id).toEqual(['bridge-ten']);
+  });
+
+  it('числа нових завдань — 11–20 (суми й ціле до 20; жабка на прямій 0–20; автобус двоповерховий)', () => {
+    for (const l of W4_LEVELS) {
+      for (const t of l.tasks.filter((x) => !x.review)) {
+        if (t.game === 'policzIDotknij') expect(t.count[0], l.id).toBeGreaterThanOrEqual(11);
+        if (t.game === 'ileRazem' || t.game === 'historyjki') expect(t.sum[1], l.id).toBeLessThanOrEqual(20);
+        if (t.game === 'domekLiczb') expect(t.whole[0], l.id).toBeGreaterThanOrEqual(11);
+        if (t.game === 'skokiZabki') expect(t.max, l.id).toBe(20);
+        if (t.game === 'autobusDziesiatka') expect(t.floors, l.id).toBe(2);
+      }
+    }
+  });
+
+  it('основний шлях без переходу через десяток: суми й історії — з noBridge; «через десяток» лише в ★', () => {
+    for (const l of main) {
+      for (const t of l.tasks.filter((x) => !x.review)) {
+        if (t.game === 'ileRazem' || t.game === 'historyjki') expect(t.noBridge, l.id).toBe(true);
+        expect(t.game === 'zrobDziesiatke', l.id).toBe(false);
+      }
+    }
+    expect(star[0]!.tasks.filter((t) => !t.review).every((t) => t.game === 'zrobDziesiatke' && t.bridge === true)).toBe(true);
+  });
+
+  it('нові ідеї: «-naście» (1, 3), лічба з будь-якого числа (5), двоповерховий автобус (7), додавання без переходу (9); ★1 — через десяток', () => {
+    expect(main.filter((l) => l.newIdea).map((l) => l.index)).toEqual([1, 3, 5, 7, 9]);
+    expect(star.filter((l) => l.newIdea).map((l) => l.index)).toEqual([1]);
+  });
+
+  it('усі нові розкладки W4 присутні: блоки «десять і ще n», подвійна рамка, автобус на 20, лічба «від числа» з кришкою', () => {
+    const fresh = main.flatMap((l) => l.tasks.filter((t) => !t.review));
+    expect(fresh.some((t) => t.game === 'policzIDotknij' && t.arrangement === 'tens')).toBe(true);
+    expect(fresh.some((t) => t.game === 'cyfraIObrazek' && t.set === 'tenFrame')).toBe(true);
+    expect(fresh.some((t) => t.game === 'autobusDziesiatka' && t.ask === 'empty')).toBe(true);
+    expect(fresh.some((t) => t.game === 'ileRazem' && t.lid)).toBe(true);
+  });
+
+  it('підсумковий рівень 12 (скриня) перевіряє суми, історію, склад до 20 й лічбу з будь-якого числа', () => {
+    const last = main[11]!;
+    expect(last.skills).toEqual(['add-no-bridge-20', 'teens', 'count-from-any']);
+    expect(new Set(last.tasks.filter((t) => !t.review).map((t) => t.game))).toEqual(new Set(['ileRazem', 'historyjki', 'domekLiczb', 'zgubionyWagonik']));
   });
 });

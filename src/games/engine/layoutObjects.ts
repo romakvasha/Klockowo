@@ -205,10 +205,40 @@ function scatterLayout(input: LayoutInput, size: number, margin: number): Point[
   });
 }
 
+/** «Десять і ще n»: перша десятка — блок 5×2, решта — другий блок 5×2 поруч (як двоповерхова рамка-десятка, але без рамок). Для ≤ 10 — один блок.
+ *  Індекси: 0…9 — перший блок рядами зліва направо, далі — другий. Блок шукає вільне від reserved місце ближче до центру. */
+function tensLayout(input: LayoutInput, size: number, margin: number): Point[] | null {
+  const { count, area, reserved = [] } = input;
+  const blocks = count > 10 ? 2 : 1;
+  const cols = 5;
+  const blockW = cols * size + (cols - 1) * GAP;
+  const blockGap = Math.max(GAP * 3, size * 0.6);
+  const blockH = 2 * size + GAP;
+  const totalW = blocks * blockW + (blocks - 1) * blockGap;
+  const usableW = area.w - 2 * margin;
+  const usableH = area.h - 2 * margin;
+  if (totalW > usableW || blockH > usableH) return null;
+  const build = (dx: number, dy: number): Point[] => {
+    const x0 = margin + (usableW - totalW) / 2 + dx;
+    const y0 = margin + (usableH - blockH) / 2 + dy;
+    return Array.from({ length: count }, (_, i): Point => {
+      const block = Math.floor(i / 10);
+      const k = i % 10;
+      return { x: x0 + block * (blockW + blockGap) + (k % cols) * (size + GAP), y: y0 + Math.floor(k / cols) * (size + GAP) };
+    });
+  };
+  for (const o of offsets((usableW - totalW) / 2, (usableH - blockH) / 2)) {
+    const items = build(o.x, o.y);
+    if (insideOf(items, size, area, margin) && freeOf(items, size, reserved)) return items;
+  }
+  return null;
+}
+
 const MAKERS: Record<Arrangement, (input: LayoutInput, size: number, margin: number) => Point[] | null> = {
   line: lineLayout,
   circle: circleLayout,
   scatter: scatterLayout,
+  tens: tensLayout,
 };
 
 /** Розкладка `count` предметів. Якщо при бажаному розмірі всі не вміщаються — розмір зменшується кроками по 8 % до MIN_SIZE,
@@ -233,6 +263,7 @@ export function layoutObjects(input: LayoutInput): Layout {
  *  розсип — як читаємо: рядами зверху вниз, у ряду зліва направо. Повертає індекси предметів. */
 export function countingOrder(arrangement: Arrangement, items: readonly Point[], size: number): number[] {
   const indices = items.map((_, i) => i);
+  if (arrangement === 'tens') return indices; // блок за блоком, рядами зліва направо — так, як вони розкладені
   if (arrangement === 'circle' && items.length > 1) {
     const cx = items.reduce((s, p) => s + p.x + size / 2, 0) / items.length;
     const cy = items.reduce((s, p) => s + p.y + size / 2, 0) / items.length;

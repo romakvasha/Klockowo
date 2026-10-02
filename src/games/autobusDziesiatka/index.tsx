@@ -2,7 +2,7 @@ import { animalUrl } from '../../components/math/art';
 import { GAME_PROMPTS, LABELS, pairSum } from '../../speech/lines';
 import type { GameDef } from '../engine/types';
 import { hintBus, introBus, togetherBus } from './assist';
-import { BUS_CAPACITY, busAnswer, checkBus, generateFromSpec, type BusInstance } from './generate';
+import { busAnswer, checkBus, generateFromSpec, type BusInstance } from './generate';
 import { BusScene } from './View';
 import styles from './View.module.css';
 
@@ -21,10 +21,10 @@ export const autobusDziesiatka: GameDef<BusInstance> = {
   ),
   sceneLabel: () => LABELS.bus,
   tiles: (i) => i.options.map((value) => ({ value, dots: i.answers === 'digit' ? undefined : value })),
-  answer: (i) => busAnswer(i.passengers, i.ask),
+  answer: (i) => busAnswer(i.passengers, i.ask, i.capacity),
   check: checkBus,
   // «Brawo! Siedem i trzy to dziesięć.»
-  praise: (i, praise) => `${praise} ${pairSum(i.passengers, BUS_CAPACITY - i.passengers)}`,
+  praise: (i, praise) => `${praise} ${pairSum(i.passengers, i.capacity - i.passengers)}`,
   intro: introBus,
   hint: hintBus,
   together: togetherBus,

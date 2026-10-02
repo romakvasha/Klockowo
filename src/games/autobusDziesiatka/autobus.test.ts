@@ -17,7 +17,7 @@ const spec = (over: Partial<BusTask> = {}): BusTask => ({
   game: 'autobusDziesiatka', skill: 'bonds-5-10', count: [0, 10], ask: 'full', exposureMs: 0, answers: 'digit', ...over,
 });
 const instance = (over: Partial<BusInstance> = {}): BusInstance => ({
-  game: 'autobusDziesiatka', skill: 'bonds-5-10', review: false, passengers: 7, riders: Array.from({ length: 7 }, () => 'mis' as const),
+  game: 'autobusDziesiatka', skill: 'bonds-5-10', review: false, passengers: 7, capacity: 10, riders: Array.from({ length: 7 }, () => 'mis' as const),
   ask: 'empty', exposureMs: 0, answers: 'digit', mascot: 'mis', options: [3, 4, 7], ...over,
 });
 

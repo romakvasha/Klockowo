@@ -44,6 +44,9 @@ export function BusFrame({ seats, world, width, covered = false, pulseRow = null
       {[0.2, 0.8].map((at) => (
         <span key={at} className={styles.wheel} style={{ left: Math.round(g.width * at - BUS_WHEEL / 2), top: g.bodyH - BUS_WHEEL / 2, width: BUS_WHEEL, height: BUS_WHEEL }} />
       ))}
+      {g.rows >= 4 && (
+        <span className={styles.deck} style={{ left: g.seat(0).x - 6, top: g.rowBox(1).y + g.rowBox(1).h + 1, width: g.rowBox(0).w + 4 }} aria-hidden="true" />
+      )}
       {seats.map((animal, i) => {
         const p = g.seat(i);
         const mark = marks?.[i] ?? null;

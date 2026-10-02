@@ -4,7 +4,7 @@ import { busGeometry, busWidthFor } from '../../components/math/busLayout';
 import type { Rect } from '../engine/layoutObjects';
 import type { SceneProps } from '../engine/types';
 import { helpCountSeats, seatMarks, usesRowHint } from './assist';
-import { BUS_CAPACITY, seatsTaken, type BusInstance } from './generate';
+import { seatsTaken, type BusInstance } from './generate';
 import styles from './View.module.css';
 
 const intersects = (a: Rect, b: Rect): boolean => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
@@ -27,10 +27,10 @@ export function busPlacement(area: { w: number; h: number }, reserved: readonly 
  *  Підказки: перший ряд пульсує як «5» або Kubik позначає місця числами 1, 2, 3…; правильна відповідь — тваринки радіють. */
 export function BusScene({ instance, world, area, reserved, assist, celebrating }: SceneProps<BusInstance>) {
   const place = useMemo(
-    () => busPlacement(area, reserved),
+    () => busPlacement(area, reserved, instance.capacity / 5),
     // reserved береться за вмістом: його ідентичність щоразу нова
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [area.w, area.h, JSON.stringify(reserved)],
+    [area.w, area.h, instance.capacity, JSON.stringify(reserved)],
   );
   const [pinned, setPinned] = useState(false);
   // 2-га підказка лишає автобус відкритим до кінця завдання
@@ -41,10 +41,10 @@ export function BusScene({ instance, world, area, reserved, assist, celebrating 
   const helping = assist.mode === 'hint' || assist.mode === 'together';
   const flashing = assist.mode === 'intro' && assist.step === 1;
   const revealed = instance.exposureMs <= 0 || flashing || helping || pinned || celebrating;
-  const marks = helping ? seatMarks(helpCountSeats(instance, assist), assist.step) : undefined;
+  const marks = helping ? seatMarks(helpCountSeats(instance, assist), assist.step, instance.capacity) : undefined;
   const rowHint = assist.mode === 'hint' && (assist.level ?? 1) <= 1 && usesRowHint(instance) && assist.step >= 1;
-  const taken = seatsTaken(instance.passengers);
-  const seats = Array.from({ length: BUS_CAPACITY }, (_, i) => (taken[i] ? instance.riders[i] ?? null : null));
+  const taken = seatsTaken(instance.passengers, instance.capacity);
+  const seats = Array.from({ length: instance.capacity }, (_, i) => (taken[i] ? instance.riders[i] ?? null : null));
 
   return (
     <div className={styles.scene} style={{ width: area.w, height: area.h }}>

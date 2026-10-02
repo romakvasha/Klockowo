@@ -51,9 +51,18 @@ export function splitSum(sum: number, order: SumTask['order'], doubles: boolean,
   return [a, sum - a];
 }
 
+/** Найменша сума без переходу: 11 + 1. */
+export const NO_BRIDGE_MIN_SUM = 12;
+
+/** «-надцять» плюс одиниці (13 + 4): перший доданок ≥ 11, другий — решта до суми (≥ 1); сума ≤ 20, тож десяток не переходиться. */
+export function splitNoBridge(sum: number, rng: Rng): [number, number] {
+  const a = rng.int(11, Math.max(11, sum - 1));
+  return [a, sum - a];
+}
+
 export function generateSum(spec: SumTask, ctx: GenContext): SumInstance {
   const { rng } = ctx;
-  const lo = Math.max(SUM_MIN, spec.sum[0]);
+  const lo = Math.max(spec.noBridge ? NO_BRIDGE_MIN_SUM : SUM_MIN, spec.sum[0]);
   const hi = Math.max(lo, Math.min(SUM_MAX, spec.sum[1]));
   const last = ctx.previous[ctx.previous.length - 1];
   // подвоєння — парні суми (3 + 3); найменша — 2 = 1 + 1
@@ -63,7 +72,7 @@ export function generateSum(spec: SumTask, ctx: GenContext): SumInstance {
   };
   let sum = Math.max(SUM_MIN, pickSum());
   for (let attempt = 0; attempt < 8 && sum === last; attempt++) sum = Math.max(SUM_MIN, pickSum());
-  const [a, b] = splitSum(sum, spec.order, spec.doubles, rng);
+  const [a, b] = spec.noBridge ? splitNoBridge(sum, rng) : splitSum(sum, spec.order, spec.doubles, rng);
   return {
     game: 'ileRazem',
     skill: spec.skill,

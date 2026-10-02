@@ -6,9 +6,10 @@ import { StateBadge } from '../ui/StateBadge';
 import { cx, cssVars } from '../ui/cx';
 import { handUrl } from './art';
 import { DotCard } from './DotCard';
+import { TenFrame } from './TenFrame';
 import { ObjectArt } from './ObjectArt';
 import { PAIR_COLORS, PairMark } from './PairMark';
-import { dotsFor, handsFor, objectGrid, type SetKind } from './setFaces';
+import { MAX_STRUCTURED, dotsFor, handsFor, objectGrid, type SetKind } from './setFaces';
 import styles from './SetCard.module.css';
 
 /** idle · selected (перший дотик із двох) · retry (хибна пара: фіолетова рамка + стрілка, картинка лишається яскравою — її треба перелічити) · correct. */
@@ -45,7 +46,8 @@ const PAD = 0.1;
 
 /** Що намальовано на картці: предмети рядами по п'ять, крапки (кубик чи випадкові), пальці однієї чи двох рук, рамка-десятка; нуль — порожньо / кулак / порожня рамка. */
 function Face({ kind, count, object, seed, inner, world }: Pick<SetCardProps, 'kind' | 'count' | 'object' | 'seed' | 'world'> & { inner: number }) {
-  const dots = useMemo(() => (kind === 'dots' || kind === 'tenFrame' ? dotsFor(kind, count, seed) : null), [kind, count, seed]);
+  const doubleFrame = kind === 'tenFrame' && count > MAX_STRUCTURED;
+  const dots = useMemo(() => ((kind === 'dots' || kind === 'tenFrame') && !doubleFrame ? dotsFor(kind, count, seed) : null), [kind, count, seed, doubleFrame]);
   // нуль: пунктирне порожнє коло («тут було б щось, але нічого нема»), щоб порожня картка не виглядала помилкою малювання
   if (count === 0 && (kind === 'objects' || kind === 'dots')) return <span className={styles.empty} style={{ width: inner * 0.46, height: inner * 0.46 }} />;
   if (kind === 'objects') {
@@ -56,6 +58,15 @@ function Face({ kind, count, object, seed, inner, world }: Pick<SetCardProps, 'k
           <ObjectArt key={i} object={object} size={grid.size} className={styles.object} style={{ left: item.x, top: item.y }} />
         ))}
       </>
+    );
+  }
+  if (doubleFrame) {
+    // подвійна рамка-десятка (11–20): десять і ще n; комірка — п'ята частина ширини за вирахуванням рамки
+    const cell = Math.max(12, Math.floor((inner - 8) / 5));
+    return (
+      <span className={styles.hands}>
+        <TenFrame cells={20} state={Array.from({ length: 20 }, (_, i) => (i < count ? 'solid' : 'empty'))} world={world} cell={cell} label="" />
+      </span>
     );
   }
   if (kind === 'fingers') {

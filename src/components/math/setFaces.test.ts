@@ -2,11 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { dotsFor, handsFor, kindAllowed, objectCols, objectGrid } from './setFaces';
 
 describe('kindAllowed', () => {
-  it('предмети — до 20, крапки, пальці й рамка — до 10', () => {
+  it('предмети й рамка — до 20 (рамка понад 10 — подвійна), крапки й пальці — до 10', () => {
     expect(kindAllowed('objects', 0)).toBe(true);
     expect(kindAllowed('objects', 20)).toBe(true);
     expect(kindAllowed('objects', 21)).toBe(false);
-    for (const kind of ['dots', 'fingers', 'tenFrame'] as const) {
+    expect(kindAllowed('tenFrame', 20)).toBe(true);
+    expect(kindAllowed('tenFrame', 21)).toBe(false);
+    for (const kind of ['dots', 'fingers'] as const) {
       expect(kindAllowed(kind, 10)).toBe(true);
       expect(kindAllowed(kind, 11)).toBe(false);
     }

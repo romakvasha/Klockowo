@@ -1,0 +1,47 @@
+.rack {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-ink);
+  border-radius: 14px;
+  box-shadow: 0 4px 0 var(--kl-neutral-edge);
+}
+
+.wire {
+  position: absolute;
+  height: 4px;
+  background: var(--kl-ink-soft);
+  border-radius: 2px;
+}
+
+.bead {
+  position: absolute;
+  box-sizing: border-box;
+  background: var(--br-a);
+  border: 3px solid var(--kl-ink);
+  border-radius: 50%;
+  transition: left 300ms var(--kl-ease-out);
+}
+
+.bead[data-tone='b'] {
+  background: var(--br-b);
+}
+
+/* відсунута (пораховано): світла внутрішня обводка */
+.bead[data-moved='true'] {
+  box-shadow: inset 0 0 0 3px var(--kl-surface);
+}
+
+.mark {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kl-surface);
+  border: 2.5px solid var(--kl-ink);
+  border-radius: 50%;
+  color: var(--kl-ink);
+}

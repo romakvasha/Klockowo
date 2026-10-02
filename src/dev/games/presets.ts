@@ -88,6 +88,16 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'story-combine', title: 'Historyjki: два набори на картинці, сума 3–8', world: 'w3', spec: story({ sum: [3, 8], kind: 'combine' }) },
   { id: 'story-mixed', title: 'Historyjki: навмання, сума 4–10', world: 'w3', spec: story({ sum: [4, 10], kind: 'mixed' }) },
   { id: 'story-20', title: 'Historyjki: сума 11–20 (W4, рамка з двох десяток)', world: 'w4', spec: story({ sum: [11, 20], skill: 'add-no-bridge-20' }) },
+  { id: 'teens-tens', title: 'Policz i dotknij: «десять і ще n», 11–17 (W4)', world: 'w4', spec: { game: 'policzIDotknij', skill: 'teens', count: [11, 17], arrangement: 'tens', look: 'distinct', answers: 'digit' } },
+  { id: 'teens-20', title: 'Policz i dotknij: «десять і ще n», 13–20 (W4)', world: 'w4', spec: { game: 'policzIDotknij', skill: 'teens', count: [13, 20], arrangement: 'tens', look: 'distinct', answers: 'digit' } },
+  { id: 'match-frame-20', title: 'Cyfra: подвійні рамки-десятки 11–20 (W4)', world: 'w4', spec: match({ pairs: 3, numbers: [11, 20], set: 'tenFrame' }) },
+  { id: 'bus-20', title: 'Autobus: двоповерховий, скільки їде 11–19 (W4)', world: 'w4', spec: bus({ count: [11, 19], floors: 2 }) },
+  { id: 'bus-20-free', title: 'Autobus: двоповерховий, скільки вільних (W4)', world: 'w4', spec: bus({ count: [11, 19], ask: 'empty', floors: 2 }) },
+  { id: 'sum-nobridge', title: 'Ile razem?: 13 + 4, перший доданок «-nastu» (W4)', world: 'w4', spec: sum({ skill: 'add-no-bridge-20', sum: [12, 18], noBridge: true }) },
+  { id: 'sum-nobridge-lid', title: 'Ile razem?: 13 + 4 із кришкою на першому кошику (W4)', world: 'w4', spec: sum({ skill: 'add-no-bridge-20', sum: [14, 19], noBridge: true, lid: true }) },
+  { id: 'story-nobridge', title: 'Historyjki: 13 + 4 без переходу (W4)', world: 'w4', spec: story({ skill: 'add-no-bridge-20', sum: [12, 19], noBridge: true, kind: 'mixed' }) },
+  { id: 'ten-bridge', title: 'Zrób dziesiątkę ★: 8 + 5 через десяток, відомих 8–9 (W4★)', world: 'w4', spec: ten({ skill: 'bridge-ten', bridge: true, known: [8, 9], add: [3, 5] }) },
+  { id: 'ten-bridge-wide', title: 'Zrób dziesiątkę ★: через десяток, відомих 6–9, докласти 3–9', world: 'w4', spec: ten({ skill: 'bridge-ten', bridge: true, known: [6, 9], add: [3, 9] }) },
   { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
 ];
 

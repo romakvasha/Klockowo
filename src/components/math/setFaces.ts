@@ -8,14 +8,18 @@ export type SetKind = 'objects' | 'dots' | 'fingers' | 'tenFrame';
 
 export const SET_KINDS: readonly SetKind[] = ['objects', 'dots', 'fingers', 'tenFrame'];
 export const MAX_STRUCTURED = 10;
+/** Рамка-десятка в W4 буває подвійною: до 20 комірок (дві рамки одна під одною). */
+export const MAX_FRAME = 20;
 
-/** Чи можна показати `count` цим способом: предмети — будь-яку кількість до 20, решта — до 10. */
+/** Чи можна показати `count` цим способом: предмети й рамка — до 20 (рамка понад 10 — подвійна), крапки й пальці — до 10. */
 export function kindAllowed(kind: SetKind, count: number): boolean {
-  return kind === 'objects' ? count >= 0 && count <= 20 : count >= 0 && count <= MAX_STRUCTURED;
+  if (kind === 'objects' || kind === 'tenFrame') return count >= 0 && count <= MAX_FRAME;
+  return count >= 0 && count <= MAX_STRUCTURED;
 }
 
 /** Крапки картки: 1–6 — канонічний «кубик», 7–10 — випадкові з рівними проміжками (зерно картки), 0 — порожня картка; рамка-десятка — комірки 5×2. */
 export function dotsFor(kind: 'dots' | 'tenFrame', count: number, seed: number): DotLayout {
+  if (count > MAX_STRUCTURED) throw new RangeError(`dotsFor: до ${MAX_STRUCTURED} (понад — TenFrame), got ${count}`);
   if (count <= 0) return { dots: [], groups: [[]], frame: kind === 'tenFrame' };
   return dotLayout(kind === 'tenFrame' ? 'tenFrame' : count <= 6 ? 'dice' : 'random', count, createRng(seed));
 }

@@ -4,7 +4,7 @@ import type { AnswerStyle, StoryKind, StoryTask, TaskSpec } from '../../curricul
 import type { ObjectId } from '../../speech/nouns';
 import { STORY_OBJECTS } from '../../speech/stories';
 import type { GenContext, TaskBase, Verdict } from '../engine/types';
-import { pickSumOptions } from '../ileRazem/generate';
+import { NO_BRIDGE_MIN_SUM, pickSumOptions, splitNoBridge } from '../ileRazem/generate';
 
 export const STORY_SUM_MIN = 2;
 export const STORY_SUM_MAX = 20;
@@ -28,12 +28,12 @@ export const storyAnswer = (instance: Pick<StoryInstance, 'a' | 'b'>): number =>
 
 export function generateStory(spec: StoryTask, ctx: GenContext): StoryInstance {
   const { rng } = ctx;
-  const lo = Math.max(STORY_SUM_MIN, spec.sum[0]);
+  const lo = Math.max(spec.noBridge ? NO_BRIDGE_MIN_SUM : STORY_SUM_MIN, spec.sum[0]);
   const hi = Math.max(lo, Math.min(STORY_SUM_MAX, spec.sum[1]));
   const last = ctx.previous[ctx.previous.length - 1];
   let sum = rng.int(lo, hi);
   for (let attempt = 0; attempt < 8 && sum === last; attempt++) sum = rng.int(lo, hi);
-  const a = rng.int(1, sum - 1);
+  const [a] = spec.noBridge ? splitNoBridge(sum, rng) : [rng.int(1, sum - 1)];
   const kind = spec.kind === 'mixed' ? (rng.next() < 0.5 ? 'join' : 'combine') : spec.kind;
   const object = rng.pick(STORY_OBJECTS);
   const other = kind === 'combine' ? rng.pick(STORY_OBJECTS.filter((o) => o !== object)) : object;
