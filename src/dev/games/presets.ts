@@ -37,6 +37,10 @@ const ten = (over: Partial<Extract<TaskSpec, { game: 'zrobDziesiatke' }>> = {}):
   game: 'zrobDziesiatke', skill: 'bonds-5-10', known: [4, 9], show: 'frame', ...over,
 });
 
+const story = (over: Partial<Extract<TaskSpec, { game: 'historyjki' }>> = {}): TaskSpec => ({
+  game: 'historyjki', skill: 'add-combine', sum: [3, 6], kind: 'join', answers: 'digit', ...over,
+});
+
 export const PRESETS: readonly GamePreset[] = [
   { id: 'wagon-end', title: 'Wagonik: бракує останнього, 1–10, 5 вагонів', world: 'w2', spec: train({ gap: 'end' }) },
   { id: 'wagon-mid', title: 'Wagonik: бракує посередині, 1–10, 6 вагонів', world: 'w2', spec: train({ gap: 'middle', length: 6 }) },
@@ -79,6 +83,11 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'ten-frame', title: 'Zrób dziesiątkę: відомі фішки видно, відомих 4–9', world: 'w3', spec: ten() },
   { id: 'ten-easy', title: 'Zrób dziesiątkę: бракує 1–3', world: 'w3', spec: ten({ known: [7, 9] }) },
   { id: 'ten-digit', title: 'Zrób dziesiątkę: рамка порожня, лише цифра', world: 'w3', spec: ten({ known: [2, 9], show: 'digit' }) },
+  { id: 'story-join', title: 'Historyjki: «прийшло ще», сума 3–6', world: 'w3', spec: story() },
+  { id: 'story-10', title: 'Historyjki: «прийшло ще», сума 4–10', world: 'w3', spec: story({ sum: [4, 10] }) },
+  { id: 'story-combine', title: 'Historyjki: два набори на картинці, сума 3–8', world: 'w3', spec: story({ sum: [3, 8], kind: 'combine' }) },
+  { id: 'story-mixed', title: 'Historyjki: навмання, сума 4–10', world: 'w3', spec: story({ sum: [4, 10], kind: 'mixed' }) },
+  { id: 'story-20', title: 'Historyjki: сума 11–20 (W4, рамка з двох десяток)', world: 'w4', spec: story({ sum: [11, 20], skill: 'add-no-bridge-20' }) },
   { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
 ];
 

@@ -6,6 +6,7 @@ import { cyfraIObrazek } from './cyfraIObrazek';
 import { domekLiczb } from './domekLiczb';
 import type { GameResolver } from './engine/levelPlan';
 import type { GameDef } from './engine/types';
+import { historyjki } from './historyjki';
 import { ileRazem } from './ileRazem';
 import { ktoMaWiecej } from './ktoMaWiecej';
 import { nakarmZwierzaka } from './nakarmZwierzaka';
@@ -27,6 +28,7 @@ const GAMES: Partial<Record<GameId, GameDef>> = {
   ileRazem: ileRazem as unknown as GameDef,
   skokiZabki: skokiZabki as unknown as GameDef,
   zrobDziesiatke: zrobDziesiatke as unknown as GameDef,
+  historyjki: historyjki as unknown as GameDef,
 };
 
 export const resolveGame: GameResolver = (game) => GAMES[game];

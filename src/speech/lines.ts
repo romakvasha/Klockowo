@@ -51,6 +51,9 @@ export const LABELS = {
   basketLid: 'koszyk z przykrywką',
   basketMerged: 'wspólny koszyk',
   equation: 'działanie',
+  storyFirst: 'pierwszy obrazek', // «Historyjki»: три кадри [do sprawdzenia]
+  storySecond: 'drugi obrazek',
+  storyQuestion: 'trzeci obrazek',
 } as const;
 
 /** aria-label купки-картки «Kto ma więcej?»: «miś — kupka» без числа, щоб не видати відповідь [do sprawdzenia]. */

@@ -2,7 +2,7 @@
 // крок униз: менший діапазон і більше опори). Чисті функції над TaskSpec: генератори ігор лишаються незмінними.
 import { STEP_MIN, clampStep, type Struggle } from './adaptivity';
 import type {
-  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, Range, SumTask, TaskSpec, TenTask, TrainTask, WorldKey,
+  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, Range, StoryTask, SumTask, TaskSpec, TenTask, TrainTask, WorldKey,
 } from './types';
 import { worldById } from './worlds';
 
@@ -99,6 +99,12 @@ function adaptTen(spec: TenTask, step: number): TenTask {
   return { ...spec, known: [shift(k0 - step), shift(k1 - step)], show: step >= 2 ? 'digit' : spec.show };
 }
 
+/** «Historyjki»: крок униз — менша сума й лише «прийшло ще» (join); вгору — більша сума, з кроку 1 ще й задачі «разом» на двох наборах. */
+function adaptStory(spec: StoryTask, step: number, hi: number): StoryTask {
+  if (step < 0) return { ...spec, sum: shiftMax(spec.sum, step, hi), kind: 'join' };
+  return { ...spec, sum: shiftMax(spec.sum, step, hi), kind: spec.kind === 'join' && step >= 1 ? 'mixed' : spec.kind };
+}
+
 /** Завдання з урахуванням кроку складності навички. `range` — діапазон чисел світу (верхня межа не перевищується). */
 export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec {
   const s = clampStep(step);
@@ -116,6 +122,7 @@ export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec 
     case 'ileRazem': return adaptSum(spec, s, hi);
     case 'skokiZabki': return adaptJump(spec, s);
     case 'zrobDziesiatke': return adaptTen(spec, s);
+    case 'historyjki': return adaptStory(spec, s, hi);
     default: return spec;
   }
 }

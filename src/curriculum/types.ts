@@ -180,17 +180,29 @@ export interface TenTask extends TaskBase {
   show: 'frame' | 'digit';
 }
 
-/** Ігри, чиї параметри опишуть етапи M15–M19: поки лише гра й навичка. */
+/** Тип задачі «Historyjki»: join — було `a`, прийшло ще `b`; combine — два набори різних предметів («Na obrazku są…»); mixed — навмання. (Порівняння «о 2 більше» — W4/W7.) */
+export type StoryKind = 'join' | 'combine' | 'mixed';
+
+/** «Historyjki» — історія на 3 кадри («було», «прийшло ще», «?»), вибір відповіді з 3 плиток, потім картка з прикладом «3 + 2 = 5». */
+export interface StoryTask extends TaskBase {
+  game: 'historyjki';
+  /** Межі суми (2–10 у W3; 11–20 у W4). */
+  sum: Range;
+  kind: StoryKind;
+  answers: AnswerStyle;
+}
+
+/** Ігри, чиї параметри опишуть етапи M16–M19: поки лише гра й навичка. */
 export interface PendingTask extends TaskBase {
   game: Exclude<
     GameId,
     | 'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik' | 'ktoMaWiecej' | 'autobusDziesiatka' | 'domekLiczb' | 'ileRazem'
-    | 'skokiZabki' | 'zrobDziesiatke'
+    | 'skokiZabki' | 'zrobDziesiatke' | 'historyjki'
   >;
 }
 
 export type TaskSpec =
-  | CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | JumpTask | TenTask | PendingTask;
+  | CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | JumpTask | TenTask | StoryTask | PendingTask;
 
 export type LevelKind = 'main' | 'star';
 

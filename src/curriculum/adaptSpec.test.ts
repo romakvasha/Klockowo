@@ -4,7 +4,7 @@ import { resolveGame } from '../games/registry';
 import { STEP_MAX, STEP_MIN, type Struggle } from './adaptivity';
 import { adaptSpec, adaptTask, altSpec } from './adaptSpec';
 import { levelsOfWorld } from './levels';
-import type { BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, SumTask, TaskSpec, TenTask, TrainTask } from './types';
+import type { BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, SumTask, TaskSpec, StoryTask, TenTask, TrainTask } from './types';
 
 const count: CountTask = { game: 'policzIDotknij', skill: 'count-scatter', count: [1, 8], arrangement: 'scatter', look: 'similar', answers: 'digitDots' };
 const flash: FlashTask = { game: 'blysk', skill: 'subitize-5', count: [1, 5], pattern: 'random', exposureMs: 1200, answers: 'digitDots' };
@@ -161,5 +161,17 @@ describe('adaptSpec: «Skoki żabki» і «Zrób dziesiątkę»', () => {
   it('altSpec: для цих ігор заміни немає', () => {
     expect(altSpec(jump, 'w3')).toBeNull();
     expect(altSpec(ten, 'w3')).toBeNull();
+  });
+});
+
+describe('adaptSpec: «Historyjki»', () => {
+  const story: StoryTask = { game: 'historyjki', skill: 'add-combine', sum: [4, 8], kind: 'combine', answers: 'digit' };
+
+  it('крок униз — менша сума й лише «прийшло ще»; вгору — більша сума, а join з кроку 1 стає mixed', () => {
+    expect(adaptSpec(story, 0, [1, 10])).toBe(story);
+    expect(adaptSpec(story, -1, [1, 10])).toMatchObject({ sum: [4, 7], kind: 'join' });
+    expect(adaptSpec(story, 1, [1, 10])).toMatchObject({ sum: [4, 9], kind: 'combine' });
+    expect(adaptSpec({ ...story, kind: 'join' }, 1, [1, 10])).toMatchObject({ kind: 'mixed' });
+    expect(adaptSpec({ ...story, kind: 'join' }, 1, [1, 10])).toMatchObject({ sum: [4, 9] });
   });
 });

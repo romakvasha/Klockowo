@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { LEVELS, findLevel, levelById, levelsOfWorld } from './levels';
 import { W1_LEVELS } from './levels/w1';
 import { W2_LEVELS } from './levels/w2';
+import { W3_LEVELS } from './levels/w3';
 import { skillInfo } from './skills';
 import { WORLD_KEYS, parseLevelId, worldById } from './worlds';
 
@@ -28,9 +29,9 @@ describe('усі рівні програми', () => {
     expect(() => levelById('w1-13')).toThrow('Unknown level');
   });
 
-  it('W3–W7 — заготовки (draft, без завдань); W1 і W2 — описано повністю', () => {
+  it('W4–W7 — заготовки (draft, без завдань); W1–W3 — описано повністю', () => {
     for (const l of LEVELS) {
-      if (l.world === 'w1' || l.world === 'w2') expect(l.draft, l.id).toBe(false);
+      if (l.world === 'w1' || l.world === 'w2' || l.world === 'w3') expect(l.draft, l.id).toBe(false);
       else {
         expect(l.draft, l.id).toBe(true);
         expect(l.tasks, l.id).toEqual([]);
@@ -188,5 +189,62 @@ describe('W2 «Ogród Cyfr» — 12 рівнів по 6 завдань', () => {
     expect(last?.skills).toEqual(['digit-quantity', 'order-around', 'compare-10']);
     const games = new Set(last?.tasks.filter((t) => !t.review).map((t) => t.game));
     expect(games).toEqual(new Set(['cyfraIObrazek', 'zgubionyWagonik', 'ktoMaWiecej']));
+  });
+});
+
+describe('W3 «Wyspa Dodawania» — 15 рівнів по 6 завдань', () => {
+  const w3 = worldById('w3');
+
+  it('15 рівнів, кожен — місія з 6 завдань', () => {
+    expect(W3_LEVELS).toHaveLength(15);
+    W3_LEVELS.forEach((l, i) => {
+      expect(l.index, l.id).toBe(i + 1);
+      expect(l.tasks, l.id).toHaveLength(6);
+      expect(l.draft, l.id).toBe(false);
+    });
+  });
+
+  it('спіральне повторення: у кожному рівні рівно 2 з 6 завдань (≈ 30 %)', () => {
+    for (const l of W3_LEVELS) expect(l.tasks.filter((t) => t.review).length, l.id).toBe(2);
+  });
+
+  it('нові завдання — з ігор W3 і з навичкою, заявленою в рівні', () => {
+    for (const l of W3_LEVELS) {
+      for (const t of l.tasks.filter((x) => !x.review)) {
+        expect(w3.games, `${l.id} ${t.game}`).toContain(t.game);
+        expect(l.skills, `${l.id} ${t.skill}`).toContain(t.skill);
+      }
+    }
+  });
+
+  it('суми й цілі не виходять за 10; стрибки жабки — на прямій 0–10', () => {
+    for (const l of W3_LEVELS) {
+      for (const t of l.tasks) {
+        if (t.game === 'ileRazem' || t.game === 'historyjki') expect(t.sum[1], l.id).toBeLessThanOrEqual(10);
+        if (t.game === 'domekLiczb') expect(t.whole[1], l.id).toBeLessThanOrEqual(10);
+        if (t.game === 'skokiZabki') expect(t.max, l.id).toBe(10);
+      }
+    }
+  });
+
+  it('усі ігри W3 зустрічаються; нові ідеї — обʼєднання (1), знаки (3), історії (4), лічба далі (5), жабка (6), склад (7, 9), подвоєння (11)', () => {
+    const games = new Set(W3_LEVELS.flatMap((l) => l.tasks.filter((t) => !t.review).map((t) => t.game)));
+    for (const g of ['ileRazem', 'historyjki', 'skokiZabki', 'domekLiczb', 'zrobDziesiatke']) expect(games.has(g as never), g).toBe(true);
+    expect(W3_LEVELS.filter((l) => l.newIdea).map((l) => l.index)).toEqual([1, 3, 4, 5, 6, 7, 9, 11]);
+  });
+
+  it('кришка (лічба від числа) — не раніше рівня 5; «лише цифра» у «Zrób dziesiątkę» — не раніше рівня 10; кожна ідея спершу в простому вигляді', () => {
+    for (const l of W3_LEVELS) {
+      const fresh = l.tasks.filter((t) => !t.review);
+      if (l.index < 5) expect(fresh.some((t) => t.game === 'ileRazem' && t.lid), l.id).toBe(false);
+      if (l.index < 10) expect(fresh.some((t) => t.game === 'zrobDziesiatke' && t.show === 'digit'), l.id).toBe(false);
+      if (l.index < 3) expect(fresh.some((t) => t.game === 'ileRazem' && t.symbols), l.id).toBe(false);
+    }
+  });
+
+  it('підсумковий рівень 15 (скриня) перевіряє суми, історію, склад 10 і лічбу «від числа»', () => {
+    const last = W3_LEVELS[14];
+    expect(last?.skills).toEqual(['add-combine', 'count-on', 'bonds-5-10', 'doubles']);
+    expect(new Set(last?.tasks.filter((t) => !t.review).map((t) => t.game))).toEqual(new Set(['ileRazem', 'historyjki', 'domekLiczb', 'skokiZabki']));
   });
 });
