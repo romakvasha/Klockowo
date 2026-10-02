@@ -30,6 +30,13 @@ const sum = (over: Partial<Extract<TaskSpec, { game: 'ileRazem' }>> = {}): TaskS
   game: 'ileRazem', skill: 'add-combine', sum: [3, 8], lid: false, order: 'any', doubles: false, symbols: false, answers: 'digit', ...over,
 });
 
+const jump = (over: Partial<Extract<TaskSpec, { game: 'skokiZabki' }>> = {}): TaskSpec => ({
+  game: 'skokiZabki', skill: 'count-on', max: 10, start: [0, 7], jumps: [1, 3], pads: 'numbered', tapJumps: true, answers: 'digit', ...over,
+});
+const ten = (over: Partial<Extract<TaskSpec, { game: 'zrobDziesiatke' }>> = {}): TaskSpec => ({
+  game: 'zrobDziesiatke', skill: 'bonds-5-10', known: [4, 9], show: 'frame', ...over,
+});
+
 export const PRESETS: readonly GamePreset[] = [
   { id: 'wagon-end', title: 'Wagonik: бракує останнього, 1–10, 5 вагонів', world: 'w2', spec: train({ gap: 'end' }) },
   { id: 'wagon-mid', title: 'Wagonik: бракує посередині, 1–10, 6 вагонів', world: 'w2', spec: train({ gap: 'middle', length: 6 }) },
@@ -64,6 +71,14 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'sum-doubles', title: 'Ile razem?: подвоєння 2–10', world: 'w3', spec: sum({ skill: 'doubles', sum: [2, 10], doubles: true }) },
   { id: 'sum-symbols', title: 'Ile razem?: лише символи «3 + 2 = ?»', world: 'w3', spec: sum({ skill: 'plus-equals', symbols: true }) },
   { id: 'sum-20', title: 'Ile razem?: сума 11–20, без переходу (W4)', world: 'w4', spec: sum({ skill: 'add-no-bridge-20', sum: [11, 20], order: 'bigFirst' }) },
+  { id: 'jump-easy', title: 'Skoki żabki: 0–10, 1–3 стрибки, жабка стрибає від дотику', world: 'w3', spec: jump() },
+  { id: 'jump-5', title: 'Skoki żabki: 0–10, до 5 стрибків', world: 'w3', spec: jump({ jumps: [2, 5], start: [0, 8] }) },
+  { id: 'jump-mental', title: 'Skoki żabki: «в думці» (стрибки лише як підказка)', world: 'w3', spec: jump({ jumps: [2, 4], tapJumps: false }) },
+  { id: 'jump-landmarks', title: 'Skoki żabki: цифри лише на віхах 0, 5, 10', world: 'w3', spec: jump({ jumps: [2, 4], pads: 'landmarks' }) },
+  { id: 'jump-20', title: 'Skoki żabki: 0–20, два ряди листків (W4)', world: 'w4', spec: jump({ max: 20, start: [0, 14], jumps: [2, 6], skill: 'count-from-any' }) },
+  { id: 'ten-frame', title: 'Zrób dziesiątkę: відомі фішки видно, відомих 4–9', world: 'w3', spec: ten() },
+  { id: 'ten-easy', title: 'Zrób dziesiątkę: бракує 1–3', world: 'w3', spec: ten({ known: [7, 9] }) },
+  { id: 'ten-digit', title: 'Zrób dziesiątkę: рамка порожня, лише цифра', world: 'w3', spec: ten({ known: [2, 9], show: 'digit' }) },
   { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
 ];
 

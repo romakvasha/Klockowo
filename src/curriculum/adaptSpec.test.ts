@@ -4,7 +4,7 @@ import { resolveGame } from '../games/registry';
 import { STEP_MAX, STEP_MIN, type Struggle } from './adaptivity';
 import { adaptSpec, adaptTask, altSpec } from './adaptSpec';
 import { levelsOfWorld } from './levels';
-import type { BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, MatchTask, SumTask, TaskSpec, TrainTask } from './types';
+import type { BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, SumTask, TaskSpec, TenTask, TrainTask } from './types';
 
 const count: CountTask = { game: 'policzIDotknij', skill: 'count-scatter', count: [1, 8], arrangement: 'scatter', look: 'similar', answers: 'digitDots' };
 const flash: FlashTask = { game: 'blysk', skill: 'subitize-5', count: [1, 5], pattern: 'random', exposureMs: 1200, answers: 'digitDots' };
@@ -15,6 +15,8 @@ const compare: CompareTask = { game: 'ktoMaWiecej', skill: 'compare-10', count: 
 const bus: BusTask = { game: 'autobusDziesiatka', skill: 'bonds-5-10', count: [1, 9], ask: 'empty', exposureMs: 1500, answers: 'digit' };
 const house: HouseTask = { game: 'domekLiczb', skill: 'bonds-5-10', whole: [6, 10], missing: 'left', show: 'digits', answers: 'digit' };
 const sum: SumTask = { game: 'ileRazem', skill: 'add-combine', sum: [4, 8], lid: false, order: 'any', doubles: false, symbols: true, answers: 'digit' };
+const jump: JumpTask = { game: 'skokiZabki', skill: 'count-on', max: 10, start: [0, 6], jumps: [2, 4], pads: 'numbered', tapJumps: true, answers: 'digit' };
+const ten: TenTask = { game: 'zrobDziesiatke', skill: 'bonds-5-10', known: [4, 8], show: 'frame' };
 const W1: readonly [number, number] = [1, 10];
 
 describe('adaptSpec: крок униз — менше чисел і більше опори, крок угору — більше чисел і менше опори', () => {
@@ -129,5 +131,35 @@ describe('усі рівні W1–W2 на кожному кроці й з інш�
         }
       }
     }
+  });
+});
+
+describe('adaptSpec: «Skoki żabki» і «Zrób dziesiątkę»', () => {
+  it('крок 0 — без змін', () => {
+    expect(adaptSpec(jump, 0, [1, 10])).toBe(jump);
+    expect(adaptSpec(ten, 0, [1, 10])).toBe(ten);
+  });
+
+  it('жабка: крок униз — менше стрибків, цифри всюди, стрибає від дотику; вгору — «в думці», далі лише віхи', () => {
+    expect(adaptSpec({ ...jump, tapJumps: false, pads: 'landmarks' }, -1, [1, 10])).toMatchObject({ jumps: [2, 3], pads: 'numbered', tapJumps: true });
+    expect(adaptSpec(jump, -2, [1, 10])).toMatchObject({ jumps: [2, 2] });
+    expect(adaptSpec({ ...jump, jumps: [2, 2] }, -2, [1, 10])).toMatchObject({ jumps: [2, 2] });
+    expect(adaptSpec(jump, 1, [1, 10])).toMatchObject({ jumps: [2, 5], tapJumps: false, pads: 'numbered' });
+    expect(adaptSpec(jump, 2, [1, 10])).toMatchObject({ jumps: [2, 6], pads: 'landmarks' });
+    expect(adaptSpec({ ...jump, jumps: [2, 6] }, 2, [1, 10])).toMatchObject({ jumps: [2, 6] });
+    expect(adaptSpec({ ...jump, max: 20, jumps: [2, 6] }, 2, [1, 20])).toMatchObject({ jumps: [2, 8] });
+  });
+
+  it('десятка: крок униз — докласти менше, рамка з відомими; вгору — більше, з кроку 2 лише цифра; межі 1…9', () => {
+    expect(adaptSpec({ ...ten, show: 'digit' }, -1, [1, 10])).toMatchObject({ known: [5, 9], show: 'frame' });
+    expect(adaptSpec(ten, -2, [1, 10])).toMatchObject({ known: [6, 9] });
+    expect(adaptSpec(ten, 1, [1, 10])).toMatchObject({ known: [3, 7], show: 'frame' });
+    expect(adaptSpec(ten, 2, [1, 10])).toMatchObject({ known: [2, 6], show: 'digit' });
+    expect(adaptSpec({ ...ten, known: [1, 3] }, 2, [1, 10])).toMatchObject({ known: [1, 1] });
+  });
+
+  it('altSpec: для цих ігор заміни немає', () => {
+    expect(altSpec(jump, 'w3')).toBeNull();
+    expect(altSpec(ten, 'w3')).toBeNull();
   });
 });

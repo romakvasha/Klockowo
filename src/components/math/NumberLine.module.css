@@ -1,0 +1,23 @@
+.root {
+  position: relative;
+}
+
+.pad {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color: var(--kl-ink);
+  background: var(--nl-100);
+  border: 3px solid var(--nl-700);
+  border-radius: 50%;
+  box-shadow: 0 3px 0 var(--nl-700);
+}
+
+.pad[data-glow='true'] {
+  background: var(--kl-reward);
+  border-color: var(--kl-reward-edge);
+  box-shadow: 0 0 0 4px var(--kl-reward);
+  animation: var(--kl-anim-pulse) 1s ease-in-out 2;
+}

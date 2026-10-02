@@ -1,0 +1,44 @@
+.scene {
+  position: relative;
+}
+
+/* композиція в дизайнових px (332 × 204): рамка по центру, масштабується цілим */
+.stage {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  transform-origin: 0 0;
+}
+
+.equation {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: var(--kl-ink);
+}
+
+.equation[data-visible='false'] {
+  visibility: hidden;
+}
+
+.equation b {
+  font: 700 56px / 1 var(--kl-font-display);
+  color: var(--kl-ink-soft);
+}
+
+/* бульбашка Kubika: «n + ? = 10» (лише цифри й знаки) */
+.ask {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  color: var(--kl-ink);
+}
+
+.ask b {
+  font: 700 34px / 1 var(--kl-font-display);
+}

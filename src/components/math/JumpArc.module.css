@@ -1,0 +1,65 @@
+.arc {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.arc path {
+  fill: none;
+  stroke: var(--kl-ink);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  animation: var(--kl-anim-draw) var(--kl-dur-bone) var(--kl-ease-out) both;
+}
+
+.arc[data-ghost='true'] path {
+  stroke: var(--kl-ink-soft);
+  stroke-dasharray: 3 9;
+  animation: none;
+}
+
+.badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+  color: var(--kl-ink);
+  background: var(--kl-surface);
+  border: 2.5px solid var(--kl-ink);
+  border-radius: 50%;
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out) both;
+}
+
+.badge[data-ghost='true'] {
+  border-style: dashed;
+  border-color: var(--kl-ink-soft);
+}
+
+button.badge {
+  cursor: pointer;
+}
+
+/* невидимий збільшений майданчик дотику (≥ 64 px у координатах сцени; бейдж маленький) */
+button.badge::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 64px;
+  height: 64px;
+  transform: translate(-50%, -50%);
+}
+
+/* наступна дуга пульсує: тут треба торкнутися */
+.badge[data-next='true'] {
+  background: var(--kl-reward);
+  border-style: solid;
+  border-color: var(--kl-reward-edge);
+  animation: var(--kl-anim-pulse) 1s ease-in-out infinite;
+}

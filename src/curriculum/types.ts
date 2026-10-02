@@ -155,15 +155,42 @@ export interface SumTask extends TaskBase {
   answers: AnswerStyle;
 }
 
-/** Ігри, чиї параметри опишуть етапи M14–M19: поки лише гра й навичка. */
+/** «Skoki żabki» — жабка на листках латаття 0–10/0–20, «Skacze trzy razy. Gdzie wyląduje?»; вибір із 3 плиток. (Ракета на прямій 0–100 — W7, M19.) */
+export interface JumpTask extends TaskBase {
+  game: 'skokiZabki';
+  /** Скільки листків: 10 → 0–10, 20 → 0–20. */
+  max: 10 | 20;
+  /** Листок, з якого стартує жабка (межі; зменшуються, щоб жабка не вистрибнула за край). */
+  start: Range;
+  /** Скільки стрибків (межі). */
+  jumps: Range;
+  /** numbered — на всіх листках цифри; landmarks — лише на 0, 5, 10 (…) і на стартовому: решту дитина відлічує сама. */
+  pads: 'numbered' | 'landmarks';
+  /** true — жабка стрибає від дотику дитини (конкретна дія); false — дитина спершу передбачає, а стрибки з'являються лише як підказка. */
+  tapJumps: boolean;
+  answers: AnswerStyle;
+}
+
+/** «Zrób dziesiątkę» — доповнити рамку-десятку фішками («Ile brakuje do dziesięciu?»); «Gotowe» перевіряє, скільки докладено. (Перехід через десяток 8 + 5 — W4★, M16.) */
+export interface TenTask extends TaskBase {
+  game: 'zrobDziesiatke';
+  /** Скільки фішок уже лежить у рамці (1–9; бракує 10 − це). */
+  known: Range;
+  /** frame — відомі фішки видно, дитина докладає решту; digit — рамка порожня, є лише цифра: дитина сама вираховує, скільки докласти. */
+  show: 'frame' | 'digit';
+}
+
+/** Ігри, чиї параметри опишуть етапи M15–M19: поки лише гра й навичка. */
 export interface PendingTask extends TaskBase {
   game: Exclude<
     GameId,
-    'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik' | 'ktoMaWiecej' | 'autobusDziesiatka' | 'domekLiczb' | 'ileRazem'
+    | 'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik' | 'ktoMaWiecej' | 'autobusDziesiatka' | 'domekLiczb' | 'ileRazem'
+    | 'skokiZabki' | 'zrobDziesiatke'
   >;
 }
 
-export type TaskSpec = CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | PendingTask;
+export type TaskSpec =
+  | CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | JumpTask | TenTask | PendingTask;
 
 export type LevelKind = 'main' | 'star';
 

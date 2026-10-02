@@ -43,6 +43,10 @@ export const LABELS = {
   windowEmpty: 'puste okienko',
   yard: 'przedmioty pod domkiem',
   frame: 'ramka dziesiątki',
+  frameAdd: 'Dołóż żeton', // «Zrób dziesiątkę»: pusta komórka ramki [do sprawdzenia]
+  frameRemove: 'Zdejmij żeton',
+  pond: 'Staw z liśćmi lilii', // «Skoki żabki»: підпис сцени [do sprawdzenia]
+  jump: 'Skocz', // жабка: дотик = один стрибок
   basket: 'koszyk', // «Ile razem?»: кошик [do sprawdzenia]
   basketLid: 'koszyk z przykrywką',
   basketMerged: 'wspólny koszyk',
@@ -192,6 +196,8 @@ export const GAME_PROMPTS = {
   orSame: 'A może tyle samo?', // POLISH_COPY §5 (гра 6)
   busRow: 'Pełny rząd to pięć. Policz resztę.', // POLISH_COPY §6, підказка 3
   busCount: 'Policz zwierzątka.', // [do sprawdzenia]: підказка, коли в автобусі менше за п'ять
+  makeTen: 'Dołóż tyle, żeby było dziesięć.', // POLISH_COPY §5 (гра 11)
+  untilTen: 'Ile brakuje do pełnej dziesiątki?', // POLISH_COPY §6, підказка 4
   hiddenNumber: 'Jaka liczba się schowała?', // W6 «Tajemnicza tablica» (§9)
   storyExample: 'Na gałęzi siedzą dwa ptaszki. Przylatują jeszcze trzy. Ile ptaszków jest teraz?', // приклад BRIEF §7.14
 } as const;
@@ -371,6 +377,16 @@ export function startFrom(n: number): string {
 /** «Trzy dodać dwa równa się pięć.» — «dodać», не «plus» (POLISH_COPY §8). */
 export function addSentence(a: number, b: number): string {
   return `${cap(numberWords(a))} dodać ${numberWords(b)} równa się ${numberWords(a + b)}.`;
+}
+
+/** aria-label листка латаття: «liść pięć» («Skoki żabki») [do sprawdzenia]. */
+export function padLabel(n: number): string {
+  return `liść ${numberWords(n)}`;
+}
+
+/** aria-label дуги стрибка: «skok trzy» (порядковий номер стрибка, не листка) [do sprawdzenia]. */
+export function jumpLabel(n: number): string {
+  return `skok ${numberWords(n)}`;
 }
 
 /** «Żabka jest na liczbie cztery. Skacze trzy razy. Gdzie wyląduje?» */

@@ -39,6 +39,8 @@
   --kl-anim-spin: kl-spin;
   /* «Ile razem?»: кошик нахиляється й висипає предмети в спільний */
   --kl-anim-pour: kl-pour;
+  /* «Skoki żabki»: жабка підстрибує над листком (650 мс) */
+  --kl-anim-leap: kl-leap;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -70,6 +72,7 @@
     --kl-anim-drop: kl-fade-in;
     --kl-anim-spin: none;
     --kl-anim-pour: kl-fade-out;
+    --kl-anim-leap: none;
   }
 }
 
@@ -101,6 +104,7 @@
   --kl-anim-drop: kl-fade-in;
   --kl-anim-spin: none;
   --kl-anim-pour: kl-fade-out;
+  --kl-anim-leap: none;
 }
 
 @keyframes kl-fade-in {
@@ -271,6 +275,15 @@
   0% { transform: none; opacity: 1; }
   55% { transform: translateX(-110px) rotate(-24deg); opacity: 1; }
   100% { transform: translateX(-110px) rotate(-24deg); opacity: 0; }
+}
+
+/* жабка: присідає, злітає над листком, приземляється з розплюскуванням */
+@keyframes kl-leap {
+  0% { transform: translateY(0) scale(1, 1); }
+  15% { transform: translateY(2px) scale(1.08, .9); }
+  50% { transform: translateY(-34px) scale(.94, 1.08); }
+  85% { transform: translateY(0) scale(1.08, .9); }
+  100% { transform: translateY(0) scale(1, 1); }
 }
 
 @keyframes kl-fade-out {

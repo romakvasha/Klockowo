@@ -1,0 +1,52 @@
+.scene {
+  position: relative;
+}
+
+/* ставок у design-px; масштабується цілим */
+.stage {
+  position: absolute;
+  transform-origin: 0 0;
+}
+
+/* жабка їде за листком плавно; сам підстрибок — на картинці (перезапускається зміною key) */
+.frog {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  transition: left 450ms ease-in-out, top 450ms ease-in-out;
+}
+
+.frogImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.frogImg[data-leap='true'] {
+  animation: var(--kl-anim-leap) 650ms ease-in-out both;
+}
+
+/* прозорий майданчик дотику по жабці, ≥ 80 px у координатах сцени */
+.hit {
+  position: absolute;
+  z-index: 3;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* бульбашка Kubika: «жабка · старт + стрибки» (лише картинка й цифри) */
+.ask {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  color: var(--kl-ink);
+}
+
+.ask img {
+  height: 44px;
+}

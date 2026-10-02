@@ -2,7 +2,7 @@
 // крок униз: менший діапазон і більше опори). Чисті функції над TaskSpec: генератори ігор лишаються незмінними.
 import { STEP_MIN, clampStep, type Struggle } from './adaptivity';
 import type {
-  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, MatchTask, Range, SumTask, TaskSpec, TrainTask, WorldKey,
+  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, Range, SumTask, TaskSpec, TenTask, TrainTask, WorldKey,
 } from './types';
 import { worldById } from './worlds';
 
@@ -82,6 +82,23 @@ function adaptSum(spec: SumTask, step: number, hi: number): SumTask {
   return { ...spec, sum: shiftMax(spec.sum, step, hi), lid: step >= 2 ? true : spec.lid };
 }
 
+/** «Skoki żabki»: крок униз — менше стрибків, цифри на всіх листках, жабка стрибає від дотику; вгору — більше стрибків, а з кроку 1 дитина передбачає «в думці»
+ *  (стрибки лише як підказка), з кроку 2 — цифри лише на віхах. */
+function adaptJump(spec: JumpTask, step: number): JumpTask {
+  const cap = spec.max === 20 ? 8 : 6;
+  const [j0, j1] = spec.jumps;
+  if (step < 0) return { ...spec, jumps: [j0, Math.max(j0, j1 + step)], pads: 'numbered', tapJumps: true };
+  return { ...spec, jumps: [j0, clamp(j1 + step, j1, Math.max(j1, cap))], tapJumps: false, pads: step >= 2 ? 'landmarks' : spec.pads };
+}
+
+/** «Zrób dziesiątkę»: крок униз — рамка з відомими фішками, докласти треба менше; вгору — докласти треба більше, а з кроку 2 рамка порожня (лише цифра). */
+function adaptTen(spec: TenTask, step: number): TenTask {
+  const [k0, k1] = spec.known;
+  const shift = (n: number) => clamp(n, 1, 9);
+  if (step < 0) return { ...spec, known: [shift(k0 - step), shift(k1 - step)], show: 'frame' };
+  return { ...spec, known: [shift(k0 - step), shift(k1 - step)], show: step >= 2 ? 'digit' : spec.show };
+}
+
 /** Завдання з урахуванням кроку складності навички. `range` — діапазон чисел світу (верхня межа не перевищується). */
 export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec {
   const s = clampStep(step);
@@ -97,6 +114,8 @@ export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec 
     case 'autobusDziesiatka': return adaptBus(spec, s);
     case 'domekLiczb': return adaptHouse(spec, s, hi);
     case 'ileRazem': return adaptSum(spec, s, hi);
+    case 'skokiZabki': return adaptJump(spec, s);
+    case 'zrobDziesiatke': return adaptTen(spec, s);
     default: return spec;
   }
 }

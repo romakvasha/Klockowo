@@ -20,13 +20,17 @@ export interface TenFrameProps {
   /** Повна рамка спалахує золотим. */
   gold?: boolean;
   label?: string;
+  /** Комірка, до якої можна торкнутися («Zrób dziesiątkę»): дія й підпис для диктора; null — звичайна комірка. */
+  press?: (index: number) => { label: string; onPress: () => void } | null;
+  /** Порожня комірка пульсує — «тут бракує» (підказка 1). */
+  pulse?: (index: number) => boolean;
 }
 
 const COLS = 5;
 
 /** Рамка-десятка (BRIEF §10; design TenFrame): 5×2, на 20 — дві. Фішки кольору світу; тьмяні — місця, яких бракує. Сигнал — не лише колір: тьмяна
  *  фішка має пунктирний контур, порожня — просто комірка. */
-export function TenFrame({ cells, state, world, cell, marks, gold = false, label = LABELS.frame }: TenFrameProps) {
+export function TenFrame({ cells, state, world, cell, marks, gold = false, label = LABELS.frame, press, pulse }: TenFrameProps) {
   const frames = Math.max(1, Math.ceil(cells / 10));
   const badge = Math.max(18, Math.round(cell * 0.62));
   return (
@@ -37,14 +41,25 @@ export function TenFrame({ cells, state, world, cell, marks, gold = false, label
             const i = f * 10 + k;
             const st = state[i] ?? 'empty';
             const mark = marks?.[i] ?? null;
-            return (
-              <span key={k} className={styles.cell} data-state={st}>
+            const action = press?.(i) ?? null;
+            const inner = (
+              <>
                 {st !== 'empty' && <span className={styles.counter} data-state={st} />}
                 {mark !== null && (
                   <span className={styles.mark} style={{ width: badge, height: badge }}>
                     <Digits value={mark} style={{ height: Math.round(badge * (mark >= 10 ? 0.46 : 0.58)) }} />
                   </span>
                 )}
+              </>
+            );
+            const common = { className: styles.cell, 'data-state': st, 'data-pulse': st === 'empty' && pulse?.(i) === true } as const;
+            return action ? (
+              <button key={k} type="button" {...common} aria-label={action.label} onClick={action.onPress}>
+                {inner}
+              </button>
+            ) : (
+              <span key={k} {...common}>
+                {inner}
               </span>
             );
           })}
