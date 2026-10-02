@@ -1,6 +1,10 @@
 // Дані, що зберігаються в localStorage (BRIEF §6.15, PEDAGOGY §3). Усе серіалізується в JSON; дати — рядки (ISO або YYYY-MM-DD).
 import type { PupId } from '../characters/pups';
+import type { Struggle } from '../curriculum/adaptivity';
+import type { RetryItem, Swap } from '../curriculum/review';
 import type { GameId, LevelId, SkillId, WorldId } from '../curriculum/types';
+
+export type { RetryItem, Struggle, Swap };
 
 export const MAX_PROFILES = 4;
 export const MAX_NAME_LENGTH = 24;
@@ -42,6 +46,10 @@ export interface LevelRun {
   /** Результати розв'язаних завдань; їх кількість = заповнені слоти-кісточки. */
   results: TaskOutcome[];
   startedAt: string;
+  /** Слоти-повторення, заповнені з черги на початку забігу (M12): ті самі завдання при поверненні в рівень. */
+  swaps: Swap[];
+  /** Перший рівень дня: завдання з черги йдуть першими (розминка). */
+  warmup: boolean;
 }
 
 export interface LevelRecord {
@@ -95,9 +103,17 @@ export interface SkillRecord {
   days: string[];
   /** Повторення не вдалося → «Do powtórki». */
   needsReview: boolean;
-  /** Крок складності (адаптивність, M12). */
+  /** Крок складності −2…2 (curriculum/adaptivity.ts): 0 — як у рівні, < 0 — більше опори. */
   step: number;
-  /** Ступінь інтервалу повторення 0…5 → 1/3/7/14/30 днів (M12). */
+  /** Відповідей з останньої зміни кроку. */
+  sinceStep: number;
+  /** Поспіль з першого разу. */
+  streak: number;
+  /** Труднощі на найнижчому кроці: 1 — інша гра, 2 — і там не виходить. */
+  struggle: Struggle;
+  /** Прапорець для батьків («Trudności»): навичка не йде навіть із найбільшою опорою; знімається опануванням. */
+  flagged: boolean;
+  /** Ступінь інтервалу повторення 0…5 → 1/3/7/14/30 днів (0 — ще не в розкладі). */
   stage: number;
   /** День наступного повторення (YYYY-MM-DD) або null. */
   due: string | null;
@@ -121,6 +137,8 @@ export interface ProfileProgress {
   minutesByDay: Record<string, number>;
   /** Світи, відкриті дорослим вручну («Odblokuj świat ręcznie»). */
   manualUnlocks: WorldId[];
+  /** Завдання, розв'язані «разом» із Kubikom: схожі повернуться в наступних рівнях (M12). */
+  retry: RetryItem[];
   lastSession: LastSession | null;
 }
 

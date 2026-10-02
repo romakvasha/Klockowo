@@ -6,6 +6,7 @@ import type { ChestState } from '../components/map/TreasureChest';
 import { WorldPathView } from '../components/map/WorldPathView';
 import { isNodePlayable, isWorldComplete, isWorldUnlocked, nextLevelId, nodeState, worldProgressCount } from '../curriculum/progression';
 import { levelsOfWorld } from '../curriculum/levels';
+import { reviewLevelIds } from '../curriculum/review';
 import type { LevelId, WorldKey } from '../curriculum/types';
 import { isWorldId, parseLevelId } from '../curriculum/worlds';
 import { WORLD_INTROS } from '../speech/lines';
@@ -34,7 +35,8 @@ function WorldPathScreen({ world }: { world: WorldKey }) {
   const [shaking, setShaking] = useState<LevelId | 'chest' | null>(null);
   const shakeTimer = useRef(0);
 
-  const ctx = useMemo(() => ({ extraTasks }), [extraTasks]);
+  // «Do powtórki»: пройдений вузол, де тренують навичку з невдалим повторенням (curriculum/review)
+  const ctx = useMemo(() => ({ extraTasks, reviewLevels: reviewLevelIds(progress) }), [extraTasks, progress]);
   const states = useMemo(() => {
     const result: Record<string, VisibleNodeState> = {};
     for (const level of levelsOfWorld(world)) {

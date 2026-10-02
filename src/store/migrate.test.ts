@@ -4,9 +4,19 @@ import { MIGRATIONS, SCHEMA_VERSION, migratePersisted, type Migration } from './
 const profile = { id: 'a', name: 'Ola', pup: 'pudel', createdAt: '2026-10-01T10:00:00.000Z' };
 
 describe('міграції схеми', () => {
-  it('поточна версія — 1; кроків міграції поки немає (перша схема)', () => {
-    expect(SCHEMA_VERSION).toBe(1);
-    expect(Object.keys(MIGRATIONS)).toEqual([]);
+  it('поточна версія — 2; є крок 1 → 2 (M12, адаптивність)', () => {
+    expect(SCHEMA_VERSION).toBe(2);
+    expect(Object.keys(MIGRATIONS)).toEqual(['1']);
+  });
+
+  it('v1 → v2: старий step (0…20) скидається до 0, нові поля навички, черга й забіги дістають типові значення', () => {
+    const v1Skill = { attempts: 4, firstTry: 3, recent: [{ ok: true, day: '2026-10-01' }], days: ['2026-10-01'], needsReview: false, step: 7, stage: 0, due: null };
+    const v1Progress = { levels: {}, runs: { 'w1-2': { seed: 5, results: ['first'], startedAt: 'x' } }, skills: { 'count-line': v1Skill } };
+    const data = migratePersisted({ profiles: [profile], activeProfileId: 'a', settings: {}, progress: { a: v1Progress } }, 1);
+    const p = data.progress.a;
+    expect(p?.skills['count-line']).toMatchObject({ attempts: 4, step: 0, sinceStep: 0, streak: 0, struggle: 0, flagged: false });
+    expect(p?.runs['w1-2']).toEqual({ seed: 5, results: ['first'], startedAt: 'x', swaps: [], warmup: false });
+    expect(p?.retry).toEqual([]);
   });
 
   it('дані поточної версії лише нормалізуються', () => {

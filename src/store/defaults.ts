@@ -14,11 +14,11 @@ export function defaultSettings(): Settings {
 }
 
 export function emptyProgress(): ProfileProgress {
-  return { levels: {}, runs: {}, skills: {}, history: [], minutesByDay: {}, manualUnlocks: [], lastSession: null };
+  return { levels: {}, runs: {}, skills: {}, history: [], minutesByDay: {}, manualUnlocks: [], retry: [], lastSession: null };
 }
 
 export function emptySkill(): SkillRecord {
-  return { attempts: 0, firstTry: 0, recent: [], days: [], needsReview: false, step: 0, stage: 0, due: null };
+  return { attempts: 0, firstTry: 0, recent: [], days: [], needsReview: false, step: 0, sinceStep: 0, streak: 0, struggle: 0, flagged: false, stage: 0, due: null };
 }
 
 export function emptyData(): AppData {

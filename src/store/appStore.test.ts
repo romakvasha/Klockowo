@@ -102,7 +102,7 @@ describe('прогрес активного профілю', () => {
   it('забіг рівня: зберегти → продовжити → завершення його знімає; розблокування йде далі', () => {
     const { store } = setup();
     const a = store.getState().addProfile({ pup: 'pudel' }) ?? '';
-    store.getState().saveRun('w1-1', { seed: 42, results: ['first', 'first', 'retry'], startedAt: '2026-10-01T10:00:00.000Z' });
+    store.getState().saveRun('w1-1', { seed: 42, results: ['first', 'first', 'retry'], startedAt: '2026-10-01T10:00:00.000Z', swaps: [], warmup: false });
     expect(store.getState().progress[a]?.runs['w1-1']?.results).toHaveLength(3);
     store.getState().completeLevel('w1-1', { firstTry: 5, togetherUsed: false });
     const p = store.getState().progress[a];
@@ -126,7 +126,7 @@ describe('збереження між запусками', () => {
     store.getState().addProfile({ name: 'Ola', pup: 'pudel' });
     store.getState().updateSettings({ reduceMotion: true, volumes: { music: 0 } });
     store.getState().completeLevel('w1-1', { firstTry: 6, togetherUsed: false });
-    expect(storage.getItem(STORAGE_KEY)).toContain('"version":1');
+    expect(storage.getItem(STORAGE_KEY)).toContain(`"version":${SCHEMA_VERSION}`);
 
     const second = open().getState();
     expect(second.profiles.map((p) => p.name)).toEqual(['Ola']);

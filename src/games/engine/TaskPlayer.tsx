@@ -2,6 +2,7 @@ import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import type { MascotState } from '../../characters/poses';
 import { AnswerTile } from '../../components/ui/AnswerTile';
 import { IconButton } from '../../components/ui/IconButton';
+import { NO_TAPS, tapStats, type TapStats } from '../../curriculum/adaptivity';
 import type { Level } from '../../curriculum/types';
 import { BUTTONS, FEEDBACK_LINES, GAME_TITLES, PRAISE } from '../../speech/lines';
 import { numberWords } from '../../speech/numberWords';
@@ -27,6 +28,8 @@ export interface SolvedResult {
   entry: AnswerEntry | null;
   /** Хвилини гри за завдання для лічильника «Minuty dziś». */
   minutes: number;
+  /** Дотики за завдання — ознаки втоми (швидкі випадкові дотики, довга бездіяльність). */
+  taps: TapStats;
 }
 
 export interface TaskPlayerProps {
@@ -57,6 +60,8 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
   const [replay, setReplay] = useState(0);
   const [celebrating, setCelebrating] = useState(false);
   const startedAt = useRef(Date.now());
+  /** Моменти дотиків (мс від початку завдання): лише для ознак утоми, на екрані нічого не відлічується. */
+  const tapTimes = useRef<number[]>([]);
   /** Остання відповідь дитини (вибрана плитка чи зібране число): потрібна підказкам, навіть коли після помилки вибір скинуто. */
   const responseRef = useRef<number | null>(null);
   const answer = def.answer(instance);
@@ -78,6 +83,12 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
       setListenPulse(true);
     });
   }, [replay, run, def, instance]);
+
+  useEffect(() => {
+    const onDown = () => void tapTimes.current.push(Date.now() - startedAt.current);
+    window.addEventListener('pointerdown', onDown, true);
+    return () => window.removeEventListener('pointerdown', onDown, true);
+  }, []);
 
   const respond = useCallback((value: number | null, ready: boolean = value !== null) => {
     responseRef.current = value;
@@ -106,6 +117,7 @@ function PlayTask({ level, def, instance, index, filled, onSolved, onMap }: Play
         outcome: taskOutcome(next),
         entry: buildEntry({ instance, level, state: next, answer: def.recordsAnswer === false ? null : answer, ms, now: new Date() }),
         minutes: playMinutes(ms),
+        taps: tapStats(tapTimes.current, ms),
       };
       run(async ({ say, wait }) => {
         setMood('correct');
@@ -239,7 +251,7 @@ function PlaceholderTaskView({ level, task, filled, onSolved, onMap }: Omit<Task
             label={BUTTONS.next}
             variant="primary"
             size={88}
-            onClick={() => onSolved({ outcome: 'first', entry: null, minutes: 0 })}
+            onClick={() => onSolved({ outcome: 'first', entry: null, minutes: 0, taps: NO_TAPS })}
           />
         </div>
       )}

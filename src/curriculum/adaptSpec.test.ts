@@ -1,0 +1,99 @@
+import { describe, expect, it } from 'vitest';
+import { planLevel } from '../games/engine/levelPlan';
+import { resolveGame } from '../games/registry';
+import { STEP_MAX, STEP_MIN, type Struggle } from './adaptivity';
+import { adaptSpec, adaptTask, altSpec } from './adaptSpec';
+import { levelsOfWorld } from './levels';
+import type { BusTask, CompareTask, CountTask, FeedTask, FlashTask, MatchTask, TaskSpec, TrainTask } from './types';
+
+const count: CountTask = { game: 'policzIDotknij', skill: 'count-scatter', count: [1, 8], arrangement: 'scatter', look: 'similar', answers: 'digitDots' };
+const flash: FlashTask = { game: 'blysk', skill: 'subitize-5', count: [1, 5], pattern: 'random', exposureMs: 1200, answers: 'digitDots' };
+const feed: FeedTask = { game: 'nakarmZwierzaka', skill: 'give-n', count: [4, 8], slots: false };
+const match: MatchTask = { game: 'cyfraIObrazek', skill: 'digit-quantity', pairs: 3, numbers: [0, 10], set: 'mixed' };
+const train: TrainTask = { game: 'zgubionyWagonik', skill: 'order-around', range: [1, 10], length: 6, gap: 'end', step: 1, answers: 'digit' };
+const compare: CompareTask = { game: 'ktoMaWiecej', skill: 'compare-10', count: [1, 8], diff: [2, 3], ask: 'more', show: 'sizeTrick' };
+const bus: BusTask = { game: 'autobusDziesiatka', skill: 'bonds-5-10', count: [1, 9], ask: 'empty', exposureMs: 1500, answers: 'digit' };
+const W1: readonly [number, number] = [1, 10];
+
+describe('adaptSpec: крок униз — менше чисел і більше опори, крок угору — більше чисел і менше опори', () => {
+  it('крок 0 — завдання без змін', () => {
+    for (const spec of [count, flash, feed, match, train, compare, bus]) expect(adaptSpec(spec, 0, W1)).toBe(spec);
+  });
+
+  it('«Policz i dotknij»', () => {
+    expect(adaptSpec(count, -1, W1)).toMatchObject({ count: [1, 6], look: 'distinct', arrangement: 'scatter' });
+    expect(adaptSpec(count, -2, W1)).toMatchObject({ count: [1, 4], arrangement: 'line' });
+    expect(adaptSpec(count, 1, W1)).toMatchObject({ count: [1, 10] });
+    expect(adaptSpec({ ...count, count: [1, 3] }, -2, W1)).toMatchObject({ count: [1, 3] });
+  });
+
+  it('«Błysk!»: довший показ і крапки кубика / коротший показ', () => {
+    expect(adaptSpec(flash, -1, W1)).toMatchObject({ pattern: 'dice', count: [1, 4], exposureMs: 1700 });
+    expect(adaptSpec(flash, 2, W1)).toMatchObject({ pattern: 'random', count: [1, 7], exposureMs: 700 });
+    expect(adaptSpec({ ...flash, pattern: 'dice', count: [1, 5] }, 2, W1)).toMatchObject({ pattern: 'random' });
+    expect(adaptSpec({ ...flash, pattern: 'dice', count: [1, 5] }, 1, W1)).toMatchObject({ pattern: 'dice', count: [1, 6] });
+  });
+
+  it("«Nakarm zwierzaka»: слоти рамки-десятки з'являються одразу", () => {
+    expect(adaptSpec(feed, -1, W1)).toMatchObject({ count: [4, 6], slots: true });
+    expect(adaptSpec({ ...feed, slots: true }, 1, W1)).toMatchObject({ count: [4, 10], slots: false });
+  });
+
+  it('«Cyfra i obrazek», «Zgubiony wagonik», «Kto ma więcej?», «Autobus dziesiątka»', () => {
+    expect(adaptSpec(match, -2, W1)).toMatchObject({ pairs: 2, set: 'objects' });
+    expect(adaptSpec(match, 2, W1)).toMatchObject({ pairs: 4 });
+    expect(adaptSpec(train, -1, W1)).toMatchObject({ gap: 'end', length: 5 });
+    expect(adaptSpec(train, 1, W1)).toMatchObject({ gap: 'middle', length: 6 });
+    expect(adaptSpec(train, 2, W1)).toMatchObject({ gap: 'any' });
+    expect(adaptSpec(compare, -1, W1)).toMatchObject({ diff: [3, 4], show: 'objects' });
+    expect(adaptSpec(compare, 2, W1)).toMatchObject({ diff: [1, 1] });
+    expect(adaptSpec(bus, -1, W1)).toMatchObject({ exposureMs: 0, ask: 'empty' });
+    expect(adaptSpec(bus, -2, W1)).toMatchObject({ ask: 'full' });
+  });
+
+  it('інша гра для тієї ж навички (або null)', () => {
+    expect(altSpec(count, 'w1')).toMatchObject({ game: 'nakarmZwierzaka', skill: 'count-scatter', slots: true });
+    expect(altSpec(feed, 'w2')).toMatchObject({ game: 'policzIDotknij', skill: 'give-n', arrangement: 'line', answers: 'digit' });
+    expect(altSpec(flash, 'w1')).toMatchObject({ game: 'policzIDotknij', skill: 'subitize-5', answers: 'digitDots' });
+    expect(altSpec(match, 'w2')).toMatchObject({ game: 'policzIDotknij', count: [1, 10] });
+    expect(altSpec(train, 'w2')).toBeNull();
+    expect(altSpec({ ...count, review: true }, 'w1')?.review).toBe(true);
+  });
+
+  it('adaptTask: інша гра лише на найнижчому кроці з труднощами; полегшення знижує крок', () => {
+    expect(adaptTask(count, { step: STEP_MIN, struggle: 1 }, 0, 'w1').game).toBe('nakarmZwierzaka');
+    expect(adaptTask(count, { step: 0, struggle: 1 }, 0, 'w1').game).toBe('policzIDotknij');
+    expect(adaptTask(count, { step: 0, struggle: 0 }, 1, 'w1')).toEqual(adaptSpec(count, -1, W1));
+    expect(adaptTask(count, undefined, 0, 'w1')).toBe(count);
+  });
+});
+
+describe('усі рівні W1–W2 на кожному кроці й з іншою грою плануються без помилок', () => {
+  it('правильна відповідь проходить перевірку, плитки містять відповідь, числа в межах світу', () => {
+    const variants: { step: number; struggle: Struggle }[] = [];
+    for (let step = STEP_MIN; step <= STEP_MAX; step++) variants.push({ step, struggle: 0 });
+    variants.push({ step: STEP_MIN, struggle: 1 });
+    for (const world of ['w1', 'w2'] as const) {
+      for (const level of levelsOfWorld(world)) {
+        for (const v of variants) {
+          for (let seed = 1; seed <= 12; seed++) {
+            const plan = planLevel(level, seed, resolveGame, { adapt: (spec: TaskSpec) => adaptTask(spec, v, 0, world) });
+            expect(plan).toHaveLength(6);
+            for (const task of plan) {
+              const label = `${level.id} крок ${v.step}/${v.struggle} #${seed} ${task.instance.game}`;
+              const def = task.def!;
+              expect(def, label).toBeTruthy();
+              const answer = def.answer(task.instance);
+              expect(def.check(task.instance, answer), label).toEqual({ ok: true });
+              if (def.recordsAnswer !== false) {
+                expect(answer, label).toBeGreaterThanOrEqual(0);
+                expect(answer, label).toBeLessThanOrEqual(10);
+              }
+              if (def.kind === 'choice') expect(def.tiles(task.instance).map((t) => t.value), label).toContain(answer);
+            }
+          }
+        }
+      }
+    }
+  });
+});

@@ -1,5 +1,7 @@
 // Чисті функції прогресу: нічого не змінюють на місці, повертають новий об'єкт. Store лише викликає їх.
+import { nextStep } from '../curriculum/adaptivity';
 import { LEVELS } from '../curriculum/levels';
+import { dropRetry, nextReview, queueRetry, type TaskRef } from '../curriculum/review';
 import type { LevelId, SkillId } from '../curriculum/types';
 import { emptySkill } from './defaults';
 import type { AnswerEntry, LevelRecord, LevelRun, ProfileProgress, RecentAnswer, SkillRecord } from './types';
@@ -15,10 +17,9 @@ export function dayKey(date: Date): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
-/** Опановано: ≥ 80 % з першого разу за останні 10 елементів і щонайменше 2 різні дні (PEDAGOGY §3).
- *  «Без візуальної опори» (крок складності) додає адаптивність M12. */
-export function isMastered(recent: readonly RecentAnswer[]): boolean {
-  if (recent.length < RECENT_WINDOW) return false;
+/** Опановано: ≥ 80 % з першого разу за останні 10 елементів, щонайменше 2 різні дні й без додаткової опори — крок складності не нижче 0 (PEDAGOGY §3). */
+export function isMastered(recent: readonly RecentAnswer[], step = 0): boolean {
+  if (recent.length < RECENT_WINDOW || step < 0) return false;
   const ok = recent.filter((r) => r.ok).length;
   return ok / recent.length >= 0.8 && new Set(recent.map((r) => r.day)).size >= 2;
 }
@@ -29,19 +30,34 @@ export type SkillState = 'new' | 'learning' | 'mastered' | 'review';
 export function skillState(record: SkillRecord | undefined): SkillState {
   if (!record || record.attempts === 0) return 'new';
   if (record.needsReview) return 'review';
-  return isMastered(record.recent) ? 'mastered' : 'learning';
+  return isMastered(record.recent, record.step) ? 'mastered' : 'learning';
 }
 
-/** Записує розв'язаний елемент: історія (обмежена) і лічильники навички. */
-export function recordAnswer(progress: ProfileProgress, entry: AnswerEntry): ProfileProgress {
-  const prev: SkillRecord = progress.skills[entry.skill] ?? emptySkill();
-  const skill: SkillRecord = {
+/** Навичка після відповіді: лічильники, крок складності (curriculum/adaptivity) і розклад повторень (curriculum/review). */
+export function updateSkill(prev: SkillRecord, entry: Pick<AnswerEntry, 'firstTry' | 'day'>): SkillRecord {
+  const ok = entry.firstTry;
+  const recent = [...prev.recent, { ok, day: entry.day }].slice(-RECENT_WINDOW);
+  const { change: _change, ...step } = nextStep(prev, recent.map((r) => r.ok));
+  const mastered = isMastered(recent, step.step);
+  // nextReview може повернути той самий об'єкт (повний запис навички) — беремо лише поля розкладу
+  const { stage, due, needsReview } = nextReview(prev, { ok, day: entry.day, mastered, streak: step.streak });
+  return {
     ...prev,
+    ...step,
+    stage,
+    due,
+    needsReview,
     attempts: prev.attempts + 1,
-    firstTry: prev.firstTry + (entry.firstTry ? 1 : 0),
-    recent: [...prev.recent, { ok: entry.firstTry, day: entry.day }].slice(-RECENT_WINDOW),
+    firstTry: prev.firstTry + (ok ? 1 : 0),
+    recent,
     days: prev.days.includes(entry.day) ? prev.days : [...prev.days, entry.day].slice(-MAX_SKILL_DAYS),
+    flagged: (prev.flagged || step.struggle === 2) && !mastered,
   };
+}
+
+/** Записує розв'язаний елемент: історія (обмежена) і стан навички. */
+export function recordAnswer(progress: ProfileProgress, entry: AnswerEntry): ProfileProgress {
+  const skill = updateSkill(progress.skills[entry.skill] ?? emptySkill(), entry);
   return {
     ...progress,
     skills: { ...progress.skills, [entry.skill]: skill },
@@ -99,6 +115,16 @@ export function diligenceBadgesOf(progress: ProfileProgress): LevelId[] {
 
 export function totalMinutes(progress: ProfileProgress): number {
   return Math.round(Object.values(progress.minutesByDay).reduce((sum, m) => sum + m, 0) * 100) / 100;
+}
+
+/** Завдання розв'язано «разом» — схоже повернеться в наступному рівні (BRIEF §7). */
+export function addRetry(progress: ProfileProgress, ref: TaskRef, day: string): ProfileProgress {
+  return { ...progress, retry: queueRetry(progress.retry, ref, day) };
+}
+
+/** Завдання з черги розв'язано без допомоги — більше не повторюємо. */
+export function removeRetry(progress: ProfileProgress, ref: TaskRef): ProfileProgress {
+  return { ...progress, retry: dropRetry(progress.retry, ref) };
 }
 
 /** Навички, які потребують повторення зараз (прапор «Do powtórki»). */

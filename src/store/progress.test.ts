@@ -93,7 +93,7 @@ describe('completeLevel / runs', () => {
   const t2 = new Date('2026-10-05T10:00:00.000Z');
 
   it('перше проходження: час, plays = 1; розпочатий забіг знімається', () => {
-    const started = saveRun(emptyProgress(), 'w1-1', { seed: 7, results: ['first', 'retry'], startedAt: t1.toISOString() });
+    const started = saveRun(emptyProgress(), 'w1-1', { seed: 7, results: ['first', 'retry'], startedAt: t1.toISOString(), swaps: [], warmup: false });
     expect(started.runs['w1-1']?.results).toHaveLength(2);
     const done = completeLevel(started, 'w1-1', { firstTry: 5, togetherUsed: false }, t1);
     expect(done.levels['w1-1']).toEqual({ completedAt: t1.toISOString(), plays: 1, togetherUsed: false, firstTry: 5 });
@@ -107,7 +107,7 @@ describe('completeLevel / runs', () => {
   });
 
   it("clearRun знімає забіг; без забігу повертає той самий об'єкт", () => {
-    const run = { seed: 1, results: [], startedAt: t1.toISOString() };
+    const run = { seed: 1, results: [], startedAt: t1.toISOString(), swaps: [], warmup: false };
     const p = saveRun(emptyProgress(), 'w1-2', run);
     expect(clearRun(p, 'w1-2').runs).toEqual({});
     expect(clearRun(p, 'w1-3')).toBe(p);

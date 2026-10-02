@@ -1,6 +1,6 @@
 // План рівня (BRIEF §6, §7): із рівня й зерна забігу детерміновано виходять 6 завдань. Після «Mapa» зберігаються лише зерно й результати
 // (LevelRun), а завдання відновлюються тут же — рівень продовжується з того самого місця. Чиста логіка, без React і сховища.
-import type { GameId, Level, LevelId } from '../../curriculum/types';
+import type { GameId, Level, LevelId, TaskSpec } from '../../curriculum/types';
 import type { LevelSummary } from '../../store/progress';
 import type { LevelRun, TaskOutcome } from '../../store/types';
 import { createRng, hashSeed, type Rng } from './rng';
@@ -29,11 +29,19 @@ export function taskRng(levelId: LevelId, seed: number, index: number): Rng {
   return createRng(hashSeed(levelId, seed, index));
 }
 
+export interface PlanOptions {
+  /** Завдання в порядку гри (з черги повторень, curriculum/review); типово — завдання рівня. */
+  specs?: readonly TaskSpec[];
+  /** Зміна завдання перед генерацією: крок складності навички (curriculum/adaptSpec). */
+  adapt?: (spec: TaskSpec, index: number) => TaskSpec;
+}
+
 /** Завдання рівня. Правильні відповіді попередніх завдань передаються генератору, щоб одне й те саме число не йшло підряд. */
-export function planLevel(level: Level, seed: number, resolve: GameResolver): PlannedTask[] {
+export function planLevel(level: Level, seed: number, resolve: GameResolver, options: PlanOptions = {}): PlannedTask[] {
   const planned: PlannedTask[] = [];
   const previous: number[] = [];
-  level.tasks.slice(0, TASKS_PER_LEVEL).forEach((spec, index) => {
+  (options.specs ?? level.tasks).slice(0, TASKS_PER_LEVEL).forEach((source, index) => {
+    const spec = options.adapt ? options.adapt(source, index) : source;
     const def = resolve(spec.game) ?? null;
     if (!def) {
       const instance: PlaceholderTask = { game: spec.game, skill: spec.skill, review: spec.review === true, placeholder: true };

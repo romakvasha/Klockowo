@@ -1,7 +1,9 @@
 // Перевірка й «ремонт» даних з localStorage і з файла імпорту: що завгодно → коректні AppData / ProfileProgress.
 // Недійсні записи тихо відкидаються, числа обмежуються, нічого не кидає виняток: зіпсований запис не повинен ламати застосунок.
 import { PUP_IDS, type PupId } from '../characters/pups';
+import { STEP_MAX, STEP_MIN, type Struggle } from '../curriculum/adaptivity';
 import { findLevel } from '../curriculum/levels';
+import { MAX_RETRY, taskAt, type RetryItem, type Swap, type TaskRef } from '../curriculum/review';
 import { isSkillId } from '../curriculum/skills';
 import type { GameId, LevelId, WorldId } from '../curriculum/types';
 import { isWorldId, parseLevelId } from '../curriculum/worlds';
@@ -75,10 +77,45 @@ function normalizeLevelRecord(raw: unknown): LevelRecord | null {
   };
 }
 
-function normalizeRun(raw: unknown): LevelRun | null {
+/** Посилання на завдання програми: рівень існує й має завдання з таким номером. */
+function taskRef(raw: unknown): TaskRef | null {
+  if (!isRecord(raw)) return null;
+  const level = validLevelId(raw.level);
+  const index = typeof raw.index === 'number' && Number.isInteger(raw.index) ? raw.index : -1;
+  return level && taskAt({ level, index }) ? { level, index } : null;
+}
+
+function normalizeSwaps(raw: unknown, level: LevelId): Swap[] {
+  const tasks = findLevel(level)?.tasks ?? [];
+  const swaps: Swap[] = [];
+  for (const item of list(raw)) {
+    const ref = taskRef(item);
+    if (!ref || !isRecord(item) || (item.kind !== 'retry' && item.kind !== 'review')) continue;
+    const at = typeof item.at === 'number' && Number.isInteger(item.at) ? item.at : -1;
+    if (tasks[at]?.review !== true || swaps.some((s) => s.at === at)) continue;
+    swaps.push({ ...ref, at, kind: item.kind });
+  }
+  return swaps;
+}
+
+function normalizeRun(raw: unknown, level: LevelId): LevelRun | null {
   if (!isRecord(raw)) return null;
   const results = list(raw.results).filter((r): r is TaskOutcome => typeof r === 'string' && OUTCOMES.includes(r)).slice(0, MAX_TASK_RESULTS);
-  return { seed: int(raw.seed, 0, 0, 0xffffffff), results, startedAt: str(raw.startedAt, new Date(0).toISOString()) };
+  const swaps = normalizeSwaps(raw.swaps, level);
+  return {
+    seed: int(raw.seed, 0, 0, 0xffffffff), results, startedAt: str(raw.startedAt, new Date(0).toISOString()),
+    swaps, warmup: swaps.length > 0 && bool(raw.warmup, false),
+  };
+}
+
+function normalizeRetry(raw: unknown): RetryItem[] {
+  const items: RetryItem[] = [];
+  for (const item of list(raw)) {
+    const ref = taskRef(item);
+    const d = isRecord(item) ? day(item.day) : null;
+    if (ref && d && !items.some((r) => r.level === ref.level && r.index === ref.index)) items.push({ ...ref, day: d });
+  }
+  return items.slice(-MAX_RETRY);
 }
 
 function normalizeSkill(raw: unknown): SkillRecord | null {
@@ -95,7 +132,11 @@ function normalizeSkill(raw: unknown): SkillRecord | null {
     recent: recent.slice(-RECENT_WINDOW),
     days: list(raw.days).map(day).filter((d): d is string => d !== null).slice(-MAX_SKILL_DAYS),
     needsReview: bool(raw.needsReview, false),
-    step: int(raw.step, 0, 0, 20),
+    step: int(raw.step, 0, STEP_MIN, STEP_MAX),
+    sinceStep: int(raw.sinceStep, 0, 0, 1_000_000),
+    streak: int(raw.streak, 0, 0, 1_000_000),
+    struggle: int(raw.struggle, 0, 0, 2) as Struggle,
+    flagged: bool(raw.flagged, false),
     stage: int(raw.stage, 0, 0, 5),
     due: day(raw.due),
   };
@@ -147,7 +188,7 @@ export function normalizeProgress(raw: unknown): ProfileProgress {
   if (isRecord(raw.runs)) {
     for (const [id, value] of Object.entries(raw.runs)) {
       const level = validLevelId(id);
-      const run = normalizeRun(value);
+      const run = level ? normalizeRun(value, level) : null;
       if (level && run) out.runs[level] = run;
     }
   }
@@ -166,6 +207,7 @@ export function normalizeProgress(raw: unknown): ProfileProgress {
   const unlocked = new Set<WorldId>();
   for (const w of list(raw.manualUnlocks)) if (isWorldId(w)) unlocked.add(w);
   out.manualUnlocks = [...unlocked];
+  out.retry = normalizeRetry(raw.retry);
   out.lastSession = normalizeLastSession(raw.lastSession);
   return out;
 }
