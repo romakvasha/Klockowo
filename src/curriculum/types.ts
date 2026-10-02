@@ -217,17 +217,34 @@ export interface PackTask extends TaskBase {
   answers: AnswerStyle;
 }
 
-/** Ігри, чиї параметри опишуть етапи M18–M19: поки лише гра й навичка. */
+/** Режими «Tajemnicza tablica»: find — знайти число на таблиці; hidden — що під листочком; paint — розфарбувати числа з цифрою на кінці; neighbors — сусіди ±1 і ±10. */
+export type ChartMode = 'find' | 'hidden' | 'paint' | 'neighbors';
+
+/** «Tajemnicza tablica» (W6, W7, Plac Zabaw): таблиця 100 — мініатюра й лупа-рядок (BRIEF §12). find і paint — дитина діє на таблиці («Gotowe» перевіряє), hidden і neighbors — 3 плитки. */
+export interface ChartTask extends TaskBase {
+  game: 'tajemniczaTablica';
+  mode: ChartMode;
+  /** Межі чисел (ціль вибирається в них; таблиця має стільки рядків, скільки потрібно до верхньої межі): 1–30 → 100. */
+  range: Range;
+  /** Скільки клітинок закрито листочками: у find — перешкоди (число не видно, лічити від сусідів), у hidden — пастки поруч із шуканим листочком. */
+  leaves: number;
+  /** neighbors: на скільки відрізняється шукане — на 1, на 10 чи навмання; і в який бік. */
+  step: 'one' | 'ten' | 'mixed';
+  direction: 'more' | 'less' | 'mixed';
+  answers: AnswerStyle;
+}
+
+/** Ігри, чиї параметри опишуть етапи M19: поки лише гра й навичка. */
 export interface PendingTask extends TaskBase {
   game: Exclude<
     GameId,
     | 'policzIDotknij' | 'blysk' | 'nakarmZwierzaka' | 'cyfraIObrazek' | 'zgubionyWagonik' | 'ktoMaWiecej' | 'autobusDziesiatka' | 'domekLiczb' | 'ileRazem'
-    | 'skokiZabki' | 'zrobDziesiatke' | 'historyjki' | 'paczkiPoDziesiec'
+    | 'skokiZabki' | 'zrobDziesiatke' | 'historyjki' | 'paczkiPoDziesiec' | 'tajemniczaTablica'
   >;
 }
 
 export type TaskSpec =
-  | CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | JumpTask | TenTask | StoryTask | PackTask | PendingTask;
+  | CountTask | FlashTask | FeedTask | MatchTask | TrainTask | CompareTask | BusTask | HouseTask | SumTask | JumpTask | TenTask | StoryTask | PackTask | ChartTask | PendingTask;
 
 export type LevelKind = 'main' | 'star';
 

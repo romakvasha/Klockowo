@@ -5,6 +5,7 @@ import { W2_LEVELS } from './w2';
 import { W3_LEVELS } from './w3';
 import { W4_LEVELS } from './w4';
 import { W5_LEVELS } from './w5';
+import { W6_LEVELS } from './w6';
 
 /** Заготовка рівня: структура світу відома (номер, вид), завдання опише етап зі PLAN (M9 → W2 … M19 → W7). */
 function stub(world: WorldKey, index: number, kind: Level['kind']): Level {
@@ -17,6 +18,7 @@ function buildWorld(world: WorldKey): readonly Level[] {
   if (world === 'w3') return W3_LEVELS;
   if (world === 'w4') return W4_LEVELS;
   if (world === 'w5') return W5_LEVELS;
+  if (world === 'w6') return W6_LEVELS;
   const w = worldById(world);
   return [
     ...Array.from({ length: w.mainLevels }, (_, i) => stub(world, i + 1, 'main')),

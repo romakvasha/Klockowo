@@ -45,6 +45,10 @@ const pack = (over: Partial<Extract<TaskSpec, { game: 'paczkiPoDziesiec' }>> = {
   game: 'paczkiPoDziesiec', skill: 'bundle-ten', total: [21, 49], mode: 'loose', contrast: false, answers: 'digit', ...over,
 });
 
+const chart = (over: Partial<Extract<TaskSpec, { game: 'tajemniczaTablica' }>> = {}): TaskSpec => ({
+  game: 'tajemniczaTablica', skill: 'count-on-100', mode: 'find', range: [1, 100], leaves: 0, step: 'one', direction: 'more', answers: 'digit', ...over,
+});
+
 export const PRESETS: readonly GamePreset[] = [
   { id: 'wagon-end', title: 'Wagonik: бракує останнього, 1–10, 5 вагонів', world: 'w2', spec: train({ gap: 'end' }) },
   { id: 'wagon-mid', title: 'Wagonik: бракує посередині, 1–10, 6 вагонів', world: 'w2', spec: train({ gap: 'middle', length: 6 }) },
@@ -108,6 +112,15 @@ export const PRESETS: readonly GamePreset[] = [
   { id: 'pack-contrast', title: 'Paczki: контраст 26 ↔ 62 (W5)', world: 'w5', spec: pack({ mode: 'packed', total: [21, 69], contrast: true, skill: 'compose-2digit' }) },
   { id: 'pack-build', title: 'Paczki: «Zbuduj liczbę…», +10 / +1, 11–49 (W5)', world: 'w5', spec: pack({ mode: 'build', total: [11, 49], skill: 'compose-2digit' }) },
   { id: 'pack-build-99', title: 'Paczki: «Zbuduj liczbę…» до 99 (W5)', world: 'w5', spec: pack({ mode: 'build', total: [30, 99], skill: 'compose-2digit' }) },
+  { id: 'chart-find-30', title: 'Tablica: «Znajdź liczbę…», 1–30 (W6)', world: 'w6', spec: chart({ range: [1, 30] }) },
+  { id: 'chart-find', title: 'Tablica: «Znajdź liczbę…» до 100 (W6)', world: 'w6', spec: chart() },
+  { id: 'chart-find-leaves', title: 'Tablica: знайти число, 4 листочки-перешкоди (W6)', world: 'w6', spec: chart({ leaves: 4 }) },
+  { id: 'chart-neighbors-1', title: 'Tablica: сусід на 1 більший/менший (W6)', world: 'w6', spec: chart({ mode: 'neighbors', skill: 'neighbors', range: [2, 60], direction: 'mixed' }) },
+  { id: 'chart-neighbors-10', title: 'Tablica: на 10 більше/менше (W6)', world: 'w6', spec: chart({ mode: 'neighbors', skill: 'neighbors', range: [11, 100], step: 'ten', direction: 'mixed' }) },
+  { id: 'chart-paint', title: 'Tablica: «Pomaluj liczby z … na końcu», до 50 (W6)', world: 'w6', spec: chart({ mode: 'paint', skill: 'chart-patterns', range: [1, 50] }) },
+  { id: 'chart-paint-100', title: 'Tablica: розфарбувати до 100 (W6)', world: 'w6', spec: chart({ mode: 'paint', skill: 'chart-patterns' }) },
+  { id: 'chart-hidden', title: 'Tablica: «Co kryje się pod listkiem?» (W6)', world: 'w6', spec: chart({ mode: 'hidden', skill: 'chart-patterns', leaves: 2 }) },
+  { id: 'kto-2digit', title: 'Kto ma więcej?: двоцифрові, мат розрядів у підказці (W6)', world: 'w6', spec: compare({ skill: 'compare-2digit', count: [21, 99], diff: [1, 15], equal: 0.15, ask: 'mixed', show: 'digits' }) },
   { id: 'match-teens', title: 'Cyfra: 4 пари, предмети 11–20 (W4)', world: 'w4', spec: match({ pairs: 4, numbers: [11, 20] }) },
 ];
 

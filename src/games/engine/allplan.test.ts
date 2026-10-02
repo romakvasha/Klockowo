@@ -6,10 +6,10 @@ import { worldById } from '../../curriculum/worlds';
 import { resolveGame } from '../registry';
 import { planLevel } from './levelPlan';
 
-const WORLDS: readonly WorldKey[] = ['w2', 'w3', 'w4', 'w5'];
+const WORLDS: readonly WorldKey[] = ['w2', 'w3', 'w4', 'w5', 'w6'];
 const STEPS = [-2, 0, 2] as const;
 
-describe('усі рівні W2–W5 (основні й ★) планується з багатьох зерен і кроків складності', () => {
+describe('усі рівні W2–W6 (основні й ★) планується з багатьох зерен і кроків складності', () => {
   for (const world of WORLDS) {
     it(`${world}: 6 завдань, гра реалізована, правильна відповідь проходить перевірку, плитки містять відповідь, репліка без цифр`, () => {
       const range = worldById(world).range;

@@ -148,3 +148,12 @@
   align-items: center;
   justify-content: center;
 }
+
+/* двоцифрові купки: мат розрядів у ділянці купки */
+.mat {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}

@@ -6,6 +6,7 @@ import { W2_LEVELS } from './levels/w2';
 import { W3_LEVELS } from './levels/w3';
 import { W4_LEVELS } from './levels/w4';
 import { W5_LEVELS } from './levels/w5';
+import { W6_LEVELS } from './levels/w6';
 import { skillInfo } from './skills';
 import { WORLD_KEYS, parseLevelId, worldById } from './worlds';
 
@@ -32,9 +33,9 @@ describe('усі рівні програми', () => {
     expect(() => levelById('w1-13')).toThrow('Unknown level');
   });
 
-  it('W6–W7 — заготовки (draft, без завдань); W1–W5 — описано повністю', () => {
+  it('W7 — заготовки (draft, без завдань); W1–W6 — описано повністю', () => {
     for (const l of LEVELS) {
-      if (l.world === 'w1' || l.world === 'w2' || l.world === 'w3' || l.world === 'w4' || l.world === 'w5') expect(l.draft, l.id).toBe(false);
+      if (l.world === 'w1' || l.world === 'w2' || l.world === 'w3' || l.world === 'w4' || l.world === 'w5' || l.world === 'w6') expect(l.draft, l.id).toBe(false);
       else {
         expect(l.draft, l.id).toBe(true);
         expect(l.tasks, l.id).toEqual([]);
@@ -371,5 +372,55 @@ describe('W5 «Las Dziesiątek» — 12 рівнів по 6 завдань', () 
     expect(fresh.some((t) => t.game === 'zgubionyWagonik')).toBe(true);
     expect(fresh.some((t) => t.game === 'paczkiPoDziesiec' && t.mode === 'build')).toBe(true);
     expect(fresh.some((t) => t.game === 'paczkiPoDziesiec' && t.contrast)).toBe(true);
+  });
+});
+
+describe('W6 «Miasto Setki» — 12 рівнів по 6 завдань', () => {
+  const w6 = worldById('w6');
+
+  it('12 рівнів, кожен — місія з 6 завдань, 2 з них — повторення', () => {
+    expect(W6_LEVELS).toHaveLength(12);
+    W6_LEVELS.forEach((l, i) => {
+      expect(l.index, l.id).toBe(i + 1);
+      expect(l.tasks, l.id).toHaveLength(6);
+      expect(l.draft, l.id).toBe(false);
+      expect(l.tasks.filter((t) => t.review).length, l.id).toBe(2);
+    });
+  });
+
+  it('нові завдання — з ігор W6 і з навичкою, заявленою в рівні', () => {
+    for (const l of W6_LEVELS) {
+      for (const t of l.tasks.filter((x) => !x.review)) {
+        expect(w6.games, `${l.id} ${t.game}`).toContain(t.game);
+        expect(l.skills, `${l.id} ${t.skill}`).toContain(t.skill);
+      }
+    }
+  });
+
+  it('порядок ідей: таблиця (1) → сусіди ±1 (3) → ±10 (5) → закономірності (7) → порівняння двоцифрових (9)', () => {
+    expect(W6_LEVELS.filter((l) => l.newIdea).map((l) => l.index)).toEqual([1, 3, 5, 7, 9]);
+    const firstOf = (pick: (t: TaskSpec) => boolean) => W6_LEVELS.find((l) => l.tasks.some((t) => !t.review && pick(t)))?.index;
+    expect(firstOf((t) => t.game === 'tajemniczaTablica' && t.mode === 'find')).toBe(1);
+    expect(firstOf((t) => t.game === 'tajemniczaTablica' && t.mode === 'neighbors' && t.step === 'one')).toBe(3);
+    expect(firstOf((t) => t.game === 'tajemniczaTablica' && t.mode === 'neighbors' && t.step === 'ten')).toBe(5);
+    expect(firstOf((t) => t.game === 'tajemniczaTablica' && t.mode === 'paint')).toBe(7);
+    expect(firstOf((t) => t.game === 'ktoMaWiecej')).toBe(9);
+  });
+
+  it('усі режими таблиці присутні; порівняння — лише цифрами й двоцифрові', () => {
+    const all = W6_LEVELS.flatMap((l) => l.tasks.filter((t) => !t.review));
+    for (const mode of ['find', 'hidden', 'paint', 'neighbors']) expect(all.some((t) => t.game === 'tajemniczaTablica' && t.mode === mode), mode).toBe(true);
+    expect(all.some((t) => t.game === 'tajemniczaTablica' && t.leaves > 0)).toBe(true);
+    for (const t of all) if (t.game === 'ktoMaWiecej') {
+      expect(t.show).toBe('digits');
+      expect(t.count[0]).toBeGreaterThanOrEqual(21);
+    }
+  });
+
+  it('підсумковий рівень 12 (скриня): таблиця, сусіди, закономірності й порівняння', () => {
+    const last = W6_LEVELS[11]!;
+    expect(last.skills).toEqual(['count-on-100', 'neighbors', 'chart-patterns', 'compare-2digit']);
+    const fresh = last.tasks.filter((t) => !t.review);
+    expect(fresh.map((t) => (t.game === 'tajemniczaTablica' ? t.mode : t.game))).toEqual(['find', 'neighbors', 'hidden', 'ktoMaWiecej']);
   });
 });

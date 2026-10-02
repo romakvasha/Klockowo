@@ -1,0 +1,73 @@
+.grid {
+  display: grid;
+  box-sizing: border-box;
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-ink);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cell {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--kl-ink);
+  background: transparent;
+  border: 0;
+  border-right: 1.5px solid var(--kl-locked-edge);
+  border-bottom: 1.5px solid var(--kl-locked-edge);
+  font: inherit;
+}
+
+button.cell {
+  cursor: pointer;
+}
+
+.cell[data-state='dim'] {
+  color: var(--kl-ink-soft);
+  opacity: .35;
+}
+
+/* підсвітка: золота заливка + внутрішня рамка (не лише колір) */
+.cell[data-state='hl'] {
+  background: rgba(255, 194, 26, .5);
+  box-shadow: inset 0 0 0 3px var(--kl-reward-edge);
+}
+
+/* розфарбовано: заливка кольору світу й світла внутрішня рамка */
+.cell[data-state='painted'] {
+  background: var(--cg-500);
+  box-shadow: inset 0 0 0 3px var(--kl-surface);
+  color: var(--kl-surface);
+}
+
+.cell[data-state='selected'] {
+  background: var(--cg-100);
+  box-shadow: inset 0 0 0 4px var(--kl-secondary-edge);
+}
+
+.leaf {
+  position: absolute;
+  inset: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cg-500);
+  border: 2px solid var(--kl-ink);
+  border-radius: 28% 6% 28% 6%;
+  color: var(--kl-surface);
+}
+
+.leaf b {
+  font-family: var(--kl-font-display);
+  line-height: 1;
+}
+
+/* листочок, під яким шукане число: золота рамка (не лише колір — рамка й «?») */
+.cell[data-state='ask'] {
+  background: rgba(255, 194, 26, .5);
+  box-shadow: inset 0 0 0 3px var(--kl-reward-edge);
+}

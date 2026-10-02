@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ObjectArt } from '../../components/math/ObjectArt';
+import { PlaceValueMat, placeValueMatSize } from '../../components/math/PlaceValueMat';
 import { animalUrl } from '../../components/math/art';
 import { Digits } from '../../components/ui/Digits';
 import { Icon } from '../../components/ui/Icon';
@@ -15,6 +16,21 @@ import type { SceneProps } from '../engine/types';
 import { LEFT, SAME, pairing, type CompareInstance } from './generate';
 import { compareLayout } from './layout';
 import styles from './View.module.css';
+
+/** Купки понад 20 предметів (W6, двоцифрові числа) показують стовпчиками й кубиками («3 десятки і 4 одиниці»), а не окремими предметами: так порівнюють спершу десятки. */
+export const BLOCKS_ABOVE = 20;
+
+/** Найбільша клітинка блоків, при якій мат розрядів вміщується в ділянку купки (з цифрами чи без); null — не вміщується навіть найменша (тоді мат малюємо найменшим). */
+export function matCellFor(region: { w: number; h: number }): { cell: number; digits: boolean } {
+  for (const digits of [true, false]) {
+    for (const cell of [14, 12, 10, 8, 6]) {
+      const size = placeValueMatSize(cell);
+      const h = digits ? size.h : size.h - 48;
+      if (size.w <= region.w && h <= region.h) return { cell, digits };
+    }
+  }
+  return { cell: 6, digits: false };
+}
 
 /** Підступ (sizeTrick): предмети на меншій купці більші (×1,35), на більшій — звичайні. */
 export function sizeFactors(bigSide: CompareInstance['bigSide']): readonly [number, number] {
@@ -68,6 +84,7 @@ export function CompareScene({ instance, kind, area, reserved, assist, phase, ce
   const glow = celebrating || step >= 2;
   const showItems = instance.show !== 'digits' || celebrating || assist.mode === 'together' || (assist.mode === 'hint' && (assist.level ?? 1) >= 2);
   const { richer, pairs } = pairing(instance.counts);
+  const blocks = Math.max(...instance.counts) > BLOCKS_ABOVE;
 
   const pick = (value: number) => {
     if (!interactive || wrong.includes(value)) return;
@@ -128,7 +145,7 @@ export function CompareScene({ instance, kind, area, reserved, assist, phase, ce
   });
 
   const items = ([0, 1] as const).flatMap((side) =>
-    Array.from({ length: instance.counts[side] }, (_, i) => {
+    Array.from({ length: blocks ? 0 : instance.counts[side] }, (_, i) => {
       const at = paired ? layout.paired[side][i]! : layout.piles[side][i]!;
       const size = paired ? layout.pairSize : layout.sizes[side];
       const extra = glow && richer === side && i >= pairs;
@@ -168,6 +185,15 @@ export function CompareScene({ instance, kind, area, reserved, assist, phase, ce
     <div className={styles.scene} data-kind={kind} style={{ width: area.w, height: area.h }} aria-label={LABELS.compare}>
       {zones}
       {items}
+      {blocks && showItems && ([0, 1] as const).map((side) => {
+        const region = layout.regions[side];
+        const { cell, digits } = matCellFor(region);
+        return (
+          <span key={`mat-${side}`} className={styles.mat} style={{ left: region.x, top: region.y, width: region.w, height: region.h }}>
+            <PlaceValueMat tens={Math.floor(instance.counts[side] / 10)} ones={instance.counts[side] % 10} cell={cell} digits={digits} />
+          </span>
+        );
+      })}
       {instance.equalPossible && tray && createPortal(sameButton, tray)}
     </div>
   );

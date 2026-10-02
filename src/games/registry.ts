@@ -13,6 +13,7 @@ import { nakarmZwierzaka } from './nakarmZwierzaka';
 import { paczkiPoDziesiec } from './paczkiPoDziesiec';
 import { policzIDotknij } from './policzIDotknij';
 import { skokiZabki } from './skokiZabki';
+import { tajemniczaTablica } from './tajemniczaTablica';
 import { zgubionyWagonik } from './zgubionyWagonik';
 import { zrobDziesiatke } from './zrobDziesiatke';
 
@@ -31,6 +32,7 @@ const GAMES: Partial<Record<GameId, GameDef>> = {
   zrobDziesiatke: zrobDziesiatke as unknown as GameDef,
   historyjki: historyjki as unknown as GameDef,
   paczkiPoDziesiec: paczkiPoDziesiec as unknown as GameDef,
+  tajemniczaTablica: tajemniczaTablica as unknown as GameDef,
 };
 
 export const resolveGame: GameResolver = (game) => GAMES[game];

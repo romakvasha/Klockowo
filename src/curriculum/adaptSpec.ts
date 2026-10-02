@@ -2,7 +2,7 @@
 // крок униз: менший діапазон і більше опори). Чисті функції над TaskSpec: генератори ігор лишаються незмінними.
 import { STEP_MIN, clampStep, type Struggle } from './adaptivity';
 import type {
-  AnswerStyle, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, PackTask, Range, StoryTask, SumTask, TaskSpec, TenTask, TrainTask, WorldKey,
+  AnswerStyle, ChartTask, BusTask, CompareTask, CountTask, FeedTask, FlashTask, HouseTask, JumpTask, MatchTask, PackTask, Range, StoryTask, SumTask, TaskSpec, TenTask, TrainTask, WorldKey,
 } from './types';
 import { worldById } from './worlds';
 
@@ -113,6 +113,13 @@ function adaptPack(spec: PackTask, step: number): PackTask {
   return { ...spec, total: [lo, clamp(hi + 10 * step, hi, Math.max(hi, cap))], contrast: spec.mode === 'build' ? spec.contrast : step >= 1 ? true : spec.contrast };
 }
 
+/** «Tajemnicza tablica»: крок униз — менший діапазон (до 10 і 20 чисел), без листочків-перешкод, сусіди лише «на 1»; вгору — більший діапазон до 100 і листочки-перешкоди. */
+function adaptChart(spec: ChartTask, step: number): ChartTask {
+  const [lo, hi] = spec.range;
+  if (step < 0) return { ...spec, range: [lo, clamp(hi + 10 * step, Math.min(hi, Math.max(lo, 10) + 9), hi)], leaves: 0, step: spec.step === 'mixed' ? 'one' : spec.step };
+  return { ...spec, range: [lo, clamp(hi + 10 * step, hi, Math.max(hi, 100))], leaves: spec.mode === 'find' ? spec.leaves + step : spec.leaves };
+}
+
 /** Завдання з урахуванням кроку складності навички. `range` — діапазон чисел світу (верхня межа не перевищується). */
 export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec {
   const s = clampStep(step);
@@ -132,6 +139,7 @@ export function adaptSpec(spec: TaskSpec, step: number, range: Range): TaskSpec 
     case 'zrobDziesiatke': return adaptTen(spec, s);
     case 'historyjki': return adaptStory(spec, s, hi);
     case 'paczkiPoDziesiec': return adaptPack(spec, s);
+    case 'tajemniczaTablica': return adaptChart(spec, s);
     default: return spec;
   }
 }

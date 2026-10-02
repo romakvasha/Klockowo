@@ -4,7 +4,7 @@
 import type { SkillId } from '../curriculum/types';
 import type { Animal, Noun, ObjectId, WorldKey } from './nouns';
 import { DZIESIATKA, JEDNOSC } from './nouns';
-import { numberGenitive, numberWords } from './numberWords';
+import { DIGIT_INSTRUMENTAL, numberGenitive, numberWords } from './numberWords';
 import { isAre, quantity, times } from './plural';
 
 export const SITE_NAME = 'Klockowo';
@@ -30,6 +30,11 @@ export const LABELS = {
   addTen: 'Dodaj dziesiątkę',
   addOne: 'Dodaj jedność',
   box: 'pudełko po dziesięć',
+  chart: 'tablica stu', // «Tajemnicza tablica»: таблиця 100 [do sprawdzenia]
+  chartRow: 'rząd tablicy',
+  rowUp: 'Rząd wyżej',
+  rowDown: 'Rząd niżej',
+  leaf: 'listek',
   looseItems: 'rozsypane przedmioty',
   looseItem: 'przedmiot',
   loading: 'Ładowanie…', // aria-label смужки завантаження (design etap1/13)
@@ -208,6 +213,7 @@ export const GAME_PROMPTS = {
   busRow: 'Pełny rząd to pięć. Policz resztę.', // POLISH_COPY §6, підказка 3
   busCount: 'Policz zwierzątka.', // [do sprawdzenia]: підказка, коли в автобусі менше за п'ять
   makeTen: 'Dołóż tyle, żeby było dziesięć.', // POLISH_COPY §5 (гра 11)
+  underLeaf: 'Co kryje się pod listkiem?', // POLISH_COPY §5 (гра 13)
   untilTen: 'Ile brakuje do pełnej dziesiątki?', // POLISH_COPY §6, підказка 4
   bridgeFirst: 'Najpierw zrób dziesiątkę.', // ★ через десяток (W4) [do sprawdzenia]
   hiddenNumber: 'Jaka liczba się schowała?', // W6 «Tajemnicza tablica» (§9)
@@ -430,6 +436,28 @@ export function howManyTogether(noun: Noun): string {
 /** «Zbuduj liczbę czterdzieści siedem.» — зворотний режим (POLISH_COPY §5) */
 export function buildNumber(n: number): string {
   return `Zbuduj liczbę ${numberWords(n)}.`;
+}
+
+/** «Pomaluj liczby z piątką na końcu.» (POLISH_COPY §5, гра 13) */
+export function paintDigit(digit: number): string {
+  return `Pomaluj liczby z ${DIGIT_INSTRUMENTAL[digit]} na końcu.`;
+}
+
+/** «Wszystkie liczby z piątką na końcu.» — підсумок розфарбування [do sprawdzenia] */
+export function allWithDigit(digit: number): string {
+  return `Wszystkie liczby z ${DIGIT_INSTRUMENTAL[digit]} na końcu.`;
+}
+
+/** «Tu jest liczba trzydzieści cztery. Która liczba jest o dziesięć większa?» — і варіанти «o jeden», «mniejsza» [do sprawdzenia, крім «o dziesięć większa»] */
+export function neighborQuestion(base: number, delta: number): string {
+  const by = Math.abs(delta) === 10 ? 'dziesięć' : 'jeden';
+  return `Tu jest liczba ${numberWords(base)}. Która liczba jest o ${by} ${delta > 0 ? 'większa' : 'mniejsza'}?`;
+}
+
+/** Відповідь на сусідів: «Trzydzieści cztery, o dziesięć więcej to czterdzieści cztery.» [do sprawdzenia] */
+export function neighborAnswer(base: number, delta: number): string {
+  const by = Math.abs(delta) === 10 ? 'dziesięć' : 'jeden';
+  return `${cap(numberWords(base))}, o ${by} ${delta > 0 ? 'więcej' : 'mniej'} to ${numberWords(base + delta)}.`;
 }
 
 /** «Cztery dziesiątki i siedem jedności to czterdzieści siedem.» */
