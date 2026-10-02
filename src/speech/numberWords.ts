@@ -50,8 +50,17 @@ function unitWord(u: number, gender: Gender, inCompound: boolean): string {
   return at(UNITS, u);
 }
 
-/** Число словами: 0–100. Без іменника рід не потрібен (за замовчуванням чоловічий — «jeden, dwa, trzy»). */
+/** Числа іншої мови (speech/language.ts); null — польські. */
+let localized: ((n: number, gender: Gender) => string) | null = null;
+
+/** Викликає лише speech/language.ts. */
+export function setNumberWords(next: ((n: number, gender: Gender) => string) | null): void {
+  localized = next;
+}
+
+/** Число словами: 0–100. Без іменника рід не потрібен (за замовчуванням чоловічий — «jeden, dwa, trzy»). Мовою гри: інша мова підставляє свої слова. */
 export function numberWords(n: number, gender: Gender = 'm'): string {
+  if (localized) return localized(n, gender);
   assertCount(n);
   if (n === 100) return 'sto';
   if (n >= 20) {

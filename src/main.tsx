@@ -9,6 +9,8 @@ import './styles/block.css';
 import { App } from './app/App';
 import { installAudioUnlock } from './speech/unlock';
 import { registerOffline } from './app/registerOffline';
+import { setLanguage } from './speech/language';
+import { appStore } from './store';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('#root not found');
@@ -17,6 +19,8 @@ if (!root) throw new Error('#root not found');
 installAudioUnlock();
 // Офлайн: service worker лише в production-збірці
 registerOffline();
+// Мова гри — ще до першого рендеру, щоб перший екран був одразу потрібною мовою (польська за замовчуванням)
+setLanguage(appStore.getState().settings.language);
 
 createRoot(root).render(
   <StrictMode>

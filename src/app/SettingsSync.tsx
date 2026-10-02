@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { setLanguage } from '../speech/language';
 import { music } from '../speech/music';
 import { sfx } from '../speech/sfx';
 import { tts } from '../speech/tts';
@@ -10,6 +11,7 @@ const targets: SettingsTargets = {
   sfx,
   music,
   setReduceMotion: (on) => setReduceMotionAttribute(document.documentElement, on),
+  setLanguage,
 };
 
 /** Єдина підписка на налаштування: застосовує їх при старті й після кожної зміни у Strefa rodzica. */

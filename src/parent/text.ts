@@ -1,7 +1,8 @@
-// Тексти Strefa rodzica (BRIEF §6 п.14–15): панель двомовна — «Język panelu: Polski / Українська». Польські рядки — з BRIEF дослівно; українські — переклад для батьків (власник).
-// Мова панелі не стосується дитячого інтерфейсу: гра завжди польською.
+// Тексти Strefa rodzica (BRIEF §6 п.14–15): панель тримовна — «Język panelu: Polski / Українська / English». Польські рядки — з BRIEF дослівно; українські — переклад для батьків (власник);
+// англійські — додано разом з англійською мовою гри. Мова панелі окрема від мови гри (її обирають на Start), але при виборі мови гри панель перемикається на неї ж.
 import type { SkillId } from '../curriculum/types';
 import { SKILL_NAMES, gateQuestion } from '../speech/lines';
+import type { Lang } from '../speech/langCode';
 import type { PanelLanguage } from '../store/types';
 
 export type SkillStateKey = 'new' | 'learning' | 'mastered' | 'review';
@@ -23,7 +24,8 @@ export interface PanelText {
   progress: { firstTry: string; hints: string; minutesPerDay: string; noData: string };
   difficulties: { none: string; confuses: (a: number, b: number) => string; countsAll: string; flagged: string };
   settings: {
-    sessionLength: string; minutesUnit: string; voice: string; voiceAuto: string; voiceNone: string; speechRate: string; slower: string; faster: string;
+    /** voiceAuto / voiceNone — про голос мови гри (`game`), а не панелі. */
+    sessionLength: string; minutesUnit: string; voice: string; voiceAuto: (game: Lang) => string; voiceNone: (game: Lang) => string; speechRate: string; slower: string; faster: string;
     volume: string; speech: string; effects: string; music: string; reduceMotion: string; extraTasks: string; unlockWorld: string; unlockNote: string;
   };
   profiles: { name: string; namePlaceholder: string; pup: string; add: string; full: string; remove: string; active: string };
@@ -64,6 +66,13 @@ export const SKILL_NAMES_UK: Readonly<Record<SkillId, string>> = {
 };
 
 const UK_DIGITS = ['нуль', 'один', 'два', 'три', 'чотири', "п'ять", 'шість', 'сім', 'вісім', "дев'ять", 'десять'] as const;
+const EN_DIGITS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'] as const;
+/** Мова гри в підписі голосу: «Automatycznie (polski)», «Brak polskiego głosu…». */
+const PL_LANG_ADJ: Readonly<Record<Lang, string>> = { pl: 'polski', uk: 'ukraiński', en: 'angielski' };
+const PL_LANG_GEN: Readonly<Record<Lang, string>> = { pl: 'polskiego', uk: 'ukraińskiego', en: 'angielskiego' };
+const UK_LANG_ADJ: Readonly<Record<Lang, string>> = { pl: 'польський', uk: 'український', en: 'англійський' };
+const UK_LANG_GEN: Readonly<Record<Lang, string>> = { pl: 'польського', uk: 'українського', en: 'англійського' };
+const EN_LANG_NAME: Readonly<Record<Lang, string>> = { pl: 'Polish', uk: 'Ukrainian', en: 'English' };
 const PL_DIGITS = ['zero', 'jeden', 'dwa', 'trzy', 'cztery', 'pięć', 'sześć', 'siedem', 'osiem', 'dziewięć', 'dziesięć'] as const;
 const digitWord = (words: readonly string[], n: number): string => words[n] ?? String(n);
 
@@ -92,7 +101,8 @@ const PL: PanelText = {
     flagged: 'Umiejętność nie idzie nawet z największą pomocą',
   },
   settings: {
-    sessionLength: 'Długość sesji', minutesUnit: 'min', voice: 'Głos', voiceAuto: 'Automatycznie (polski)', voiceNone: 'Brak polskiego głosu w tej przeglądarce', speechRate: 'Tempo mowy',
+    sessionLength: 'Długość sesji', minutesUnit: 'min', voice: 'Głos', voiceAuto: (game) => `Automatycznie (${PL_LANG_ADJ[game]})`,
+    voiceNone: (game) => `Brak ${PL_LANG_GEN[game]} głosu w tej przeglądarce`, speechRate: 'Tempo mowy',
     slower: 'Wolniej', faster: 'Szybciej', volume: 'Głośność', speech: 'Mowa', effects: 'Efekty', music: 'Muzyka', reduceMotion: 'Mniej animacji',
     extraTasks: 'Zadania dodatkowe ★', unlockWorld: 'Odblokuj świat ręcznie', unlockNote: 'Dziecko może wejść do światu bez ukończenia poprzedniego.',
   },
@@ -121,7 +131,7 @@ const UK: PanelText = {
     summary: 'Підсумок', lastSession: 'Остання сесія', skills: 'Карта навичок', progress: 'Прогрес', difficulties: 'Труднощі', settings: 'Налаштування',
     profiles: 'Профілі', backup: 'Резервна копія',
   },
-  summary: { player: 'Гравець', levels: 'Пройдені рівні', worlds: 'Пройдені світи', stickers: 'Наліпки', badges: 'Значки «Nie poddajesz się!»', minutes: 'Усього хвилин' },
+  summary: { player: 'Гравець', levels: 'Пройдені рівні', worlds: 'Пройдені світи', stickers: 'Наліпки', badges: 'Значки за старанність', minutes: 'Усього хвилин' },
   lastSession: { none: 'Сесій ще не було.', day: 'День', minutes: 'Хвилини', levels: 'Пройдені рівні' },
   skillStates: { new: 'Нова', learning: 'У процесі', mastered: 'Засвоєна', review: 'До повторення' },
   skillStar: 'додаткова ★',
@@ -133,7 +143,8 @@ const UK: PanelText = {
     flagged: 'Навичка не йде навіть із найбільшою допомогою',
   },
   settings: {
-    sessionLength: 'Тривалість сесії', minutesUnit: 'хв', voice: 'Голос', voiceAuto: 'Автоматично (польський)', voiceNone: 'У цьому браузері немає польського голосу', speechRate: 'Темп мовлення',
+    sessionLength: 'Тривалість сесії', minutesUnit: 'хв', voice: 'Голос', voiceAuto: (game) => `Автоматично (${UK_LANG_ADJ[game]})`,
+    voiceNone: (game) => `У цьому браузері немає ${UK_LANG_GEN[game]} голосу`, speechRate: 'Темп мовлення',
     slower: 'Повільніше', faster: 'Швидше', volume: 'Гучність', speech: 'Мовлення', effects: 'Ефекти', music: 'Музика', reduceMotion: 'Менше анімацій',
     extraTasks: 'Додаткові завдання ★', unlockWorld: 'Відкрити світ вручну', unlockNote: 'Дитина зможе зайти у світ, не пройшовши попередній.',
   },
@@ -149,12 +160,87 @@ const UK: PanelText = {
   },
 };
 
-export const PANEL_TEXT: Readonly<Record<PanelLanguage, PanelText>> = { pl: PL, uk: UK };
+const EN: PanelText = {
+  gateInstruction: (a, b) => `Type the answer: ${digitWord(EN_DIGITS, a)} times ${digitWord(EN_DIGITS, b)}`,
+  gateEnter: 'Enter',
+  gateWrong: 'Wrong answer. Please try again.',
+  gateBack: 'Back to the child',
+  gateBackspace: 'Delete',
+  title: 'Parent zone',
+  language: 'Panel language',
+  exit: 'Exit',
+  sections: {
+    summary: 'Summary', lastSession: 'Last session', skills: 'Skill map', progress: 'Progress', difficulties: 'Difficulties', settings: 'Settings',
+    profiles: 'Profiles', backup: 'Backup',
+  },
+  summary: { player: 'Player', levels: 'Levels completed', worlds: 'Worlds completed', stickers: 'Stickers', badges: 'Persistence badges', minutes: 'Total minutes' },
+  lastSession: { none: 'No sessions yet.', day: 'Day', minutes: 'Minutes', levels: 'Levels completed' },
+  skillStates: { new: 'New', learning: 'Learning', mastered: 'Mastered', review: 'To review' },
+  skillStar: 'extra ★',
+  progress: { firstTry: 'Correct on the first try', hints: 'Hints used', minutesPerDay: 'Minutes per day', noData: 'No data' },
+  difficulties: {
+    none: 'Nothing to worry about so far.',
+    confuses: (a, b) => `Mixes up ${a} and ${b}`,
+    countsAll: 'Counts everything from the start instead of counting on',
+    flagged: 'This skill is not going well even with the most help',
+  },
+  settings: {
+    sessionLength: 'Session length', minutesUnit: 'min', voice: 'Voice', voiceAuto: (game) => `Automatic (${EN_LANG_NAME[game]})`,
+    voiceNone: (game) => `No ${EN_LANG_NAME[game]} voice in this browser`, speechRate: 'Speech rate',
+    slower: 'Slower', faster: 'Faster', volume: 'Volume', speech: 'Speech', effects: 'Effects', music: 'Music', reduceMotion: 'Less animation',
+    extraTasks: 'Extra tasks ★', unlockWorld: 'Unlock a world manually', unlockNote: 'The child can enter the world without finishing the previous one.',
+  },
+  profiles: { name: 'Name', namePlaceholder: 'No name', pup: 'Puppy', add: 'Add profile', full: 'There are already 4 profiles', remove: 'Delete profile', active: 'playing now' },
+  backup: {
+    export: 'Export progress', import: 'Import progress', clear: 'Clear progress', importNew: 'As a new profile', importReplace: 'Instead of this profile’s progress',
+    pasteHere: 'Paste the backup file contents here', done: 'Done', cancel: 'Cancel', confirmYes: 'Yes, delete',
+    errors: {
+      'not-json': 'This is not a JSON file.', 'not-klockowo': 'This is not a Klockowo file.', 'unsupported-version': 'The file comes from a newer version of the app.', invalid: 'The file is damaged.',
+      'too-many-profiles': 'There are already 4 profiles.', 'no-profile': 'There is no profile to replace.',
+    },
+    confirm: (name) => `Delete all progress of the profile “${name}”? This cannot be undone.`,
+  },
+};
+
+/** Англійські назви навичок для панелі батьків. */
+export const SKILL_NAMES_EN: Readonly<Record<SkillId, string>> = {
+  'count-line': 'Counting objects in a row',
+  'count-scatter': 'Counting scattered objects',
+  'subitize-5': 'Seeing 1–5 at a glance',
+  'give-n': 'Giving a set number',
+  'digit-quantity': 'Digit and quantity',
+  zero: 'Zero',
+  'order-around': 'Before and after',
+  'compare-10': 'More, fewer, the same',
+  'add-combine': 'Putting groups together',
+  'plus-equals': 'The + and = signs',
+  'count-on': 'Counting on',
+  'bonds-5-10': 'Number bonds to 5 and 10',
+  doubles: 'Doubles',
+  teens: 'Numbers 11–20 as 10 + n',
+  'count-from-any': 'Counting from any number',
+  'add-no-bridge-20': 'Adding without crossing ten',
+  'bridge-ten': 'Adding across ten',
+  'count-by-tens': 'Counting in tens',
+  'bundle-ten': 'Bundling in tens',
+  'compose-2digit': 'Two-digit numbers',
+  'count-on-100': 'Counting on to 100',
+  neighbors: 'Neighbours ±1 and ±10',
+  'chart-patterns': 'Patterns on the hundred chart',
+  'compare-2digit': 'Comparing two-digit numbers',
+  'add-tens': 'Adding tens',
+  'plus-ten': 'Adding 10 to any number',
+  'add-2digit-1digit': 'Two-digit plus one-digit',
+  'add-with-bridge': 'Adding across ten (to 100)',
+  'story-problems': 'Story problems',
+};
+
+export const PANEL_TEXT: Readonly<Record<PanelLanguage, PanelText>> = { pl: PL, uk: UK, en: EN };
 
 export const panelText = (lang: PanelLanguage): PanelText => PANEL_TEXT[lang] ?? PL;
 
-/** Назва навички для панелі: польська (SKILL_NAMES) чи українська. */
-export const skillName = (id: SkillId, lang: PanelLanguage): string => (lang === 'uk' ? SKILL_NAMES_UK[id] : SKILL_NAMES[id]);
+/** Назва навички для панелі: польська (SKILL_NAMES), українська чи англійська. */
+export const skillName = (id: SkillId, lang: PanelLanguage): string => (lang === 'uk' ? SKILL_NAMES_UK[id] : lang === 'en' ? SKILL_NAMES_EN[id] : SKILL_NAMES[id]);
 
 /** Польські цифри-слова для перевірки гейта в тестах. */
 export const gateDigitWord = (n: number): string => digitWord(PL_DIGITS, n);

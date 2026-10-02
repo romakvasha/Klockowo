@@ -7,6 +7,7 @@ import { MAX_RETRY, taskAt, type RetryItem, type Swap, type TaskRef } from '../c
 import { isSkillId } from '../curriculum/skills';
 import type { GameId, LevelId, WorldId, WorldKey } from '../curriculum/types';
 import { WORLD_KEYS, isWorldId, parseLevelId } from '../curriculum/worlds';
+import { isLang } from '../speech/langCode';
 import { GAME_TITLES } from '../speech/lines';
 import { defaultSettings, emptyData, emptyProgress } from './defaults';
 import { MAX_HISTORY, MAX_SKILL_DAYS, RECENT_WINDOW } from './progress';
@@ -56,7 +57,9 @@ export function normalizeSettings(raw: unknown, base: Settings = defaultSettings
     },
     reduceMotion: bool(raw.reduceMotion, d.reduceMotion),
     extraTasks: bool(raw.extraTasks, d.extraTasks),
-    panelLanguage: raw.panelLanguage === 'uk' ? 'uk' : 'pl',
+    panelLanguage: raw.panelLanguage === 'uk' || raw.panelLanguage === 'en' ? raw.panelLanguage : 'pl',
+    // мову гри додано після схеми v3: відсутня чи невідома — польська, як і було
+    language: isLang(raw.language) ? raw.language : d.language,
   };
 }
 

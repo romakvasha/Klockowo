@@ -2,6 +2,7 @@ import { Slider } from '../../components/ui/Slider';
 import { Toggle } from '../../components/ui/Toggle';
 import { WORLD_KEYS } from '../../curriculum/worlds';
 import type { PanelText } from '../../parent/text';
+import { PRAISE } from '../../speech/lines';
 import { MUSIC_ENABLED } from '../../speech/music';
 import { tts } from '../../speech/tts';
 import { useTts } from '../../speech/useTts';
@@ -11,7 +12,7 @@ import styles from './Parent.module.css';
 
 const SESSIONS: readonly SessionMinutes[] = [10, 15, 20];
 
-/** Ustawienia (BRIEF §6 п.15): «Długość sesji» (10/15/20 min), «Głos» (польські голоси браузера), «Tempo mowy», «Głośność» (три повзунки «Mowa», «Efekty», «Muzyka»), «Mniej animacji»,
+/** Ustawienia (BRIEF §6 п.15): «Długość sesji» (10/15/20 min), «Głos» (голоси браузера мовою гри), «Tempo mowy», «Głośność» (три повзунки «Mowa», «Efekty», «Muzyka»), «Mniej animacji»,
  *  «Zadania dodatkowe ★», «Odblokuj świat ręcznie». Зміни застосовуються одразу (SettingsSync). */
 export function SettingsSection({ t }: { t: PanelText }) {
   const settings = useAppStore((s) => s.settings);
@@ -21,7 +22,7 @@ export function SettingsSection({ t }: { t: PanelText }) {
   const voices = useTts().voices;
   const s = t.settings;
   const pct = (v: number) => Math.round(v * 100);
-  const sample = () => void tts.speak('Brawo!', { interrupt: true });
+  const sample = () => void tts.speak(PRAISE[0], { interrupt: true }); // пробна фраза мовою гри
 
   return (
     <Card title={t.sections.settings} id="settings">
@@ -40,7 +41,7 @@ export function SettingsSection({ t }: { t: PanelText }) {
       <label className={styles.field}>
         <span>{s.voice}</span>
         <select value={settings.voiceURI ?? ''} onChange={(e) => update({ voiceURI: e.target.value || null })} disabled={voices.length === 0}>
-          <option value="">{voices.length === 0 ? s.voiceNone : s.voiceAuto}</option>
+          <option value="">{voices.length === 0 ? s.voiceNone(settings.language) : s.voiceAuto(settings.language)}</option>
           {voices.map((v) => (
             <option key={v.voiceURI} value={v.voiceURI}>{v.name}</option>
           ))}

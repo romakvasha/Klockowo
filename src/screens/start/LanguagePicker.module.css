@@ -1,0 +1,78 @@
+/* Вибір мови на Start: ліворуч угорі, дзеркально до шестерні батьків. Широкий екран — стовпчик уздовж краю (логотип по центру не заважає),
+   вузький (< 800 px) — рядок у смузі шестерні над логотипом. Кнопки 64 px, проміжки 16 px (BRIEF §12). */
+.picker {
+  position: absolute;
+  z-index: 5;
+  top: max(var(--kl-edge-safe), env(safe-area-inset-top));
+  left: max(var(--kl-edge-safe), env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  gap: var(--kl-gap-min);
+}
+
+@media (max-width: 799px) {
+  .picker {
+    flex-direction: row;
+  }
+}
+
+.chip {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--kl-target);
+  height: var(--kl-target);
+  padding: 0;
+  font-family: var(--kl-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--kl-ink);
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-neutral-edge);
+  border-radius: var(--kl-radius-round);
+  box-shadow: 0 4px 0 var(--kl-neutral-edge);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chip:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--kl-neutral-edge);
+}
+
+/* обрана мова: заливка + галочка (сигнал не лише кольором) */
+.chip[aria-pressed='true'] {
+  background: var(--kl-reward);
+  border-color: var(--kl-reward-edge);
+  box-shadow: 0 4px 0 var(--kl-reward-edge);
+}
+
+.chip:focus-visible {
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 3px;
+}
+
+.check {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 24px;
+  height: 24px;
+}
+
+.check circle {
+  fill: var(--kl-success);
+  stroke: var(--kl-surface);
+  stroke-width: 2;
+}
+
+.check path {
+  fill: none;
+  stroke: var(--kl-surface);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
