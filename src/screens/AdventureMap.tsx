@@ -96,6 +96,7 @@ export function AdventureMap() {
           name={WORLD_NAMES[world]}
           layout={layout}
           shaking={shaking === world}
+          built={world !== 'hub' && progress.celebrated.includes(world)}
           onPress={press}
         />
       ))}

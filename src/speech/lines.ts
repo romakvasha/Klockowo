@@ -237,6 +237,24 @@ export const PLAYGROUND = {
   empty: 'Zagraj najpierw kilka poziomów, a tu będzie powtórka!',
 } as const;
 
+/** Альбом наліпок і нагороди (BRIEF §6 п.9–10, M20) [do sprawdzenia]: підписи й aria-label. Голос називає лише наліпку при дотику. */
+export const ALBUM = {
+  title: 'Naklejki',
+  page: 'Strona świata',
+  scene: 'Scena',
+  badges: 'Odznaki',
+  clear: 'Wyczyść',
+  empty: 'puste miejsce',
+  next: 'Dalej',
+  unlocked: 'Nowy świat!',
+} as const;
+
+/** Машинки гостей у альбомі й назви споруд світів. */
+export const VEHICLE_NAMES = { balon: 'balon', zaglowka: 'żaglówka', pociag: 'pociąg', rakieta: 'rakieta' } as const;
+export const BUILDING_NAMES: Readonly<Record<WorldKey, string>> = {
+  w1: 'wiatrak', w2: 'oranżeria', w3: 'latarnia morska', w4: 'most z wieżą', w5: 'domek na drzewie', w6: 'wieżowiec', w7: 'wieża rakietowa',
+};
+
 /** Вправи для «Czas na przerwę!» (BRIEF §6.11). */
 export const BREAK_EXERCISES = [
   { verb: 'Podskocz', n: 10 }, { verb: 'Klaśnij', n: 5 }, { verb: 'Tupnij', n: 8 },

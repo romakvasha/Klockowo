@@ -1,5 +1,6 @@
 import type { WorldId } from '../../curriculum/types';
 import { Kubik } from '../../characters/Kubik';
+import { WorldBuilding } from './WorldBuilding';
 import { islandLabel, type IslandState } from '../../speech/lines';
 import { cssVars, cx } from '../ui/cx';
 import { pressHandler } from '../ui/tick';
@@ -15,6 +16,8 @@ export interface WorldIslandProps {
   layout: MapLayout;
   /** Лише «locked» хитається: стан виставляє екран на кілька сотень мс після дотику. */
   shaking?: boolean;
+  /** Світ відсвяткований («Świat ukończony» показано): на острові стоїть нова споруда з блоків (M20). */
+  built?: boolean;
   onPress: (world: WorldId) => void;
 }
 
@@ -31,7 +34,7 @@ function Flag({ className }: { className?: string }) {
 
 /** Острів світу на мапі: заблокований — сірий камінь із замком; пройдений — із прапорцем; поточний — із сяйвом і Kubikom
  *  на картингу (BRIEF §6.4). Координати й масштаб — із MapLayout; кнопка охоплює всю картинку острова. */
-export function WorldIsland({ world, state, name, layout, shaking = false, onPress }: WorldIslandProps) {
+export function WorldIsland({ world, state, name, layout, shaking = false, built = false, onPress }: WorldIslandProps) {
   const { x, y } = layout.nodes[world];
   const locked = state === 'locked';
   // картинг стоїть ліворуч від острова; якщо там немає місця (портрет, ліва колонка) — праворуч
@@ -58,6 +61,7 @@ export function WorldIsland({ world, state, name, layout, shaking = false, onPre
         <img src={ISLAND_URL(locked ? 'locked' : world)} alt="" draggable={false} />
       </button>
       {state === 'completed' && <Flag className={styles.flag} />}
+      {built && world !== 'hub' && <WorldBuilding world={world} width={Math.round(78 * layout.scale)} className={styles.building} />}
       <span className={styles.chip} aria-hidden="true">{name}</span>
       {state === 'current' && <Kubik pose="on-kart" size={120 * layout.scale} className={styles.kart} />}
     </div>

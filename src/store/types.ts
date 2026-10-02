@@ -2,7 +2,7 @@
 import type { PupId } from '../characters/pups';
 import type { Struggle } from '../curriculum/adaptivity';
 import type { RetryItem, Swap } from '../curriculum/review';
-import type { GameId, LevelId, SkillId, WorldId } from '../curriculum/types';
+import type { GameId, LevelId, SkillId, WorldId, WorldKey } from '../curriculum/types';
 
 export type { RetryItem, Struggle, Swap };
 
@@ -137,6 +137,8 @@ export interface ProfileProgress {
   minutesByDay: Record<string, number>;
   /** Світи, відкриті дорослим вручну («Odblokuj świat ręcznie»). */
   manualUnlocks: WorldId[];
+  /** Світи, чию «Świat ukończony» уже відсвяткували: скриня на стежці стає відкритою, на мапі стоїть нова споруда (M20). */
+  celebrated: WorldKey[];
   /** Завдання, розв'язані «разом» із Kubikom: схожі повернуться в наступних рівнях (M12). */
   retry: RetryItem[];
   lastSession: LastSession | null;

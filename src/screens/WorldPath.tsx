@@ -47,7 +47,7 @@ function WorldPathScreen({ world }: { world: WorldKey }) {
   }, [progress, world, ctx]);
 
   const next = nextLevelId(progress, world);
-  const chest: ChestState = isWorldComplete(progress, world) ? 'ready' : 'locked';
+  const chest: ChestState = isWorldComplete(progress, world) ? (progress.celebrated.includes(world) ? 'open' : 'ready') : 'locked';
   const from = readFrom(location.state, world);
   const doneCount = worldProgressCount(progress, world).done;
 
@@ -76,7 +76,7 @@ function WorldPathScreen({ world }: { world: WorldKey }) {
   };
 
   const pressChest = () => {
-    if (chest === 'ready') navigate(`/world-done/${world}`);
+    if (chest !== 'locked') navigate(`/world-done/${world}`);
     else shake('chest');
   };
 

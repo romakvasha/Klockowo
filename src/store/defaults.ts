@@ -14,7 +14,7 @@ export function defaultSettings(): Settings {
 }
 
 export function emptyProgress(): ProfileProgress {
-  return { levels: {}, runs: {}, skills: {}, history: [], minutesByDay: {}, manualUnlocks: [], retry: [], lastSession: null };
+  return { levels: {}, runs: {}, skills: {}, history: [], minutesByDay: {}, manualUnlocks: [], celebrated: [], retry: [], lastSession: null };
 }
 
 export function emptySkill(): SkillRecord {

@@ -5,12 +5,12 @@ import { createJSONStorage, persist, type StateStorage } from 'zustand/middlewar
 import { createStore, type StoreApi } from 'zustand/vanilla';
 import { PUP_IDS, type PupId } from '../characters/pups';
 import type { TaskRef } from '../curriculum/review';
-import type { LevelId, WorldId } from '../curriculum/types';
+import type { LevelId, WorldId, WorldKey } from '../curriculum/types';
 import { createBackup, parseBackup, serializeBackup, type BackupError } from './backup';
 import { emptyProgress } from './defaults';
 import { SCHEMA_VERSION, migratePersisted } from './migrate';
 import { normalizeData, normalizeProfile, normalizeSettings } from './normalize';
-import { addPlayTime, addRetry, clearRun, completeLevel, dayKey, recordAnswer, removeRetry, saveRun, type LevelSummary } from './progress';
+import { addPlayTime, addRetry, celebrateWorld, clearRun, completeLevel, dayKey, recordAnswer, removeRetry, saveRun, type LevelSummary } from './progress';
 import { MAX_PROFILES, type AnswerEntry, type AppData, type LevelRun, type Profile, type ProfileProgress, type Settings } from './types';
 
 export const STORAGE_KEY = 'klockowo';
@@ -41,6 +41,8 @@ export interface AppActions {
   queueRetry(ref: TaskRef): void;
   dropRetry(ref: TaskRef): void;
   setWorldUnlocked(world: WorldId, unlocked: boolean): void;
+  /** «Świat ukończony» показано: світ відсвяткований (скриня відкрита, нова споруда на мапі). */
+  celebrateWorld(world: WorldKey): void;
   /** «Wyczyść postępy»: прогрес профілю обнуляється, сам профіль лишається. */
   resetProgress(profileId: string): void;
   /** «Eksportuj postępy»: JSON-текст копії або null, якщо профілю немає. */
@@ -168,6 +170,8 @@ export function createAppStore(storage: StateStorage = browserStorage(), env: St
         addPlayTime: (minutes) => set((s) => withActive(s, (p) => addPlayTime(p, dayKey(env.now()), minutes))),
         queueRetry: (ref) => set((s) => withActive(s, (p) => addRetry(p, ref, dayKey(env.now())))),
         dropRetry: (ref) => set((s) => withActive(s, (p) => removeRetry(p, ref))),
+
+        celebrateWorld: (world) => set((s) => withActive(s, (p) => celebrateWorld(p, world))),
 
         setWorldUnlocked(world, unlocked) {
           set((s) =>

@@ -5,7 +5,7 @@ export { defaultSettings, emptyData, emptyProgress, emptySkill } from './default
 export { MIGRATIONS, SCHEMA_VERSION, migratePersisted, type Migration } from './migrate';
 export { normalizeData, normalizeProfile, normalizeProgress, normalizeSettings } from './normalize';
 export {
-  MAX_HISTORY, RECENT_WINDOW, addPlayTime, addRetry, clearRun, completeLevel, dayKey, diligenceBadgesOf, isMastered, recordAnswer, removeRetry, saveRun,
+  MAX_HISTORY, RECENT_WINDOW, addPlayTime, addRetry, celebrateWorld, clearRun, completeLevel, dayKey, diligenceBadgesOf, isMastered, recordAnswer, removeRetry, saveRun,
   skillState, skillsToReview, stickersOf, totalMinutes, updateSkill, type LevelSummary, type SkillState,
 } from './progress';
 export { NO_PROGRESS, asSnapshot, selectActiveProfile, selectActiveProgress } from './selectors';

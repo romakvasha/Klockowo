@@ -1,0 +1,54 @@
+.building {
+  display: inline-grid;
+  grid-auto-rows: 1fr;
+}
+
+.cell {
+  display: block;
+  box-sizing: border-box;
+}
+
+.cell[data-cell='.'] {
+  visibility: hidden;
+}
+
+.cell[data-cell='W'],
+.cell[data-cell='D'],
+.cell[data-cell='R'],
+.cell[data-cell='w'],
+.cell[data-cell='k'] {
+  border: max(1.5px, 5%) solid var(--kl-ink);
+  border-radius: 14%;
+}
+
+.cell[data-cell='W'] {
+  background: var(--wb-500);
+}
+
+.cell[data-cell='D'] {
+  background: var(--wb-700);
+}
+
+.cell[data-cell='R'] {
+  background: var(--kl-reward);
+}
+
+.cell[data-cell='w'] {
+  background: var(--kl-surface);
+}
+
+.cell[data-cell='k'] {
+  background: var(--kl-ink);
+}
+
+/* прапорець на даху: тонка смужка кольору нагороди */
+.cell[data-cell='f'] {
+  background: var(--kl-reward);
+  border: max(1px, 4%) solid var(--kl-ink);
+  border-radius: 40% 10% 10% 40%;
+  transform: scale(.7);
+}
+
+.building[data-building='true'] .cell:not([data-cell='.']) {
+  animation: var(--kl-anim-pop-in) var(--kl-dur-count) var(--kl-ease-pop) both;
+}

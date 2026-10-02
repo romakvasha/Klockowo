@@ -5,8 +5,8 @@ import { STEP_MAX, STEP_MIN, type Struggle } from '../curriculum/adaptivity';
 import { findLevel } from '../curriculum/levels';
 import { MAX_RETRY, taskAt, type RetryItem, type Swap, type TaskRef } from '../curriculum/review';
 import { isSkillId } from '../curriculum/skills';
-import type { GameId, LevelId, WorldId } from '../curriculum/types';
-import { isWorldId, parseLevelId } from '../curriculum/worlds';
+import type { GameId, LevelId, WorldId, WorldKey } from '../curriculum/types';
+import { WORLD_KEYS, isWorldId, parseLevelId } from '../curriculum/worlds';
 import { GAME_TITLES } from '../speech/lines';
 import { defaultSettings, emptyData, emptyProgress } from './defaults';
 import { MAX_HISTORY, MAX_SKILL_DAYS, RECENT_WINDOW } from './progress';
@@ -207,6 +207,7 @@ export function normalizeProgress(raw: unknown): ProfileProgress {
   const unlocked = new Set<WorldId>();
   for (const w of list(raw.manualUnlocks)) if (isWorldId(w)) unlocked.add(w);
   out.manualUnlocks = [...unlocked];
+  out.celebrated = [...new Set(list(raw.celebrated).filter((w): w is WorldKey => typeof w === 'string' && (WORLD_KEYS as readonly string[]).includes(w)))];
   out.retry = normalizeRetry(raw.retry);
   out.lastSession = normalizeLastSession(raw.lastSession);
   return out;

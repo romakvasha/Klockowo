@@ -2,7 +2,7 @@
 import { nextStep } from '../curriculum/adaptivity';
 import { LEVELS } from '../curriculum/levels';
 import { dropRetry, nextReview, queueRetry, type TaskRef } from '../curriculum/review';
-import type { LevelId, SkillId } from '../curriculum/types';
+import type { LevelId, SkillId, WorldKey } from '../curriculum/types';
 import { emptySkill } from './defaults';
 import type { AnswerEntry, LevelRecord, LevelRun, ProfileProgress, RecentAnswer, SkillRecord } from './types';
 
@@ -106,6 +106,11 @@ export function addPlayTime(progress: ProfileProgress, day: string, minutes: num
 /** Наліпки: по одній за кожен пройдений рівень (★ теж), у порядку програми. */
 export function stickersOf(progress: ProfileProgress): LevelId[] {
   return LEVELS.filter((l) => Object.hasOwn(progress.levels, l.id)).map((l) => l.id);
+}
+
+/** Світ відсвяткований (Świat ukończony показано): скриня на стежці стає відкритою, на мапі з'являється нова споруда. Повторно не додається. */
+export function celebrateWorld(progress: ProfileProgress, world: WorldKey): ProfileProgress {
+  return progress.celebrated.includes(world) ? progress : { ...progress, celebrated: [...progress.celebrated, world] };
 }
 
 /** Значки «Nie poddajesz się!»: рівні, де хоч раз розв'язували разом із Kubikom. */

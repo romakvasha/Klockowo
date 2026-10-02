@@ -128,3 +128,11 @@
 .node[data-state='open'] .chip {
   border-color: var(--chip-edge, var(--kl-ink));
 }
+
+/* нова споруда з блоків — на острові відсвяткованого світу, під прапорцем */
+.building {
+  position: absolute;
+  top: calc(78px * var(--is));
+  left: calc(56px * var(--is));
+  pointer-events: none;
+}

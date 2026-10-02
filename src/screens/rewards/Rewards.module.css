@@ -1,0 +1,241 @@
+/* Świat ukończony */
+.done {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: var(--kl-edge-safe);
+  background: var(--world, var(--kl-hub-50));
+  overflow: hidden;
+}
+
+.doneStage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kl-space-2);
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.chest {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  animation: var(--kl-anim-reveal) var(--kl-dur-unlock) var(--kl-ease-pop) both;
+}
+
+.chest img {
+  max-width: 40vw;
+  height: auto;
+}
+
+.building {
+  margin-bottom: 6px;
+}
+
+.next {
+  margin-top: var(--kl-space-3);
+}
+
+.guest {
+  flex: none;
+}
+
+/* Album z naklejkami і Odznaki */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kl-space-2);
+  min-height: 100dvh;
+  padding: var(--kl-edge-safe);
+  background: var(--kl-hub-50);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--kl-space-2);
+}
+
+.title {
+  margin: 0;
+  font: 700 clamp(26px, 5vw, 40px) / 1.1 var(--kl-font-display);
+  color: var(--kl-ink);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* вкладка світу: кругла блокова кнопка 72 px з іконкою світу; активна — кільце (не лише колір) */
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  color: var(--kl-ink);
+  border-radius: 50%;
+}
+
+.tab[data-active='true'] {
+  box-shadow: 0 0 0 4px var(--kl-surface), 0 0 0 8px var(--kl-ink);
+}
+
+.tab svg {
+  width: 40px;
+  height: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 14px;
+  align-content: start;
+}
+
+/* наліпка: біла картка з тваринкою; порожня — силует зі «?» */
+.slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 132px;
+  padding: 8px;
+  color: var(--kl-ink);
+  background: var(--kl-surface);
+  border: 3px solid var(--kl-ink);
+  border-radius: 20px;
+  box-shadow: 0 4px 0 var(--kl-neutral-edge);
+}
+
+.slot[data-owned='false'] {
+  background: rgba(255, 255, 255, .5);
+  border-style: dashed;
+  border-color: var(--kl-locked-edge);
+  box-shadow: none;
+}
+
+.slot img {
+  width: 84px;
+  height: auto;
+}
+
+/* силует: чорна заливка з прозорістю й «?» поверх (сигнал — форма й знак питання) */
+.slot[data-owned='false'] > :not(.question):not(.star) {
+  filter: brightness(0);
+  opacity: .22;
+}
+
+.question {
+  position: absolute;
+  font: 700 40px / 1 var(--kl-font-display);
+  color: var(--kl-ink-soft);
+}
+
+.star {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+}
+
+.count {
+  margin: 0;
+  font: 700 20px / 1 var(--kl-font-display);
+  color: var(--kl-ink-soft);
+}
+
+/* вільна сцена: полотно кольору світу й лоток наліпок */
+.canvas {
+  position: relative;
+  flex: 1;
+  min-height: 260px;
+  background: var(--kl-w1-100);
+  border: 3px solid var(--kl-ink);
+  border-radius: 24px;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.placed {
+  position: absolute;
+  width: 84px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  transform: translate(-50%, -50%);
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out);
+}
+
+.placed img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.pick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  border-radius: 20px;
+}
+
+.pick img {
+  width: 56px;
+  height: auto;
+}
+
+.pick[data-selected='true'] {
+  box-shadow: 0 0 0 4px var(--kl-surface), 0 0 0 8px var(--kl-secondary-edge);
+}
+
+.badgeCell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  padding: 6px;
+  background: transparent;
+  border: 0;
+  color: var(--kl-ink);
+}
+
+.badgeCell[data-owned='false'] {
+  opacity: .28;
+  filter: grayscale(1);
+}
+
+.badgeMeta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.emptyNote {
+  align-self: center;
+  margin: auto;
+  font: 700 22px / 1.3 var(--kl-font-display);
+  text-align: center;
+  color: var(--kl-ink-soft);
+}
