@@ -1,0 +1,97 @@
+/* Czas na przerwę!, Koniec na dziś, Błąd, Brak polskiego głosu: Kubik по центру, під ним одна велика кнопка */
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kl-space-3);
+  min-height: 100dvh;
+  padding: var(--kl-edge-safe);
+  background: var(--kl-hub-50);
+  overflow: hidden;
+}
+
+.screen[data-night='true'] {
+  background: #E4E1F5;
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--kl-space-3);
+}
+
+/* число повтору поруч із Kubikom: те, що він зараз лічить */
+.count {
+  min-width: 120px;
+  min-height: 120px;
+  color: var(--kl-ink);
+  animation: var(--kl-anim-pop) var(--kl-dur-count) var(--kl-ease-out);
+}
+
+/* будка Kubika: дах кольору хабу, стіна з тінню, темна арка */
+.house {
+  position: relative;
+  width: 320px;
+  height: 260px;
+}
+
+.roof {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100px;
+  background: var(--kl-hub-500);
+  border: 4px solid var(--kl-ink);
+  border-radius: 24px 24px 6px 6px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.wall {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 0;
+  height: 170px;
+  background: var(--kl-w2-500);
+  border: 4px solid var(--kl-ink);
+  border-radius: 10px;
+  box-shadow: 0 6px 0 var(--kl-w2-700);
+}
+
+.door {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 120px;
+  height: 120px;
+  background: var(--kl-ink);
+  border-radius: 60px 60px 0 0;
+  transform: translateX(-50%);
+}
+
+.sleepy {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.muted {
+  width: 120px;
+  height: 120px;
+  color: var(--kl-ink-soft);
+}
+
+/* повідомлення для дорослого: спокійний стиль, 18+ px */
+.adult {
+  max-width: 560px;
+  margin: 0;
+  font: 600 20px / 1.4 var(--kl-font-ui);
+  text-align: center;
+  color: var(--kl-ink);
+}

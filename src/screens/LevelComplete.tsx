@@ -6,6 +6,7 @@ import { afterLevel, rescuedAnimal } from '../curriculum/flow';
 import { findLevel } from '../curriculum/levels';
 import { isLevelDone } from '../curriculum/progression';
 import type { Level } from '../curriculum/types';
+import { sessionClock } from '../session/sessionClock';
 import { LEVEL_LINES, stickerLabel } from '../speech/lines';
 import { ANIMALS } from '../speech/nouns';
 import { sfx } from '../speech/sfx';
@@ -74,10 +75,19 @@ function LevelCompleteScreen({ level, result }: { level: Level; result: LevelCom
     }
   });
 
+  // «Dalej»: свято світу — передусім; інакше сесія вирішує — «Koniec na dziś» (час вичерпано), «Czas na przerwę!» (середина сесії 15/20 хв, втома) або стежка світу
+  const sessionMinutes = useAppStore((s) => s.settings.sessionMinutes);
   const next = () => {
     const after = afterLevel(progress, level.id, result.firstTime);
-    if (after.screen === 'world-complete') navigate(`/world-done/${after.world}`);
-    else navigate(`/world/${after.world}`, { state: { from: level.id } });
+    if (after.screen === 'world-complete') {
+      navigate(`/world-done/${after.world}`);
+      return;
+    }
+    const target = { to: `/world/${after.world}`, state: { from: level.id } };
+    const step = sessionClock.decide(sessionMinutes);
+    if (step === 'end') navigate('/end', { replace: true });
+    else if (step === 'break') navigate('/break', { state: { next: target } });
+    else navigate(target.to, { state: target.state });
   };
 
   return (

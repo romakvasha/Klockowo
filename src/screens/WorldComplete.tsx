@@ -9,6 +9,7 @@ import { IconButton } from '../components/ui/IconButton';
 import { isWorldComplete } from '../curriculum/progression';
 import { isWorldId, worldById } from '../curriculum/worlds';
 import type { WorldKey } from '../curriculum/types';
+import { sessionClock } from '../session/sessionClock';
 import { BUILDING_NAMES, BUTTONS, LEVEL_LINES } from '../speech/lines';
 import { sfx } from '../speech/sfx';
 import { tts } from '../speech/tts';
@@ -21,6 +22,7 @@ function WorldCompleteScreen({ world }: { world: WorldKey }) {
   const celebrate = useAppStore((s) => s.celebrateWorld);
   const speaking = useTts().speaking;
   const guest = worldById(world).guest;
+  const sessionMinutes = useAppStore((s) => s.settings.sessionMinutes);
 
   // Скриня відкривається з конфеті: звук і голос «Wszystkie misje w tym świecie wykonane!»; світ записується як відсвяткований (скриня на стежці — відкрита, на мапі — споруда)
   useEffect(() => {
@@ -43,7 +45,13 @@ function WorldCompleteScreen({ world }: { world: WorldKey }) {
         </div>
         <Kubik pose="celebrating" accessory={world} size={190} talking={speaking} />
       </div>
-      <IconButton icon="next" label={BUTTONS.next} variant="primary" size={88} className={styles.next} onClick={() => navigate('/map', { replace: true })} />
+      <IconButton icon="next" label={BUTTONS.next} variant="primary" size={88} className={styles.next} onClick={() => {
+          // після свята світу — як після будь-якого рівня: сесія може запропонувати перерву чи закінчити день
+          const step = sessionClock.decide(sessionMinutes);
+          if (step === 'end') navigate('/end', { replace: true });
+          else if (step === 'break') navigate('/break', { state: { next: { to: '/map' } } });
+          else navigate('/map', { replace: true });
+        }} />
     </main>
   );
 }

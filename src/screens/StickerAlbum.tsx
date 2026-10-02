@@ -5,7 +5,8 @@ import { WorldBuilding } from '../components/map/WorldBuilding';
 import { animalUrl } from '../components/math/art';
 import { Icon } from '../components/ui/Icon';
 import { IconButton } from '../components/ui/IconButton';
-import { albumCount, albumSlots, sceneStickers, type AlbumSlot } from '../curriculum/rewards';
+import { Kubik } from '../characters/Kubik';
+import { albumCount, albumSlots, isAlbumEmpty, sceneStickers, type AlbumSlot } from '../curriculum/rewards';
 import type { WorldKey } from '../curriculum/types';
 import { WORLD_KEYS } from '../curriculum/worlds';
 import { ALBUM, BUILDING_NAMES, BUTTONS, VEHICLE_NAMES } from '../speech/lines';
@@ -164,6 +165,12 @@ export function StickerAlbum() {
           <Icon name="stickers" />
         </button>
       </nav>
+      {isAlbumEmpty(rewards) && (
+        // порожній альбом (BRIEF §6 п.16): Kubik підбадьорює — силуети нижче чекають на першу наліпку
+        <div className={styles.emptyAlbum} role="note">
+          <Kubik pose="encouraging" size={150} />
+        </div>
+      )}
       {tab === 'scene' ? (
         animals.length > 0 ? (
           <FreeScene animals={animals} />

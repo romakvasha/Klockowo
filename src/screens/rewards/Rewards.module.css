@@ -239,3 +239,9 @@
   text-align: center;
   color: var(--kl-ink-soft);
 }
+
+/* порожній альбом: Kubik підбадьорює над силуетами */
+.emptyAlbum {
+  display: flex;
+  justify-content: center;
+}

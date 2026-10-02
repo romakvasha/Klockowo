@@ -5,7 +5,9 @@ import { CubeStrip, CubeTower } from '../components/ui/Cubes';
 import { Logo } from '../components/ui/Logo';
 import { cssVars } from '../components/ui/cx';
 import { ISLAND_URL } from '../components/map/art';
+import { afterLoadingPath, noVoiceSeen } from '../session/noVoice';
 import { LABELS } from '../speech/lines';
+import { tts } from '../speech/tts';
 import { BOOT_TASKS, whenFontsReady, whenVoiceSettled } from './loading/boot';
 import { bootProgress, filledSlots, isBooted } from './loading/bootProgress';
 import styles from './Loading.module.css';
@@ -30,7 +32,7 @@ export function Loading() {
       setFilled(filledSlots(bootProgress(elapsed, done, BOOT_TASKS)));
       if (leaving === undefined && isBooted(elapsed, done, BOOT_TASKS)) {
         window.clearInterval(timer);
-        leaving = window.setTimeout(() => navigate('/start', { replace: true }), 350); // дати останньому кубику «вискочити»
+        leaving = window.setTimeout(() => navigate(afterLoadingPath(tts.getState().status, noVoiceSeen()), { replace: true }), 350); // дати останньому кубику «вискочити»
       }
     }, 60);
     return () => {

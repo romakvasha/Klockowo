@@ -8,6 +8,7 @@ import { chooseSwaps, levelSpecs, type LevelQueue } from '../curriculum/review';
 import type { Level } from '../curriculum/types';
 import { TASKS_PER_LEVEL, isLevelFinished, planLevel, summarize, type PlannedTask } from '../games/engine/levelPlan';
 import { freshSeed } from '../games/engine/rng';
+import { sessionClock } from '../session/sessionClock';
 import { TaskPlayer, type SolvedResult } from '../games/engine/TaskPlayer';
 import { resolveGame } from '../games/registry';
 import {
@@ -77,6 +78,7 @@ function LevelGame({ level }: { level: Level }) {
   // новий забіг одразу зберігається (з першого завдання «Mapa» вже не губить рівень); завершений, але не закритий забіг закриваємо
   useEffect(() => {
     if (total === 0) return;
+    sessionClock.touch(); // початок рівня — початок (чи продовження) сесії
     if (!init.resumed) saveRun(level.id, run([]));
     else if (isLevelFinished(init.results, total)) finish(init.results);
     // лише при монтуванні рівня
@@ -103,7 +105,10 @@ function LevelGame({ level }: { level: Level }) {
     }
     saveRun(level.id, run(next));
     // ознака втоми (3 помилки поспіль, випадкові дотики, довга бездіяльність) → наступне завдання легше; перерву пропонує сесія (M21)
-    const ease = nextEase(view.ease, outcome, fatigueSignal(next, taps));
+    const fatigue = fatigueSignal(next, taps);
+    sessionClock.touch();
+    if (fatigue) sessionClock.markFatigue(); // ознака втоми наближає «Czas na przerwę!» (curriculum/adaptivity + session)
+    const ease = nextEase(view.ease, outcome, fatigue);
     const skills = selectActiveProgress(appStore.getState()).skills;
     setView({ results: next, ease, planned: planAt(next.length, skills, ease) });
   };
