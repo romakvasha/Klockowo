@@ -3,6 +3,7 @@
 // після перемикання App перемонтовує екрани (useLanguage), тож усе перечитується вже новою мовою. Польські тексти від інших мов не залежать.
 import { useSyncExternalStore } from 'react';
 import { LANG_BCP47, LANGS, type Lang } from './langCode';
+import { UK_PACK } from './lang/uk';
 import { PL_LINES, setLineTables, setLineTemplates, type LineTables, type LineTemplates } from './lines';
 import { PL_NOUNS, setNounTables, type NounTables } from './nouns';
 import { setNumberWords, type Gender } from './numberWords';
@@ -21,7 +22,7 @@ export interface LanguagePack {
 const PL_PACK: LanguagePack = { lines: PL_LINES, templates: null, nouns: PL_NOUNS, numberWords: null, stories: null };
 
 /** Мови, для яких є повний пакет; інших у перемикачі немає. */
-const PACKS: Partial<Record<Lang, LanguagePack>> = { pl: PL_PACK };
+const PACKS: Partial<Record<Lang, LanguagePack>> = { pl: PL_PACK, uk: UK_PACK };
 
 let current: Lang = 'pl';
 const listeners = new Set<() => void>();

@@ -38,6 +38,7 @@ const PL_LABELS = {
   review: 'Do powtórki', // вузол-повторення на стежці світу
   badges: 'Odznaki',
   base: 'Baza Drużyny', // тло екрана Start
+  baseShort: 'Baza', // табличка бази на Mapa przygody
   abacus: 'liczydło', // рахівниця на 20 (BRIEF §10)
   placeTens: 'dziesiątki', // мат «dziesiątki | jedności»
   placeOnes: 'jedności',
@@ -503,6 +504,12 @@ export function countOnPraise(from: number): string {
   return `Liczysz dalej od ${numberGenitive(from)} — sprytnie!`;
 }
 
+/** Підпис сцени «Policz i dotknij» для екранного диктора: «Policz biedronki». */
+export function countLabel(noun: Noun): string {
+  if (templates) return templates.countLabel(noun);
+  return `Policz ${noun.few}`;
+}
+
 /** «Policz biedronki. Dotykaj po kolei. Ile jest biedronek?» */
 export function countTouch(noun: Noun): string {
   if (templates) return templates.countTouch(noun);
@@ -713,6 +720,7 @@ export interface LineTemplates {
   praiseCorrect(n: number, noun: Noun, praise?: string): string;
   countOnPraise(from: number): string;
   countTouch(noun: Noun): string;
+  countLabel(noun: Noun): string;
   feedAnimal(animal: Animal, n: number, noun: Noun): string;
   whoHasMore(noun: Noun): string;
   whoHasLess(noun: Noun): string;

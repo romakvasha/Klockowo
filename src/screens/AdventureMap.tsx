@@ -86,7 +86,7 @@ export function AdventureMap() {
       <Trail layout={layout} unlocked={(w) => isWorldUnlocked(progress, w)} />
       <div className={styles.base} style={{ left: base.x, top: base.y, width: layout.island.w, height: layout.island.h }}>
         <img src={BASE_URL()} alt={LABELS.base} draggable={false} />
-        <span className={styles.baseChip} aria-hidden="true">Baza</span>
+        <span className={styles.baseChip} aria-hidden="true">{LABELS.baseShort}</span>
       </div>
       {WORLD_IDS.map((world) => (
         <WorldIsland

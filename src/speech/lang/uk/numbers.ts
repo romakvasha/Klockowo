@@ -94,5 +94,11 @@ export function times(n: number): string {
   return `${numberWords(n)} ${form === 'one' ? 'раз' : form === 'few' ? 'рази' : 'разів'}`;
 }
 
+/** «А і Б» з милозвучністю: після голосного — «й» («два й три», «дві рибки й одна»), після приголосного чи перед і/ї/є/ю/я/й — «і» («сім і три»). */
+export function and(left: string, right: string): string {
+  const conj = /[аеєиіїоуюя]$/i.test(left) && !/^[іїєюяй]/i.test(right) ? 'й' : 'і';
+  return `${left} ${conj} ${right}`;
+}
+
 /** Перша літера велика: «П'ять яблук.» */
 export const cap = (s: string): string => s.charAt(0).toLocaleUpperCase('uk') + s.slice(1);
