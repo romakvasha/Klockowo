@@ -3,8 +3,8 @@
 /** pl — польська (оригінал, за замовчуванням); uk — українська; en — англійська. */
 export type Lang = 'pl' | 'uk' | 'en';
 
-/** Порядок у перемикачі на Start. */
-export const LANGS: readonly Lang[] = ['pl', 'uk', 'en'];
+/** Порядок у перемикачі на Start: польська, англійська, українська. */
+export const LANGS: readonly Lang[] = ['pl', 'en', 'uk'];
 
 export const isLang = (value: unknown): value is Lang => value === 'pl' || value === 'uk' || value === 'en';
 
