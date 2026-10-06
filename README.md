@@ -1,5 +1,7 @@
 # Klockowo
 
+**Play it online: <https://klockowo.vercel.app>** (works offline after the first visit and can be added to a phone's home screen)
+
 A small, ad-free maths game for children aged 5–6. The child learns to count to 100 and to add, guided by Kubik, a block-world beagle, and his team of rescue puppies. It is a personal project (not an app-store product): it runs entirely in the browser, needs no backend, and sends nothing anywhere.
 
 The game is available in three languages, chosen on the start screen:
