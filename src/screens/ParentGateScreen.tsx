@@ -32,7 +32,7 @@ export function ParentGateScreen() {
 
   return (
     <main className={styles.gate}>
-      <p className={styles.question} lang={lang === 'uk' ? 'uk' : 'pl'}>{t.gateInstruction(challenge.a, challenge.b)}</p>
+      <p className={styles.question} lang={lang}>{t.gateInstruction(challenge.a, challenge.b)}</p>
       <output className={styles.answer} aria-live="polite" data-status={state.status}>{state.input || ' '}</output>
       <p className={styles.message} role="status">{state.status === 'wrong' || state.status === 'locked' ? t.gateWrong : ' '}</p>
       <NumericKeypad

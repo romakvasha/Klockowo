@@ -8,7 +8,25 @@ import { numberWords } from './numberWords';
 const cap = (s: string): string => s.charAt(0).toLocaleUpperCase('pl') + s.slice(1);
 
 /** «Posłuchaj historyjki.» — вступ перед історією (POLISH_COPY §5). */
-export const STORY_INTRO = 'Posłuchaj historyjki.';
+const PL_STORY_INTRO = 'Posłuchaj historyjki.';
+
+/** Історії іншої мови (speech/language.ts): свої сцени й шаблони для тих самих предметів W3. */
+export interface StoryTemplates {
+  intro: string;
+  storyJoin(object: ObjectId, a: number, b: number): JoinStory;
+  storyCombine(first: ObjectId, second: ObjectId, a: number, b: number): string;
+}
+
+let localized: StoryTemplates | null = null;
+
+/** Вступ мовою гри — жива прив'язка. */
+export let STORY_INTRO: string = PL_STORY_INTRO;
+
+/** Викликає лише speech/language.ts; null — польські історії. */
+export function setStoryTemplates(next: StoryTemplates | null): void {
+  localized = next;
+  STORY_INTRO = next ? next.intro : PL_STORY_INTRO;
+}
 
 /** Як у сцені «приходять» нові: дієслово в однині (1, 5+) і множині (2–4) — «Przypływa jeszcze pięć.» / «Przypływają jeszcze dwie.»; або сталий підмет: «Fala przynosi jeszcze trzy.». */
 type Arrival = { verb: readonly [sg: string, pl: string] } | { fixed: string };
@@ -53,6 +71,7 @@ export interface JoinStory {
 
 /** Історія «додали»: спершу `a`, потім приходять ще `b`. */
 export function storyJoin(object: ObjectId, a: number, b: number): JoinStory {
+  if (localized) return localized.storyJoin(object, a, b);
   const { scene, noun } = sceneOf(object);
   const setup = `${cap(scene.place)} ${agree(a, scene.setup)} ${quantity(a, noun)}.`;
   const arrival =
@@ -65,6 +84,7 @@ export function storyJoin(object: ObjectId, a: number, b: number): JoinStory {
 
 /** Історія «разом»: два набори різних предметів на картинці [do sprawdzenia]. */
 export function storyCombine(first: ObjectId, second: ObjectId, a: number, b: number): string {
+  if (localized) return localized.storyCombine(first, second, a, b);
   const x = sceneOf(first).noun;
   const y = sceneOf(second).noun;
   return `${STORY_INTRO} Na obrazku są ${quantity(a, x)} i ${quantity(b, y)}. Ile jest razem?`;

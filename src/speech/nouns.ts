@@ -9,6 +9,8 @@ export interface Noun {
   acc1: string;
   few: string;
   many: string;
+  /** Знахідний однини без числівника — потрібен лише мовам, де він інший («грушу» в «двадцять одну грушу»); польській — ні. */
+  acc?: string;
 }
 
 /** Тваринка: додатково знахідний (`acc`) і давальний (`dat`, для «Daj misiowi…») однини. */
@@ -32,7 +34,7 @@ export const WORLD_OBJECT_IDS = {
 
 export type ObjectId = (typeof WORLD_OBJECT_IDS)[WorldKey][number];
 
-export const OBJECTS: Record<ObjectId, Noun> = {
+const PL_OBJECTS: Record<ObjectId, Noun> = {
   // W1 «Łąka Liczenia»
   biedronka: { g: 'f', one: 'biedronka', acc1: 'jedną biedronkę', few: 'biedronki', many: 'biedronek' },
   motyl: { g: 'm', one: 'motyl', acc1: 'jednego motyla', few: 'motyle', many: 'motyli' },
@@ -74,7 +76,7 @@ export const ANIMAL_IDS = ['mis', 'jezyk', 'kotek', 'lisek', 'zajaczek', 'zabka'
 export type AnimalId = (typeof ANIMAL_IDS)[number];
 
 /** 8 тваринок (BRIEF §10). Давальні — POLISH_COPY §8: misiowi, jeżykowi, kotkowi, liskowi, zajączkowi, żabce, sowie, myszce. */
-export const ANIMALS: Record<AnimalId, Animal> = {
+const PL_ANIMALS: Record<AnimalId, Animal> = {
   mis: { g: 'm', one: 'miś', acc1: 'jednego misia', few: 'misie', many: 'misiów', acc: 'misia', dat: 'misiowi' },
   jezyk: { g: 'm', one: 'jeżyk', acc1: 'jednego jeżyka', few: 'jeżyki', many: 'jeżyków', acc: 'jeżyka', dat: 'jeżykowi' },
   kotek: { g: 'm', one: 'kotek', acc1: 'jednego kotka', few: 'kotki', many: 'kotków', acc: 'kotka', dat: 'kotkowi' },
@@ -86,8 +88,29 @@ export const ANIMALS: Record<AnimalId, Animal> = {
 };
 
 /** Розряди для «Cztery dziesiątki i siedem jedności» (POLISH_COPY §8, «Other words that change with the number»). */
-export const DZIESIATKA: Noun = { g: 'f', one: 'dziesiątka', acc1: 'jedną dziesiątkę', few: 'dziesiątki', many: 'dziesiątek' };
-export const JEDNOSC: Noun = { g: 'f', one: 'jedność', acc1: 'jedną jedność', few: 'jedności', many: 'jedności' };
+const PL_DZIESIATKA: Noun = { g: 'f', one: 'dziesiątka', acc1: 'jedną dziesiątkę', few: 'dziesiątki', many: 'dziesiątek' };
+const PL_JEDNOSC: Noun = { g: 'f', one: 'jedność', acc1: 'jedną jedność', few: 'jedności', many: 'jedności' };
+
+// ---------- Іменники поточної мови (speech/language.ts) ----------
+// Експортовані імена — живі прив'язки ES-модуля: польські таблиці вище за замовчуванням, інша мова підставляє свої (ті самі id, свої форми).
+export let OBJECTS: Record<ObjectId, Noun> = PL_OBJECTS;
+export let ANIMALS: Record<AnimalId, Animal> = PL_ANIMALS;
+export let DZIESIATKA: Noun = PL_DZIESIATKA;
+export let JEDNOSC: Noun = PL_JEDNOSC;
+
+export interface NounTables {
+  OBJECTS: Record<ObjectId, Noun>;
+  ANIMALS: Record<AnimalId, Animal>;
+  DZIESIATKA: Noun;
+  JEDNOSC: Noun;
+}
+
+export const PL_NOUNS: NounTables = { OBJECTS: PL_OBJECTS, ANIMALS: PL_ANIMALS, DZIESIATKA: PL_DZIESIATKA, JEDNOSC: PL_JEDNOSC };
+
+/** Перемикає живі прив'язки на іменники мови. Викликає лише speech/language.ts. */
+export function setNounTables(t: NounTables): void {
+  ({ OBJECTS, ANIMALS, DZIESIATKA, JEDNOSC } = t);
+}
 
 export function worldObjects(world: WorldKey): readonly ObjectId[] {
   return WORLD_OBJECT_IDS[world];

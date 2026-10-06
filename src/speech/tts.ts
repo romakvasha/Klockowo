@@ -3,6 +3,7 @@
 //    (або фразу скасовано, або голосу немає) — на цьому тримається правило «наступне завдання — лише коли голос договорив»;
 //  • до першого дотику (unlock) — тиша: браузер не дозволяє озвучувати без жесту, а застарілі фрази не мають «вибухнути» після нього;
 //  • немає польського голосу → status 'no-voice' (екран NoVoice), speak() тихо повертає 'skipped';
+//  • мова гри (setLanguage): голос і статус — для польської, української чи англійської; mp3-заміни — лише для польської;
 //  • застосунок згорнуто (setHidden) — голос замовкає, але сценарії не обриваються: фрази вирішуються як 'skipped', не 'cancelled';
 //  • окрему фразу можна замінити записаним mp3 з public/audio/ (clips.ts);
 //  • subscribe() — для React (useTts) і для музики, що стихає під голосом (M2b).
@@ -10,7 +11,8 @@ import { clipSlug, clipUrl, loadClipManifest } from './clips';
 import type {
   AudioLike, ClipEnv, SpeakOptions, SpeakResult, SynthLike, Tts, TtsConfig, TtsEnv, TtsState, TtsStatus, UtteranceLike,
 } from './ttsTypes';
-import { pickVoice, polishVoices } from './voices';
+import type { Lang } from './langCode';
+import { pickVoiceFor, voicesFor } from './voices';
 
 export type {
   AudioLike, ClipEnv, SpeakOptions, SpeakResult, SynthLike, Tts, TtsConfig, TtsEnv, TtsState, TtsStatus, UtteranceLike,
@@ -65,6 +67,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   let active: Active | null = null;
   let coolingDown = false;
   let hidden = false;
+  let lang: Lang = 'pl';
   let voicesSettled = !synth;
   let voiceWaiters: (() => void)[] = [];
   let clipSet: ReadonlySet<string> = new Set();
@@ -78,13 +81,13 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   function refreshVoices(): void {
     if (!synth) return;
     const all = synth.getVoices();
-    const polish = polishVoices(all);
-    const same = polish.length === state.voices.length && polish.every((v, i) => v.voiceURI === state.voices[i]?.voiceURI);
-    const status: TtsStatus = polish.length > 0 ? 'ready' : voicesSettled ? 'no-voice' : 'loading';
+    const forLang = voicesFor(all, lang);
+    const same = forLang.length === state.voices.length && forLang.every((v, i) => v.voiceURI === state.voices[i]?.voiceURI);
+    const status: TtsStatus = forLang.length > 0 ? 'ready' : voicesSettled ? 'no-voice' : 'loading';
     if (!same || status !== state.status || all.length !== state.voiceCount) {
-      patch({ voices: same ? state.voices : polish, status, voiceCount: all.length });
+      patch({ voices: same ? state.voices : forLang, status, voiceCount: all.length });
     }
-    if (polish.length > 0) flushVoiceWaiters();
+    if (forLang.length > 0) flushVoiceWaiters();
   }
 
   function flushVoiceWaiters(): void {
@@ -160,7 +163,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
       });
       return;
     }
-    const voice = pickVoice(synth.getVoices(), state.voiceURI);
+    const voice = pickVoiceFor(synth.getVoices(), lang, state.voiceURI);
     if (!voice) return finish(a, 'skipped');
 
     const u = env.makeUtterance(a.job.text);
@@ -224,7 +227,8 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     if (!clean || !state.unlocked || hidden) return Promise.resolve('skipped');
     if (opts.interrupt) cancelAll();
     return new Promise<SpeakResult>((resolve) => {
-      queue.push({ text: clean, rate: opts.rate ?? 1, clip: opts.clip ?? clipSlug(clean), resolve });
+      // записані mp3 (public/audio) — лише польські фрази: slug інших мов міг би збігтися з польським
+      queue.push({ text: clean, rate: opts.rate ?? 1, clip: opts.clip ?? (lang === 'pl' ? clipSlug(clean) : ''), resolve });
       pump();
     });
   }
@@ -251,10 +255,19 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     if (next) stopAll('skipped');
   }
 
+  /** Мова гри: голос і статус («no-voice», якщо голосу цієї мови немає) — для неї; фраза старою мовою обривається. */
+  function setLanguage(next: Lang): void {
+    if (next === lang) return;
+    lang = next;
+    cancelAll();
+    refreshVoices();
+  }
+
   return {
     speak,
     cancel: cancelAll,
     setHidden,
+    setLanguage,
     unlock,
     setRate: (rate) => patch({ rate: clamp(rate, 0.5, 1.5) }),
     setVolume: (volume) => patch({ volume: clamp(volume, 0, 1) }),

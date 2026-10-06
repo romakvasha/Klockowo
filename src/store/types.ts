@@ -3,13 +3,14 @@ import type { PupId } from '../characters/pups';
 import type { Struggle } from '../curriculum/adaptivity';
 import type { RetryItem, Swap } from '../curriculum/review';
 import type { GameId, LevelId, SkillId, WorldId, WorldKey } from '../curriculum/types';
+import type { Lang } from '../speech/langCode';
 
 export type { RetryItem, Struggle, Swap };
 
 export const MAX_PROFILES = 4;
 export const MAX_NAME_LENGTH = 24;
 
-export type PanelLanguage = 'pl' | 'uk';
+export type PanelLanguage = 'pl' | 'uk' | 'en';
 export type SessionMinutes = 10 | 15 | 20;
 
 export interface Profile {
@@ -34,6 +35,8 @@ export interface Settings {
   /** «Zadania dodatkowe ★»: показувати бічні ★-гілки. */
   extraTasks: boolean;
   panelLanguage: PanelLanguage;
+  /** Мова гри (голос і підписи дитини): польська за замовчуванням; вибір — на Start. */
+  language: Lang;
 }
 
 /** Як розв'язано завдання: first — з першого разу; retry — після однієї помилки; together — разом із Kubikom (2-га помилка). */

@@ -1,5 +1,5 @@
 import { ObjectArt } from '../../components/math/ObjectArt';
-import { countTouch, thereIs } from '../../speech/lines';
+import { countLabel, countTouch, thereIs } from '../../speech/lines';
 import { OBJECTS } from '../../speech/nouns';
 import type { GameDef } from '../engine/types';
 import { hintCount, togetherCount } from './assist';
@@ -20,7 +20,7 @@ export const policzIDotknij: GameDef<CountInstance> = {
       <b>?</b>
     </span>
   ),
-  sceneLabel: (i) => `Policz ${OBJECTS[i.object].few}`,
+  sceneLabel: (i) => countLabel(OBJECTS[i.object]),
   tiles: (i) => i.options.map((value) => ({ value, dots: i.answers === 'digit' ? undefined : value })),
   answer: (i) => i.count,
   check: checkCount,

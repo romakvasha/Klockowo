@@ -1,6 +1,7 @@
 import { Navigate, useNavigate } from 'react-router';
 import { parentAccess } from '../parent/access';
 import { panelText } from '../parent/text';
+import { LANG_NATIVE_NAMES, LANGS } from '../speech/langCode';
 import { selectActiveProfile, selectActiveProgress, useAppStore } from '../store';
 import { BackupSection } from './parent/BackupSection';
 import { OverviewSection } from './parent/OverviewSection';
@@ -10,7 +11,7 @@ import { SettingsSection } from './parent/SettingsSection';
 import { SkillsSection } from './parent/SkillsSection';
 import styles from './parent/Parent.module.css';
 
-/** Strefa rodzica (BRIEF §6 п.15): спокійний дорослий стиль (текст 18 px, кнопки від 44 px), перемикач «Język panelu: Polski / Українська». Сюди веде лише Bramka rodzica (дозвіл на 15 хв
+/** Strefa rodzica (BRIEF §6 п.15): спокійний дорослий стиль (текст 18 px, кнопки від 44 px), перемикач «Język panelu: Polski / Українська / English». Сюди веде лише Bramka rodzica (дозвіл на 15 хв
  *  у sessionStorage). Розділи: Podsumowanie, Ostatnia sesja, Mapa umiejętności, Postępy, Trudności, Ustawienia, Profile, Kopia zapasowa. */
 export function ParentZone() {
   const navigate = useNavigate();
@@ -24,13 +25,16 @@ export function ParentZone() {
   if (!profile) return <Navigate to="/start" replace />;
 
   return (
-    <main className={styles.zone} lang={lang === 'uk' ? 'uk' : 'pl'}>
+    <main className={styles.zone} lang={lang}>
       <header className={styles.header}>
         <h1 className={styles.zoneTitle}>{t.title}</h1>
         <div className={styles.lang} role="group" aria-label={t.language}>
           <span>{t.language}:</span>
-          <button type="button" aria-pressed={lang === 'pl'} className={styles.langButton} onClick={() => update({ panelLanguage: 'pl' })}>Polski</button>
-          <button type="button" aria-pressed={lang === 'uk'} className={styles.langButton} onClick={() => update({ panelLanguage: 'uk' })}>Українська</button>
+          {LANGS.map((code) => (
+            <button key={code} type="button" lang={code} aria-pressed={lang === code} className={styles.langButton} onClick={() => update({ panelLanguage: code })}>
+              {LANG_NATIVE_NAMES[code]}
+            </button>
+          ))}
         </div>
         <button
           type="button"

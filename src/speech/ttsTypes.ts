@@ -1,5 +1,6 @@
 // Типи голосу (Tts, TtsState…) і «навколишнє середовище» (SynthLike, AudioLike…), яке в браузері справжнє, а в тестах підроблене.
 // Їх реекспортує tts.ts: усі споживачі імпортують лише з tts.ts.
+import type { Lang } from './langCode';
 import type { VoiceLike } from './voices';
 
 export type TtsStatus = 'unsupported' | 'loading' | 'no-voice' | 'ready';
@@ -19,7 +20,7 @@ export interface TtsState {
   unlocked: boolean;
   status: TtsStatus;
   speaking: boolean;
-  /** Польські голоси браузера, найкращі першими. */
+  /** Голоси браузера мовою гри (за замовчуванням — польські), найкращі першими. */
   voices: readonly VoiceLike[];
   /** Скільки голосів бачить браузер усього (для діагностики «немає польського»). */
   voiceCount: number;
@@ -35,6 +36,8 @@ export interface Tts {
   cancel(): void;
   /** Вкладку сховано / знову видно: схована — голос замовкає, очікувані Promise вирішуються як 'skipped' (сценарії йдуть далі), нові фрази не звучать. */
   setHidden(hidden: boolean): void;
+  /** Мова гри: голос і статус — для неї (за замовчуванням польська). */
+  setLanguage(lang: Lang): void;
   /** Викликати в обробнику першого дотику (installAudioUnlock робить це сам). */
   unlock(): void;
   setRate(rate: number): void;

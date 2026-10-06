@@ -13,6 +13,7 @@ function fakeTargets() {
     sfx: { setVolume: (v) => calls.push(`sfx.volume ${v}`) },
     music: { setVolume: (v) => calls.push(`music.volume ${v}`) },
     setReduceMotion: (on) => calls.push(`reduceMotion ${on}`),
+    setLanguage: (lang) => calls.push(`language ${lang}`),
   };
   return { calls, targets };
 }
@@ -21,7 +22,7 @@ describe('applySettings', () => {
   it('типові налаштування: Mowa 80 %, Efekty 60 %, Muzyka 30 %, темп 0,9, автоголос', () => {
     const { calls, targets } = fakeTargets();
     applySettings(defaultSettings(), targets);
-    expect(calls).toEqual(['tts.rate 0.9', 'tts.volume 0.8', 'tts.voice null', 'sfx.volume 0.6', 'music.volume 0.3', 'reduceMotion false']);
+    expect(calls).toEqual(['language pl', 'tts.rate 0.9', 'tts.volume 0.8', 'tts.voice null', 'sfx.volume 0.6', 'music.volume 0.3', 'reduceMotion false']);
   });
 
   it('повзунки йдуть у свої цілі; обраний голос і «Mniej animacji» передаються', () => {
@@ -30,7 +31,13 @@ describe('applySettings', () => {
       { ...defaultSettings(), speechRate: 1.1, voiceURI: 'urn:pl', reduceMotion: true, volumes: { speech: 1, effects: 0, music: 0.05 } },
       targets,
     );
-    expect(calls).toEqual(['tts.rate 1.1', 'tts.volume 1', 'tts.voice urn:pl', 'sfx.volume 0', 'music.volume 0.05', 'reduceMotion true']);
+    expect(calls).toEqual(['language pl', 'tts.rate 1.1', 'tts.volume 1', 'tts.voice urn:pl', 'sfx.volume 0', 'music.volume 0.05', 'reduceMotion true']);
+  });
+
+  it('мова гри застосовується першою — голос далі обирається вже для неї', () => {
+    const { calls, targets } = fakeTargets();
+    applySettings({ ...defaultSettings(), language: 'uk' }, targets);
+    expect(calls[0]).toBe('language uk');
   });
 });
 

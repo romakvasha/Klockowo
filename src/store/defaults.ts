@@ -10,6 +10,7 @@ export function defaultSettings(): Settings {
     reduceMotion: false,
     extraTasks: true,
     panelLanguage: 'pl',
+    language: 'pl',
   };
 }
 

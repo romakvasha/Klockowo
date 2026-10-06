@@ -15,6 +15,7 @@ import { LABELS, PARENT_GEAR_LABEL, START_LINES } from '../speech/lines';
 import { tts } from '../speech/tts';
 import { useTts } from '../speech/useTts';
 import { useAppStore } from '../store';
+import { LanguagePicker } from './start/LanguagePicker';
 import styles from './Start.module.css';
 
 /** Хмаринка-декор (design etap1/14). */
@@ -70,6 +71,7 @@ export function Start() {
       <HoldToConfirm className={styles.gear} label={PARENT_GEAR_LABEL} onConfirm={() => navigate('/parent-gate')}>
         <Icon name="gear" />
       </HoldToConfirm>
+      {phase === 'play' && <LanguagePicker />}
 
       <header className={styles.top}>
         <Logo />
