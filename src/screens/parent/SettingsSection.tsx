@@ -12,14 +12,15 @@ import styles from './Parent.module.css';
 
 const SESSIONS: readonly SessionMinutes[] = [10, 15, 20];
 
-/** Ustawienia (BRIEF §6 п.15): «Długość sesji» (10/15/20 min), «Głos» (голоси браузера мовою гри), «Tempo mowy», «Głośność» (три повзунки «Mowa», «Efekty», «Muzyka»), «Mniej animacji»,
+/** Ustawienia (BRIEF §6 п.15): «Długość sesji» (10/15/20 min), «Głos» (голоси браузера мовою гри; «Nagrany głos» — лише коли є записи цієї мови), «Tempo mowy»,
+ *  «Głośność» (три повзунки «Mowa», «Efekty», «Muzyka»), «Mniej animacji»,
  *  «Zadania dodatkowe ★», «Odblokuj świat ręcznie». Зміни застосовуються одразу (SettingsSync). */
 export function SettingsSection({ t }: { t: PanelText }) {
   const settings = useAppStore((s) => s.settings);
   const update = useAppStore((s) => s.updateSettings);
   const progress = useAppStore(selectActiveProgress);
   const setWorldUnlocked = useAppStore((s) => s.setWorldUnlocked);
-  const voices = useTts().voices;
+  const { voices, recorded } = useTts();
   const s = t.settings;
   const pct = (v: number) => Math.round(v * 100);
   const sample = () => void tts.speak(PRAISE[0], { interrupt: true }); // пробна фраза мовою гри
@@ -47,6 +48,9 @@ export function SettingsSection({ t }: { t: PanelText }) {
           ))}
         </select>
       </label>
+      {recorded !== 'none' && (
+        <Toggle label={s.recordedVoice} checked={settings.recordedVoice} onChange={(recordedVoice) => update({ recordedVoice })} />
+      )}
 
       <Slider
         label={s.speechRate}

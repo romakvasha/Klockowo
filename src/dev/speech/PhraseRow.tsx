@@ -1,4 +1,3 @@
-import { clipSlug } from '../../speech/clips';
 import { say } from './log';
 import styles from './Speech.module.css';
 
@@ -11,7 +10,7 @@ interface Props {
   rate?: number;
 }
 
-/** Рядок: кнопка ▶ (озвучити), польська фраза, підпис і slug файла-заміни для public/audio/. */
+/** Рядок: кнопка ▶ (озвучити), польська фраза й підпис. */
 export function PhraseRow({ text, label, mark, rate }: Props) {
   return (
     <li className={styles.row}>
@@ -28,7 +27,6 @@ export function PhraseRow({ text, label, mark, rate }: Props) {
         <span className={styles.meta}>
           {label}
           {mark && <span className={styles.mark}>{mark}</span>}
-          <span className={styles.slug}>{clipSlug(text)}</span>
         </span>
       </span>
     </li>

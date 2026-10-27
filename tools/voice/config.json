@@ -1,0 +1,16 @@
+{
+  "model": "eleven_v4",
+  "output_format": "mp3_24000_48",
+  "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75,
+    "style": 0,
+    "use_speaker_boost": true,
+    "speed": 0.95
+  },
+  "voices": {
+    "pl": "EXAVITQu4vr4xnSDxMaL",
+    "uk": "EXAVITQu4vr4xnSDxMaL",
+    "en": "EXAVITQu4vr4xnSDxMaL"
+  }
+}

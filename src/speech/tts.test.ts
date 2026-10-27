@@ -1,91 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { clipSlug } from './clips';
-import {
-  createTts, watchdogMs, DEFAULT_RATE,
-  type AudioLike, type ClipEnv, type SynthLike, type TtsConfig, type UtteranceLike,
-} from './tts';
+import { createTts, watchdogMs, DEFAULT_RATE } from './tts';
+import { EN, FakeUtterance, PL, PL2, setup } from './ttsFakes';
 import { startScript } from './script';
 import { isPolishVoice, pickVoice, polishVoices, type VoiceLike } from './voices';
-
-// ---------- Підробки, що повторюють поведінку браузера ----------
-class FakeUtterance implements UtteranceLike {
-  lang = '';
-  voice: VoiceLike | null = null;
-  rate = 1;
-  volume = 1;
-  pitch = 1;
-  onend: (() => void) | null = null;
-  onerror: ((e: { error?: string }) => void) | null = null;
-  constructor(public text: string) {}
-}
-
-class FakeSynth implements SynthLike {
-  speaking = false;
-  onvoiceschanged: (() => void) | null = null;
-  utterances: FakeUtterance[] = [];
-  cancelCount = 0;
-  constructor(public voices: VoiceLike[]) {}
-  speak(u: UtteranceLike): void {
-    this.utterances.push(u as FakeUtterance);
-    this.speaking = true;
-  }
-  /** Як Chrome: cancel() завершує поточну фразу подією error 'canceled'. */
-  cancel(): void {
-    this.cancelCount++;
-    this.speaking = false;
-    this.utterances.at(-1)?.onerror?.({ error: 'canceled' });
-  }
-  getVoices(): VoiceLike[] {
-    return this.voices;
-  }
-  /** Справжні фрази (без тихої «розминки» unlock). */
-  get real(): FakeUtterance[] {
-    return this.utterances.filter((u) => u.text !== ' ');
-  }
-  /** Озвучення фрази закінчилось. */
-  end(u: FakeUtterance | undefined = this.real.at(-1)): void {
-    this.speaking = false;
-    u?.onend?.();
-  }
-}
-
-class FakeAudio implements AudioLike {
-  volume = 1;
-  onended: (() => void) | null = null;
-  onerror: (() => void) | null = null;
-  played = false;
-  paused = false;
-  constructor(public url: string) {}
-  play(): Promise<void> {
-    this.played = true;
-    return Promise.resolve();
-  }
-  pause(): void {
-    this.paused = true;
-  }
-}
-
-const PL: VoiceLike = { name: 'Microsoft Paulina', lang: 'pl-PL', voiceURI: 'paulina', localService: true };
-const PL2: VoiceLike = { name: 'Google polski', lang: 'pl-PL', voiceURI: 'google-pl', localService: false };
-const EN: VoiceLike = { name: 'Microsoft Zira', lang: 'en-US', voiceURI: 'zira', localService: true };
-
-function setup(voices: VoiceLike[] = [EN, PL], cfg: TtsConfig = {}, clipSlugs: readonly string[] | null = null) {
-  const synth = new FakeSynth(voices);
-  const audios: FakeAudio[] = [];
-  const clips: ClipEnv | undefined = clipSlugs
-    ? {
-        load: () => Promise.resolve(clipSlugs),
-        url: (slug) => `audio/${slug}.mp3`,
-        make: (url) => {
-          const a = new FakeAudio(url);
-          audios.push(a);
-          return a;
-        },
-      }
-    : undefined;
-  const tts = createTts({ synth, makeUtterance: (t) => new FakeUtterance(t), clips }, cfg);
-  return { synth, tts, audios };
-}
 
 const flush = () => vi.advanceTimersByTimeAsync(0);
 
@@ -405,68 +322,6 @@ describe('tts: темп і гучність', () => {
   });
 });
 
-describe('tts: заміна фраз на mp3', () => {
-  it('фраза з маніфеста грає з файла, синтез мовчить', async () => {
-    const { synth, tts, audios } = setup([EN, PL], {}, ['trzynascie']);
-    await flush(); // маніфест завантажився
-    tts.unlock();
-    tts.setVolume(0.7);
-    const p = tts.speak('trzynaście');
-    await flush();
-    expect(synth.real).toHaveLength(0);
-    expect(audios).toHaveLength(1);
-    expect(audios[0]?.url).toBe('audio/trzynascie.mp3');
-    expect(audios[0]?.volume).toBe(0.7);
-    expect(audios[0]?.played).toBe(true);
-    audios[0]?.onended?.();
-    await expect(p).resolves.toBe('spoken');
-  });
-
-  it('фраза без файла озвучується синтезом', async () => {
-    const { synth, tts, audios } = setup([EN, PL], {}, ['trzynascie']);
-    await flush();
-    tts.unlock();
-    void tts.speak('czternaście');
-    expect(audios).toHaveLength(0);
-    expect(synth.real).toHaveLength(1);
-  });
-
-  it('файл не зіграв (помилка) → резерв: синтез', async () => {
-    const { synth, tts, audios } = setup([EN, PL], {}, ['trzynascie']);
-    await flush();
-    tts.unlock();
-    const p = tts.speak('trzynaście');
-    await flush();
-    audios[0]?.onerror?.();
-    expect(audios[0]?.paused).toBe(true);
-    expect(synth.real.map((u) => u.text)).toEqual(['trzynaście']);
-    synth.end();
-    await expect(p).resolves.toBe('spoken');
-  });
-
-  it('явний clip у параметрах має пріоритет над slug із тексту', async () => {
-    const { tts, audios } = setup([EN, PL], {}, ['brawo-piec-jablek']);
-    await flush();
-    tts.unlock();
-    void tts.speak('Brawo! Pięć jabłek.');
-    expect(audios[0]?.url).toBe('audio/brawo-piec-jablek.mp3');
-    void tts.speak('Inny tekst', { clip: 'brawo-piec-jablek', interrupt: true });
-    await vi.advanceTimersByTimeAsync(100);
-    expect(audios).toHaveLength(2);
-  });
-
-  it('cancel() зупиняє файл', async () => {
-    const { tts, audios } = setup([EN, PL], {}, ['trzynascie']);
-    await flush();
-    tts.unlock();
-    const p = tts.speak('trzynaście');
-    await flush();
-    tts.cancel();
-    await expect(p).resolves.toBe('cancelled');
-    expect(audios[0]?.paused).toBe(true);
-  });
-});
-
 describe('tts: цифри в тексті', () => {
   it('у режимі розробки попереджає, що числа озвучують словами', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -500,21 +355,5 @@ describe('voices.ts', () => {
     const a: VoiceLike = { name: 'a', lang: 'pl-PL', voiceURI: 'a' };
     const b: VoiceLike = { name: 'b', lang: 'pl-PL', voiceURI: 'b' };
     expect(polishVoices([EN, a, b]).map((v) => v.voiceURI)).toEqual(['a', 'b']);
-  });
-});
-
-describe('clipSlug', () => {
-  it('прибирає діакритику й пунктуацію', () => {
-    expect(clipSlug('Brawo! Pięć jabłek.')).toBe('brawo-piec-jablek');
-    expect(clipSlug('trzynaście')).toBe('trzynascie');
-    expect(clipSlug('Łąka Liczenia')).toBe('laka-liczenia');
-    expect(clipSlug('Żółć, źdźbło, ćma, gęś, ń, ś')).toBe('zolc-zdzblo-cma-ges-n-s');
-  });
-
-  it('порожній текст → порожній slug; довгий — обрізається без «-» на кінці', () => {
-    expect(clipSlug(' !!! ')).toBe('');
-    const long = clipSlug('słowo '.repeat(40));
-    expect(long.length).toBeLessThanOrEqual(80);
-    expect(long.endsWith('-')).toBe(false);
   });
 });

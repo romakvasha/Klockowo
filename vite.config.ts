@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    // Офлайн і встановлення на телефон (M24): service worker кешує всю збірку (код, шрифти, картинки, mp3), маніфест додає іконку «Klockowo» на екран. У тестах плагін не потрібен.
+    // Офлайн і встановлення на телефон (M24): service worker кешує всю збірку (код, шрифти, картинки), записаний голос — поступово (V5), маніфест додає іконку «Klockowo» на екран. У тестах плагін не потрібен.
     mode !== 'test' &&
       VitePWA({
         registerType: 'autoUpdate',
@@ -30,6 +30,22 @@ export default defineConfig(({ mode }) => ({
         },
         workbox: {
           globPatterns: ['**/*.{js,css,html,svg,png,woff2,woff,json,mp3,ogg,wav}'],
+          // Записаний голос (тисячі mp3, десятки МБ) — не в першому завантаженні: файли кешуються, коли звучать, а найчутніші
+          // тихо докачуються після старту (speech/clipCache.ts). Маніфест — спершу з мережі (нові записи), без мережі — з кешу.
+          globIgnores: ['audio/**'],
+          runtimeCaching: [
+            {
+              urlPattern: ({ url }) => url.pathname.includes('/audio/') && url.pathname.endsWith('/manifest.json'),
+              handler: 'NetworkFirst',
+              options: { cacheName: 'klockowo-voice-manifest', networkTimeoutSeconds: 4 },
+            },
+            {
+              urlPattern: ({ url }) => url.pathname.includes('/audio/') && url.pathname.endsWith('.mp3'),
+              handler: 'CacheFirst',
+              // <audio> просить шматки (Range): з кешу їх вирізає rangeRequests; у кеш ідуть лише повні відповіді (200)
+              options: { cacheName: 'klockowo-voice', rangeRequests: true, cacheableResponse: { statuses: [200] } },
+            },
+          ],
           navigateFallback: 'index.html',
           cleanupOutdatedCaches: true,
           maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,

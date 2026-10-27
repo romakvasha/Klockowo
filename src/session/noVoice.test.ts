@@ -10,6 +10,13 @@ describe('екран «Brak polskiego głosu»', () => {
     expect(shouldShowNoVoice('no-voice', true)).toBe(false);
   });
 
+  it('мову гри записано повністю — браузерний голос не потрібен; записано частину — екран є', () => {
+    expect(shouldShowNoVoice('no-voice', false, 'complete')).toBe(false);
+    expect(shouldShowNoVoice('unsupported', false, 'complete')).toBe(false);
+    expect(shouldShowNoVoice('no-voice', false, 'partial')).toBe(true);
+    expect(afterLoadingPath('no-voice', false, 'complete')).toBe('/start');
+  });
+
   it('afterLoadingPath: без голосу — на екран про голос, інакше — на Start', () => {
     expect(afterLoadingPath('no-voice', false)).toBe('/no-voice');
     expect(afterLoadingPath('no-voice', true)).toBe('/start');

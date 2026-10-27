@@ -1,9 +1,9 @@
-// Налаштування зі store → мова гри, голос, ефекти, музика, «Mniej animacji». Чиста функція: цілі підставляються (у тестах — підроблені).
+// Налаштування зі store → мова гри, голос (записаний чи браузера), ефекти, музика, «Mniej animacji». Чиста функція: цілі підставляються (у тестах — підроблені).
 import type { Lang } from '../speech/langCode';
 import type { Settings } from '../store/types';
 
 export interface SettingsTargets {
-  tts: { setRate(rate: number): void; setVolume(volume: number): void; setVoiceURI(uri: string | null): void };
+  tts: { setRate(rate: number): void; setVolume(volume: number): void; setVoiceURI(uri: string | null): void; setUseRecorded(on: boolean): void };
   sfx: { setVolume(volume: number): void };
   music: { setVolume(volume: number): void };
   setReduceMotion(on: boolean): void;
@@ -11,12 +11,13 @@ export interface SettingsTargets {
   setLanguage(lang: Lang): void;
 }
 
-/** Повзунки «Mowa» → голос, «Efekty» → звукові ефекти, «Muzyka» → фонова музика; «Tempo mowy» і вибір голосу → tts. */
+/** Повзунки «Mowa» → голос, «Efekty» → звукові ефекти, «Muzyka» → фонова музика; «Tempo mowy», вибір голосу й «Nagrany głos» → tts. */
 export function applySettings(settings: Settings, targets: SettingsTargets): void {
   targets.setLanguage(settings.language);
   targets.tts.setRate(settings.speechRate);
   targets.tts.setVolume(settings.volumes.speech);
   targets.tts.setVoiceURI(settings.voiceURI);
+  targets.tts.setUseRecorded(settings.recordedVoice);
   targets.sfx.setVolume(settings.volumes.effects);
   targets.music.setVolume(settings.volumes.music);
   targets.setReduceMotion(settings.reduceMotion);

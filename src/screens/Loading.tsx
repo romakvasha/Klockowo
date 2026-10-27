@@ -32,7 +32,7 @@ export function Loading() {
       setFilled(filledSlots(bootProgress(elapsed, done, BOOT_TASKS)));
       if (leaving === undefined && isBooted(elapsed, done, BOOT_TASKS)) {
         window.clearInterval(timer);
-        leaving = window.setTimeout(() => navigate(afterLoadingPath(tts.getState().status, noVoiceSeen()), { replace: true }), 350); // дати останньому кубику «вискочити»
+        leaving = window.setTimeout(() => navigate(afterLoadingPath(tts.getState().status, noVoiceSeen(), tts.getState().recorded), { replace: true }), 350); // дати останньому кубику «вискочити»
       }
     }, 60);
     return () => {

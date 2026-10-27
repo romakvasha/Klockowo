@@ -48,6 +48,12 @@ describe('налаштування', () => {
     const current = { ...defaultSettings(), sessionMinutes: 20 as const };
     expect(normalizeSettings({ sessionMinutes: 12 }, current).sessionMinutes).toBe(20);
   });
+
+  it('«Nagrany głos»: старі дані без поля — увімкнено; вимкнене зберігається', () => {
+    expect(normalizeSettings({ sessionMinutes: 10 }).recordedVoice).toBe(true);
+    expect(normalizeSettings({ recordedVoice: false }).recordedVoice).toBe(false);
+    expect(normalizeSettings({ recordedVoice: 'no' }).recordedVoice).toBe(true);
+  });
 });
 
 describe('профілі', () => {

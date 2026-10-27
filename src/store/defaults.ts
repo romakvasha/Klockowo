@@ -6,6 +6,7 @@ export function defaultSettings(): Settings {
     sessionMinutes: 15,
     voiceURI: null,
     speechRate: 0.9,
+    recordedVoice: true,
     volumes: { speech: 0.8, effects: 0.6, music: 0.3 },
     reduceMotion: false,
     extraTasks: true,
