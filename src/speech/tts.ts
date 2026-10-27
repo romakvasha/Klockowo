@@ -3,19 +3,21 @@
 //    (або фразу скасовано, або голосу немає) — на цьому тримається правило «наступне завдання — лише коли голос договорив»;
 //  • до першого дотику (unlock) — тиша: браузер не дозволяє озвучувати без жесту, а застарілі фрази не мають «вибухнути» після нього;
 //  • немає польського голосу → status 'no-voice' (екран NoVoice), speak() тихо повертає 'skipped';
-//  • мова гри (setLanguage): голос і статус — для польської, української чи англійської; mp3-заміни — лише для польської;
+//  • мова гри (setLanguage): голос, записи й статус — для польської, української чи англійської;
 //  • застосунок згорнуто (setHidden) — голос замовкає, але сценарії не обриваються: фрази вирішуються як 'skipped', не 'cancelled';
-//  • окрему фразу можна замінити записаним mp3 з public/audio/ (clips.ts);
+//  • записаний голос (public/audio/<мова>/, clips.ts): висловлювання, усі речення якого записано, грає з mp3 речення за реченням
+//    (Promise — після останнього); бракує хоч одного речення — усе висловлювання каже браузерний голос;
 //  • subscribe() — для React (useTts) і для музики, що стихає під голосом (M2b).
-import { clipSlug, clipUrl, loadClipManifest } from './clips';
+import { sharedClipAudio } from './clipAudio';
+import { clipUrl, clipsFor, loadClipManifest, splitSentences, type ClipManifest } from './clips';
 import type {
-  AudioLike, ClipEnv, SpeakOptions, SpeakResult, SynthLike, Tts, TtsConfig, TtsEnv, TtsState, TtsStatus, UtteranceLike,
+  ClipEnv, RecordedStatus, SpeakOptions, SpeakResult, SynthLike, Tts, TtsConfig, TtsEnv, TtsState, TtsStatus, UtteranceLike,
 } from './ttsTypes';
 import type { Lang } from './langCode';
 import { pickVoiceFor, voicesFor } from './voices';
 
 export type {
-  AudioLike, ClipEnv, SpeakOptions, SpeakResult, SynthLike, Tts, TtsConfig, TtsEnv, TtsState, TtsStatus, UtteranceLike,
+  AudioLike, ClipEnv, RecordedStatus, SpeakOptions, SpeakResult, SynthLike, Tts, TtsConfig, TtsEnv, TtsState, TtsStatus, UtteranceLike,
 } from './ttsTypes';
 
 export const DEFAULT_RATE = 0.9; // POLISH_COPY §8: числа слухати на ≈0,9
@@ -23,6 +25,7 @@ const VOICE_WAIT_MS = 2500; // повільні пристрої вантажа�
 const CANCEL_COOLDOWN_MS = 80;
 const PRIME_CLEANUP_MS = 500;
 const CLIP_WATCHDOG_MS = 15000;
+const SENTENCE_GAP_MS = 220; // пауза між реченнями запису — як природна пауза в мовленні
 
 const clamp = (x: number, min: number, max: number): number => Math.min(max, Math.max(min, x));
 
@@ -34,7 +37,8 @@ export function watchdogMs(text: string, rate: number): number {
 interface Job {
   text: string;
   rate: number;
-  clip: string;
+  /** Файли запису (по одному на речення) або null — каже браузерний голос. */
+  files: readonly string[] | null;
   resolve: (r: SpeakResult) => void;
 }
 
@@ -51,6 +55,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   const { synth, clips: clipEnv } = env;
   const voiceWaitMs = cfg.voiceWaitMs ?? VOICE_WAIT_MS;
   const cooldownMs = cfg.cancelCooldownMs ?? CANCEL_COOLDOWN_MS;
+  const sentenceGapMs = cfg.sentenceGapMs ?? SENTENCE_GAP_MS;
 
   let state: TtsState = {
     unlocked: false,
@@ -61,6 +66,8 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     voiceURI: null,
     rate: DEFAULT_RATE,
     volume: 1,
+    recorded: 'none',
+    useRecorded: true,
   };
   const listeners = new Set<() => void>();
   const queue: Job[] = [];
@@ -70,7 +77,8 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   let lang: Lang = 'pl';
   let voicesSettled = !synth;
   let voiceWaiters: (() => void)[] = [];
-  let clipSet: ReadonlySet<string> = new Set();
+  /** Записи за мовою: ключа ще немає — не вантажили; null — записів немає (чи ще вантажаться). */
+  const manifests: Partial<Record<Lang, ClipManifest | null>> = {};
 
   function patch(p: Partial<TtsState>): void {
     state = { ...state, ...p };
@@ -107,12 +115,29 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
       }, voiceWaitMs);
     }
   }
-  if (clipEnv) {
-    clipEnv.load().then(
-      (list) => { clipSet = new Set(list); },
-      () => { /* немає маніфесту — синтез */ },
-    );
+  // ---------- Записаний голос ----------
+  function syncRecorded(): void {
+    const m = manifests[lang];
+    const recorded: RecordedStatus = !m || Object.keys(m.clips).length === 0 ? 'none' : m.complete ? 'complete' : 'partial';
+    if (recorded !== state.recorded) patch({ recorded });
   }
+
+  /** Записи мови вантажаться один раз; статус recorded — для мови гри. */
+  function loadRecorded(l: Lang): void {
+    if (clipEnv && !(l in manifests)) {
+      manifests[l] = null;
+      clipEnv.load(l).then(
+        (m) => {
+          manifests[l] = m;
+          if (l === lang) syncRecorded();
+        },
+        () => { /* немає записів — браузерний голос */ },
+      );
+    }
+    syncRecorded();
+  }
+
+  loadRecorded(lang);
 
   // ---------- Черга ----------
   /** Chrome губить speak(), викликаний одразу після cancel(), тому після скасування трохи чекаємо. */
@@ -149,7 +174,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   function begin(job: Job): void {
     const a: Active = { job, done: false, stop: () => {}, timer: undefined, keep: undefined };
     active = a;
-    if (clipEnv && clipSet.has(job.clip)) playClip(a, clipEnv);
+    if (clipEnv && job.files) playClips(a, clipEnv, job.files);
     else speakSynth(a);
   }
 
@@ -185,27 +210,54 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     synth.speak(u);
   }
 
-  function playClip(a: Active, env2: ClipEnv): void {
-    const audio = env2.make(env2.url(a.job.clip));
-    audio.volume = state.volume;
-    const fallback = (): void => {
+  /** Висловлювання з записів: речення одне за одним із паузою; темп — від «Tempo mowy» (звичайний 0,9 — запис як є), гучність — «Mowa».
+   *  Файл не зіграв — решту висловлювання (з цього речення) каже браузерний голос. */
+  function playClips(a: Active, env2: ClipEnv, files: readonly string[]): void {
+    const sentences = splitSentences(a.job.text);
+    const l = lang;
+    let i = 0;
+    const next = (): void => {
       if (a.done) return;
-      audio.onended = null;
-      audio.onerror = null;
-      if (a.timer !== undefined) clearTimeout(a.timer);
-      try {
+      const file = files[i];
+      if (file === undefined) return finish(a, 'spoken');
+      i++;
+      const audio = env2.make(env2.url(l, file));
+      audio.volume = state.volume;
+      audio.playbackRate = clamp((state.rate * a.job.rate) / DEFAULT_RATE, 0.5, 2);
+      let settled = false;
+      const ended = (): void => {
+        if (settled || a.done) return;
+        settled = true;
+        if (a.timer !== undefined) clearTimeout(a.timer);
+        if (i >= files.length) finish(a, 'spoken');
+        else a.timer = setTimeout(next, sentenceGapMs);
+      };
+      const failed = (): void => {
+        if (settled || a.done) return;
+        settled = true;
+        if (a.timer !== undefined) clearTimeout(a.timer);
+        audio.onended = null;
+        audio.onerror = null;
+        try {
+          audio.pause();
+        } catch {
+          /* ігноруємо */
+        }
+        a.job = { ...a.job, text: sentences.slice(i - 1).join(' ') || a.job.text };
+        speakSynth(a);
+      };
+      audio.onended = ended;
+      audio.onerror = failed;
+      a.keep = audio;
+      a.stop = () => {
+        audio.onended = null;
+        audio.onerror = null;
         audio.pause();
-      } catch {
-        /* ігноруємо */
-      }
-      speakSynth(a); // файл не зіграв — озвучуємо синтезом
+      };
+      a.timer = setTimeout(failed, CLIP_WATCHDOG_MS);
+      audio.play().catch(failed);
     };
-    audio.onended = () => finish(a, 'spoken');
-    audio.onerror = fallback;
-    a.keep = audio;
-    a.stop = () => audio.pause();
-    a.timer = setTimeout(fallback, CLIP_WATCHDOG_MS);
-    audio.play().catch(fallback);
+    next();
   }
 
   function stopAll(result: SpeakResult): void {
@@ -226,9 +278,9 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     }
     if (!clean || !state.unlocked || hidden) return Promise.resolve('skipped');
     if (opts.interrupt) cancelAll();
+    const files = state.useRecorded && clipEnv ? clipsFor(manifests[lang], clean) : null;
     return new Promise<SpeakResult>((resolve) => {
-      // записані mp3 (public/audio) — лише польські фрази: slug інших мов міг би збігтися з польським
-      queue.push({ text: clean, rate: opts.rate ?? 1, clip: opts.clip ?? (lang === 'pl' ? clipSlug(clean) : ''), resolve });
+      queue.push({ text: clean, rate: opts.rate ?? 1, files, resolve });
       pump();
     });
   }
@@ -236,6 +288,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   function unlock(): void {
     if (state.unlocked) return;
     patch({ unlocked: true });
+    clipEnv?.prime?.();
     refreshVoices();
     if (!synth || synth.speaking) return;
     // Тиха «розминка» просто в жесті: iOS дозволяє подальші speak() лише після першого виклику з дотику.
@@ -255,12 +308,13 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     if (next) stopAll('skipped');
   }
 
-  /** Мова гри: голос і статус («no-voice», якщо голосу цієї мови немає) — для неї; фраза старою мовою обривається. */
+  /** Мова гри: голос, записи й статус («no-voice», якщо голосу цієї мови немає) — для неї; фраза старою мовою обривається. */
   function setLanguage(next: Lang): void {
     if (next === lang) return;
     lang = next;
     cancelAll();
     refreshVoices();
+    loadRecorded(next);
   }
 
   return {
@@ -268,6 +322,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     cancel: cancelAll,
     setHidden,
     setLanguage,
+    setUseRecorded: (useRecorded) => patch({ useRecorded }),
     unlock,
     setRate: (rate) => patch({ rate: clamp(rate, 0.5, 1.5) }),
     setVolume: (volume) => patch({ volume: clamp(volume, 0, 1) }),
@@ -294,9 +349,9 @@ export function browserEnv(): TtsEnv {
       typeof Audio === 'undefined'
         ? undefined
         : {
-            load: () => loadClipManifest(base),
-            url: (slug) => clipUrl(base, slug),
-            make: (url) => new Audio(url) as unknown as AudioLike,
+            load: (l) => loadClipManifest(base, l),
+            url: (l, file) => clipUrl(base, l, file),
+            ...sharedClipAudio(),
           },
   };
 }

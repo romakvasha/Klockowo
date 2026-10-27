@@ -177,13 +177,6 @@
   border-radius: var(--kl-radius-chip);
 }
 
-.slug {
-  color: var(--kl-ink-soft);
-  font-family: ui-monospace, Consolas, monospace;
-  font-size: 14px;
-  opacity: 0.8;
-}
-
 .log {
   margin: 0;
   padding-left: var(--kl-space-3);

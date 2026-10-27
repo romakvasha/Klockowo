@@ -27,6 +27,8 @@ export interface PanelText {
     /** voiceAuto / voiceNone — про голос мови гри (`game`), а не панелі. */
     sessionLength: string; minutesUnit: string; voice: string; voiceAuto: (game: Lang) => string; voiceNone: (game: Lang) => string; speechRate: string; slower: string; faster: string;
     volume: string; speech: string; effects: string; music: string; reduceMotion: string; extraTasks: string; unlockWorld: string; unlockNote: string;
+    /** «Nagrany głos» — видно, лише коли для мови гри є записи. */
+    recordedVoice: string;
   };
   profiles: { name: string; namePlaceholder: string; pup: string; add: string; full: string; remove: string; active: string };
   backup: { export: string; import: string; clear: string; importNew: string; importReplace: string; pasteHere: string; done: string; errors: Record<string, string>; confirm: (name: string) => string; cancel: string; confirmYes: string };
@@ -103,7 +105,7 @@ const PL: PanelText = {
   settings: {
     sessionLength: 'Długość sesji', minutesUnit: 'min', voice: 'Głos', voiceAuto: (game) => `Automatycznie (${PL_LANG_ADJ[game]})`,
     voiceNone: (game) => `Brak ${PL_LANG_GEN[game]} głosu w tej przeglądarce`, speechRate: 'Tempo mowy',
-    slower: 'Wolniej', faster: 'Szybciej', volume: 'Głośność', speech: 'Mowa', effects: 'Efekty', music: 'Muzyka', reduceMotion: 'Mniej animacji',
+    slower: 'Wolniej', faster: 'Szybciej', volume: 'Głośność', speech: 'Mowa', effects: 'Efekty', music: 'Muzyka', reduceMotion: 'Mniej animacji', recordedVoice: 'Nagrany głos',
     extraTasks: 'Zadania dodatkowe ★', unlockWorld: 'Odblokuj świat ręcznie', unlockNote: 'Dziecko może wejść do światu bez ukończenia poprzedniego.',
   },
   profiles: { name: 'Imię', namePlaceholder: 'Bez imienia', pup: 'Piesek', add: 'Dodaj profil', full: 'Jest już 4 profile', remove: 'Usuń profil', active: 'gra teraz' },
@@ -145,7 +147,7 @@ const UK: PanelText = {
   settings: {
     sessionLength: 'Тривалість сесії', minutesUnit: 'хв', voice: 'Голос', voiceAuto: (game) => `Автоматично (${UK_LANG_ADJ[game]})`,
     voiceNone: (game) => `У цьому браузері немає ${UK_LANG_GEN[game]} голосу`, speechRate: 'Темп мовлення',
-    slower: 'Повільніше', faster: 'Швидше', volume: 'Гучність', speech: 'Мовлення', effects: 'Ефекти', music: 'Музика', reduceMotion: 'Менше анімацій',
+    slower: 'Повільніше', faster: 'Швидше', volume: 'Гучність', speech: 'Мовлення', effects: 'Ефекти', music: 'Музика', reduceMotion: 'Менше анімацій', recordedVoice: 'Записаний голос',
     extraTasks: 'Додаткові завдання ★', unlockWorld: 'Відкрити світ вручну', unlockNote: 'Дитина зможе зайти у світ, не пройшовши попередній.',
   },
   profiles: { name: "Ім'я", namePlaceholder: "Без імені", pup: 'Цуценя', add: 'Додати профіль', full: 'Уже 4 профілі', remove: 'Видалити профіль', active: 'грає зараз' },
@@ -187,7 +189,7 @@ const EN: PanelText = {
   settings: {
     sessionLength: 'Session length', minutesUnit: 'min', voice: 'Voice', voiceAuto: (game) => `Automatic (${EN_LANG_NAME[game]})`,
     voiceNone: (game) => `No ${EN_LANG_NAME[game]} voice in this browser`, speechRate: 'Speech rate',
-    slower: 'Slower', faster: 'Faster', volume: 'Volume', speech: 'Speech', effects: 'Effects', music: 'Music', reduceMotion: 'Less animation',
+    slower: 'Slower', faster: 'Faster', volume: 'Volume', speech: 'Speech', effects: 'Effects', music: 'Music', reduceMotion: 'Less animation', recordedVoice: 'Recorded voice',
     extraTasks: 'Extra tasks ★', unlockWorld: 'Unlock a world manually', unlockNote: 'The child can enter the world without finishing the previous one.',
   },
   profiles: { name: 'Name', namePlaceholder: 'No name', pup: 'Puppy', add: 'Add profile', full: 'There are already 4 profiles', remove: 'Delete profile', active: 'playing now' },

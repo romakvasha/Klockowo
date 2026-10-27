@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { shouldShowNoVoice } from '../../session/noVoice';
 import { availableLanguages, useLanguage } from '../../speech/language';
 import { LANG_BCP47, LANG_CODES, LANG_NATIVE_NAMES, type Lang } from '../../speech/langCode';
 import { tts } from '../../speech/tts';
@@ -21,8 +22,8 @@ export function LanguagePicker() {
   useEffect(() => {
     if (greet !== current) return;
     greet = null;
-    const { status } = tts.getState();
-    if (status === 'no-voice' || status === 'unsupported') navigate('/no-voice');
+    const { status, recorded } = tts.getState();
+    if (shouldShowNoVoice(status, false, recorded)) navigate('/no-voice');
     else void tts.speak(LANG_NATIVE_NAMES[current], { interrupt: true });
   }, [current, navigate]);
 

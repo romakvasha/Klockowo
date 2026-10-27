@@ -1,19 +1,20 @@
 // Типи голосу (Tts, TtsState…) і «навколишнє середовище» (SynthLike, AudioLike…), яке в браузері справжнє, а в тестах підроблене.
 // Їх реекспортує tts.ts: усі споживачі імпортують лише з tts.ts.
+import type { ClipManifest } from './clips';
 import type { Lang } from './langCode';
 import type { VoiceLike } from './voices';
 
 export type TtsStatus = 'unsupported' | 'loading' | 'no-voice' | 'ready';
 /** spoken — договорив; cancelled — скасовано (cancel / interrupt); skipped — не озвучено (немає дотику, голосу, збій). */
 export type SpeakResult = 'spoken' | 'cancelled' | 'skipped';
+/** Записаний голос мови гри: none — записів немає; partial — частина фраз; complete — усе, що гра може сказати. */
+export type RecordedStatus = 'none' | 'partial' | 'complete';
 
 export interface SpeakOptions {
   /** Множник до загального темпу: < 1 — повільніше (плутані пари 13/30, 14/40…). */
   rate?: number;
   /** Спершу скасувати поточну фразу й чергу («Posłuchaj» — повторити інструкцію спочатку). */
   interrupt?: boolean;
-  /** slug mp3-файла; за замовчуванням — із тексту фрази (clipSlug). */
-  clip?: string;
 }
 
 export interface TtsState {
@@ -28,6 +29,10 @@ export interface TtsState {
   voiceURI: string | null;
   rate: number;
   volume: number;
+  /** Чи є записаний голос (mp3) для мови гри. */
+  recorded: RecordedStatus;
+  /** Strefa rodzica → «Nagrany głos»: грати записи, коли вони є (інакше — завжди браузерний голос). */
+  useRecorded: boolean;
 }
 
 export interface Tts {
@@ -36,8 +41,10 @@ export interface Tts {
   cancel(): void;
   /** Вкладку сховано / знову видно: схована — голос замовкає, очікувані Promise вирішуються як 'skipped' (сценарії йдуть далі), нові фрази не звучать. */
   setHidden(hidden: boolean): void;
-  /** Мова гри: голос і статус — для неї (за замовчуванням польська). */
+  /** Мова гри: голос, записи й статус — для неї (за замовчуванням польська). */
   setLanguage(lang: Lang): void;
+  /** «Nagrany głos»: true — записи, де вони є; false — лише браузерний голос. */
+  setUseRecorded(on: boolean): void;
   /** Викликати в обробнику першого дотику (installAudioUnlock робить це сам). */
   unlock(): void;
   setRate(rate: number): void;
@@ -67,15 +74,20 @@ export interface SynthLike {
 }
 export interface AudioLike {
   volume: number;
+  /** Темп запису (висота не змінюється — у браузері preservesPitch за замовчуванням). */
+  playbackRate: number;
   onended: (() => void) | null;
   onerror: (() => void) | null;
   play(): Promise<void>;
   pause(): void;
 }
 export interface ClipEnv {
-  load(): Promise<readonly string[]>;
-  url(slug: string): string;
+  /** manifest.json записів мови (public/audio/<мова>/) або null. */
+  load(lang: Lang): Promise<ClipManifest | null>;
+  url(lang: Lang, file: string): string;
   make(url: string): AudioLike;
+  /** У першому дотику: iOS дозволяє грати без дотику лише елементу, що вже раз зіграв від дотику (clipAudio.ts). */
+  prime?(): void;
 }
 export interface TtsEnv {
   synth: SynthLike | undefined;
@@ -87,4 +99,6 @@ export interface TtsConfig {
   voiceWaitMs?: number;
   /** Пауза після скасування перед наступною фразою (Chrome губить speak() одразу після cancel()). */
   cancelCooldownMs?: number;
+  /** Пауза між реченнями запису, мс. */
+  sentenceGapMs?: number;
 }

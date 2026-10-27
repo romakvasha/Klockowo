@@ -28,6 +28,8 @@ export interface Settings {
   voiceURI: string | null;
   /** Темп мови: 0,7 (Wolniej) … 1,2 (Szybciej). */
   speechRate: number;
+  /** «Nagrany głos»: грати записаний голос (public/audio/<мова>/), де він є; false — завжди голос браузера. */
+  recordedVoice: boolean;
   /** Повзунки «Mowa», «Efekty», «Muzyka»: 0…1. */
   volumes: { speech: number; effects: number; music: number };
   /** «Mniej animacji». Додатково діє системне prefers-reduced-motion. */

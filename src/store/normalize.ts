@@ -50,6 +50,7 @@ export function normalizeSettings(raw: unknown, base: Settings = defaultSettings
     sessionMinutes: minutes === 10 || minutes === 15 || minutes === 20 ? minutes : d.sessionMinutes,
     voiceURI: typeof raw.voiceURI === 'string' && raw.voiceURI !== '' ? raw.voiceURI : null,
     speechRate: num(raw.speechRate, d.speechRate, 0.7, 1.2),
+    recordedVoice: bool(raw.recordedVoice, d.recordedVoice), // додано після схеми v3: відсутнє — увімкнено
     volumes: {
       speech: num(volumes.speech, d.volumes.speech, 0, 1),
       effects: num(volumes.effects, d.volumes.effects, 0, 1),
