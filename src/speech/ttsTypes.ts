@@ -88,6 +88,8 @@ export interface ClipEnv {
   make(url: string): AudioLike;
   /** У першому дотику: iOS дозволяє грати без дотику лише елементу, що вже раз зіграв від дотику (clipAudio.ts). */
   prime?(): void;
+  /** Записи мови гри завантажено: найчутніші тихо докачати для офлайну (clipCache.ts); попередню мову — зупинити. */
+  warm?(lang: Lang, manifest: ClipManifest): void;
 }
 export interface TtsEnv {
   synth: SynthLike | undefined;

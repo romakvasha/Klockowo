@@ -9,6 +9,7 @@
 //    (Promise — після останнього); бракує хоч одного речення — усе висловлювання каже браузерний голос;
 //  • subscribe() — для React (useTts) і для музики, що стихає під голосом (M2b).
 import { sharedClipAudio } from './clipAudio';
+import { warmClips } from './clipCache';
 import { clipUrl, clipsFor, loadClipManifest, splitSentences, type ClipManifest } from './clips';
 import type {
   ClipEnv, RecordedStatus, SpeakOptions, SpeakResult, SynthLike, Tts, TtsConfig, TtsEnv, TtsState, TtsStatus, UtteranceLike,
@@ -122,17 +123,22 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     if (recorded !== state.recorded) patch({ recorded });
   }
 
-  /** Записи мови вантажаться один раз; статус recorded — для мови гри. */
+  /** Записи мови вантажаться один раз; статус recorded — для мови гри; найчутніші записи мови гри докачуються для офлайну. */
   function loadRecorded(l: Lang): void {
     if (clipEnv && !(l in manifests)) {
       manifests[l] = null;
       clipEnv.load(l).then(
         (m) => {
           manifests[l] = m;
-          if (l === lang) syncRecorded();
+          if (l !== lang) return;
+          syncRecorded();
+          if (m) clipEnv.warm?.(l, m);
         },
         () => { /* немає записів — браузерний голос */ },
       );
+    } else {
+      const m = manifests[l];
+      if (m) clipEnv?.warm?.(l, m);
     }
     syncRecorded();
   }
@@ -339,6 +345,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
 
 // ---------- Справжній браузер ----------
 export function browserEnv(): TtsEnv {
+  let stopWarm = (): void => undefined;
   const hasSpeech =
     typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
   const base = import.meta.env.BASE_URL;
@@ -352,6 +359,10 @@ export function browserEnv(): TtsEnv {
             load: (l) => loadClipManifest(base, l),
             url: (l, file) => clipUrl(base, l, file),
             ...sharedClipAudio(),
+            warm: (l, m) => {
+              stopWarm();
+              stopWarm = warmClips((m.core ?? []).map((file) => clipUrl(base, l, file)));
+            },
           },
   };
 }

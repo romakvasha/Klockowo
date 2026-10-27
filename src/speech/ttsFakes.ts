@@ -82,6 +82,7 @@ export function setup(voices: VoiceLike[] = [EN, PL], cfg: TtsConfig = {}, fake:
   const synth = new FakeSynth(voices);
   const audios: FakeAudio[] = [];
   const loads: Lang[] = [];
+  const warms: Lang[] = [];
   let primes = 0;
   const clips: ClipEnv | undefined = fake
     ? {
@@ -98,8 +99,11 @@ export function setup(voices: VoiceLike[] = [EN, PL], cfg: TtsConfig = {}, fake:
         prime: () => {
           primes++;
         },
+        warm: (lang) => {
+          warms.push(lang);
+        },
       }
     : undefined;
   const tts = createTts({ synth, makeUtterance: (t) => new FakeUtterance(t), clips }, cfg);
-  return { synth, tts, audios, loads, primes: () => primes };
+  return { synth, tts, audios, loads, warms, primes: () => primes };
 }

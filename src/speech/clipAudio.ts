@@ -1,5 +1,6 @@
 // Один <audio> на всю гру для записаного голосу. iOS дозволяє грати звук без дотику лише елементу, який уже раз зіграв від дотику:
 // prime() у першому дотику («Graj!») грає на ньому коротку тишу, а далі кожне речення — той самий елемент із новим src.
+import { cacheClip } from './clipCache';
 import type { AudioLike } from './ttsTypes';
 
 /** 0,05 с тиші (WAV, 8 кГц, 8 біт) — без файлів і мережі. */
@@ -30,6 +31,7 @@ export function sharedClipAudio(): { make(url: string): AudioLike; prime(): void
     make: (url) => {
       const a = audio();
       a.src = url;
+      cacheClip(url);
       return a as unknown as AudioLike;
     },
     prime: () => {

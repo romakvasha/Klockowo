@@ -27,6 +27,8 @@ export interface ClipManifest {
   model?: string;
   /** Записано все, що гра може сказати цією мовою. */
   complete?: boolean;
+  /** Найчутніші записи (файли) — гра докачує їх для офлайну першими (clipCache.ts). */
+  core?: readonly string[];
   clips: Readonly<Record<string, string>>;
 }
 

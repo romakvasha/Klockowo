@@ -105,6 +105,16 @@ describe('tts: записаний голос', () => {
     expect(full.tts.getState().recorded).toBe('complete');
   });
 
+  it('офлайн: найчутніші записи мови гри докачуються після завантаження маніфеста і при поверненні до мови; мова без записів — ні', async () => {
+    const { tts, warms } = await ready();
+    expect(warms).toEqual(['pl']);
+    tts.setLanguage('uk');
+    await flush();
+    expect(warms).toEqual(['pl']);
+    tts.setLanguage('pl');
+    expect(warms).toEqual(['pl', 'pl']);
+  });
+
   it('записи однієї мови не грають іншою', async () => {
     const { synth, tts, audios } = await ready(PL_CLIPS, [EN, PL, { name: 'uk', lang: 'uk-UA', voiceURI: 'uk' }]);
     tts.setLanguage('uk');

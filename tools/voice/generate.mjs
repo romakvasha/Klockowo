@@ -53,7 +53,7 @@ try {
   await app.close();
 }
 
-/** Речення: ключ → { text — як озвучувати (найчастіший варіант написання), cost — символи }. */
+/** Речення: ключ → { text — як озвучувати (найчастіший варіант написання), cost — символи, weight — як часто чути }. */
 const sentences = new Map();
 for (const u of utterances) {
   u.keys = [];
@@ -69,7 +69,10 @@ for (const u of utterances) {
 for (const e of sentences.values()) {
   [[e.text]] = [...e.variants].sort((a, b) => b[1] - a[1] || b[0].length - a[0].length);
   e.cost = e.text.length;
+  e.weight = [...e.variants.values()].reduce((sum, w) => sum + w, 0);
 }
+/** Скільки найчутніших записів гра тихо докачує після старту для офлайну (speech/clipCache.ts). */
+const CORE = 600;
 const spoken = utterances.filter((u) => u.keys.length > 0);
 const totalChars = [...sentences.values()].reduce((sum, e) => sum + e.cost, 0);
 
@@ -170,7 +173,12 @@ if (args.dry) {
 function save() {
   const sorted = Object.fromEntries(Object.entries(clips).sort(([a], [b]) => a.localeCompare(b, lang)));
   const complete = [...sentences.keys()].every((key) => key in clips);
-  const text = `${JSON.stringify({ voice: voiceId, model: config.model, complete, clips: sorted }, null, 1)}\n`;
+  const core = Object.keys(clips)
+    .filter((key) => sentences.has(key))
+    .sort((a, b) => sentences.get(b).weight - sentences.get(a).weight)
+    .slice(0, CORE)
+    .map((key) => clips[key]);
+  const text = `${JSON.stringify({ voice: voiceId, model: config.model, complete, core, clips: sorted }, null, 1)}\n`;
   // Windows буває на мить блокує файл (антивірус, npm run dev) — кілька спроб із паузою
   for (let attempt = 1; ; attempt++) {
     try {
@@ -212,8 +220,11 @@ async function worker() {
     reserved += e.cost;
     try {
       const result = await synthesize({ key, voiceId, text: e.text, lang, config });
-      const file = createHash('sha1').update(k).digest('hex').slice(0, 12);
+      // перезапис (--redo) — нове ім'я файла: у кеші телефонів не лишиться старий запис
+      const name = createHash('sha1').update(k).digest('hex').slice(0, 12);
+      const file = clips[k] === undefined ? name : `${name}-${createHash('sha1').update(result.audio).digest('hex').slice(0, 6)}`;
       writeFileSync(`${DIR}${file}.mp3`, result.audio);
+      if (clips[k] !== undefined && clips[k] !== file && existsSync(`${DIR}${clips[k]}.mp3`)) unlinkSync(`${DIR}${clips[k]}.mp3`);
       clips[k] = file;
       spent += result.cost ?? e.cost;
       recorded++;
