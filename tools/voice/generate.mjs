@@ -170,7 +170,16 @@ if (args.dry) {
 function save() {
   const sorted = Object.fromEntries(Object.entries(clips).sort(([a], [b]) => a.localeCompare(b, lang)));
   const complete = [...sentences.keys()].every((key) => key in clips);
-  writeFileSync(MANIFEST, `${JSON.stringify({ voice: voiceId, model: config.model, complete, clips: sorted }, null, 1)}\n`);
+  const text = `${JSON.stringify({ voice: voiceId, model: config.model, complete, clips: sorted }, null, 1)}\n`;
+  // Windows буває на мить блокує файл (антивірус, npm run dev) — кілька спроб із паузою
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return writeFileSync(MANIFEST, text);
+    } catch (error) {
+      if (attempt >= 20) throw error;
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 250);
+    }
+  }
 }
 
 mkdirSync(DIR, { recursive: true });
