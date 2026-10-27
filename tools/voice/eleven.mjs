@@ -27,7 +27,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /** Зрозуміле пояснення типових помилок API. */
 function explain(status, body) {
-  if (status === 401) return 'ключ недійсний або без доступу до Text to Speech (перевірте ключ і його дозволи)';
+  if (status === 401) return 'ключ недійсний або без потрібного дозволу (Text to Speech — для озвучки; для списку голосів — дозвіл на голоси, або передайте voice_id вручну)';
   if (status === 402 || /quota|credits/i.test(body)) return 'закінчились кредити на акаунті ElevenLabs';
   if (status === 404) return 'голос не знайдено — перевірте voice_id (node tools/voice/voices.mjs)';
   return body.slice(0, 300);

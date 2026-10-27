@@ -13,8 +13,19 @@ const langs = String(args.langs ?? 'pl,uk,en').split(',');
 const models = String(args.models ?? config.model).split(',');
 const key = apiKey();
 
-// голоси: з --voices, інакше з config.json для мови, інакше сам вибере: ваш клон першим, далі два готові жіночі голоси
-const all = await listVoices(key);
+// голоси: з --voices, інакше з config.json для мови, інакше сам вибере: ваш клон першим, далі два готові жіночі голоси.
+// Список голосів потрібен лише для автовибору й назв: ключ без дозволу на голоси теж працює, якщо voice_id передано вручну.
+let all = [];
+try {
+  all = await listVoices(key);
+} catch (error) {
+  const manual = typeof args.voices === 'string' || Object.values(config.voices ?? {}).some(Boolean);
+  if (!manual) {
+    console.error(`Не вдалося отримати список голосів (${error.message}).`);
+    console.error('Скопіюйте ID голосу на сайті ElevenLabs (Voices → My Voices → «⋯» → Copy voice ID) і запустіть:\n  node tools/voice/sample.mjs --voices ID');
+    process.exit(1);
+  }
+}
 function voicesFor(lang) {
   if (typeof args.voices === 'string') return args.voices.split(',').map((id) => all.find((v) => v.voice_id === id) ?? { voice_id: id, name: id });
   const fromConfig = config.voices?.[lang];
