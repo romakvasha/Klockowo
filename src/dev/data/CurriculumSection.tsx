@@ -1,5 +1,6 @@
 import type { TaskSpec } from '../../curriculum/types';
 import { W1_LEVELS } from '../../curriculum/levels/w1';
+import { EXPOSURE_SCALE } from '../../games/blysk/generate';
 import { SKILLS } from '../../curriculum/skills';
 import { WORLDS } from '../../curriculum/worlds';
 import { GAME_TITLES, SKILL_NAMES, WORLD_NAMES } from '../../speech/lines';
@@ -13,7 +14,7 @@ function describeTask(t: TaskSpec): string {
   const tag = t.review ? ' ↺' : '';
   switch (t.game) {
     case 'policzIDotknij': return `Policz ${range(t.count)} ${t.arrangement}${t.look === 'similar' ? ' (схожі)' : ''}${tag}`;
-    case 'blysk': return `Błysk ${range(t.count)} ${t.pattern} ${t.exposureMs / 1000} с${tag}`;
+    case 'blysk': return `Błysk ${range(t.count)} ${t.pattern} ${(t.exposureMs * EXPOSURE_SCALE) / 1000} с${tag}`;
     case 'nakarmZwierzaka': return `Nakarm ${range(t.count)}${t.slots ? ' слоти' : ''}${tag}`;
     default: return `${GAME_TITLES[t.game]}${tag}`;
   }

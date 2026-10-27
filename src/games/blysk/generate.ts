@@ -27,6 +27,10 @@ export function flashLayout(instance: Pick<FlashInstance, 'pattern' | 'count' | 
   return dotLayout(instance.pattern, instance.count, createRng(instance.seed));
 }
 
+/** Власник (2026-10-27): за 1–2 с дитина не встигала побачити крапочки — картку видно вчетверо довше, ніж задано в рівнях
+ *  (разом із кроком складності, adaptSpec); довший спалах підказки рахується від уже збільшеного часу. */
+export const EXPOSURE_SCALE = 4;
+
 export function generateFlash(spec: FlashTask, ctx: GenContext): FlashInstance {
   const world = worldById(ctx.world);
   const count = pickCount(spec.count, ctx.previous, ctx.rng);
@@ -38,7 +42,7 @@ export function generateFlash(spec: FlashTask, ctx: GenContext): FlashInstance {
     review: spec.review === true,
     count,
     pattern: spec.pattern,
-    exposureMs: spec.exposureMs,
+    exposureMs: spec.exposureMs * EXPOSURE_SCALE,
     answers: spec.answers,
     options: pickOptions(count, Math.max(world.range[1], count), ctx.rng),
     seed,

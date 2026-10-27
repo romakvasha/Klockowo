@@ -5,7 +5,7 @@ import type { FlashTask } from '../../curriculum/types';
 import { createRng } from '../engine/rng';
 import type { Assist, AssistContext, GenContext } from '../engine/types';
 import { hintFlash, introFlash, longFlashMs, togetherFlash } from './assist';
-import { flashLayout, generateFlash, type FlashInstance } from './generate';
+import { EXPOSURE_SCALE, flashLayout, generateFlash, type FlashInstance } from './generate';
 import { blysk } from './index';
 import { cardSize } from './View';
 
@@ -21,7 +21,7 @@ const instance = (over: Partial<FlashInstance> = {}): FlashInstance => ({
 });
 
 describe('generateFlash', () => {
-  it('усі «Błysk!» у W1: число в діапазоні, візерунок і тривалість зі специфікації, плитки в межах 1–10', () => {
+  it('усі «Błysk!» у W1: число в діапазоні, візерунок зі специфікації, показ учетверо довший, плитки в межах 1–10', () => {
     expect(flashTasks.length).toBeGreaterThan(5);
     for (const { level, task } of flashTasks) {
       for (let seed = 1; seed <= 20; seed++) {
@@ -29,7 +29,7 @@ describe('generateFlash', () => {
         expect(i.count).toBeGreaterThanOrEqual(task.count[0]);
         expect(i.count).toBeLessThanOrEqual(task.count[1]);
         expect(i.pattern).toBe(task.pattern);
-        expect(i.exposureMs).toBe(task.exposureMs);
+        expect(i.exposureMs).toBe(task.exposureMs * EXPOSURE_SCALE);
         expect(i.options).toContain(i.count);
         expect(i.options.every((o) => o >= 1 && o <= 10)).toBe(true);
       }
