@@ -1,9 +1,10 @@
 import { parseSvg, type SvgArt } from './svgArt';
 
-/** 25 іконок дизайну (design/extracted/svg/icons → src/assets/icons): одна дія — одна іконка (BRIEF §8). */
+/** 26 іконок (design/extracted/svg/icons → src/assets/icons): одна дія — одна іконка (BRIEF §8). badge — квадратний жетон-цеглинка
+ *  «Odznaki» (D2b: ★ лише для необов'язкових гілок). На цеглинках v2 значок білий із темним контуром — клас kl-glyph (styles/brick.css). */
 export const ICON_NAMES = [
   'play', 'home', 'speaker', 'speaker-off', 'bulb', 'next', 'retry', 'check', 'equal', 'pour', 'pack', 'close',
-  'stickers', 'lock', 'gear', 'star', 'bone', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'hub',
+  'stickers', 'badge', 'lock', 'gear', 'star', 'bone', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'hub',
 ] as const;
 export type IconName = (typeof ICON_NAMES)[number];
 

@@ -34,7 +34,7 @@ export function Playground() {
   return (
     <main className={styles.screen}>
       <header className={styles.bar}>
-        <IconButton icon="home" label={BUTTONS.map} variant="neutral" onClick={back} />
+        <IconButton icon="home" label={BUTTONS.map} onClick={back} />
         <h1 className={styles.title}>{PLAYGROUND.title}</h1>
       </header>
       {activity === 'menu' && (

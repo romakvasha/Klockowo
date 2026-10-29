@@ -1,16 +1,15 @@
 .root {
   --size: var(--kl-play);
-  --edge: var(--kl-primary-edge);
-  width: var(--size);
+  width: calc(var(--size) * 1.6);
   height: var(--size);
-  padding-left: calc(var(--size) * .05); /* оптичне центрування трикутника */
-  border-radius: var(--kl-radius-round);
-  background: var(--kl-primary);
+  padding-left: calc(var(--size) * .06); /* оптичне центрування трикутника */
+  border-radius: calc(var(--size) * .2);
+  flex: none;
 }
 
 .icon {
-  width: calc(var(--size) * .45);
-  height: calc(var(--size) * .45);
+  width: calc(var(--size) * .5);
+  height: calc(var(--size) * .5);
 }
 
 /* «дихання» у спокої; дотик його перериває, щоб було видно натискання */

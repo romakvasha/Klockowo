@@ -1,9 +1,7 @@
 .root {
-  --edge: var(--kl-success-edge);
   width: var(--kl-check-w);
   height: var(--kl-check-h);
-  border-radius: var(--kl-radius-panel);
-  background: var(--kl-success);
+  border-radius: var(--kl-radius-tile);
   flex: none;
 }
 
@@ -12,10 +10,16 @@
   height: var(--kl-check-icon);
 }
 
-/* Неактивна: пласка, без краю, сіра рамка + сіра галочка — не лише колір */
+/* Неактивна: пласка бліда плитка без краю й пупирців, сіра пунктирна рамка й сіра галочка — не лише колір */
 .root:disabled {
-  color: var(--kl-locked-edge);
-  background: var(--kl-disabled);
-  border-color: var(--kl-locked-edge);
-  box-shadow: none;
+  --t: var(--kl-brick-grey-edge);
+  --kl-glyph-fx: none;
+  background: var(--kl-brick-pale);
+  border: 3px dashed var(--kl-brick-grey-edge);
+  box-shadow: var(--kl-ring);
+}
+
+.root:disabled::before,
+.root:disabled::after {
+  display: none;
 }

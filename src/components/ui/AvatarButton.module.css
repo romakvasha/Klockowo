@@ -5,16 +5,30 @@
   gap: 12px;
 }
 
+/* v2: білий кружок (знизу — пастель профілю), обідок 5 % діаметра кольору профілю, під ним край 700 і м'яка тінь */
 .root {
   --size: 160px;
   --tint: var(--kl-hub-50);
+  --ring: var(--kl-hub-500);
+  --ring-d: var(--kl-hub-700);
+  --ring-w: calc(var(--size) * .05);
   align-items: flex-end;
   flex: none;
   width: var(--size);
   height: var(--size);
+  margin: var(--ring-w);
   overflow: hidden;
+  border: 0;
   border-radius: var(--kl-radius-round);
-  background: var(--tint);
+  background: linear-gradient(180deg, var(--kl-surface) 35%, var(--tint) 100%);
+  box-shadow: 0 0 0 var(--ring-w) var(--ring), 0 calc(var(--ring-w) * .9) 0 calc(var(--ring-w) * 1.25) var(--ring-d),
+    0 12px 20px var(--ring-w) rgba(10, 30, 70, .22), var(--kl-ring);
+}
+
+.root:active:not(:disabled),
+.root[data-demo='pressed'] {
+  box-shadow: 0 0 0 var(--ring-w) var(--ring), 0 calc(var(--ring-w) * .3) 0 calc(var(--ring-w) * 1.25) var(--ring-d),
+    0 6px 10px var(--ring-w) rgba(10, 30, 70, .22), var(--kl-ring);
 }
 
 /* картинка цуценяти (img або svg) стоїть знизу кола */

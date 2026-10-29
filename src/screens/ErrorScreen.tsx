@@ -20,7 +20,7 @@ export function ErrorScreen({ onRetry }: { onRetry?: () => void }) {
       <div className={styles.stage}>
         <Kubik pose="surprised" talking={speaking} size={300} />
       </div>
-      <IconButton icon="retry" label={BUTTONS.again} variant="retry" size={88} onClick={onRetry ?? (() => navigate('/map', { replace: true }))} />
+      <IconButton icon="retry" label={BUTTONS.again} size={88} onClick={onRetry ?? (() => navigate('/map', { replace: true }))} />
     </main>
   );
 }

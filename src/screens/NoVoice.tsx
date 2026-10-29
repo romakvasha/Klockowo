@@ -23,7 +23,6 @@ export function NoVoice() {
       <IconButton
         icon="next"
         label={BUTTONS.next}
-        variant="primary"
         size={88}
         onClick={() => {
           markNoVoiceSeen();

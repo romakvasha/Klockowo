@@ -85,7 +85,7 @@ export function GameFrame({ world, filled, arriving, listenPulse, onMap, onListe
 
   return (
     <main className={styles.game} data-kind={kind} data-world={world}>
-      <HUD world={world} tone="page" filled={filled} arriving={arriving} onMap={onMap} onListen={onListen} listenPulse={listenPulse} stripExtra={hintButton} />
+      <HUD world={world} filled={filled} arriving={arriving} onMap={onMap} onListen={onListen} listenPulse={listenPulse} stripExtra={hintButton} />
       <div className={styles.body}>
         <section className={styles.scene} role="group" aria-label={sceneLabel}>
           <Decor world={world} />

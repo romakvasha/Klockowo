@@ -44,7 +44,7 @@ export function ChartPaint() {
             onClick={() => setColor(i)}
           />
         ))}
-        <IconButton icon="retry" label={PLAYGROUND.clear} variant="retry" size={72} onClick={() => setCells({})} />
+        <IconButton icon="retry" label={PLAYGROUND.clear} size={72} onClick={() => setCells({})} />
       </div>
     </div>
   );

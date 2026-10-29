@@ -45,7 +45,7 @@ function WorldCompleteScreen({ world }: { world: WorldKey }) {
         </div>
         <Kubik pose="celebrating" accessory={world} size={190} talking={speaking} />
       </div>
-      <IconButton icon="next" label={BUTTONS.next} variant="primary" size={88} className={styles.next} onClick={() => {
+      <IconButton icon="next" label={BUTTONS.next} size={88} className={styles.next} onClick={() => {
           // після свята світу — як після будь-якого рівня: сесія може запропонувати перерву чи закінчити день
           const step = sessionClock.decide(sessionMinutes);
           if (step === 'end') navigate('/end', { replace: true });

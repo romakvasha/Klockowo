@@ -114,7 +114,7 @@ export function LevelCompleteView(p: LevelCompleteViewProps) {
       </div>
 
       <div className={styles.next}>
-        <IconButton icon="next" label={BUTTONS.next} variant="primary" size={88} onClick={p.onNext} />
+        <IconButton icon="next" label={BUTTONS.next} size={88} onClick={p.onNext} />
       </div>
     </main>
   );

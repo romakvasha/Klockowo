@@ -1,5 +1,4 @@
 .hud {
-  --hud-bg: var(--kl-w1-50);
   --hud-strip-bg: var(--kl-w1-100);
   display: grid;
   grid-template-columns: var(--kl-btn) minmax(0, 1fr) var(--kl-btn);
@@ -9,7 +8,7 @@
   width: 100%;
   height: var(--kl-hud-h);
   padding: var(--kl-edge-safe) var(--kl-edge-safe) 0;
-  background: var(--hud-bg);
+  background: transparent;
 }
 
 .map {
@@ -20,24 +19,19 @@
   grid-area: listen;
 }
 
+/* картка кісточок — по центру висоти кнопок */
 .bones {
   grid-area: bones;
   justify-self: center;
-  margin-top: 8px;
+  margin-top: calc(var(--kl-btn) / 2);
+  transform: translateY(-50%);
 }
 
 .extra {
   display: none;
 }
 
-/* Телефон, портрет: між кнопками лише ≈182 px — кісточки 2 ряди по 3 (змінні --kl-bone-* у responsive.css) */
-@media (max-width: 599px) {
-  .bones {
-    margin-top: 6px;
-  }
-}
-
-/* Телефон, альбом (844×390): смуга ліворуч «Mapa», «Posłuchaj», «Pomóż mi» по 80 px; кісточки — ряд 28 px угорі сцени */
+/* Телефон, альбом (844×390): смуга ліворуч «Mapa», «Posłuchaj», «Pomóż mi» по 80 px; кісточки — ряд 26 px угорі сцени */
 @media (max-height: 500px) and (orientation: landscape) {
   .hud {
     position: relative;
@@ -60,6 +54,7 @@
     top: var(--kl-edge-safe);
     left: calc(100% + var(--kl-edge-safe));
     margin: 0;
+    transform: none;
   }
 
   .extra {

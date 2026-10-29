@@ -180,7 +180,6 @@ function PackScene({ instance, area, reserved, assist, phase, celebrating, onTou
         <IconButton
           icon="pack"
           label={BUTTONS.pack}
-          variant="primary"
           size={PACK_BUTTON}
           pulse
           silent

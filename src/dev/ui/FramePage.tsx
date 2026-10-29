@@ -12,7 +12,7 @@ export function FramePage() {
   const stateOf = (n: number): TileState => (n === 8 ? 'retry' : n === chosen ? 'selected' : 'default');
   return (
     <div className={styles.scene}>
-      <HUD world="w1" filled={3} arriving={2} stripExtra={<IconButton icon="bulb" label={BUTTONS.help} variant="hint" />} />
+      <HUD world="w1" filled={3} arriving={2} stripExtra={<IconButton icon="bulb" label={BUTTONS.help} />} />
       <main className={styles.sceneStage}>
         <SpeechBubble variant="talking">
           <Digits value={7} style={{ height: 56 }} />

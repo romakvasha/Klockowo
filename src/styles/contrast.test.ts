@@ -57,3 +57,36 @@ describe('контраст токенів', () => {
     expect(contrast(token('secondary-edge'), token('surface'))).toBeGreaterThanOrEqual(3);
   });
 });
+
+/** Глянцеві цеглинки v2 (D2b, styles/brick.css). Полотно D1 ставить білі значки й цифри на кольорові цеглинки; бриф §8 вимагає
+ *  цифри й текст від 4,5 : 1 — тому білий значок обведено контуром out (темніший край), а на світлих цеглинках значок темний. */
+describe('контраст цеглинок v2', () => {
+  const WHITE_GLYPH = ['red', 'blue', 'green', 'orange', 'purple', 'grey'];
+  const SHADES = ['', '-hi', '-lo'];
+
+  it('білий значок і цифри межують із контуром out — ≥ 4,5 : 1 на всіх кольорових цеглинках', () => {
+    for (const c of WHITE_GLYPH) expect(contrast('#FFFFFF', token(`brick-${c}-out`)), c).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('темний значок на жовтій, білій і блідій цеглинках — ≥ 4,5 : 1 по всій висоті градієнта', () => {
+    for (const shade of SHADES) {
+      expect(contrast(token('brick-yellow-glyph'), token(`brick-yellow${shade}`)), `yellow${shade}`).toBeGreaterThanOrEqual(4.5);
+      for (const c of ['white', 'pale']) expect(contrast(token('ink'), token(`brick-${c}${shade}`)), `${c}${shade}`).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it('цифри розрядів на білій цеглинці (W4–W7) — ≥ 4,5 : 1', () => {
+    for (const shade of SHADES) {
+      expect(contrast(token('tens-digit'), token(`brick-white${shade}`))).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(token('ones-digit'), token(`brick-white${shade}`))).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it('сигнали стану — ≥ 3 : 1: обідок вибраної плитки, білі знаки на значках ok / chosen / retry, контури кісточок і неактивної «Gotowe»', () => {
+    for (const bg of ['bg', 'surface']) expect(contrast(token('brick-blue-edge'), token(bg)), bg).toBeGreaterThanOrEqual(3);
+    for (const fill of ['brick-green-edge', 'brick-blue-edge', 'retry-edge']) expect(contrast('#FFFFFF', token(fill)), fill).toBeGreaterThanOrEqual(3);
+    expect(contrast(token('brick-yellow-out'), token('surface'))).toBeGreaterThanOrEqual(3);
+    expect(contrast(token('brick-grey-edge'), token('surface'))).toBeGreaterThanOrEqual(3);
+    expect(contrast(token('brick-grey-edge'), token('brick-pale'))).toBeGreaterThanOrEqual(3);
+  });
+});

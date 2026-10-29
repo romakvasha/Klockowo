@@ -106,7 +106,7 @@ function FreeScene({ animals }: { animals: readonly AnimalId[] }) {
             <img src={animalUrl(a, true)} alt="" draggable={false} />
           </button>
         ))}
-        <IconButton icon="retry" label={ALBUM.clear} variant="retry" size={72} onClick={() => setPlaced([])} />
+        <IconButton icon="retry" label={ALBUM.clear} size={72} onClick={() => setPlaced([])} />
       </div>
       <div className={styles.canvas} onClick={put} onKeyDown={putByKey} role="group" aria-label={ALBUM.scene} tabIndex={0}>
         {placed.map((p) => (
@@ -146,9 +146,9 @@ export function StickerAlbum() {
   return (
     <main className={styles.page}>
       <header className={styles.bar}>
-        <IconButton icon="home" label={BUTTONS.map} variant="neutral" onClick={() => navigate('/map')} />
+        <IconButton icon="home" label={BUTTONS.map} onClick={() => navigate('/map')} />
         <h1 className={styles.title}>{ALBUM.title}</h1>
-        <IconButton icon="star" label={ALBUM.badges} variant="secondary" onClick={() => navigate('/badges')} />
+        <IconButton icon="badge" label={ALBUM.badges} onClick={() => navigate('/badges')} />
       </header>
       <nav className={styles.tabs} aria-label={ALBUM.page}>
         {WORLD_KEYS.map((w) => {

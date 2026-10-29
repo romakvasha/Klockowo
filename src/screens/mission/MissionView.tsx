@@ -79,7 +79,7 @@ export function MissionView({ world: worldKey, object, line, phase, kind, stage,
 
       <header className={styles.chrome}>
         <IconButton icon="home" label={BUTTONS.map} onClick={onMap} />
-        <IconButton icon="speaker" label={BUTTONS.listen} variant="secondary" pulse={finished} onClick={onListen} />
+        <IconButton icon="speaker" label={BUTTONS.listen} pulse={finished} onClick={onListen} />
       </header>
 
       <div className={styles.fit}>

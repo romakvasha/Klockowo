@@ -28,9 +28,9 @@ export function Badges() {
   return (
     <main className={styles.page}>
       <header className={styles.bar}>
-        <IconButton icon="stickers" label={ALBUM.title} variant="neutral" onClick={() => navigate('/album')} />
+        <IconButton icon="stickers" label={ALBUM.title} onClick={() => navigate('/album')} />
         <h1 className={styles.title}>{ALBUM.badges}</h1>
-        <IconButton icon="home" label={BUTTONS.map} variant="neutral" onClick={() => navigate('/map')} />
+        <IconButton icon="home" label={BUTTONS.map} onClick={() => navigate('/map')} />
       </header>
       <div className={styles.grid} role="list">
         {levels.length === 0 && (

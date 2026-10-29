@@ -33,7 +33,7 @@ export function EndOfDay() {
         </div>
         <Kubik pose="sleepy" talking={speaking} size={300} className={styles.sleepy} />
       </div>
-      <IconButton icon="home" label={BUTTONS.map} variant="neutral" size={80} onClick={() => navigate('/start', { replace: true })} />
+      <IconButton icon="home" label={BUTTONS.map} size={80} onClick={() => navigate('/start', { replace: true })} />
     </main>
   );
 }

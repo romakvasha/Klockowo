@@ -1,0 +1,29 @@
+/* Вітрина системи цеглинок v2 (/#/dev/ui, BricksSection). */
+.swatch {
+  width: 72px;
+  height: 52px;
+  margin-top: 10px;
+  cursor: default;
+}
+
+.icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 24px;
+  padding: 18px 8px 8px;
+}
+
+.logoStage {
+  align-items: center;
+  padding: 40px 24px 32px;
+}
+
+.logoSmall {
+  width: min(300px, 70vw);
+}
+
+.card {
+  max-width: 420px;
+  padding: 20px 24px;
+  font-size: 18px;
+}

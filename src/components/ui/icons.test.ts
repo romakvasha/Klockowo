@@ -19,7 +19,7 @@ describe('parseSvg', () => {
 
 describe('іконки дизайну (src/assets/icons)', () => {
   it('список імен збігається з файлами: нічого зайвого, нічого не загубилось', () => {
-    expect(ICON_NAMES).toHaveLength(25);
+    expect(ICON_NAMES).toHaveLength(26);
     expect([...loadedIconNames()].sort()).toEqual([...ICON_NAMES].sort());
   });
 

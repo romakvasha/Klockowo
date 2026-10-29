@@ -58,7 +58,7 @@
   transition: stroke-dashoffset 150ms linear;
 }
 
-/* шестерня навмисно спокійна: ink-soft, без краю й об'єму */
+/* шестерня навмисно спокійна: ink-soft на білому кружку з легкою тінню (полотно D1 .chip), без яскравого кольору */
 .disc {
   display: grid;
   place-items: center;
@@ -66,8 +66,8 @@
   height: 48px;
   color: var(--kl-ink-soft);
   background: var(--kl-surface);
-  border: 2px solid var(--kl-locked);
   border-radius: var(--kl-radius-round);
+  box-shadow: 0 3px 0 var(--kl-brick-white-edge), 0 6px 12px rgba(10, 30, 70, .22);
 }
 
 .disc > svg {

@@ -59,7 +59,6 @@ export function BreakTime() {
       <IconButton
         icon="next"
         label={BUTTONS.next}
-        variant="primary"
         size={88}
         pulse={done}
         onClick={() => navigate(to, { replace: true, state: afterBreakState(location.state) })}

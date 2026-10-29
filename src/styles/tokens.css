@@ -94,6 +94,35 @@
   /* cele dotyku */
   --kl-target: 64px; --kl-target-phone: 80px;
   --kl-gap-min: 16px; --kl-edge-safe: 24px;
+
+  /* v2: глянцеві цеглинки (docs/DESIGN_V2.md §4, полотно D1 — design/v2/d1/kl.css). Колір, hi — блік угорі (32 % білого),
+     lo — низ (9 % чорного), stud — верх пупирця (50 % білого), edge — об'ємний край, out — контур білого значка (edge −25 %).
+     Значок: білий із контуром out (≥ 6,5 : 1), на жовтій — yellow-glyph, на білій і блідій — ink (styles/contrast.test.ts). */
+  --kl-brick-red: #E8352F;    --kl-brick-red-hi: #EF7672;    --kl-brick-red-lo: #D3302B;
+  --kl-brick-red-stud: #F49A97;    --kl-brick-red-edge: #A81D1A;    --kl-brick-red-out: #7E1614;
+  --kl-brick-yellow: #FFCF1F; --kl-brick-yellow-hi: #FFDE67; --kl-brick-yellow-lo: #E8BC1C;
+  --kl-brick-yellow-stud: #FFE78F; --kl-brick-yellow-edge: #C99400; --kl-brick-yellow-out: #9A6E00;
+  --kl-brick-yellow-glyph: #4A3300;
+  --kl-brick-blue: #1F7FE0;   --kl-brick-blue-hi: #67A8EA;   --kl-brick-blue-lo: #1C74CC;
+  --kl-brick-blue-stud: #8FBFF0;   --kl-brick-blue-edge: #0F4FA3;   --kl-brick-blue-out: #0B3B7A;
+  --kl-brick-green: #3FAE35;  --kl-brick-green-hi: #7CC876;  --kl-brick-green-lo: #399E30;
+  --kl-brick-green-stud: #9FD79A;  --kl-brick-green-edge: #217A1C;  --kl-brick-green-out: #195C15;
+  --kl-brick-orange: #FF8A1F; --kl-brick-orange-hi: #FFAF67; --kl-brick-orange-lo: #E87E1C;
+  --kl-brick-orange-stud: #FFC58F; --kl-brick-orange-edge: #C25A00; --kl-brick-orange-out: #924400;
+  --kl-brick-purple: #8B4FE0; --kl-brick-purple-hi: #B087EA; --kl-brick-purple-lo: #7E48CC;
+  --kl-brick-purple-stud: #C5A7F0; --kl-brick-purple-edge: #5A2AA8; --kl-brick-purple-out: #44207E;
+  --kl-brick-white: #F3F6FB;  --kl-brick-white-hi: #FFFFFF;  --kl-brick-white-lo: #DDE0E4;
+  --kl-brick-white-stud: #FFFFFF;  --kl-brick-white-edge: #AEBBCF;
+  --kl-brick-grey: #A9B2C0;   --kl-brick-grey-hi: #C5CBD4;   --kl-brick-grey-lo: #9AA2AF;
+  --kl-brick-grey-stud: #D4D9E0;   --kl-brick-grey-edge: #737D8E;   --kl-brick-grey-out: #565E6B;
+  /* бліда — плитка після помилки («тьмяніє до 40 %», рамка й стрілка непрозорі) і порожня кісточка */
+  --kl-brick-pale: #E6ECF4;   --kl-brick-pale-hi: #EEF2F8;   --kl-brick-pale-lo: #D1D7DE;
+  --kl-brick-pale-stud: #F3F6FA;   --kl-brick-pale-edge: #C3CDDB;
+  --kl-sky: #3D9CF0;
+  /* біла картка: текст ніколи не стоїть просто на фото (DESIGN_V2 §3) */
+  --kl-card: rgba(255, 255, 255, .92);
+  --kl-card-shadow: 0 10px 28px rgba(20, 40, 90, .22), inset 0 -4px 0 rgba(20, 60, 120, .07);
+  --kl-radius-brick: 14px;
 }
 
 /* «Блокова» тінь: край 6 px кольору --edge елемента + м'яка тінь (BRIEF §8).

@@ -52,7 +52,7 @@ export function CountSong() {
         <button type="button" className={`kl-block ${styles.song}`} data-active={mode === 'tens'} disabled={mode !== null} aria-label={PLAYGROUND.tens} onClick={() => void play('tens')}>
           <span aria-hidden="true">10 20 30</span>
         </button>
-        <IconButton icon="close" label={PLAYGROUND.stop} variant="neutral" size={72} disabled={mode === null} onClick={stop} />
+        <IconButton icon="close" label={PLAYGROUND.stop} size={72} disabled={mode === null} onClick={stop} />
       </div>
     </div>
   );

@@ -97,7 +97,7 @@ function OverlayDemo() {
       <DevButton onClick={() => setOpen(true)}>Відкрити Overlay «{LEVEL_LINES.newSticker}»</DevButton>
       <Overlay open={open} label={LEVEL_LINES.newSticker} onClose={() => setOpen(false)}>
         <div className={styles.placeholder}>вміст</div>
-        <IconButton icon="next" label={BUTTONS.next} variant="primary" onClick={() => setOpen(false)} />
+        <IconButton icon="next" label={BUTTONS.next} onClick={() => setOpen(false)} />
       </Overlay>
     </>
   );

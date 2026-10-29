@@ -102,7 +102,6 @@ export function SumScene({ instance, world, area, reserved, assist, celebrating,
         <IconButton
           icon="pour"
           label={BUTTONS.pour}
-          variant="primary"
           size={POUR_SIZE}
           pulse
           silent
