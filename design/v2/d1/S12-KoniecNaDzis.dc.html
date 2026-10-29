@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Koniec na dziś</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-eod{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"ttl ttl" "home home" ". map";justify-items:center}
+.tt{grid-area:ttl;padding:14px 30px;text-align:center}
+.ph .tt{padding:10px 16px}
+.home{grid-area:home;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.roof{width:440px;height:150px;clip-path:polygon(50% 0,100% 100%,0 100%);background:linear-gradient(180deg,#FF6A62,var(--red) 55%,var(--red-d))}
+.body{width:380px;height:250px;margin-top:-2px;border-radius:0 0 16px 16px;background:repeating-linear-gradient(180deg,#FFD24A 0 46px,#E8B21A 46px 50px);display:flex;align-items:flex-end;justify-content:center;box-shadow:0 14px 26px rgba(0,0,0,.35)}
+.door{width:210px;height:200px;border-radius:105px 105px 0 0;background:#2B2A4A;display:grid;place-items:end center;overflow:hidden}
+.door img{height:170px;filter:brightness(.92)}
+.ph .roof{width:300px;height:104px}.ph .body{width:260px;height:180px}.ph .door{width:150px;height:144px;border-radius:75px 75px 0 0}.ph .door img{height:124px}
+.zz{font:700 44px/1 var(--fd);color:#fff;align-self:flex-end;margin:0 40px -20px 0;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.ph .zz{font-size:32px;margin:0 20px -10px 0}
+.map{grid-area:map;justify-self:end}
+.home .stub{margin-top:12px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-eod">
+  <div class="bgl f-p13" style="filter: brightness(0.5) saturate(0.8) hue-rotate(20deg)"></div>
+  <div class="card tt"><p class="ttl">Koniec na dziś. Do zobaczenia!</p></div>
+  <div class="home" role="img" aria-label="Kubik śpi w budzie">
+    <span class="zz" aria-hidden="true">z z Z</span>
+    <span class="roof"></span>
+    <span class="body"><span class="door"><img src="./img/kubik-hands.png" alt=""></span></span>
+    <span class="stub">ЗАГЛУШКА · сонний Kubik (D2)</span>
+  </div>
+  <button class="bk c-o rnd hb map" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Koniec na dziś. Do zobaczenia!»</dd>
+  <dt>Стан</dt><dd>З'являється лише після завершення поточного рівня; наступний урок сам не запускається. Вечірній фон, Kubik позіхає в будці з цеглинок.</dd>
+  <dt>Заглушки</dt><dd>Поза «сонний» — D2 (тимчасово Kubik із фото). Будка — цеглинки кодом. Фон — затемнене фото села.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720' },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

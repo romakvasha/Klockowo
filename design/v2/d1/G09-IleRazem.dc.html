@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Ile razem?</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.scr .board{flex-direction:column;gap:22px}
+.ph .scr .board{gap:12px}
+.bs{display:flex;align-items:flex-end;gap:90px}
+.ph .bs{gap:26px}
+.bask{display:flex;flex-direction:column;align-items:center}
+.ap{display:flex;gap:4px;margin-bottom:-26px;z-index:1}
+.ap img{width:70px;height:70px}
+.ph .ap img{width:38px;height:38px}.ph .ap{margin-bottom:-14px}
+.bowl{width:230px;height:96px;border-radius:12px 12px 70px 70px;background:repeating-linear-gradient(90deg,#C98A4B 0 16px,#B57638 16px 22px);box-shadow:inset 0 10px 0 #E0A564,0 8px 16px rgba(10,30,70,.2)}
+.ph .bowl{width:124px;height:54px;border-radius:8px 8px 40px 40px}
+.eq{display:flex;gap:12px;align-items:center}
+.eq .bk{width:84px;height:76px;font-size:46px;margin-top:10px}
+.ph .eq{gap:5px;flex-wrap:wrap;justify-content:center}.ph .eq .bk{width:46px;height:44px;font-size:26px;border-radius:10px}
+.eq .q{background:#fff;border:5px dashed var(--ink2);box-shadow:none;color:var(--ink2);text-shadow:none}
+.eq .q::before,.eq .q::after{display:none}
+.ph .eq .q{border-width:3px}
+.pour{height:76px;padding:0 26px;font-size:32px}
+.pour img{width:40px;height:40px}
+.ph .eq .pour{width:100%;height:80px;font-size:30px;margin-top:14px}.ph .pour img{width:36px;height:36px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl" style="background-image: linear-gradient(180deg, #DFF2FF 0%, #CDEBFF 58%, #FFF0C9 58%, #F7DFA4 100%)"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 2 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Trzy jabłka i dwa jabłka. Ile razem?">3 + 2 = ?</div>
+    <div class="krow"><img class="kub" src="./img/kubik-point.png" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="bs">
+      <div class="bask" role="img" aria-label="trzy jabłka"><span class="ap"><img src="./art/w2-jablko.svg" alt=""><img src="./art/w2-jablko.svg" alt=""><img src="./art/w2-jablko.svg" alt=""></span><span class="bowl"></span></div>
+      <div class="bask" role="img" aria-label="dwa jabłka"><span class="ap"><img src="./art/w2-jablko.svg" alt=""><img src="./art/w2-jablko.svg" alt=""></span><span class="bowl"></span></div>
+    </div>
+    <div class="eq" aria-label="trzy dodać dwa równa się ile?">
+      <span class="bk c-r one">3</span><span class="bk c-y one">+</span><span class="bk c-b one">2</span><span class="bk c-g one">=</span><span class="bk q one">?</span>
+      <button class="bk c-p pour" type="button" aria-label="Wsyp!"><img src="./i/w-pour.svg" alt="">Wsyp!</button>
+    </div>
+  </div>
+  <div class="tray">
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="cztery">4</button></span>
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="pięć">5</button></span>
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="sześć">6</button></span>
+    <button class="bk c-o done" type="button" aria-label="Gotowe" disabled style="opacity: 0.55"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Trzy jabłka i dwa jabłka. Ile razem?» → після «Wsyp!» кошики зсипаються в один → «Trzy dodać dwa równa się pięć.»</dd>
+  <dt>Стан</dt><dd>До зсипання: два кошики над прикладом 3 + 2 = ?; кнопка «Wsyp!» — частина дошки (одна дія), відповіді — у лотку. «Gotowe» неактивна, поки нічого не вибрано.</dd>
+  <dt>Заглушки</dt><dd>Кошики — кодом, яблука — старі SVG. Фон W3 — колір світу (D2). Напис «Wsyp!» на кнопці — лише для дорослого; дитині звучить при дотику.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const d = { bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 2 ? 'bone-full' : 'bone-empty' })) };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

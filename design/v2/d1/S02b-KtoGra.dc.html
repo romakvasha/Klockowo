@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Start — Kto dziś gra?</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-who{grid-template-columns:360px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"guide opts" "guide main"}
+.ph .s-who{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 150px minmax(0,1fr);grid-template-areas:"opts" "guide" "main"}
+.opts{grid-area:opts;display:flex;justify-content:flex-end}
+.kbig{height:440px;align-self:center}
+.ph .kbig{height:146px}
+.main{grid-area:main;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-content:center;padding:40px 32px}
+.ph .main{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:18px 12px;align-content:start}
+.av{display:flex;flex-direction:column;align-items:center;gap:12px;border:0;background:none;padding:0;cursor:pointer;font:700 26px/1 var(--fd);color:var(--ink)}
+.av .ring{width:160px;height:160px;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:0 0 0 8px var(--c),0 8px 0 10px color-mix(in srgb,var(--c),#000 25%),0 16px 24px 10px rgba(10,30,70,.25)}
+.av .ring img{width:118px;height:118px}
+.ph .av .ring{width:132px;height:132px}.ph .av .ring img{width:96px;height:96px}
+.ph .av{font-size:22px;gap:14px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-who">
+  <div class="bgl f-p22"></div>
+  <div class="opts"><button class="chip" type="button" aria-label="Strefa rodzica — przytrzymaj 3 sekundy"><img src="./i/k-gear.svg" alt=""></button></div>
+  <div class="guide">
+    <div class="bub" aria-label="Kto dziś gra?"><img src="./i/k-speaker.svg" alt="" style="height: 34px">?</div>
+    <img class="kub kbig" src="./img/kubik-present.png" alt="Kubik">
+  </div>
+  <ul class="card main" aria-label="Kto dziś gra?" style="list-style: none; margin: 0">
+    <sc-for list="{{f.kids}}" as="k" hint-placeholder-count="3">
+      <li style="display: grid; place-items: center"><button class="av" type="button" style="--c: {{k.c}}"><span class="ring"><img src="./art/pup-{{k.pup}}.svg" alt=""></span>{{k.name}}</button></li>
+    </sc-for>
+  </ul>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Kto dziś gra?» — до 4 кружків-аватарів по 160 px; дотик до аватара одразу відкриває «Mapa przygody». Один профіль — крок пропускаємо; профілів немає — «Twój piesek».</dd>
+  <dt>Зони</dt><dd>Kubik із хмаринкою — ліва колонка (на телефоні — смуга вгорі); аватари — на білій картці, не на фото.</dd>
+  <dt>Заглушки</dt><dd>Цуценята на аватарах — старі плоскі SVG (D2: 3D-цуценята «Twój piesek»).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const kids = [
+      { name: 'Ola', pup: 'papillon', c: '#E8352F' }, { name: 'Staś', pup: 'pon', c: '#1F7FE0' }, { name: 'Zosia', pup: 'shihtzu', c: '#3FAE35' },
+    ];
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', kids },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', kids },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

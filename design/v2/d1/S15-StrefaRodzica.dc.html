@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Strefa rodzica</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-pz{grid-template-columns:220px minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"top top top" "nav sum set";gap:16px 20px;font:600 18px/1.35 var(--fn)}
+.ph .s-pz{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);grid-template-areas:"top" "nav" "sum";gap:12px}
+.top{grid-area:top;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top h1{margin:0;font:800 26px/1.2 var(--fn)}
+.ph .top{flex-wrap:wrap}
+.ph .top h1{font-size:22px}
+.seg{display:inline-flex;border:2px solid #C9D3E2;border-radius:12px;overflow:hidden;background:#fff}
+.seg button{height:44px;padding:0 14px;border:0;background:none;font:700 16px/1 var(--fn);color:var(--ink);cursor:pointer}
+.seg button.on{background:var(--ink);color:#fff}
+.ph .seg button{padding:0 10px;font-size:16px}
+.nav{grid-area:nav;display:flex;flex-direction:column;gap:6px}
+.ph .nav{flex-direction:row;overflow:hidden;gap:8px}
+.nav a{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:12px;color:var(--ink);text-decoration:none;font:700 17px/1.2 var(--fn);white-space:nowrap}
+.nav a.on{background:#fff;box-shadow:inset 4px 0 0 var(--blu-d),0 2px 8px rgba(20,40,90,.1)}
+.ph .nav a.on{box-shadow:inset 0 -4px 0 var(--blu-d)}
+.pane{background:#fff;border-radius:18px;padding:18px 20px;box-shadow:0 6px 20px rgba(20,40,90,.1);display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.ph .pane{padding:14px}
+.pane h2{margin:0;font:800 20px/1.2 var(--fn)}
+.pane h3{margin:4px 0 0;font:800 16px/1.2 var(--fn);color:var(--ink2)}
+.sum{grid-area:sum}.set{grid-area:set}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.st{padding:10px 12px;border-radius:12px;background:#F4F7FB}
+.st b{display:block;font:800 26px/1.1 var(--fn)}
+.st span{font-size:16px;color:var(--ink2)}
+.ph .st b{font-size:22px}.ph .st span{font-size:16px}
+.sk{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #E3EAF3;font-size:16px}
+.chip2{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font:800 14px/1.2 var(--fn);white-space:nowrap}
+.chip2 i{width:10px;height:10px;border-radius:50%;background:currentColor}
+.k-new{background:#EEF2F8;color:#4A5568}.k-lrn{background:#FFF3D6;color:#7A5200}.k-ok{background:#E3F4DF;color:#1E6B19}.k-rev{background:#EEE9FF;color:#4B36B0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:44px}
+.sl{display:flex;align-items:center;gap:12px}
+.sl .tr{width:170px;height:8px;border-radius:4px;background:#DCE4EF;position:relative}
+.sl .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--blu-d)}
+.sl .tr b{position:absolute;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:#fff;border:3px solid var(--blu-d)}
+.sw{width:56px;height:32px;border-radius:16px;background:#C9D3E2;position:relative;border:0;cursor:pointer}
+.sw::after{content:'';position:absolute;left:4px;top:4px;width:24px;height:24px;border-radius:50%;background:#fff}
+.sw.on{background:var(--grn-d)}.sw.on::after{left:28px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-pz">
+  <div class="bgl f-calm"></div>
+  <div class="top">
+    <h1>Strefa rodzica</h1>
+    <div class="seg" role="group" aria-label="Język panelu"><button class="on" type="button" aria-pressed="true">Polski</button><button type="button" aria-pressed="false">Українська</button></div>
+  </div>
+  <nav class="nav" aria-label="Strefa rodzica">
+    <sc-for list="{{f.nav}}" as="n" hint-placeholder-count="5"><a class="{{n.on}}" href="#{{n.t}}">{{n.t}}</a></sc-for>
+  </nav>
+  <div class="pane sum">
+    <h2>Podsumowanie · Ola</h2>
+    <h3>Ostatnia sesja</h3>
+    <div class="stats">
+      <div class="st"><b>82 %</b><span>Poprawnie za pierwszym razem</span></div>
+      <div class="st"><b>3</b><span>Użyte podpowiedzi</span></div>
+      <div class="st"><b>14</b><span>Minuty dziennie</span></div>
+    </div>
+    <h3>Mapa umiejętności</h3>
+    <sc-for list="{{f.skills}}" as="s" hint-placeholder-count="4"><div class="sk"><span>{{s.name}}</span><span class="chip2 {{s.k}}"><i></i>{{s.st}}</span></div></sc-for>
+    <h3>Trudności</h3>
+    <div class="sk"><span>Liczy wszystko od początku, zamiast liczyć dalej</span></div>
+  </div>
+  <div class="pane set pc-only">
+    <h2>Ustawienia</h2>
+    <div class="row"><span>Długość sesji</span><div class="seg" role="group" aria-label="Długość sesji"><button type="button">10 min</button><button class="on" type="button">15 min</button><button type="button">20 min</button></div></div>
+    <div class="row"><span>Głos</span><span style="font-weight: 800">Zofia (pl-PL)</span></div>
+    <div class="row"><span>Tempo mowy</span><span class="sl" role="slider" aria-valuenow="50" aria-label="Tempo mowy"><span class="tr"><i style="width: 50%"></i><b style="left: 50%"></b></span></span></div>
+    <h3>Głośność</h3>
+    <sc-for list="{{f.vol}}" as="v" hint-placeholder-count="3"><div class="row"><span>{{v.t}}</span><span class="sl" role="slider" aria-valuenow="{{v.n}}" aria-label="{{v.t}}"><span class="tr"><i style="width: {{v.n}}%"></i><b style="left: {{v.n}}%"></b></span></span></div></sc-for>
+    <div class="row"><span>Mniej animacji</span><button class="sw" type="button" role="switch" aria-checked="false" aria-label="Mniej animacji"></button></div>
+    <div class="row"><span>Zadania dodatkowe ★</span><button class="sw on" type="button" role="switch" aria-checked="true" aria-label="Zadania dodatkowe"></button></div>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Стиль</dt><dd>Спокійний дорослий: без цеглинок, текст 18 px (дрібні підписи 16 px), кнопки від 44 px; стани навичок — колір + крапка + слово. Цифри — приклад.</dd>
+  <dt>Розділи</dt><dd>Podsumowanie · Postępy · Trudności · Ustawienia · Profile · Kopia zapasowa («Eksportuj / Importuj / Wyczyść postępy» з підтвердженням). Телефон: розділи — вкладки вгорі, один розділ на екран.</dd>
+  <dt>Заглушки</dt><dd>Немає (малюється кодом). Ім'я голосу — приклад.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const nav = ['Podsumowanie', 'Postępy', 'Trudności', 'Ustawienia', 'Profile', 'Kopia zapasowa'].map((t, i) => ({ t, on: i === 0 ? 'on' : '' }));
+    const skills = [
+      { name: 'Liczenie przedmiotów w rzędzie', st: 'Opanowana', k: 'k-ok' },
+      { name: 'Rozpoznawanie 1–5 jednym spojrzeniem', st: 'W trakcie nauki', k: 'k-lrn' },
+      { name: 'Cyfra i ilość', st: 'Do powtórki', k: 'k-rev' },
+      { name: 'Zero', st: 'Nowa', k: 'k-new' },
+    ];
+    const vol = [{ t: 'Mowa', n: 90 }, { t: 'Efekty', n: 60 }, { t: 'Muzyka', n: 25 }];
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', nav, skills, vol },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', nav, skills, vol },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Błąd</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-err{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;justify-items:center}
+.mid{display:flex;align-items:center;gap:30px}
+.ph .mid{flex-direction:column;gap:22px;justify-content:center}
+.mid img{height:420px}
+.ph .mid img{height:300px}
+.bub{font-size:64px;padding:18px 30px}
+.pc .bub::after{left:auto;right:-26px;bottom:40px;border:14px solid transparent;border-left:22px solid #fff;border-right:0}
+.ph .bub{font-size:52px}
+.ph .bub::after{left:50%;top:auto;bottom:-18px;margin:0 0 0 -12px;border:12px solid transparent;border-top:18px solid #fff;border-bottom:0}
+.again{height:110px;padding:0 60px;border-radius:24px}
+.again img{width:64px;height:64px}
+.ph .again{width:100%;height:100px}
+.ph .s-err > .again{justify-self:stretch}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-err">
+  <div class="bgl blur f-p22"></div>
+  <div class="mid">
+    <div class="bub" aria-label="Ups! Spróbujmy jeszcze raz.">!?</div>
+    <img class="char" src="./img/kubik-present.png" alt="Kubik">
+  </div>
+  <button class="bk c-o again" type="button" aria-label="Jeszcze raz"><img src="./i/w-retry.svg" alt=""></button>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Ups! Spróbujmy jeszcze raz.»</dd>
+  <dt>Стан</dt><dd>Службовий: здивований Kubik і одна велика кнопка «Jeszcze raz» із круговою стрілкою (перезапуск екрана). Жодного тексту помилки для дитини, без червоного.</dd>
+  <dt>Заглушки</dt><dd>Поза «здивований» — D2 (тимчасово Kubik із фото).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720' },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

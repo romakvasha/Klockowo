@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Twój piesek</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-pup{grid-template-columns:330px minmax(0,1fr);grid-template-rows:minmax(0,1fr) 120px;grid-template-areas:"guide main" "guide tray"}
+.ph .s-pup{grid-template-columns:minmax(0,1fr);grid-template-rows:118px minmax(0,1fr) auto;grid-template-areas:"guide" "main" "tray"}
+.kbig{height:400px;align-self:center}
+.ph .kbig{height:112px}
+.main{grid-area:main;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:22px;padding:24px}
+.ph .main{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:12px;padding:12px}
+.pup{position:relative;display:grid;place-items:center;border:0;border-radius:22px;background:#fff;cursor:pointer;box-shadow:0 5px 0 #C9D5E6,0 10px 18px rgba(10,30,70,.16)}
+.pup img.p{width:130px;height:130px}
+.ph .pup img.p{width:92px;height:92px}
+.pup.on{outline:6px solid var(--yel);outline-offset:3px;transform:translateY(-4px);background:#FFF8DB}
+.pup .stub{position:absolute;left:10px;bottom:8px}
+.ph .pup .stub{display:none}
+.tray{justify-content:flex-end}
+.ph .tray{justify-content:center}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-pup">
+  <div class="bgl blur f-p17"></div>
+  <div class="guide">
+    <div class="bub" aria-label="Wybierz swojego pieska!"><img src="./i/k-speaker.svg" alt="" style="height: 34px"><img src="./art/pup-pon.svg" alt="">?</div>
+    <img class="kub kbig" src="./img/kubik-present.png" alt="Kubik">
+  </div>
+  <div class="card main" role="radiogroup" aria-label="Wybierz swojego pieska!">
+    <sc-for list="{{f.pups}}" as="p" hint-placeholder-count="8">
+      <button class="pup {{p.on}}" type="button" role="radio" aria-checked="{{p.checked}}" aria-label="{{p.line}}">
+        <img class="p" src="./art/pup-{{p.id}}.svg" alt="">
+        <sc-if value="{{p.checked}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
+        <span class="stub">{{p.breed}}</span>
+      </button>
+    </sc-for>
+  </div>
+  <div class="tray"><button class="bk c-o done" type="button" aria-label="Gotowe"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button></div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Wybierz swojego pieska!» · при дотику — опис: «Piesek z kokardką!» (обрано Shih tzu: жовта рамка + галочка, не лише колір) · «Gotowe» → «Witaj w drużynie!»</dd>
+  <dt>Зони</dt><dd>Kubik із хмаринкою · 8 цуценят на картці (від 120 px; телефон — 2 × 4) · «Gotowe» окремо внизу. Фон розмитий.</dd>
+  <dt>Заглушки</dt><dd>Усі 8 порід — старі плоскі SVG з підписом породи (D2: 3D, простий нашийник без жетона). Цуценят із фото не беремо: серед них далматинець і хаскі, а жетони — лапки.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const list = [
+      ['pon', 'PON', 'Kudłaty piesek!'], ['nowofundland', 'Nowofundland', 'Czarny piesek!'], ['pudel', 'Pudel', 'Piesek w loczkach!'],
+      ['chart', 'Chart polski', 'Szybki piesek!'], ['papillon', 'Papillon', 'Piesek z uszkami jak motylek!'], ['shihtzu', 'Shih tzu', 'Piesek z kokardką!'],
+      ['sharpei', 'Shar-pei', 'Pomarszczony piesek!'], ['akita', 'Akita pręgowana', 'Piesek w paski!'],
+    ];
+    const pups = list.map(([id, breed, line]) => ({ id, breed, line, checked: id === 'shihtzu', on: id === 'shihtzu' ? 'on' : '' }));
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', pups },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', pups },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

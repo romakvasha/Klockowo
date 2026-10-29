@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Autobus dziesiątka</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.bus{position:relative;display:flex;flex-direction:column;align-items:center}
+.body{--c:var(--yel);--d:var(--yel-d);display:grid;grid-template-columns:repeat(5,92px) 70px;grid-template-rows:repeat(2,86px);gap:12px;padding:22px 22px 30px;border-radius:26px 40px 18px 18px;
+ background:linear-gradient(180deg,#FFE476,var(--yel) 40%,#F0B800);box-shadow:inset 0 5px 0 rgba(255,255,255,.55),inset 0 -8px 0 rgba(0,0,0,.14),0 8px 0 var(--d),0 16px 22px rgba(10,30,70,.25)}
+.ph .body{grid-template-columns:repeat(5,44px) 28px;grid-template-rows:repeat(2,44px);gap:6px;padding:12px 10px 16px;border-radius:16px 24px 12px 12px}
+.seat{border-radius:14px;background:#DDF0FF;box-shadow:inset 0 -6px 0 #B5D6F0;display:grid;place-items:end center;overflow:hidden}
+.ph .seat{border-radius:8px}
+.seat img{height:78px}
+.ph .seat img{height:40px}
+.door{grid-column:6;grid-row:1 / 3;border-radius:12px;background:#8FC7F2;box-shadow:inset 0 0 0 5px #F0B800}
+.wheels{display:flex;justify-content:space-between;width:80%;margin-top:-22px}
+.ph .wheels{margin-top:-12px}
+.wheels i{width:62px;height:62px;border-radius:50%;background:#3B3A55;box-shadow:inset 0 0 0 14px #6A6985}
+.ph .wheels i{width:32px;height:32px;box-shadow:inset 0 0 0 7px #6A6985}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl" style="background-image: linear-gradient(180deg, #FFF1E0, #FFD9AE)"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 2 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Ile miejsc jest wolnych?"><span style="display: inline-block; width: 40px; height: 34px; border-radius: 8px; background: #DDF0FF; box-shadow: inset 0 -5px 0 #B5D6F0"></span>?</div>
+    <div class="krow"><img class="kub" src="./img/kubik-point.png" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="bus" role="img" aria-label="autobus: trzy kaczuszki, dziesięć miejsc">
+      <div class="body">
+        <sc-for list="{{f.seats}}" as="s" hint-placeholder-count="10"><span class="seat"><sc-if value="{{s.on}}" hint-placeholder-val="{{ false }}"><img class="char" src="./img/duckling1.png" alt=""></sc-if></span></sc-for>
+        <span class="door"></span>
+      </div>
+      <div class="wheels"><i></i><i></i></div>
+    </div>
+  </div>
+  <div class="tray">
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="sześć">6</button></span>
+    <span class="tw sel"><button class="bk c-b tile one" type="button" aria-label="siedem">7</button></span>
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="osiem">8</button></span>
+    <button class="bk c-o done" type="button" aria-label="Gotowe"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Ile miejsc jest wolnych?» → «Siedem i trzy to dziesięć.» Для 20 — двоповерховий автобус.</dd>
+  <dt>Стан</dt><dd>3 каченята сидять, 7 місць вільні (2 × 5 — як рамка-десятка); вибрано 7, чекаємо «Gotowe».</dd>
+  <dt>Заглушки</dt><dd>Автобус — цеглинки кодом; пасажири — вирізки каченят із фото (D2: тваринки W2). Фон W2 — колір світу.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const d = {
+      bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 2 ? 'bone-full' : 'bone-empty' })),
+      seats: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({ on: i === 0 || i === 1 || i === 5 })),
+    };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

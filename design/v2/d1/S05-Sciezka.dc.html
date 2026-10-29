@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Ścieżka świata — Łąka Liczenia</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-path{grid-template-rows:var(--hb) minmax(0,1fr);grid-template-areas:"hud" "path"}
+.hud{justify-content:flex-start}
+.wt{display:flex;align-items:center;gap:12px;padding:10px 20px 10px 12px;font:700 28px/1 var(--fd)}
+.wt .c{width:46px;height:46px;border-radius:12px;background:var(--w1);display:grid;place-items:center;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.wt .c img{width:30px;height:30px}
+.ph .wt{font-size:20px;padding:8px 14px 8px 8px}.ph .wt .c{width:36px;height:36px}.ph .wt .c img{width:24px;height:24px}
+.path{grid-area:path;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:16px}
+.ph .path{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto repeat(5,minmax(0,1fr));gap:10px 16px}
+.nd{display:flex;align-items:center;justify-content:center;gap:4px}
+.node{width:96px;height:96px;border-radius:18px;font-size:44px}
+.node img.st{width:58px;height:58px}
+.node img.ic{width:46px;height:46px}
+.nd.next .node{outline:6px solid #fff;outline-offset:4px;box-shadow:inset 0 3px 0 rgba(255,255,255,.55),inset 0 -5px 0 rgba(0,0,0,.16),0 7px 0 var(--d),0 0 0 16px rgba(255,236,140,.55),0 0 40px 18px rgba(255,236,140,.6)}
+.nd .badge{right:-10px;top:-2px}
+.nd .kk{height:132px}
+.ph .nd .kk{height:96px}
+.more{grid-column:1 / -1;justify-self:center;padding:8px 16px;font:700 15px/1 var(--fn)}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-path">
+  <div class="bgl f-p22"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card wt"><span class="c"><img src="./i/w-w1.svg" alt=""></span>Łąka Liczenia</div>
+  </div>
+  <div class="path">
+    <sc-if value="{{f.phone}}" hint-placeholder-val="{{ false }}"><div class="card more" style="grid-area: 1 / 1 / 2 / 3">↑ ще 2 рівні й скриня</div></sc-if>
+    <sc-for list="{{f.nodes}}" as="n" hint-placeholder-count="13">
+      <div class="nd {{n.st}}" style="grid-area: {{n.ga}}">
+        <span class="tw" style="position: relative">
+          <button class="bk node {{n.cls}}" type="button" aria-label="{{n.aria}}">
+            <sc-if value="{{n.num}}" hint-placeholder-val="{{ true }}">{{n.num}}</sc-if>
+            <sc-if value="{{n.sticker}}" hint-placeholder-val="{{ false }}"><img class="st" src="./art/w1-kaczuszka.svg" alt=""></sc-if>
+            <sc-if value="{{n.icon}}" hint-placeholder-val="{{ false }}"><img class="ic" src="./i/{{n.icon}}.svg" alt=""></sc-if>
+            <sc-if value="{{n.chestImg}}" hint-placeholder-val="{{ false }}"><img class="st" src="./art/chest-locked.svg" alt="" style="width: 76px; height: 76px"></sc-if>
+          </button>
+          <sc-if value="{{n.done}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
+          <sc-if value="{{n.review}}" hint-placeholder-val="{{ false }}"><span class="badge rt"><img src="./i/w-retry.svg" alt=""></span></sc-if>
+        </span>
+        <sc-if value="{{n.here}}" hint-placeholder-val="{{ false }}"><img class="kk char" src="./img/kubik-point.png" alt="Kubik"></sc-if>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Стани вузлів</dt><dd>1, 2, 4 пройдені — міні-наліпка + галочка · 3 «Do powtórki» — фіолетова кругова стрілка · 5 наступний — світиться, Kubik поруч · 6–12 заблоковані — сірий камінь із замком · скриня в кінці. ★-гілок у W1 немає (лише W4 і W7).</dd>
+  <dt>Дотик</dt><dd>Можна торкнутися вузла, що світиться, «Do powtórki» і пройдених; заблокований лише хитається. «Mapa» (72 / 80 px) — до «Mapa przygody».</dd>
+  <dt>Заглушки</dt><dd>Скриня й наліпка-каченя — старі плоскі SVG; фон стежки — фото W1 (D2: стежка-платформи з цеглинок).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = (i) => (i === 3 ? 'review' : i < 5 ? 'done' : i === 5 ? 'next' : 'lock');
+    const node = (i, ga) => {
+      if (i === 13) return { st: 'lock', ga, cls: 'c-n', icon: 'k-lock', aria: 'Skrzynia zamknięta', chest: true };
+      const s = st(i);
+      return {
+        st: s, ga, num: s === 'next' ? String(i) : '', sticker: s === 'done' || s === 'review', icon: s === 'lock' ? 'w-lock' : '',
+        cls: s === 'lock' ? 'c-n' : s === 'next' ? 'c-y' : 'c-g', done: s === 'done', review: s === 'review', here: s === 'next',
+        aria: s === 'lock' ? 'zablokowane' : s === 'review' ? 'Do powtórki' : `Poziom ${i}`,
+      };
+    };
+    const pcPos = ['2/1', '2/2', '2/3', '2/4', '2/5', '2/6', '2/7', '1/7', '1/6', '1/5', '1/4', '1/3', '1/2'];
+    const phPos = ['6/1', '6/2', '5/2', '5/1', '4/1', '4/2', '3/2', '3/1', '2/1', '2/2'];
+    const pcNodes = pcPos.map((ga, k) => node(k + 1, ga));
+    pcNodes[12] = { ...pcNodes[12], icon: '', cls: 'c-w', chestImg: true };
+    const phNodes = phPos.map((ga, k) => node(k + 1, ga));
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', nodes: pcNodes, phone: false },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844 · гортається вгору', nodes: phNodes, phone: true },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

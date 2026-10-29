@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Historyjki</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.scr .board{gap:18px;padding:22px}
+.ph .scr .board{flex-direction:column;gap:8px;padding:10px}
+.fr{flex:1 1 0;min-width:0;height:100%;border-radius:20px;background:linear-gradient(180deg,#CFEBFF,#E9F6FF 70%,#CDEBC0 70%);border:4px solid #fff;box-shadow:0 6px 14px rgba(10,30,70,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative}
+.ph .fr{flex:1 1 0;width:100%;height:auto;flex-direction:row;gap:6px;border-radius:14px;border-width:3px}
+.no{position:absolute;left:10px;top:10px;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font:700 20px/34px var(--fd);text-align:center}
+.ph .no{width:24px;height:24px;font-size:15px;line-height:24px;left:6px;top:6px}
+.branch{width:86%;height:16px;border-radius:8px;background:#8B5A2B;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2)}
+.ph .branch{display:none}
+.birds{display:flex;gap:8px;align-items:flex-end}
+.birds img{height:84px}
+.ph .birds img{height:44px}
+.fly img{transform:rotate(-12deg)}
+.arr{font:700 40px/1 var(--fd);color:var(--org)}
+.ph .arr{font-size:26px}
+.ex{display:flex;gap:8px}
+.ex .bk{width:56px;height:52px;font-size:30px;margin-top:10px}
+.ph .ex{gap:4px}.ph .ex .bk{width:36px;height:34px;font-size:20px;border-radius:9px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl" style="background-image: linear-gradient(180deg, #DFF2FF 0%, #CDEBFF 58%, #FFF0C9 58%, #F7DFA4 100%)"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 4 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Brawo! Pięć ptaszków.">5</div>
+    <div class="krow"><img class="kub" src="./img/kubik-hands.png" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="fr" role="img" aria-label="Na gałęzi siedzą dwa ptaszki."><span class="no">1</span><span class="birds"><img class="char" src="./img/duckling1.png" alt=""><img class="char" src="./img/duckling1.png" alt=""></span><span class="branch"></span></div>
+    <div class="fr" role="img" aria-label="Przylatują jeszcze trzy."><span class="no">2</span><span class="birds fly"><img class="char" src="./img/duckling.png" alt=""><img class="char" src="./img/duckling.png" alt=""><img class="char" src="./img/duckling.png" alt=""></span><span class="arr">→</span></div>
+    <div class="fr" role="img" aria-label="Dwa dodać trzy równa się pięć."><span class="no">3</span>
+      <div class="ex"><span class="bk c-r one">2</span><span class="bk c-y one">+</span><span class="bk c-b one">3</span><span class="bk c-g one">=</span><span class="bk c-p one">5</span></div>
+    </div>
+  </div>
+  <div class="tray">
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="cztery">4</button></span>
+    <span class="tw ok"><button class="bk c-b tile one" type="button" aria-label="pięć — dobrze">5</button><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></span>
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="sześć">6</button></span>
+    <button class="bk c-o done" type="button" aria-label="Gotowe" disabled style="opacity: 0.55"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Na gałęzi siedzą dwa ptaszki. Przylatują jeszcze trzy. Ile ptaszków jest teraz?» → «Brawo!» → картка з прикладом 2 + 3 = 5</dd>
+  <dt>Стан</dt><dd>Історія на 3 кадри (номер кадру — у кружечку; на телефоні кадри стоять один під одним); правильно — 5; третій кадр став карткою з прикладом.</dd>
+  <dt>Заглушки</dt><dd>Пташки — тимчасово каченята з фото, гілка — кодом (D2: 3D-пташки; у W3 — рибки, мушлі, човник). Фон W3 — колір світу.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const d = { bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 4 ? 'bone-full' : 'bone-empty' })) };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

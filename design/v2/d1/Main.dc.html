@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>System cegiełek</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.sys{display:grid;grid-template-columns:560px 640px 470px;gap:24px;padding:32px 24px 32px 24px}
+.sec{padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.sec h2{margin:0;font:700 22px/1.1 var(--fd);color:var(--ink)}
+.sec p{margin:0;font:600 15px/1.35 var(--fn);color:var(--ink2)}
+.row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px}
+.sw{display:flex;flex-direction:column;align-items:center;gap:8px;font:700 13px/1 var(--fn);color:var(--ink2)}
+.sw .bk{width:72px;height:52px}
+.wd{display:flex;align-items:center;gap:10px;font:700 15px/1.2 var(--fn)}
+.wd span.c{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.wd span.c img{width:28px;height:28px}
+.logo{display:flex;gap:6px}
+.logo .bk{width:52px;height:60px;font-size:36px}
+.tg{position:relative;width:34px;height:34px;border-radius:50%;background:var(--c);box-shadow:inset 0 -4px 0 rgba(0,0,0,.2),inset 0 3px 0 rgba(255,255,255,.45),0 3px 4px rgba(0,0,0,.25)}
+.tg::before{content:'';position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-9px 0 0 -8px;border-radius:50%;background:var(--c);box-shadow:inset 0 3px 0 rgba(255,255,255,.55),0 3px 0 rgba(0,0,0,.22)}
+.col{display:flex;flex-direction:column;align-items:center;gap:0}
+.collar{width:96px;height:16px;border-radius:8px;background:var(--cc);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.ring{width:8px;height:8px;border-radius:50%;border:2px solid #9AA6B8;margin-top:-2px}
+.zn{display:grid;gap:6px;padding:8px;border-radius:14px;background:#EAF1FA;font:800 12px/1 var(--fn);color:var(--ink2);text-align:center}
+.zn div{display:grid;place-items:center;border-radius:8px;background:#fff;border:2px solid #C7D3E4}
+.zn .k{background:#FFF3CC;border-color:#E6C35C}
+.zn .b{background:#E3F2DD;border-color:#9CCB86}
+.zn .t{background:#DDEBFB;border-color:#8DB6E6}
+</style>
+</helmet>
+<div class="ab sys">
+  <div style="display: flex; flex-direction: column; gap: 24px">
+    <section class="card sec">
+      <h2>Кольори цеглинок</h2>
+      <div class="row">
+        <sc-for list="{{colors}}" as="c" hint-placeholder-count="6">
+          <div class="sw"><span class="bk {{c.cls}}"></span>{{c.hex}}</div>
+        </sc-for>
+      </div>
+      <p>Небо #3D9CF0 · текст #2B2A4A · рамка «спробуй ще» #7F6CE0. Сигнал ніколи не лише кольором: є форма, рамка або значок.</p>
+    </section>
+    <section class="card sec">
+      <h2>Світи: колір + іконка-орієнтир</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px">
+        <sc-for list="{{worlds}}" as="w" hint-placeholder-count="8">
+          <div class="wd"><span class="c" style="background: {{w.c}}"><img src="./i/w-{{w.ic}}.svg" alt=""></span>{{w.name}}</div>
+        </sc-for>
+      </div>
+    </section>
+    <section class="card sec">
+      <h2>Шрифти</h2>
+      <div style="font: 700 34px/1 var(--fd)">Fredoka — Graj! 0 1 2 3 4 5</div>
+      <div style="font: 700 20px/1.2 var(--fn)">Nunito — Strefa rodzica, Długość sesji</div>
+      <div style="font: 400 24px/1.2 var(--fa)">Andika — a ą e ę ł ó ś ź ż</div>
+    </section>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 24px">
+    <section class="card sec">
+      <h2>Кнопки-цеглинки</h2>
+      <div class="row">
+        <button class="bk c-g big" type="button">Graj!</button>
+        <button class="bk c-b mid" type="button" aria-label="Dalej"><img src="./i/w-next.svg" alt="" style="width: 40px; height: 40px"></button>
+        <button class="bk c-o mid" type="button" aria-label="Jeszcze raz"><img src="./i/w-retry.svg" alt="" style="width: 40px; height: 40px"></button>
+        <button class="bk c-g mid press" type="button">Graj!</button>
+      </div>
+      <p>Глянцева цеглинка: блік угорі, темніший низ, 1–2 пупирці. Натиск — цеглинка «вдавлюється» (остання). Для дитини — лише іконки, підпис іде в aria-label і звучить при дотику.</p>
+    </section>
+    <section class="card sec">
+      <h2>HUD · 72 px (телефон 80 px)</h2>
+      <div class="row" style="align-items: center">
+        <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+        <div class="card bones" aria-label="kosteczki: 2 z 6">
+          <img class="bone" src="./i/bone-full.svg" alt=""><img class="bone" src="./i/bone-full.svg" alt=""><img class="bone" src="./i/bone-empty.svg" alt=""><img class="bone" src="./i/bone-empty.svg" alt=""><img class="bone" src="./i/bone-empty.svg" alt=""><img class="bone" src="./i/bone-empty.svg" alt="">
+        </div>
+        <button class="bk c-b rnd hb pulse" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+        <button class="bk c-y rnd hb" type="button" aria-label="Pomóż mi"><img src="./i/k-bulb.svg" alt=""></button>
+        <button class="chip" type="button" aria-label="Strefa rodzica — przytrzymaj 3 sekundy"><img src="./i/k-gear.svg" alt=""></button>
+      </div>
+      <p>Mapa · 6 кісточок (повна — суцільна, порожня — пунктир) · Posłuchaj (пульсує раз) · лампочка Pomóż mi · шестерня батьків 64 px.</p>
+    </section>
+    <section class="card sec">
+      <h2>Плитки-відповіді 120 px (телефон 96)</h2>
+      <div class="row" style="gap: 34px; padding: 6px 4px 18px">
+        <span class="tw"><button class="bk c-b tile" type="button">3<span class="dots"><i></i><i></i><i></i></span></button></span>
+        <span class="tw sel"><button class="bk c-b tile" type="button">4<span class="dots"><i></i><i></i><i></i><i></i></span></button></span>
+        <span class="tw ok"><button class="bk c-b tile" type="button">5<span class="dots"><i></i><i></i><i></i><i></i><i></i></span></button><span class="badge"><img src="./i/k-check.svg" alt=""></span></span>
+        <span class="tw retry"><button class="bk c-b tile" type="button" disabled>6<span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i></span></button><span class="badge rt"><img src="./i/w-retry.svg" alt=""></span></span>
+      </div>
+      <p>Звичайна · вибрана (піднята, біла рамка, крапка під нею) · правильна (зелена, галочка) · після помилки (40 %, непрозора фіолетова рамка й стрілка). У W1 — цифра разом із крапками.</p>
+    </section>
+    <section class="card sec">
+      <h2>Картки цифр</h2>
+      <div class="row" style="gap: 12px">
+        <sc-for list="{{digits}}" as="d" hint-placeholder-count="10">
+          <span class="bk {{d.cls}} one" style="width: 48px; height: 58px; font-size: 34px">{{d.n}}</span>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 24px">
+    <section class="card sec">
+      <h2>Логотип</h2>
+      <div class="logo" role="img" aria-label="Klockowo">
+        <span class="bk c-r">K</span><span class="bk c-y">l</span><span class="bk c-b">o</span><span class="bk c-g">c</span><span class="bk c-o">k</span><span class="bk c-p">o</span><span class="bk c-r">w</span><span class="bk c-b">o</span>
+      </div>
+    </section>
+    <section class="card sec">
+      <h2>Жетони: кругла цеглинка з одним пупирцем</h2>
+      <div class="row" style="gap: 14px; align-items: flex-start">
+        <sc-for list="{{tags}}" as="t" hint-placeholder-count="6">
+          <div class="col" style="width: 64px; font: 700 13px/1.2 var(--fn); text-align: center; gap: 4px">
+            <span class="collar" style="--cc: {{t.collar}}; width: 60px"></span>
+            <sc-if value="{{t.tag}}" hint-placeholder-val="{{ true }}"><span class="tg" style="--c: {{t.tag}}; margin-top: -4px"></span></sc-if>
+            <sc-if value="{{t.none}}" hint-placeholder-val="{{ false }}"><span class="ring"></span></sc-if>
+            <span style="margin-top: 4px">{{t.name}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <p>Без лапок і значків. Цуценята «Twój piesek» — простий нашийник без жетона.</p>
+    </section>
+    <section class="card sec">
+      <h2>Хмаринка й картка</h2>
+      <div class="row" style="align-items: center">
+        <div class="bub" style="font-size: 30px"><img src="./i/k-speaker.svg" alt="" style="height: 30px"><img src="./art/w1-biedronka.svg" alt="">?</div>
+        <span class="stub">ЗАГЛУШКА · D2</span>
+      </div>
+      <p>У грі в хмаринці лише іконки й цифри (дитина ще не читає). Текст — тільки на білій картці, ніколи просто на фото.</p>
+    </section>
+    <section class="card sec">
+      <h2>Зони екрана (без накладань)</h2>
+      <div class="row" style="align-items: flex-start; gap: 16px">
+        <div class="zn" style="width: 250px; height: 150px; grid-template-columns: 70px 1fr; grid-template-rows: 26px 1fr 34px; grid-template-areas: &#39;h h&#39; &#39;k b&#39; &#39;k t&#39;">
+          <div style="grid-area: h">HUD</div><div class="k" style="grid-area: k">Kubik</div><div class="b" style="grid-area: b">дошка</div><div class="t" style="grid-area: t">відповіді</div>
+        </div>
+        <div class="zn" style="width: 92px; height: 150px; grid-template-rows: 20px 26px 1fr 30px">
+          <div>HUD</div><div class="k">Kubik</div><div class="b">дошка</div><div class="t">відп.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      colors: [
+        { cls: 'c-r', hex: '#E8352F' }, { cls: 'c-y', hex: '#FFCF1F' }, { cls: 'c-b', hex: '#1F7FE0' },
+        { cls: 'c-g', hex: '#3FAE35' }, { cls: 'c-o', hex: '#FF8A1F' }, { cls: 'c-p', hex: '#8B4FE0' },
+      ],
+      worlds: [
+        { c: '#7BCB5A', ic: 'w1', name: 'W1 Łąka Liczenia' }, { c: '#FF9F43', ic: 'w2', name: 'W2 Ogród Cyfr' },
+        { c: '#3FA9F5', ic: 'w3', name: 'W3 Wyspa Dodawania' }, { c: '#FF6B6B', ic: 'w4', name: 'W4 Most Dwudziestki' },
+        { c: '#2FA58B', ic: 'w5', name: 'W5 Las Dziesiątek' }, { c: '#D46BD8', ic: 'w6', name: 'W6 Miasto Setki' },
+        { c: '#6C63FF', ic: 'w7', name: 'W7 Kosmiczna Droga' }, { c: '#FFC21A', ic: 'hub', name: 'Plac Zabaw' },
+      ],
+      digits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => ({ n, cls: ['c-r', 'c-y', 'c-b', 'c-g', 'c-o', 'c-p'][n % 6] })),
+      tags: [
+        { name: 'Kubik', collar: '#1F7FE0', tag: '#FFCF1F' }, { name: 'Łatka', collar: '#3FAE35', tag: '#5FCB4F' },
+        { name: 'Pufka', collar: '#3FA9F5', tag: '#7CC8FF' }, { name: 'Tofik', collar: '#FF6B6B', tag: '#FF8A80' },
+        { name: 'Iskra', collar: '#8B4FE0', tag: '#A77BF0' }, { name: 'Twój piesek', collar: '#E8352F', tag: '', none: true },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

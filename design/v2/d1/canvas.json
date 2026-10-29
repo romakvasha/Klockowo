@@ -1,0 +1,63 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-29T13:24:00Z" },
+  "title": "Klockowo v2 — wszystkie ekrany",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1766, "h": 940, "title": "0 · System cegiełek" },
+    "S01-Ladowanie.dc.html": { "x": 1846, "y": 0, "w": 1766, "h": 940, "title": "1 · Ładowanie" },
+    "S02-Start.dc.html": { "x": 3692, "y": 0, "w": 1766, "h": 940, "title": "2 · Start — Graj!" },
+    "S02b-KtoGra.dc.html": { "x": 5538, "y": 0, "w": 1766, "h": 940, "title": "2b · Start — Kto dziś gra?" },
+    "S03-TwojPiesek.dc.html": { "x": 7384, "y": 0, "w": 1766, "h": 940, "title": "3 · Twój piesek" },
+    "S04-Mapa.dc.html": { "x": 9230, "y": 0, "w": 1766, "h": 940, "title": "4 · Mapa przygody" },
+    "S05-Sciezka.dc.html": { "x": 11076, "y": 0, "w": 1766, "h": 940, "title": "5 · Ścieżka świata (W1)" },
+    "S06-Wprowadzenie.dc.html": { "x": 12922, "y": 0, "w": 1766, "h": 940, "title": "6 · Wprowadzenie (misja)" },
+
+    "G01-PoliczIDotknij.dc.html": { "x": 0, "y": 1320, "w": 1766, "h": 940, "title": "Gra 1 · Policz i dotknij" },
+    "G02-Blysk.dc.html": { "x": 1846, "y": 1320, "w": 1766, "h": 940, "title": "Gra 2 · Błysk!" },
+    "G03-CyfraIObrazek.dc.html": { "x": 3692, "y": 1320, "w": 1766, "h": 940, "title": "Gra 3 · Cyfra i obrazek" },
+    "G04-ZgubionyWagonik.dc.html": { "x": 5538, "y": 1320, "w": 1766, "h": 940, "title": "Gra 4 · Zgubiony wagonik" },
+    "G05-NakarmZwierzaka.dc.html": { "x": 7384, "y": 1320, "w": 1766, "h": 940, "title": "Gra 5 · Nakarm zwierzaka" },
+    "G06-KtoMaWiecej.dc.html": { "x": 9230, "y": 1320, "w": 1766, "h": 940, "title": "Gra 6 · Kto ma więcej?" },
+    "G07-AutobusDziesiatka.dc.html": { "x": 11076, "y": 1320, "w": 1766, "h": 940, "title": "Gra 7 · Autobus dziesiątka" },
+
+    "G08-DomekLiczb.dc.html": { "x": 0, "y": 2640, "w": 1766, "h": 940, "title": "Gra 8 · Domek liczb" },
+    "G09-IleRazem.dc.html": { "x": 1846, "y": 2640, "w": 1766, "h": 940, "title": "Gra 9 · Ile razem?" },
+    "G10-SkokiZabki.dc.html": { "x": 3692, "y": 2640, "w": 1766, "h": 940, "title": "Gra 10 · Skoki żabki" },
+    "G11-ZrobDziesiatke.dc.html": { "x": 5538, "y": 2640, "w": 1766, "h": 940, "title": "Gra 11 · Zrób dziesiątkę" },
+    "G12-PaczkiPoDziesiec.dc.html": { "x": 7384, "y": 2640, "w": 1766, "h": 940, "title": "Gra 12 · Paczki po dziesięć" },
+    "G13-TajemniczaTablica.dc.html": { "x": 9230, "y": 2640, "w": 1766, "h": 940, "title": "Gra 13 · Tajemnicza tablica" },
+    "G14-Historyjki.dc.html": { "x": 11076, "y": 2640, "w": 1766, "h": 940, "title": "Gra 14 · Historyjki" },
+
+    "S08-KoniecPoziomu.dc.html": { "x": 0, "y": 3960, "w": 1766, "h": 940, "title": "8 · Koniec poziomu" },
+    "S09-SwiatUkonczony.dc.html": { "x": 1846, "y": 3960, "w": 1766, "h": 940, "title": "9 · Świat ukończony" },
+    "S10-Album.dc.html": { "x": 3692, "y": 3960, "w": 1766, "h": 940, "title": "10 · Album z naklejkami" },
+    "S10b-Odznaki.dc.html": { "x": 5538, "y": 3960, "w": 1766, "h": 940, "title": "10b · Odznaki" },
+    "S10c-PustyAlbum.dc.html": { "x": 7384, "y": 3960, "w": 1766, "h": 940, "title": "16c · Pusty album" },
+    "S11-Przerwa.dc.html": { "x": 9230, "y": 3960, "w": 1766, "h": 940, "title": "11 · Czas na przerwę! (piosenka)" },
+    "S12-KoniecNaDzis.dc.html": { "x": 11076, "y": 3960, "w": 1766, "h": 940, "title": "12 · Koniec na dziś" },
+    "S13-PlacZabaw.dc.html": { "x": 12922, "y": 3960, "w": 1766, "h": 940, "title": "13 · Plac Zabaw" },
+
+    "S14-Bramka.dc.html": { "x": 0, "y": 5280, "w": 1766, "h": 940, "title": "14 · Bramka rodzica" },
+    "S15-StrefaRodzica.dc.html": { "x": 1846, "y": 5280, "w": 1766, "h": 940, "title": "15 · Strefa rodzica" },
+    "S16-Blad.dc.html": { "x": 3692, "y": 5280, "w": 1766, "h": 940, "title": "16a · Błąd" },
+    "S16b-BrakGlosu.dc.html": { "x": 5538, "y": 5280, "w": 1766, "h": 940, "title": "16b · Brak polskiego głosu" }
+  },
+  "order": [
+    "Main.dc.html", "S01-Ladowanie.dc.html", "S02-Start.dc.html", "S02b-KtoGra.dc.html", "S03-TwojPiesek.dc.html", "S04-Mapa.dc.html", "S05-Sciezka.dc.html", "S06-Wprowadzenie.dc.html",
+    "G01-PoliczIDotknij.dc.html", "G02-Blysk.dc.html", "G03-CyfraIObrazek.dc.html", "G04-ZgubionyWagonik.dc.html", "G05-NakarmZwierzaka.dc.html", "G06-KtoMaWiecej.dc.html", "G07-AutobusDziesiatka.dc.html",
+    "G08-DomekLiczb.dc.html", "G09-IleRazem.dc.html", "G10-SkokiZabki.dc.html", "G11-ZrobDziesiatke.dc.html", "G12-PaczkiPoDziesiec.dc.html", "G13-TajemniczaTablica.dc.html", "G14-Historyjki.dc.html",
+    "S08-KoniecPoziomu.dc.html", "S09-SwiatUkonczony.dc.html", "S10-Album.dc.html", "S10b-Odznaki.dc.html", "S10c-PustyAlbum.dc.html", "S11-Przerwa.dc.html", "S12-KoniecNaDzis.dc.html", "S13-PlacZabaw.dc.html",
+    "S14-Bramka.dc.html", "S15-StrefaRodzica.dc.html", "S16-Blad.dc.html", "S16b-BrakGlosu.dc.html"
+  ],
+  "notes": {
+    "howto": { "x": -720, "y": 0, "w": 600, "size": "m", "fill": "orange", "text": "Як дивитися\n\n• Кожна дошка: ліворуч ПК 1280×720, праворуч телефон 390×844 — ті самі зони, перебудовані сіткою.\n• Зони не налазять одна на одну: HUD · Kubik із хмаринкою · дошка завдання · відповіді.\n• Жовті смугасті мітки «ЗАГЛУШКА» — картинок ще немає (з'являться в D2).\n• Під кожним ПК-кадром — що говорить голос і який стан показано.\n• Коментуйте прямо на полотні; коли все добре — напишіть «схвалюю»." },
+    "r0": { "x": 0, "y": -280, "text": "Система цеглинок, вхід, мапа й місія", "kind": "title1", "maxW": 14688 },
+    "r1": { "x": 0, "y": 1040, "text": "Міні-ігри 1–7", "kind": "title1", "maxW": 12842 },
+    "r2": { "x": 0, "y": 2360, "text": "Міні-ігри 8–14", "kind": "title1", "maxW": 12842 },
+    "r3": { "x": 0, "y": 3680, "text": "Кінець рівня, нагороди, перерва, Plac Zabaw", "kind": "title1", "maxW": 14688 },
+    "r4": { "x": 0, "y": 5000, "text": "Для батьків і службові стани", "kind": "title1", "maxW": 7304 }
+  },
+  "designSystems": []
+}

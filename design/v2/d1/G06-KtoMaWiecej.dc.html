@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Kto ma więcej?</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.scr .board{display:grid;grid-template-columns:150px repeat(4,96px);grid-template-rows:1fr 34px 1fr;gap:0 26px;justify-content:center;align-content:center}
+.ph .scr .board{grid-template-columns:76px repeat(4,46px);grid-template-rows:auto 26px auto;gap:0 10px}
+.who{grid-column:1;display:grid;place-items:center}
+.who img{height:140px}
+.ph .who img{height:72px}
+.cr{display:grid;place-items:center}
+.cr img{width:92px;height:92px}
+.ph .cr img{width:46px;height:46px}
+.pair{display:grid;place-items:center}
+.pair i{width:6px;height:100%;border-radius:3px;background:repeating-linear-gradient(180deg,var(--ink2) 0 6px,transparent 6px 11px)}
+.extra{border-radius:50%;box-shadow:0 0 0 5px #fff,0 0 0 11px var(--org)}
+.tile img.an{width:70%;height:70%}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl" style="background-image: linear-gradient(180deg, #FFF1E0, #FFD9AE)"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 5 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Kto ma więcej marchewek?"><img src="./art/animal-zajaczek.svg" alt="">4</div>
+    <div class="krow"><img class="kub" src="./img/kubik-hands.png" alt="Kubik"></div>
+  </div>
+  <div class="card board" role="img" aria-label="zajączek ma cztery marchewki, miś ma trzy">
+    <span class="who" style="grid-row: 1"><img src="./art/animal-zajaczek-happy.svg" alt=""></span>
+    <span class="cr" style="grid-row: 1; grid-column: 2"><img src="./art/w2-marchewka.svg" alt=""></span>
+    <span class="cr" style="grid-row: 1; grid-column: 3"><img src="./art/w2-marchewka.svg" alt=""></span>
+    <span class="cr" style="grid-row: 1; grid-column: 4"><img src="./art/w2-marchewka.svg" alt=""></span>
+    <span class="cr" style="grid-row: 1; grid-column: 5"><img class="extra" src="./art/w2-marchewka.svg" alt=""></span>
+    <span class="pair" style="grid-row: 2; grid-column: 2"><i></i></span>
+    <span class="pair" style="grid-row: 2; grid-column: 3"><i></i></span>
+    <span class="pair" style="grid-row: 2; grid-column: 4"><i></i></span>
+    <span class="who" style="grid-row: 3"><img src="./art/animal-mis.svg" alt=""></span>
+    <span class="cr" style="grid-row: 3; grid-column: 2"><img src="./art/w2-marchewka.svg" alt=""></span>
+    <span class="cr" style="grid-row: 3; grid-column: 3"><img src="./art/w2-marchewka.svg" alt=""></span>
+    <span class="cr" style="grid-row: 3; grid-column: 4"><img src="./art/w2-marchewka.svg" alt=""></span>
+  </div>
+  <div class="tray">
+    <span class="tw ok"><button class="bk c-b tile one" type="button" aria-label="zajączek"><img class="an" src="./art/animal-zajaczek.svg" alt=""></button><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></span>
+    <span class="tw"><button class="bk c-w tile one" type="button" aria-label="Tyle samo"><img class="ic" src="./i/k-equal.svg" alt=""></button></span>
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="miś"><img class="an" src="./art/animal-mis.svg" alt=""></button></span>
+    <button class="bk c-o done" type="button" aria-label="Gotowe" disabled style="opacity: 0.55"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Kto ma więcej marchewek?» · вибір: зайчик / «Tyle samo» (=) / ведмедик → «Brawo!»</dd>
+  <dt>Стан</dt><dd>Правильно (зайчик, галочка); потім предмети стають парами — пунктир між парами, зайва морквина обведена помаранчевим кільцем. 5 з 6 кісточок.</dd>
+  <dt>Заглушки</dt><dd>Тваринки й морква — старі плоскі SVG. Фон W2 — колір світу (D2).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const d = { bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 5 ? 'bone-full' : 'bone-empty' })) };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
