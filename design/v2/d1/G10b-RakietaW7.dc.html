@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Skoki żabki w W7 (rakieta)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.space{background-image:radial-gradient(circle at 18% 22%,#fff 0 2px,transparent 3px),radial-gradient(circle at 72% 14%,#fff 0 1.5px,transparent 2.5px),radial-gradient(circle at 86% 62%,#fff 0 2px,transparent 3px),radial-gradient(circle at 34% 78%,#fff 0 1.5px,transparent 2.5px),radial-gradient(circle at 56% 46%,#FFE9A8 0 2px,transparent 3px),radial-gradient(ellipse at 80% 110%,#6C63FF 0,transparent 55%),linear-gradient(180deg,#141338 0%,#2A2470 60%,#3B2F8F 100%)}
+.scr .board{display:block;padding:28px 34px}
+.ph .scr .board{padding:18px 16px}
+.nl{position:relative;height:100%}
+.axis{position:absolute;left:0;right:0;top:72%;height:6px;margin-top:-3px;border-radius:3px;background:var(--ink)}
+.tk{position:absolute;top:72%;width:2px;height:12px;margin:-6px 0 0 -1px;background:var(--ink2)}
+.tk.ten{width:4px;height:30px;margin:-15px 0 0 -2px;background:var(--ink)}
+.tl{position:absolute;top:72%;margin:22px 0 0 -30px;width:60px;text-align:center;font:700 26px/1 var(--fd);color:var(--ink)}
+.ph .tl{font-size:20px;margin-top:18px}
+.arc{position:absolute;top:72%;height:80px;margin-top:-214px;border:5px solid var(--w7);border-bottom:0;border-radius:50% 50% 0 0 / 100% 100% 0 0;display:grid;place-items:start center}
+.arc b{margin-top:-22px;width:38px;height:38px;border-radius:50%;background:var(--w7);color:#fff;font:700 24px/38px var(--fd);text-align:center}
+.ph .arc{height:56px;margin-top:-156px;border-width:4px}.ph .arc b{width:30px;height:30px;font-size:19px;line-height:30px;margin-top:-17px}
+.start{position:absolute;top:72%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px var(--w7)}
+.rk{position:absolute;top:72%;width:74px;height:120px;margin:-126px 0 0 -37px;border:0;padding:0;background:none;cursor:pointer}
+.rk img{width:100%;height:100%}
+.ph .rk{width:54px;height:88px;margin:-94px 0 0 -27px}
+.pv{background:#fff}
+.pv .t{color:#1A4FA0}.pv .o{color:#A34700}
+.tile.pv{font-size:calc(var(--tile) * 0.4)}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl space"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 3 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Rakieta jest na liczbie trzydzieści cztery. Leci o trzydzieści dalej. Gdzie wyląduje?">34 + 30 = ?</div>
+    <div class="krow"><img class="kub" src="./img/kubik-astro.png" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="nl" role="img" aria-label="prosta liczbowa, rakieta na pięćdziesięciu czterech, dwa przystanki">
+      <span class="axis"></span>
+      <sc-for list="{{f.ticks}}" as="t" hint-placeholder-count="41"><span class="tk {{t.cls}}" style="left: {{t.x}}%"></span></sc-for>
+      <sc-for list="{{f.labels}}" as="l" hint-placeholder-count="5"><span class="tl" style="left: {{l.x}}%">{{l.n}}</span></sc-for>
+      <sc-for list="{{f.arcs}}" as="a" hint-placeholder-count="2"><span class="arc" style="left: {{a.x}}%; width: {{a.w}}%"><b>{{a.n}}</b></span></sc-for>
+      <span class="start" style="left: {{f.startX}}%"></span>
+      <button class="rk" type="button" aria-label="rakieta — leć" style="left: {{f.rocketX}}%"><img src="./art/veh-rakieta.svg" alt=""></button>
+    </div>
+  </div>
+  <div class="tray">
+    <span class="tw"><button class="bk c-w tile pv" type="button" aria-label="pięćdziesiąt cztery"><span><span class="t">5</span><span class="o">4</span></span></button></span>
+    <span class="tw sel"><button class="bk c-w tile pv" type="button" aria-label="sześćdziesiąt cztery"><span><span class="t">6</span><span class="o">4</span></span></button></span>
+    <span class="tw"><button class="bk c-w tile pv" type="button" aria-label="siedemdziesiąt cztery"><span><span class="t">7</span><span class="o">4</span></span></button></span>
+    <button class="bk c-o done" type="button" aria-label="Gotowe"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Rakieta jest na liczbie trzydzieści cztery. Leci o trzydzieści dalej. Gdzie wyląduje?» · дотик до ракети = один переліт на десяток</dd>
+  <dt>Стан</dt><dd>2 перельоти з 3 (34 → 44 → 54), над дугами — номер перельоту; старт 34 — біла точка. Вибрано 64. Плитки W4–W7 — білі, цифри в кольорах розрядів (десятки синім, одиниці помаранчевим; лише на світлому тлі). Пряма 0–100 з поділками десятків; телефон — фрагмент 30–70.</dd>
+  <dt>Вигляд W7</dt><dd>Темне космічне тло, усе для читання — на білих картках (контраст). Kubik у шоломі. Колір світу #6C63FF — дуги й старт. Заглушки: фон і ракета — до D2 (ракета з цеглинок, Iskra).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const bones = [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 3 ? 'bone-full' : 'bone-empty' }));
+    const mk = (from, to, step) => {
+      const x = (n) => +(((n - from) / (to - from)) * 100).toFixed(2);
+      const ticks = [];
+      for (let n = from; n <= to; n += step) ticks.push({ x: x(n), cls: n % 10 === 0 ? 'ten' : '' });
+      const labels = [];
+      for (let n = Math.ceil(from / 10) * 10; n <= to; n += 10) labels.push({ x: x(n), n: String(n) });
+      const arcs = [{ x: x(34), w: x(44) - x(34), n: '1' }, { x: x(44), w: x(54) - x(44), n: '2' }];
+      return { ticks, labels, arcs, startX: x(34), rocketX: x(54), bones };
+    };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...mk(0, 100, 1) },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...mk(30, 70, 1) },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

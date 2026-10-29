@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Ścieżka świata — Most Dwudziestki z gałęzią ★</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-path{grid-template-rows:var(--hb) minmax(0,1fr);grid-template-areas:"hud" "path"}
+.hud{justify-content:flex-start}
+.wt{display:flex;align-items:center;gap:12px;padding:10px 20px 10px 12px;font:700 28px/1 var(--fd)}
+.wt .c{width:46px;height:46px;border-radius:12px;background:var(--w4);display:grid;place-items:center;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.wt .c img{width:30px;height:30px}
+.ph .wt{font-size:20px;padding:8px 14px 8px 8px}.ph .wt .c{width:36px;height:36px}.ph .wt .c img{width:24px;height:24px}
+.path{grid-area:path;position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}
+.ph .path{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(7,minmax(0,1fr))}
+.road{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.road path{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.road .r1{stroke:#C99A5B;stroke-width:30}.road .r2{stroke:#F6E3B8;stroke-width:22}
+.road .st{stroke:#FFCF1F;stroke-width:10;stroke-dasharray:2 16}
+.ph .road .r1{stroke-width:24}.ph .road .r2{stroke-width:17}.ph .road .st{stroke-width:8;stroke-dasharray:2 12}
+.nd{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:4px}
+.node{width:96px;height:96px;border-radius:18px;font-size:44px}
+.ph .node{width:84px;height:84px;font-size:38px}
+.node img.ic{width:46px;height:46px}
+.nd.star .node,.nd.slock .node{width:80px;height:80px;border-radius:50%}
+.ph .nd.star .node,.ph .nd.slock .node{width:68px;height:68px}
+.nd.star .node img.ic{width:44px;height:44px}
+.nd.star .tw{outline:4px dashed #FFCF1F;outline-offset:6px;border-radius:50%}
+.nd.next .node{outline:6px solid #fff;outline-offset:4px;box-shadow:inset 0 3px 0 rgba(255,255,255,.55),inset 0 -5px 0 rgba(0,0,0,.16),0 7px 0 var(--d),0 0 0 16px rgba(255,236,140,.55),0 0 40px 18px rgba(255,236,140,.6)}
+.nd .badge{right:-10px;top:-2px}
+.badge.sb{background:#FFCF1F;width:34px;height:34px}.badge.sb img{width:22px;height:22px}
+.kk{position:relative;z-index:1;align-self:center;justify-self:center;height:132px}
+.ph .kk{height:92px}
+.more{position:relative;z-index:1;align-self:center;justify-self:center;padding:8px 16px;font:700 15px/1 var(--fn)}
+.lg{position:absolute;right:0;bottom:-6px;z-index:2;display:flex;align-items:center;gap:8px;padding:6px 12px;font:700 14px/1 var(--fn)}
+.lg i{width:22px;height:0;border-top:5px dotted #E0A800}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-path">
+  <div class="bgl" style="background-image: linear-gradient(180deg, #FFE3DD 0%, #FFF1EA 46%, #8FCDF2 46%, #5FB2E6 64%, #A6D77F 64%, #79BE55 100%)"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card wt"><span class="c"><img src="./i/w-w4.svg" alt=""></span>Most Dwudziestki</div>
+  </div>
+  <div class="path">
+    <svg class="road" viewBox="{{f.vb}}" preserveAspectRatio="none" aria-hidden="true">
+      <path class="r1" d="{{f.main}}"></path><path class="r2" d="{{f.main}}"></path><path class="st" d="{{f.star}}"></path>
+    </svg>
+    <sc-if value="{{f.phone}}" hint-placeholder-val="{{ false }}"><div class="card more" style="grid-area: 1 / 1 / 2 / 4">↑ ще 3 рівні й скриня</div></sc-if>
+    <sc-for list="{{f.nodes}}" as="n" hint-placeholder-count="17">
+      <div class="nd {{n.st}}" style="grid-area: {{n.ga}}">
+        <span class="tw" style="position: relative">
+          <button class="bk node {{n.cls}}" type="button" aria-label="{{n.aria}}">
+            <sc-if value="{{n.num}}" hint-placeholder-val="{{ true }}">{{n.num}}</sc-if>
+            <sc-if value="{{n.icon}}" hint-placeholder-val="{{ false }}"><img class="ic" src="./i/{{n.icon}}.svg" alt=""></sc-if>
+            <sc-if value="{{n.chestImg}}" hint-placeholder-val="{{ false }}"><img src="./art/chest-locked.svg" alt="" style="width: 76px; height: 76px"></sc-if>
+          </button>
+          <sc-if value="{{n.done}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
+          <sc-if value="{{n.review}}" hint-placeholder-val="{{ false }}"><span class="badge rt"><img src="./i/w-retry.svg" alt=""></span></sc-if>
+          <sc-if value="{{n.starBadge}}" hint-placeholder-val="{{ false }}"><span class="badge sb"><img src="./i/k-star.svg" alt=""></span></sc-if>
+        </span>
+      </div>
+    </sc-for>
+    <img class="kk char" src="./img/kubik-point.png" alt="Kubik" style="grid-area: {{f.kubik}}">
+    <sc-if value="{{f.legend}}" hint-placeholder-val="{{ true }}"><div class="card lg"><i></i>★ — dodatkowe, nie blokują drogi</div></sc-if>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Стани</dt><dd>1, 2, 4–6 пройдені (галочка) · 3 «Do powtórki» · 7 наступний — світиться, Kubik на дорозі поруч · 8–12 і скриня заблоковані. ★-гілка з 4 вузлів відходить від 6-го (у W7 — від 10-го): круглі помаранчеві цеглинки зі зіркою, менші за основні, золота пунктирна стежка; ★1 відкритий (пунктирне кільце), ★2–★4 — сірі із замком і жовтою зірочкою в кутку.</dd>
+  <dt>Правила</dt><dd>★ ніколи не блокує основну дорогу й скриню (7-й світиться, хоч ★ не пройдено). «Zadania dodatkowe ★» вимкнено в Strefa rodzica — гілки й пунктиру не видно. Телефон: основна дорога — ліва колонка, ★ — паралельна смуга праворуч.</dd>
+  <dt>Заглушки</dt><dd>Фон — кольори W4 (D2: річка й міст із цеглинок, Tofik у касці); міні-наліпки на пройдених вузлах W4 — у D2 (поки номер); скриня — старий SVG.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const main = (i, ga) => {
+      const s = i === 3 ? 'review' : i < 7 ? 'done' : i === 7 ? 'next' : 'lock';
+      return {
+        st: s, ga, num: s === 'lock' ? '' : String(i), icon: s === 'lock' ? 'w-lock' : '',
+        cls: s === 'lock' ? 'c-n' : s === 'next' ? 'c-y' : 'c-g', done: s === 'done', review: s === 'review',
+        aria: s === 'lock' ? 'zablokowane' : s === 'review' ? 'Do powtórki' : `Poziom ${i}`,
+      };
+    };
+    const star = (i, ga) => (i === 1
+      ? { st: 'star', ga, cls: 'c-o', icon: 'w-star', aria: 'Zadanie dodatkowe' }
+      : { st: 'slock', ga, cls: 'c-n', icon: 'w-lock', starBadge: true, aria: 'zablokowane — zadanie dodatkowe' });
+    const chest = (ga) => ({ st: 'lock', ga, cls: 'c-w', chestImg: true, aria: 'Skrzynia zamknięta' });
+
+    // ПК: сітка 7 × 3 без проміжків (центри клітинок = координати дороги у viewBox 700 × 300)
+    const pcNodes = [
+      ...[1, 2, 3, 4, 5, 6].map((i) => main(i, `3/${i}`)),
+      ...[7, 8, 9, 10, 11, 12].map((i) => main(i, `1/${14 - i}`)),
+      chest('1/1'),
+      ...[1, 2, 3, 4].map((i) => star(i, `2/${6 - i}`)),
+    ];
+    // Телефон: сітка 3 × 7 — основна дорога в колонці 1 (4…9 знизу вгору), ★ — колонка 3 від рівня 6-го вузла
+    const phNodes = [
+      ...[4, 5, 6, 7, 8, 9].map((i) => main(i, `${11 - i}/1`)),
+      ...[1, 2, 3, 4].map((i) => star(i, `${6 - i}/3`)),
+    ];
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', phone: false, legend: true, nodes: pcNodes, kubik: '2/7',
+          vb: '0 0 700 300', main: 'M0 250 H650 V50 H50', star: 'M550 250 C550 185 520 150 450 150 H150' },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844 · гортається вгору', phone: true, legend: false, nodes: phNodes, kubik: '4/2',
+          vb: '0 0 300 700', main: 'M50 700 V150', star: 'M50 450 H250 V150' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
