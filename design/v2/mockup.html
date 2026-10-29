@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klockowo — nowy wygląd (makieta)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Makieta nowego wyglądu: tła — fotografie właściciela, postacie — wycięte z nich (cut/), przyciski i płytki — błyszczące klocki. */
+  :root {
+    --sky: #3d9cf0; --sky-deep: #1c6fd1; --grass: #55b33a; --grass-deep: #2f8a22;
+    --red: #e8352f; --red-deep: #a81d1a; --yellow: #ffcf1f; --yellow-deep: #c99400;
+    --blue: #1f7fe0; --blue-deep: #0f4fa3; --green: #3fae35; --green-deep: #217a1c;
+    --orange: #ff8a1f; --orange-deep: #c25a00; --purple: #8b4fe0; --purple-deep: #5a2aa8;
+    --cream: #fff8e8; --ink: #2b2a4a; --ink-soft: #5d5a7e; --card: rgba(255, 255, 255, 0.92);
+    --shadow: 0 10px 30px rgba(20, 40, 90, 0.28);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9f3ff; color: var(--ink); font-family: Nunito, system-ui, sans-serif; }
+  header.doc { max-width: 1320px; margin: 0 auto; padding: 28px 20px 4px; }
+  header.doc h1 { font-family: Fredoka; font-size: 34px; margin: 0 0 6px; }
+  header.doc p { margin: 4px 0; color: var(--ink-soft); font-size: 17px; }
+  .screen-title { max-width: 1320px; margin: 34px auto 10px; padding: 0 20px; font-family: Fredoka; font-size: 24px; }
+  .screen-title small { font-family: Nunito; font-weight: 700; color: var(--ink-soft); font-size: 15px; margin-left: 8px; }
+  .frame { position: relative; width: min(1280px, calc(100vw - 32px)); aspect-ratio: 16 / 9; margin: 0 auto; border-radius: 26px; overflow: hidden;
+    box-shadow: var(--shadow); background: center / cover no-repeat; container-type: inline-size; }
+  .frame > * { position: absolute; }
+  .u { font-size: 1cqw; } /* 1em = 1% ширини кадру: усе масштабується разом із кадром */
+
+  /* ---------- Klocki ---------- */
+  .brick { --c: var(--red); --d: var(--red-deep); position: relative; display: inline-grid; place-items: center; border: 0; cursor: pointer;
+    font-family: Fredoka; font-weight: 700; color: #fff; text-shadow: 0 0.12em 0 rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c), #fff 28%) 0%, var(--c) 42%, color-mix(in srgb, var(--c), #000 8%) 100%);
+    border-radius: 0.35em; box-shadow: inset 0 0.12em 0 rgba(255, 255, 255, 0.55), inset 0 -0.14em 0 rgba(0, 0, 0, 0.18), 0 0.22em 0 var(--d), 0 0.5em 0.9em rgba(0, 0, 0, 0.3);
+    transition: transform 0.12s; }
+  .brick::before, .brick::after { content: ''; position: absolute; top: -0.2em; width: 0.42em; height: 0.24em; border-radius: 50% / 40%;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c), #fff 40%), var(--c)); box-shadow: 0 0.08em 0 var(--d); }
+  .brick::before { left: 22%; } .brick::after { right: 22%; }
+  .brick:active { transform: translateY(0.12em); }
+  .frame > .brick { position: absolute; } /* у кадрі цеглинки-кнопки розставлені вручну */
+  .red { --c: var(--red); --d: var(--red-deep); } .yellow { --c: var(--yellow); --d: var(--yellow-deep); color: #6b4a00; text-shadow: 0 0.1em 0 rgba(255,255,255,0.5); }
+  .blue { --c: var(--blue); --d: var(--blue-deep); } .green { --c: var(--green); --d: var(--green-deep); }
+  .orange { --c: var(--orange); --d: var(--orange-deep); } .purple { --c: var(--purple); --d: var(--purple-deep); }
+
+  .logo { display: flex; gap: 0.25em; font-family: Fredoka; font-weight: 700; }
+  .logo span { min-width: 1.15em; padding: 0.1em 0.18em 0.04em; font-size: 1em; }
+
+  .card { background: var(--card); border-radius: 1.6em; box-shadow: 0 0.6em 1.6em rgba(20, 40, 90, 0.25), inset 0 -0.3em 0 rgba(20, 60, 120, 0.08); backdrop-filter: blur(6px); }
+  .bubble { background: #fff; border-radius: 1.4em; padding: 0.8em 1.2em; font-family: Fredoka; font-weight: 600; color: var(--ink); box-shadow: 0 0.5em 1.2em rgba(0,0,0,0.2); }
+  .bubble::after { content: ''; position: absolute; left: 1.6em; bottom: -0.9em; border: 0.5em solid transparent; border-top: 0.9em solid #fff; }
+  .chip { display: inline-grid; place-items: center; width: 4.4em; height: 4.4em; border-radius: 50%; background: #fff; font-family: Fredoka; font-weight: 700;
+    color: var(--ink); box-shadow: 0 0.3em 0 #c9d6e8, 0 0.5em 1em rgba(0,0,0,0.25); font-size: 1em; }
+  .chip.on { background: var(--yellow); box-shadow: 0 0.3em 0 var(--yellow-deep), 0 0.5em 1em rgba(0,0,0,0.25); }
+  .soft-bg { filter: saturate(1.05); }
+  .veil { inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.18)); }
+  .blurbg { inset: -2%; background: center / cover no-repeat; filter: blur(0.4cqw) brightness(1.04); }
+  img.char { filter: drop-shadow(0 0.8cqw 0.6cqw rgba(0, 30, 60, 0.35)); pointer-events: none; }
+  .bones { display: flex; gap: 0.5em; padding: 0.6em 1em; }
+  .bone { width: 3.2em; height: 1.6em; border-radius: 0.8em; background: #dfe7f2; box-shadow: inset 0 -0.2em 0 rgba(0,0,0,0.08); }
+  .bone.full { background: linear-gradient(180deg, #fff3c4, var(--yellow)); box-shadow: inset 0 -0.2em 0 var(--yellow-deep); }
+
+  .note { max-width: 1280px; margin: 10px auto 0; padding: 0 20px; color: var(--ink-soft); font-size: 15px; }
+  @media (max-width: 700px) { header.doc h1 { font-size: 26px; } }
+</style>
+</head>
+<body>
+<header class="doc">
+  <h1>Klockowo — nowy wygląd · makieta do akceptacji</h1>
+  <p>Тла — ваші фото, персонажі вирізані з них. Кнопки й плитки — глянцеві «цеглинки». Логіка гри не змінюється: ті самі екрани, кнопки й порядок.</p>
+  <p>Кадри масштабуються під ширину вікна; на телефоні буде своя (вертикальна) розкладка тих самих елементів.</p>
+</header>
+
+<!-- 1. Start -->
+<div class="screen-title">1 · Start <small>Kubik вітає, велика кнопка «Graj!», вибір мови</small></div>
+<div class="frame u" style="background-image:url(photos/p20.jpg)">
+  <div class="veil"></div>
+  <div class="logo" style="top:0.6em;left:0.7em;font-size:3.6em">
+    <span class="brick red">K</span><span class="brick yellow">l</span><span class="brick blue">o</span><span class="brick green">c</span><span class="brick orange">k</span><span class="brick purple">o</span><span class="brick red">w</span><span class="brick blue">o</span>
+  </div>
+  <div style="top:2.2em;right:2.4em;display:flex;gap:1em"><span class="chip on">PL</span><span class="chip">EN</span><span class="chip">UA</span><span class="chip">⚙</span></div>
+  <button class="brick green" style="left:62%;bottom:1em;font-size:4.6em;padding:0.3em 1.6em 0.24em">Graj!</button>
+  <div class="card" style="left:2.4em;bottom:2.4em;padding:0.9em 1.3em;display:flex;align-items:center;gap:0.9em;font-family:Fredoka;font-weight:600;font-size:1.7em">
+    <img src="cut/pup8.png" style="height:2.6em" alt=""> Staś
+  </div>
+</div>
+
+<!-- 2. Wybór pieska -->
+<div class="screen-title">2 · Twój piesek <small>дитина обирає цуценя з команди; обране — з галочкою (не лише кольором)</small></div>
+<div class="frame u">
+  <div class="blurbg" style="background-image:url(photos/p17.jpg)"></div>
+  <div class="bubble" style="left:2.4em;top:3em;font-size:2.1em;max-width:8.6em">Wybierz swojego pieska!</div>
+  <img class="char" src="cut/kubik-present.png" style="left:3em;bottom:0;height:62%" alt="">
+  <div id="pups" style="left:24em;right:2.5em;top:3em;bottom:3em;display:grid;grid-template-columns:repeat(4,1fr);gap:1.6em"></div>
+</div>
+
+<!-- 3. Mapa świata -->
+<div class="screen-title">3 · Łąka Liczenia — mapa <small>рівні — цеглинки на доріжці; пройдені з зірочкою, поточний — Kubik</small></div>
+<div class="frame u" style="background-image:url(photos/p22.jpg)">
+  <svg viewBox="0 0 100 56.25" preserveAspectRatio="none" style="inset:0;width:100%;height:100%">
+    <polyline id="trail" fill="none" stroke="#fff4d6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.1 4" opacity="0.95"/>
+  </svg>
+  <div id="levels" style="inset:0"></div>
+  <div class="card" style="left:2.4em;top:2.2em;padding:0.7em 1.4em;font-family:Fredoka;font-weight:700;font-size:2.4em;display:flex;align-items:center;gap:0.5em">
+    <span class="brick green" style="font-size:0.7em;padding:0.1em 0.5em">W1</span> Łąka Liczenia
+  </div>
+  <div style="top:2.2em;right:2.4em;display:flex;gap:1em"><span class="chip">★</span><span class="chip">⌂</span></div>
+</div>
+
+<!-- 4. Gra -->
+<div class="screen-title">4 · Gra «Policz i dotknij» <small>фон розмитий, щоб предмети читались; плитки-відповіді — цеглинки з цифрою й крапками</small></div>
+<div class="frame u">
+  <div class="blurbg" style="background-image:url(photos/p22.jpg)"></div>
+  <div class="card bones" style="left:50%;top:2em;transform:translateX(-50%);font-size:1.2em" id="bones"></div>
+  <div style="top:2em;left:2.4em;display:flex;gap:1em"><span class="chip" title="Mapa">⌂</span></div>
+  <div style="top:2em;right:2.4em;display:flex;gap:1em"><span class="chip" title="Posłuchaj">🔊</span><span class="chip" title="Pomóż mi">?</span></div>
+  <div class="card" style="left:22%;right:6%;top:9.5em;height:26em;display:flex;align-items:center;justify-content:center;gap:2em;padding:0 2em" id="ducks"></div>
+  <img class="char" src="cut/kubik-point.png" style="left:0.5em;bottom:0;height:46%" alt="">
+  <div class="bubble" style="left:3em;top:10em;font-size:1.9em;max-width:9em">Policz kaczuszki. Ile ich jest?</div>
+  <div style="left:22%;right:6%;bottom:2.6em;display:flex;justify-content:center;gap:2.6em" id="tiles"></div>
+</div>
+
+<!-- 5. Przerwa z piosenką -->
+<div class="screen-title">5 · Przerwa — piosenka «Kubik liczy do dziesięciu» <small>натисніть ▶: картинка й текст змінюються за куплетами (точні моменти підлаштуємо на слух)</small></div>
+<div class="frame u" id="song" style="background-image:url(photos/p15.jpg)">
+  <div class="veil"></div>
+  <div class="card" style="left:50%;bottom:2.4em;transform:translateX(-50%);width:62em;padding:1.4em 2em 1.6em;text-align:center">
+    <div id="lyric" style="font-family:Fredoka;font-weight:700;font-size:2.6em;line-height:1.25;min-height:2.6em">Łapki w górę, liczymy!</div>
+    <div style="margin:1em auto 0;height:1em;width:100%;border-radius:1em;background:#e3ecf7;overflow:hidden"><div id="bar" style="height:100%;width:0;background:linear-gradient(90deg,var(--yellow),var(--orange))"></div></div>
+  </div>
+  <button class="brick orange" id="play" style="left:2.6em;top:3em;font-size:3.4em;width:2.4em;height:1.8em">▶</button>
+  <button class="brick green" style="right:2.6em;top:3em;font-size:2.8em;padding:0.25em 1em 0.2em">Dalej</button>
+  <audio id="audio" src="Kubik_Liczy_Do_Dziesiciu.mp3" preload="metadata"></audio>
+</div>
+
+<!-- 6. Koniec poziomu -->
+<div class="screen-title">6 · Koniec poziomu <small>святкування з кульками; далі — ті самі кнопки, що й зараз</small></div>
+<div class="frame u" style="background-image:url(photos/p16.jpg)">
+  <div class="veil"></div>
+  <div class="card" style="left:50%;top:3em;transform:translateX(-50%);padding:1.2em 3em;text-align:center">
+    <div style="font-family:Fredoka;font-weight:700;font-size:4.4em;color:var(--red)">Brawo!</div>
+    <div style="font-size:3.2em;letter-spacing:0.2em;color:var(--yellow);text-shadow:0 0.06em 0 var(--yellow-deep)">★★★</div>
+  </div>
+  <button class="brick blue" style="left:50%;bottom:0.6em;transform:translateX(-50%);font-size:3.6em;padding:0.28em 1.4em 0.22em">Dalej</button>
+  <div style="right:2.4em;bottom:3em"><span class="chip" style="font-size:1.3em">⌂</span></div>
+</div>
+
+<!-- 7. Kosmos (W7) -->
+<div class="screen-title">7 · Kosmiczna Droga (W7) <small>той самий інтерфейс у космосі: фон, Kubik-космонавт, світні плитки</small></div>
+<div class="frame u">
+  <div class="blurbg" style="background-image:url(photos/p23.jpg);filter:blur(0.25cqw)"></div>
+  <div class="card bones" style="left:50%;top:2em;transform:translateX(-50%);font-size:1.2em" id="bones2"></div>
+  <div class="card" style="left:24%;right:6%;top:9.5em;height:24em;display:grid;place-items:center">
+    <div class="logo" style="font-size:7em;gap:0.4em"><span class="brick blue">5</span><span class="brick yellow">+</span><span class="brick red">5</span><span class="brick green">=</span><span class="brick purple" style="min-width:1.3em">?</span></div>
+  </div>
+  <img class="char" src="cut/kubik-astro.png" style="left:0;bottom:0;height:58%" alt="">
+  <div class="bubble" style="left:3em;top:7em;font-size:1.9em;max-width:9em">Pięć tu świeci, pięć tam świeci. Ile razem?</div>
+  <div style="left:24%;right:6%;bottom:2.6em;display:flex;justify-content:center;gap:2.6em" id="tiles2"></div>
+</div>
+
+<p class="note">Kubik, цуценята, качка й каченята — вирізані з ваших фото. Кожен екран адаптується під телефон, а все, що працює зараз, лишається.</p>
+<div style="height:40px"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const colors = ['red', 'yellow', 'blue', 'green', 'orange', 'purple'];
+  // 2. цуценята
+  ['pup1', 'pup2', 'pup3', 'pup4', 'pup5', 'pup6', 'pup8', 'pup9'].forEach((p, i) => {
+    const on = i === 6;
+    $('pups').insertAdjacentHTML('beforeend', `<div class="card" style="position:relative;display:grid;place-items:center;padding:0.8em;${on ? 'outline:0.5em solid var(--yellow);' : ''}">
+      <img class="char" src="cut/${p}.png" style="height:13em" alt="">${on ? '<span class="chip on" style="position:absolute;right:-0.8em;top:-0.8em;font-size:1em">✓</span>' : ''}</div>`);
+  });
+  // 3. рівні на доріжці (координати в % кадру)
+  const pts = [[7, 88], [18, 80], [29, 86], [40, 80], [47, 66], [37, 56], [25, 52], [14, 46], [24, 34]];
+  document.getElementById('trail').setAttribute('points', pts.map(([x, y]) => `${x},${(y * 0.5625).toFixed(2)}`).join(' '));
+  pts.forEach(([x, y], i) => {
+    const done = i < 4, cur = i === 4;
+    $('levels').insertAdjacentHTML('beforeend', `<div style="position:absolute;left:${x}%;top:${y}%;transform:translate(-50%,-50%);font-size:3.2em">
+      <span class="brick ${done ? 'yellow' : cur ? 'green' : 'blue'}" style="width:1.9em;height:1.5em;${!done && !cur ? 'filter:saturate(0.35) brightness(1.1)' : ''}">${done ? '★' : i + 1}</span></div>`);
+    if (cur) $('levels').insertAdjacentHTML('beforeend', `<img class="char" src="cut/kubik-hands.png" style="position:absolute;left:${x}%;top:${y - 22}%;height:22%;transform:translateX(-50%)" alt="">`);
+  });
+  // 4. гра
+  const bones = (el, n) => { for (let i = 0; i < 6; i++) el.insertAdjacentHTML('beforeend', `<span class="bone ${i < n ? 'full' : ''}"></span>`); };
+  bones($('bones'), 2); bones($('bones2'), 5);
+  for (let i = 0; i < 5; i++) $('ducks').insertAdjacentHTML('beforeend', `<img class="char" src="cut/duckling1.png" style="height:${12 + (i % 2) * 1.5}em" alt="">`);
+  const tile = (n, c) => `<button class="brick ${c}" style="font-size:4.4em;width:1.8em;height:1.6em;flex-direction:column">${n}</button>`;
+  [3, 4, 5].forEach((n, i) => $('tiles').insertAdjacentHTML('beforeend', tile(n, colors[i + 1])));
+  [9, 10, 11].forEach((n, i) => $('tiles2').insertAdjacentHTML('beforeend', tile(n, colors[i + 2])));
+  // 5. пісня: розділи за порядком тексту; час — пропорційно рядкам (точні моменти підлаштуємо)
+  const chorus = ['Łapki w górę, liczymy!', 'Głośno razem mówimy:', 'raz, dwa, trzy, cztery, pięć –', 'na liczenie mamy chęć!', 'Sześć i siedem, osiem, dziewięć,', 'jeszcze jeden – mamy dziesięć!'];
+  const parts = [
+    ['p13', ['Z klocków dom i z klocków drzewa,', 'Kubik biega, Kubik śpiewa.', 'Gdy zwierzątko ma kłopoty,', 'Kubik rusza do roboty!', 'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!']],
+    ['p02', chorus],
+    ['p06', ['Mama kaczka woła: kwa!', 'Ile dzieci w trawie ma?', 'Raz, dwa, trzy, cztery, pięć –', 'pięć kaczuszek: kwa, kwa, kwa!', 'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!']],
+    ['p15', chorus],
+    ['p14', ['Na Kosmicznej Drodze nocą', 'gwiazdy nad Kubikiem migocą.', 'Pięć tu świeci, pięć tam świeci –', 'razem dziesięć, wiedzą dzieci!', 'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!']],
+    ['p04', chorus],
+    ['p16', ['Brawo! Misja wykonana!', 'Policzymy znów od rana!', 'Łapki w górę, liczymy!']],
+  ];
+  const lines = parts.flatMap(([img, ls]) => ls.map((l) => [img, l]));
+  const audio = $('audio');
+  $('play').onclick = () => (audio.paused ? audio.play() : audio.pause());
+  audio.onplay = () => ($('play').textContent = '❚❚');
+  audio.onpause = () => ($('play').textContent = '▶');
+  audio.ontimeupdate = () => {
+    const f = audio.currentTime / (audio.duration || 150);
+    $('bar').style.width = `${f * 100}%`;
+    const intro = 0.06; // вступ без слів
+    const k = Math.min(lines.length - 1, Math.max(0, Math.floor(((f - intro) / (1 - intro - 0.03)) * lines.length)));
+    const [img, text] = f < intro ? ['p15', 'Łapki w górę, liczymy!'] : lines[k];
+    $('lyric').textContent = text;
+    $('song').style.backgroundImage = `url(photos/${img}.jpg)`;
+  };
+</script>
+</body>
+</html>
