@@ -33,7 +33,7 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr g-game g-chart">
-  <div class="bgl" style="background-image: linear-gradient(180deg, #FBEAFB, #EBCDEE)"></div>
+  <div class="bgl f-bg-w6"></div>
   <div class="hud">
     <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
     <div class="card bones" role="img" aria-label="kosteczki: 2 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
@@ -41,7 +41,7 @@ body{margin:0}
   </div>
   <div class="guide">
     <div class="bub" aria-label="Znajdź liczbę czterdzieści siedem.">47 ?</div>
-    <div class="krow"><img class="kub" src="./img/kubik-point.png" alt="Kubik"></div>
+    <div class="krow"><img class="kub" src="./v2/kubik-pointing-right.webp" alt="Kubik"></div>
   </div>
   <div class="card board">
     <div class="ch" role="grid" aria-label="tablica stu">
@@ -61,7 +61,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Голос</dt><dd>«Znajdź liczbę czterdzieści siedem.» · також: «Jaka liczba się schowała?» (число під листочком), розфарбування закономірності, сусіди ±1 / ±10.</dd>
   <dt>Розкладка</dt><dd>ПК: таблиця займає всю висоту під панеллю, клітинки 55 px без проміжків (межі — лінії), лоток — колонка праворуч. Телефон: уся таблиця — для огляду (не торкаємось), дитина торкається збільшеного ряду (клітинки 80 px).</dd>
-  <dt>Заглушки</dt><dd>Фон W6 «Miasto Setki» — колір світу (D2). Таблиця малюється кодом.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-pointing-right. Фон — bg-w6. Таблиця малюється кодом.</dd>
 </dl>
 </div>
 </x-dc>

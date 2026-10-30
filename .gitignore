@@ -18,3 +18,8 @@ Thumbs.db
 
 # проба голосу ElevenLabs (tools/voice/sample.mjs)
 voice-samples/
+
+# сирі картинки Gemini (D2a, ≈ 72 МБ): оригінали — у сховищі сторінки-пакета, у git — оброблені src/assets/v2
+design/v2/gen/*.webp
+design/v2/gen/*.jpg
+design/v2/gen/*.png

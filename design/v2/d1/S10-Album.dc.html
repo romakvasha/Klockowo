@@ -40,7 +40,7 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr s-alb">
-  <div class="bgl blur f-p13"></div>
+  <div class="bgl blur f-bg-hub"></div>
   <div class="hud">
     <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
     <button class="bk c-y rnd hb" type="button" aria-label="Odznaki"><img src="./i/k-star.svg" alt=""></button>
@@ -54,8 +54,8 @@ body{margin:0}
     </sc-for>
   </div>
   <div class="card scene" role="group" aria-label="Scena">
-    <div class="row"><img class="char" src="./art/veh-balon.svg" alt="balon"></div>
-    <div class="row"><img class="char" src="./img/duck.png" alt="kaczka"><img class="char" src="./img/duckling1.png" alt="kaczuszka" style="height: 70px"></div>
+    <div class="row"><img class="char" src="./v2/veh-balon.webp" alt="balon"></div>
+    <div class="row"><img class="char" src="./img/duck.png" alt="kaczka"><img class="char" src="./v2/item-kaczuszka.webp" alt="kaczuszka" style="height: 70px"></div>
   </div>
 </div>
 </section>
@@ -63,7 +63,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Що показано</dt><dd>Сторінка W1: врятовані тваринки, машинка гостя, споруда світу; порожнє місце — силует зі «?». Дотик — Kubik називає наліпку. Праворуч (на телефоні — знизу) вільна сцена: наліпки перетягуються або ставляться дотиком → дотиком.</dd>
   <dt>Навігація</dt><dd>Вкладки світів — колір + іконка, обрана — темна рамка (не лише колір); на телефоні вкладки по 80 px гортаються вбік. Жовта кнопка — «Odznaki» (наступна дошка).</dd>
-  <dt>Заглушки</dt><dd>Наліпки — вирізки з фото й старі SVG (D2: 3D-наліпки всіх світів). Фон — розмите фото.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): animal-kotek, animal-mis, animal-zajaczek, item-biedronka, item-kaczuszka, item-kwiatek, item-motyl, veh-balon. Фон — bg-hub. Мама-качка — стара вирізка з фото (її немає в наборі).</dd>
 </dl>
 </div>
 </x-dc>
@@ -74,8 +74,8 @@ class Component extends DCLogic {
       ['w5', '#2FA58B', 'Las Dziesiątek'], ['w6', '#D46BD8', 'Miasto Setki'], ['w7', '#6C63FF', 'Kosmiczna Droga']];
     const tabs = W.map(([ic, c, name], i) => ({ ic, c, name, on: i === 0 ? 'on' : '', pressed: i === 0 }));
     const S = [
-      ['./img/duckling1.png', 'kaczuszka'], ['./img/duck.png', 'kaczka'], ['./art/veh-balon.svg', 'balon'], ['./art/w1-biedronka.svg', 'biedronka'],
-      ['./art/w1-motyl.svg', ''], ['./art/w1-kwiatek.svg', ''], ['./art/animal-zajaczek.svg', ''], ['./art/animal-kotek.svg', ''], ['./art/animal-mis.svg', ''],
+      ['./v2/item-kaczuszka.webp', 'kaczuszka'], ['./img/duck.png', 'kaczka'], ['./v2/veh-balon.webp', 'balon'], ['./v2/item-biedronka.webp', 'biedronka'],
+      ['./v2/item-motyl.webp', ''], ['./v2/item-kwiatek.webp', ''], ['./v2/animal-zajaczek.webp', ''], ['./v2/animal-kotek.webp', ''], ['./v2/animal-mis.webp', ''],
     ];
     const slots = S.map(([src, aria]) => ({ src, aria: aria || 'puste miejsce', empty: !aria, st: aria ? '' : 'empty' }));
     return {

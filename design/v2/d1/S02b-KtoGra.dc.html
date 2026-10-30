@@ -31,15 +31,15 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr s-who">
-  <div class="bgl f-p22"></div>
+  <div class="bgl f-bg-start"></div>
   <div class="opts"><button class="chip" type="button" aria-label="Strefa rodzica — przytrzymaj 3 sekundy"><img src="./i/k-gear.svg" alt=""></button></div>
   <div class="guide">
     <div class="bub" aria-label="Kto dziś gra?"><img src="./i/k-speaker.svg" alt="" style="height: 34px">?</div>
-    <img class="kub kbig" src="./img/kubik-present.png" alt="Kubik">
+    <img class="kub kbig" src="./v2/kubik-waving.webp" alt="Kubik">
   </div>
   <ul class="card main" aria-label="Kto dziś gra?" style="list-style: none; margin: 0">
     <sc-for list="{{f.kids}}" as="k" hint-placeholder-count="3">
-      <li style="display: grid; place-items: center"><button class="av" type="button" style="--c: {{k.c}}"><span class="ring"><img src="./art/pup-{{k.pup}}.svg" alt=""></span>{{k.name}}</button></li>
+      <li style="display: grid; place-items: center"><button class="av" type="button" style="--c: {{k.c}}"><span class="ring"><img src="./v2/pup-{{k.pup}}.webp" alt=""></span>{{k.name}}</button></li>
     </sc-for>
   </ul>
 </div>
@@ -48,7 +48,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Голос</dt><dd>«Kto dziś gra?» — до 4 кружків-аватарів по 160 px; дотик до аватара одразу відкриває «Mapa przygody». Один профіль — крок пропускаємо; профілів немає — «Twój piesek».</dd>
   <dt>Зони</dt><dd>Kubik із хмаринкою — ліва колонка (на телефоні — смуга вгорі); аватари — на білій картці, не на фото.</dd>
-  <dt>Заглушки</dt><dd>Цуценята на аватарах — старі плоскі SVG (D2: 3D-цуценята «Twój piesek»).</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-waving. Фон — bg-start.</dd>
 </dl>
 </div>
 </x-dc>

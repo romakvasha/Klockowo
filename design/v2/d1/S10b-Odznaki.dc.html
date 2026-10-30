@@ -39,12 +39,12 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr s-bdg">
-  <div class="bgl blur f-p13"></div>
+  <div class="bgl blur f-bg-hub"></div>
   <div class="hud">
     <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
     <button class="bk c-p rnd hb" type="button" aria-label="Naklejki"><img src="./i/w-stickers.svg" alt=""></button>
   </div>
-  <div class="kz"><img class="char" src="./img/kubik-present.png" alt="Kubik"></div>
+  <div class="kz"><img class="char" src="./v2/kubik-demonstrating.webp" alt="Kubik"></div>
   <div class="card main" aria-label="Odznaki">
     <sc-for list="{{f.badges}}" as="b" hint-placeholder-count="12">
       <button class="bd {{b.st}}" type="button" aria-label="{{b.aria}}"><img class="s" src="./i/k-star.svg" alt=""><sc-if value="{{b.w}}" hint-placeholder-val="{{ true }}"><span class="w" style="--c: {{b.c}}"><img src="./i/w-{{b.w}}.svg" alt=""></span></sc-if></button>
@@ -56,7 +56,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Що показано</dt><dd>Значки «Nie poddajesz się!» — квадратні цеглинки #FFC21A з одним пупирцем і зіркою; у кутку — світ, де отримано. Порожні — сірі місця. Дотик — голос називає значок.</dd>
   <dt>Рішення</dt><dd>Значки лишаються квадратними цеглинками, жетон Kubika — кругла цеглинка з одним пупирцем (полотно схвалено 2026-10-29).</dd>
-  <dt>Заглушки</dt><dd>Немає (малюється кодом). Фон — розмите фото.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-demonstrating. Фон — bg-hub. Немає (малюється кодом).</dd>
 </dl>
 </div>
 </x-dc>

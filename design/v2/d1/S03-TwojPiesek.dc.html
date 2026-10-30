@@ -33,17 +33,16 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr s-pup">
-  <div class="bgl blur f-p17"></div>
+  <div class="bgl blur f-bg-start"></div>
   <div class="guide">
-    <div class="bub" aria-label="Wybierz swojego pieska!"><img src="./i/k-speaker.svg" alt="" style="height: 34px"><img src="./art/pup-pon.svg" alt="">?</div>
-    <img class="kub kbig" src="./img/kubik-present.png" alt="Kubik">
+    <div class="bub" aria-label="Wybierz swojego pieska!"><img src="./i/k-speaker.svg" alt="" style="height: 34px"><img src="./v2/pup-pon.webp" alt="">?</div>
+    <img class="kub kbig" src="./v2/kubik-waving.webp" alt="Kubik">
   </div>
   <div class="card main" role="radiogroup" aria-label="Wybierz swojego pieska!">
     <sc-for list="{{f.pups}}" as="p" hint-placeholder-count="8">
       <button class="pup {{p.on}}" type="button" role="radio" aria-checked="{{p.checked}}" aria-label="{{p.line}}">
-        <img class="p" src="./art/pup-{{p.id}}.svg" alt="">
+        <img class="p" src="./v2/pup-{{p.id}}.webp" alt="">
         <sc-if value="{{p.checked}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
-        <span class="stub">{{p.breed}}</span>
       </button>
     </sc-for>
   </div>
@@ -54,7 +53,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Голос</dt><dd>«Wybierz swojego pieska!» · при дотику — опис: «Piesek z kokardką!» (обрано Shih tzu: жовта рамка + галочка, не лише колір) · «Gotowe» → «Witaj w drużynie!»</dd>
   <dt>Зони</dt><dd>Kubik із хмаринкою · 8 цуценят на картці (від 120 px; телефон — 2 × 4) · «Gotowe» окремо внизу. Фон розмитий.</dd>
-  <dt>Заглушки</dt><dd>Усі 8 порід — старі плоскі SVG з підписом породи (D2: 3D, простий нашийник без жетона). Цуценят із фото не беремо: серед них далматинець і хаскі, а жетони — лапки.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-waving, pup-pon. Фон — bg-start.</dd>
 </dl>
 </div>
 </x-dc>

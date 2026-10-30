@@ -48,7 +48,7 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr s-path">
-  <div class="bgl" style="background-image: linear-gradient(180deg, #FFE3DD 0%, #FFF1EA 46%, #8FCDF2 46%, #5FB2E6 64%, #A6D77F 64%, #79BE55 100%)"></div>
+  <div class="bgl f-path-w4"></div>
   <div class="hud">
     <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
     <div class="card wt"><span class="c"><img src="./i/w-w4.svg" alt=""></span>Most Dwudziestki</div>
@@ -64,7 +64,7 @@ body{margin:0}
           <button class="bk node {{n.cls}}" type="button" aria-label="{{n.aria}}">
             <sc-if value="{{n.num}}" hint-placeholder-val="{{ true }}">{{n.num}}</sc-if>
             <sc-if value="{{n.icon}}" hint-placeholder-val="{{ false }}"><img class="ic" src="./i/{{n.icon}}.svg" alt=""></sc-if>
-            <sc-if value="{{n.chestImg}}" hint-placeholder-val="{{ false }}"><img src="./art/chest-locked.svg" alt="" style="width: 76px; height: 76px"></sc-if>
+            <sc-if value="{{n.chestImg}}" hint-placeholder-val="{{ false }}"><img src="./v2/chest-locked.webp" alt="" style="width: 76px; height: 76px"></sc-if>
           </button>
           <sc-if value="{{n.done}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
           <sc-if value="{{n.review}}" hint-placeholder-val="{{ false }}"><span class="badge rt"><img src="./i/w-retry.svg" alt=""></span></sc-if>
@@ -72,7 +72,7 @@ body{margin:0}
         </span>
       </div>
     </sc-for>
-    <img class="kk char" src="./img/kubik-point.png" alt="Kubik" style="grid-area: {{f.kubik}}">
+    <img class="kk char" src="./v2/kubik-w4-idle.webp" alt="Kubik" style="grid-area: {{f.kubik}}">
     <sc-if value="{{f.legend}}" hint-placeholder-val="{{ true }}"><div class="card lg"><i></i>★ — dodatkowe, nie blokują drogi</div></sc-if>
   </div>
 </div>
@@ -81,7 +81,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Стани</dt><dd>1, 2, 4–6 пройдені (галочка) · 3 «Do powtórki» · 7 наступний — світиться, Kubik на дорозі поруч · 8–12 і скриня заблоковані. ★-гілка з 4 вузлів відходить від 6-го (у W7 — від 10-го): круглі помаранчеві цеглинки зі зіркою, менші за основні, золота пунктирна стежка; ★1 відкритий (пунктирне кільце), ★2–★4 — сірі із замком і жовтою зірочкою в кутку.</dd>
   <dt>Правила</dt><dd>★ ніколи не блокує основну дорогу й скриню (7-й світиться, хоч ★ не пройдено). «Zadania dodatkowe ★» вимкнено в Strefa rodzica — гілки й пунктиру не видно. Телефон: основна дорога — ліва колонка, ★ — паралельна смуга праворуч.</dd>
-  <dt>Заглушки</dt><dd>Фон — кольори W4 (D2: річка й міст із цеглинок, Tofik у касці); міні-наліпки на пройдених вузлах W4 — у D2 (поки номер); скриня — старий SVG.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): chest-locked, kubik-w4-idle. Фон — path-w4.</dd>
 </dl>
 </div>
 </x-dc>

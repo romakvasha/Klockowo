@@ -33,6 +33,25 @@
 .f-p17 { background-image: url(img/p17.jpg); } .f-p20 { background-image: url(img/p20.jpg); } .f-p22 { background-image: url(img/p22.jpg); }
 .f-p23 { background-image: url(img/p23.jpg); } .f-p24 { background-image: url(img/p24.jpg); }
 .f-sky { background-image: linear-gradient(180deg, #7CC4FF 0%, #BFE3FF 55%, #9BD67A 56%, #6FBF4E 100%); }
+/* D2a: фони світів і доріжок із картинок Gemini (project/v2/) */
+.f-bg-start { background-image: url(v2/bg-start.webp); }
+.f-bg-hub { background-image: url(v2/bg-hub.webp); }
+.f-bg-w1 { background-image: url(v2/bg-w1.webp); }
+.f-bg-w2 { background-image: url(v2/bg-w2.webp); }
+.f-bg-w3 { background-image: url(v2/bg-w3.webp); }
+.f-bg-w4 { background-image: url(v2/bg-w4.webp); }
+.f-bg-w5 { background-image: url(v2/bg-w5.webp); }
+.f-bg-w6 { background-image: url(v2/bg-w6.webp); }
+.f-bg-w7 { background-image: url(v2/bg-w7.webp); }
+.f-path-w1 { background-image: url(v2/path-w1.webp); }
+.f-path-w2 { background-image: url(v2/path-w2.webp); }
+.f-path-w3 { background-image: url(v2/path-w3.webp); }
+.f-path-w4 { background-image: url(v2/path-w4.webp); }
+.f-path-w5 { background-image: url(v2/path-w5.webp); }
+.f-path-w6 { background-image: url(v2/path-w6.webp); }
+.f-path-w7 { background-image: url(v2/path-w7.webp); }
+.f-air { background-image: linear-gradient(180deg, #6DBDF7 0%, #A9DBFF 60%, #DDF1FF 100%); }
+.ab img { object-fit: contain; }
 .f-calm { background-image: linear-gradient(180deg, #EAF2FB, #DCE7F4); }
 .f-calm::after { display: none; }
 

@@ -36,7 +36,7 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr s-path">
-  <div class="bgl f-p22"></div>
+  <div class="bgl f-path-w1"></div>
   <div class="hud">
     <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
     <div class="card wt"><span class="c"><img src="./i/w-w1.svg" alt=""></span>Łąka Liczenia</div>
@@ -48,14 +48,14 @@ body{margin:0}
         <span class="tw" style="position: relative">
           <button class="bk node {{n.cls}}" type="button" aria-label="{{n.aria}}">
             <sc-if value="{{n.num}}" hint-placeholder-val="{{ true }}">{{n.num}}</sc-if>
-            <sc-if value="{{n.sticker}}" hint-placeholder-val="{{ false }}"><img class="st" src="./art/w1-kaczuszka.svg" alt=""></sc-if>
+            <sc-if value="{{n.sticker}}" hint-placeholder-val="{{ false }}"><img class="st" src="./v2/item-kaczuszka.webp" alt=""></sc-if>
             <sc-if value="{{n.icon}}" hint-placeholder-val="{{ false }}"><img class="ic" src="./i/{{n.icon}}.svg" alt=""></sc-if>
-            <sc-if value="{{n.chestImg}}" hint-placeholder-val="{{ false }}"><img class="st" src="./art/chest-locked.svg" alt="" style="width: 76px; height: 76px"></sc-if>
+            <sc-if value="{{n.chestImg}}" hint-placeholder-val="{{ false }}"><img class="st" src="./v2/chest-locked.webp" alt="" style="width: 76px; height: 76px"></sc-if>
           </button>
           <sc-if value="{{n.done}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
           <sc-if value="{{n.review}}" hint-placeholder-val="{{ false }}"><span class="badge rt"><img src="./i/w-retry.svg" alt=""></span></sc-if>
         </span>
-        <sc-if value="{{n.here}}" hint-placeholder-val="{{ false }}"><img class="kk char" src="./img/kubik-point.png" alt="Kubik"></sc-if>
+        <sc-if value="{{n.here}}" hint-placeholder-val="{{ false }}"><img class="kk char" src="./v2/kubik-w1-idle.webp" alt="Kubik"></sc-if>
       </div>
     </sc-for>
   </div>
@@ -65,7 +65,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Стани вузлів</dt><dd>1, 2, 4 пройдені — міні-наліпка + галочка · 3 «Do powtórki» — фіолетова кругова стрілка · 5 наступний — світиться, Kubik поруч · 6–12 заблоковані — сірий камінь із замком · скриня в кінці. ★-гілок у W1 немає (лише W4 і W7).</dd>
   <dt>Дотик</dt><dd>Можна торкнутися вузла, що світиться, «Do powtórki» і пройдених; заблокований лише хитається. «Mapa» (72 / 80 px) — до «Mapa przygody».</dd>
-  <dt>Заглушки</dt><dd>Скриня й наліпка-каченя — старі плоскі SVG; фон стежки — фото W1 (D2: стежка-платформи з цеглинок).</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): chest-locked, item-kaczuszka, kubik-w1-idle. Фон — path-w1.</dd>
 </dl>
 </div>
 </x-dc>

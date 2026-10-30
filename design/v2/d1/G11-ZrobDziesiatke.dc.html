@@ -27,7 +27,7 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr g-game">
-  <div class="bgl" style="background-image: linear-gradient(180deg, #DFF2FF 0%, #CDEBFF 58%, #FFF0C9 58%, #F7DFA4 100%)"></div>
+  <div class="bgl f-bg-w3"></div>
   <div class="hud">
     <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
     <div class="card bones" role="img" aria-label="kosteczki: 6 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
@@ -35,7 +35,7 @@ body{margin:0}
   </div>
   <div class="guide">
     <div class="bub" aria-label="Siedem i trzy to dziesięć.">7 + 3 = 10</div>
-    <div class="krow"><img class="kub" src="./img/kubik-hands.png" alt="Kubik"></div>
+    <div class="krow"><img class="kub" src="./v2/kubik-happy.webp" alt="Kubik"></div>
   </div>
   <div class="card board">
     <div class="tf" role="img" aria-label="ramka dziesiątki: siedem i trzy">
@@ -54,7 +54,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Голос</dt><dd>«Ile brakuje do dziesięciu?» → «Siedem i trzy to dziesięć.»</dd>
   <dt>Стан</dt><dd>Правильно: 3 нові фішки (сині з білим пунктиром — відрізняються й не лише кольором) доповнили рамку, повна рамка спалахує золотим; шоста кісточка в слоті → далі «Koniec poziomu».</dd>
-  <dt>Заглушки</dt><dd>Немає: рамка-десятка й фішки малюються кодом. Фон W3 — колір світу (D2).</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-happy. Фон — bg-w3. Немає: рамка-десятка й фішки малюються кодом.</dd>
 </dl>
 </div>
 </x-dc>

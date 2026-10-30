@@ -31,6 +31,8 @@ body{margin:0}
 .ph .nm{font-size:14px;padding:4px 10px}
 .isl .badge{right:auto;left:calc(50% + 52px);top:-6px}
 .ph .isl .badge{left:calc(50% + 30px)}
+.isl-img{height:170px}
+.ph .isl-img{height:96px}
 .isl .kart{height:150px}
 .ph .isl .kart{height:76px}
 .isl .stub{position:absolute;left:50%;transform:translateX(-50%);bottom:-26px}
@@ -42,9 +44,9 @@ body{margin:0}
 <section class="dev {{f.cls}}">
 <div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
 <div class="scr s-map">
-  <div class="bgl f-p13"></div>
+  <div class="bgl f-air"></div>
   <div class="hud">
-    <span class="me" role="img" aria-label="Ola"><img src="./art/pup-papillon.svg" alt=""></span>
+    <span class="me" role="img" aria-label="Ola"><img src="./v2/pup-papillon.webp" alt=""></span>
     <div class="r">
       <button class="bk c-p rnd hb" type="button" aria-label="Naklejki"><img src="./i/w-stickers.svg" alt=""></button>
       <button class="chip" type="button" aria-label="Strefa rodzica — przytrzymaj 3 sekundy"><img src="./i/k-gear.svg" alt=""></button>
@@ -54,12 +56,12 @@ body{margin:0}
     <sc-for list="{{f.isl}}" as="w" hint-placeholder-count="8">
       <button class="isl {{w.st}}" type="button" style="grid-area: {{w.ga}}" aria-label="{{w.aria}}">
         <span class="col">
-          <span class="disc {{w.disc}}" style="--c: {{w.c}}"><img class="ic" src="./i/w-{{w.ic}}.svg" alt=""></span>
+          <img class="isl-img char" src="./v2/{{w.img}}.webp" alt="">
           <span class="nm">{{w.name}}</span>
         </span>
         <sc-if value="{{w.done}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
         <sc-if value="{{w.locked}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--ink)"><img src="./i/w-lock.svg" alt=""></span></sc-if>
-        <sc-if value="{{w.here}}" hint-placeholder-val="{{ false }}"><img class="kart char" src="./img/kubik-hands.png" alt="Kubik"></sc-if>
+        <sc-if value="{{w.here}}" hint-placeholder-val="{{ false }}"><img class="kart char" src="./v2/kubik-on-kart.webp" alt="Kubik"></sc-if>
         <sc-if value="{{w.stub}}" hint-placeholder-val="{{ false }}"><span class="stub">{{w.stub}}</span></sc-if>
       </button>
     </sc-for>
@@ -70,7 +72,7 @@ body{margin:0}
 <dl class="spec">
   <dt>Що показано</dt><dd>7 островів уздовж стежки + «Plac Zabaw» біля бази. W1 пройдено (галочка), W2 — поточний (Kubik поруч), W3–W7 заблоковані: сірий камінь + замок + іконка світу. Угорі: аватар дитини, «Naklejki», шестерня. Загального лічильника кісточок немає.</dd>
   <dt>Телефон</dt><dd>Острови зигзагом у 2 колонки знизу вгору; мапа гортається вертикально.</dd>
-  <dt>Заглушки</dt><dd>Острови W2–W7 і Plac Zabaw — кольорові «плити» з іконкою (D2: 3D-острови з цеглинок). Kubik на картингу — D2. Фон — тимчасово фото села.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): island-hub, island-locked, island-w1, island-w2, kubik-on-kart, pup-papillon. Фон — небо кодом (мапа з островами — D5).</dd>
 </dl>
 </div>
 </x-dc>
@@ -78,9 +80,9 @@ body{margin:0}
 class Component extends DCLogic {
   renderVals() {
     const base = [
-      { k: 'hub', name: 'Plac Zabaw', c: '#FFC21A', ic: 'hub', st: 'open', stub: 'ЗАГЛУШКА' },
+      { k: 'hub', name: 'Plac Zabaw', c: '#FFC21A', ic: 'hub', st: 'open' },
       { k: 'w1', name: 'Łąka Liczenia', c: '#7BCB5A', ic: 'w1', st: 'done', disc: 'photo' },
-      { k: 'w2', name: 'Ogród Cyfr', c: '#FF9F43', ic: 'w2', st: 'here', stub: 'ЗАГЛУШКА' },
+      { k: 'w2', name: 'Ogród Cyfr', c: '#FF9F43', ic: 'w2', st: 'here' },
       { k: 'w3', name: 'Wyspa Dodawania', c: '#3FA9F5', ic: 'w3', st: 'lock' },
       { k: 'w4', name: 'Most Dwudziestki', c: '#FF6B6B', ic: 'w4', st: 'lock' },
       { k: 'w5', name: 'Las Dziesiątek', c: '#2FA58B', ic: 'w5', st: 'lock' },
@@ -90,7 +92,7 @@ class Component extends DCLogic {
     const pc = { hub: '2 / 1', w1: '2 / 2', w2: '2 / 3', w3: '2 / 4', w4: '1 / 4', w5: '1 / 3', w6: '1 / 2', w7: '1 / 1' };
     const ph = { hub: '4 / 1', w1: '4 / 2', w2: '3 / 2', w3: '3 / 1', w4: '2 / 1', w5: '2 / 2', w6: '1 / 2', w7: '1 / 1' };
     const mk = (pos) => base.map((w) => ({
-      ...w, ga: pos[w.k], done: w.st === 'done', locked: w.st === 'lock', here: w.st === 'here',
+      ...w, img: w.st === 'lock' ? 'island-locked' : `island-${w.k}`, ga: pos[w.k], done: w.st === 'done', locked: w.st === 'lock', here: w.st === 'here',
       aria: w.st === 'lock' ? `${w.name} — zablokowane` : w.st === 'done' ? `${w.name} — ukończone` : w.st === 'here' ? `${w.name} — tutaj jesteśmy` : w.name,
     }));
     return {
