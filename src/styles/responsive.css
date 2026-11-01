@@ -8,9 +8,9 @@
   --kl-hud-h: 104px;
   /* PlayButton (Start, висота; ширина 1,6 × висота — полотно D1); на Wprowadzenie — size={120} */
   --kl-play: 120px;
-  /* CheckButton «Gotowe» */
-  --kl-check-w: 120px;
-  --kl-check-h: 88px;
+  /* CheckButton «Gotowe» (полотно D1: 168×104) */
+  --kl-check-w: 168px;
+  --kl-check-h: 104px;
   --kl-check-icon: 46px;
   /* AnswerTile (квадрат) і DigitCard (ширина = плитка, висота = 4/3) */
   --kl-tile: 120px;

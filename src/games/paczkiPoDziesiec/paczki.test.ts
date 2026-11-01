@@ -205,8 +205,8 @@ describe('композиція', () => {
 
   it('пакування вміщується в сцену, не заходить на Kubika; «Zapakuj» ≥ 64 px і не виходить за сцену', () => {
     expect(PACK_BUTTON).toBeGreaterThanOrEqual(64);
-    for (const { kind, vw, area } of cases) {
-      const reserved = sceneReserved(kind, vw, area);
+    for (const { kind, area } of cases) {
+      const reserved = sceneReserved(kind, area);
       const p = placeContent(area, reserved, PACK_DESIGN, { maxScale: 1.4 });
       expect(p.x + p.w, kind).toBeLessThanOrEqual(area.w);
       expect(p.y + p.h, kind).toBeLessThanOrEqual(area.h);
@@ -223,8 +223,8 @@ describe('композиція', () => {
   it('мат у правій зоні вміщується (cell 17); режим «Zbuduj»: мат + кнопки вміщуються, кнопка +10/+1 ≥ 64 px (≥ 56 на вузьких екранах)', () => {
     expect(placeValueMatSize(CELL).w).toBeLessThanOrEqual(PACK_DESIGN.w - RIGHT_X);
     expect(placeValueMatSize(CELL).h).toBeLessThanOrEqual(PACK_DESIGN.h);
-    for (const { kind, vw, area } of cases) {
-      const reserved = sceneReserved(kind, vw, area);
+    for (const { kind, area } of cases) {
+      const reserved = sceneReserved(kind, area);
       const p = placeContent(area, reserved, buildDesign(kind === 'wide' ? 20 : MAT_CELL_NARROW), { maxScale: 1.4, margin: 4 });
       expect(p.x + p.w, kind).toBeLessThanOrEqual(area.w);
       expect(p.y + p.h, kind).toBeLessThanOrEqual(area.h);

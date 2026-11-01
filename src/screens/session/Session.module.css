@@ -95,3 +95,30 @@
   text-align: center;
   color: var(--kl-ink);
 }
+
+/* Телефон в альбомі (844×390): зони стають рядком — Kubik · (текст) · кнопка, щоб кнопка не опинилася нижче краю (D3) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .screen {
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .screen [style*='--rig-h'] {
+    --rig-h: min(280px, calc(100dvh - 64px)) !important;
+  }
+
+  .house {
+    scale: .85;
+  }
+
+  .muted {
+    width: 88px;
+    height: 88px;
+  }
+
+  .adult {
+    max-width: 300px;
+    font-size: 18px;
+    text-align: left;
+  }
+}

@@ -20,6 +20,9 @@ export interface MascotStageProps {
   speaking?: boolean;
   /** Число на картці в стані together. */
   card?: number;
+  /** Без пропа — бульбашка виступає над Kubikom і праворуч (кут сцени: Wprowadzenie тощо). У власній зоні гри (D3): column — бульбашка над Kubikom,
+   *  row — праворуч від нього; обидві займають місце в потоці й не виходять за зону. */
+  layout?: 'column' | 'row';
   className?: string;
 }
 
@@ -41,11 +44,11 @@ function StageBubble({ state, bubble }: Pick<MascotStageProps, 'state' | 'bubble
   return bubble ? <SpeechBubble className={styles.bubble}>{bubble}</SpeechBubble> : null;
 }
 
-/** Kubik + бульбашка в нижньому лівому куті сцени (BRIEF §7, design etap2/06): ПК 184 px, планшет 150/120, телефон 100;
- *  у 844×390 прихований і виїжджає знизу (300 мс) лише для hint і together. Кубик — єдиний «зайвий» рух під час завдання. */
-export function MascotStage({ state = 'idle', world = null, pointing = 'down', bubble, speaking, card, className }: MascotStageProps) {
+/** Kubik + бульбашка (BRIEF §7, design etap2/06): ПК 184 px, планшет 150/120, телефон 100; без `layout` у 844×390 прихований і виїжджає знизу (300 мс)
+ *  лише для hint і together. Кубик — єдиний «зайвий» рух під час завдання. */
+export function MascotStage({ state = 'idle', world = null, pointing = 'down', bubble, speaking, card, layout, className }: MascotStageProps) {
   return (
-    <div className={cx(styles.stage, className)} data-state={state}>
+    <div className={cx(styles.stage, className)} data-state={state} data-layout={layout}>
       <Kubik pose={mascotPose(state, pointing)} accessory={world} card={card} talking={speaking ?? state === 'talking'} />
       <StageBubble state={state} bubble={bubble} />
     </div>

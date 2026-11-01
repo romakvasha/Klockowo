@@ -167,3 +167,14 @@ g[data-open='false'] .trailTop {
   content: '';
   background: linear-gradient(var(--sea) 55%, transparent);
 }
+
+/* Телефон в альбомі (844×390): панель — дві бічні колонки (аватар ліворуч, «Naklejki» над шестернею праворуч), сцена мапи між ними (landscapeScale, D3) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .chrome {
+    align-items: flex-start;
+  }
+
+  .right {
+    flex-direction: column;
+  }
+}

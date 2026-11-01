@@ -172,8 +172,8 @@ describe('рамка й композиція', () => {
       { kind: 'portrait', vw: 390, area: { w: 366, h: 366 } },
       { kind: 'phone', vw: 844, area: { w: 560, h: 280 } },
     ];
-    for (const { kind, vw, area } of cases) {
-      const reserved = sceneReserved(kind, vw, area);
+    for (const { kind, area } of cases) {
+      const reserved = sceneReserved(kind, area);
       const p = placeContent(area, reserved, DESIGN);
       expect(p.scale).toBeGreaterThan(0.35);
       expect(p.x + p.w).toBeLessThanOrEqual(area.w);

@@ -47,7 +47,7 @@ export function Loading() {
       <img className={`${styles.island} ${styles.right}`} src={ISLAND_URL('hub')} alt="" aria-hidden="true" />
       <Logo className={styles.logo} />
       <div className={styles.builder}>
-        <Kubik pose="demonstrating" style={cssVars({ '--rig-h': 'clamp(150px, 38vh, 270px)' })} />
+        <Kubik pose="demonstrating" style={cssVars({ '--rig-h': 'clamp(110px, 34vh, 270px)' })} />
         <CubeTower className={styles.tower} />
       </div>
       <CubeStrip className={styles.strip} filled={filled} label={LABELS.loading} />

@@ -210,8 +210,8 @@ describe('композиція й кнопка «Wsyp!»', () => {
   ];
 
   it('композиція вміщується в сцену й не заходить на Kubika', () => {
-    for (const { kind, vw, area } of cases) {
-      const reserved = sceneReserved(kind, vw, area);
+    for (const { kind, area } of cases) {
+      const reserved = sceneReserved(kind, area);
       const p = placeContent(area, reserved, DESIGN);
       expect(p.scale).toBeGreaterThan(0.35);
       expect(p.x + p.w).toBeLessThanOrEqual(area.w);
@@ -222,8 +222,8 @@ describe('композиція й кнопка «Wsyp!»', () => {
 
   it('кнопка «Wsyp!» ≥ 64 px і стоїть у межах сцени між кошиками', () => {
     expect(POUR_SIZE).toBeGreaterThanOrEqual(64);
-    for (const { kind, vw, area } of cases) {
-      const p = placeContent(area, sceneReserved(kind, vw, area), DESIGN);
+    for (const { kind, area } of cases) {
+      const p = placeContent(area, sceneReserved(kind, area), DESIGN);
       const c = pourButtonCenter(p);
       expect(c.x - POUR_SIZE / 2, kind).toBeGreaterThanOrEqual(0);
       expect(c.x + POUR_SIZE / 2, kind).toBeLessThanOrEqual(area.w);

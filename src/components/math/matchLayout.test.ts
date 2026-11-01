@@ -66,10 +66,14 @@ describe('digitTileSize', () => {
     expect(digitTileSize('portrait', { w: 768, h: 1024 }, 3, 128)).toBe(128);
   });
 
-  it('планшет у портреті: чотири плитки лишають поля під бульбашку Kubika (≥ 120 px з кожного боку)', () => {
-    const s = digitTileSize('portrait', { w: 768, h: 1024 }, 4, 128);
+  it('ПК: лоток між колонкою провідника й «Gotowe» (D3) — на 1024 px пʼять плиток звужуються', () => {
+    const s = digitTileSize('wide', { w: 1024, h: 768 }, 5, 128);
     expect(s).toBeLessThan(128);
-    expect((768 - (4 * s + 3 * 16 + 32)) / 2).toBeGreaterThanOrEqual(120);
+    expect(5 * s + 4 * 24 + 48).toBeLessThanOrEqual(1024 - 48 - (215 + 168 + 48));
+  });
+
+  it('планшет у портреті: Kubik у власному ряду — чотири плитки стандартні', () => {
+    expect(digitTileSize('portrait', { w: 768, h: 1024 }, 4, 128)).toBe(128);
   });
 
   it('телефон у портреті: чотири плитки звужуються, щоб вміститись у ряд, але ≥ 64 px', () => {
@@ -83,7 +87,7 @@ describe('digitTileSize', () => {
   it('телефон в альбомі: плитки в стовпці вміщуються за висотою', () => {
     const s = digitTileSize('phone', { w: 844, h: 390 }, 4, 88);
     expect(s).toBeGreaterThanOrEqual(64);
-    expect(4 * s + 3 * 12).toBeLessThanOrEqual(390 - 48);
+    expect(4 * s + 3 * 28).toBeLessThanOrEqual(390 - 48);
     expect(digitTileSize('phone', { w: 844, h: 390 }, 3, 88)).toBe(88);
   });
 

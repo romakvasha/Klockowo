@@ -11,7 +11,7 @@
 }
 
 .logo {
-  width: min(520px, 78vw);
+  width: min(520px, 78vw, 90vh);
 }
 
 .builder {

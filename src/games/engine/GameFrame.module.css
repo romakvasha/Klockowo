@@ -1,15 +1,25 @@
-/* Ігровий екран (design etap2/00–05). Три вигляди за медіа-запитами (збігаються з frameKind у frameMath.ts):
-   wide — альбом: панель 104 → сцена → підвал (лоток по центру, Kubik із лампочкою внизу ліворуч, «Gotowe» внизу праворуч);
-   portrait — панель → сцена-квадрат → лоток → нижній ряд (Kubik + лампочка ліворуч, «Gotowe» праворуч);
-   phone — телефон в альбомі: бічна смуга (HUD), сцена, праворуч лоток-стовпець із «Gotowe» поряд. Розміри плиток, кнопок і Kubika — з responsive.css. */
+/* Ігровий екран (полотно D1 «сітка гри», docs/DESIGN_V2.md §3): CSS Grid із зонами, які не перетинаються, проміжки ≥ 16 px.
+   wide — «hud hud hud / guide board board / guide tray check»: провідник колонкою ліворуч (≤ 26 % ширини), лоток і «Gotowe» під дошкою;
+   portrait — «hud / guide / board / tray / check»: провідник рядом над дошкою-квадратом;
+   phone (844×390) — «hud board guide tray / hud board check tray»: бічна смуга, дошка, провідник над «Gotowe», лоток-стовпець.
+   Збігається з frameKind у frameMath.ts. Розміри плиток, кнопок і Kubika — з responsive.css. */
 .game {
   --scene-bg: var(--kl-w1-50);
   --scene-line: var(--kl-w1-100);
   --decor-scale: 1;
+  --zone-gap: 24px;
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-areas:
+    'hud hud hud'
+    'guide board board'
+    'guide tray check';
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: clamp(180px, 21vw, 300px) minmax(0, 1fr) auto;
+  gap: 16px var(--zone-gap);
+  box-sizing: border-box;
   height: 100dvh;
+  padding: 0 var(--kl-edge-safe) var(--kl-edge-safe);
   overflow: hidden;
   background: var(--kl-bg);
 }
@@ -22,22 +32,21 @@
 .game[data-world='w6'] { --scene-bg: var(--kl-w6-50); --scene-line: var(--kl-w6-100); }
 .game[data-world='w7'] { --scene-bg: var(--kl-w7-50); --scene-line: var(--kl-w7-100); }
 
-.body {
-  position: relative;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
+.hud {
+  grid-area: hud;
+  width: calc(100% + 2 * var(--kl-edge-safe));
+  margin: 0 calc(var(--kl-edge-safe) * -1);
 }
 
-/* сцена ≈ 60 % висоти: тло світу, лінія ґрунту знизу, декор лише по краях */
+/* дошка: тло світу, лінія ґрунту знизу, декор лише по краях */
 .scene {
   position: relative;
-  flex: 1;
+  grid-area: board;
+  min-width: 0;
   min-height: 0;
   background: var(--scene-bg);
-  border-bottom: 3px solid var(--scene-line);
+  border: 3px solid var(--scene-line);
+  border-radius: 24px;
 }
 
 /* декор обрізається по краях сцени, а самі предмети гри (перетягування) можуть виходити за неї */
@@ -83,22 +92,37 @@
   bottom: 24px;
 }
 
-/* підвал: висота = лоток (плитка + 28) + по 18 px зверху й знизу; Kubik заходить на сцену на 24 px */
-.footer {
-  position: relative;
+/* провідник: бульбашка над Kubikom, лампочка «Pomóż mi» поряд — притиснуті до низу колонки */
+.guide {
   display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  height: calc(var(--kl-tile) + 28px + 36px);
+  grid-area: guide;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-content: flex-end;
+  align-items: flex-end;
+  min-width: 0;
+  min-height: 0;
+  pointer-events: none;
 }
 
+.hintSlot {
+  display: flex;
+  margin-bottom: 12px;
+  pointer-events: auto;
+}
+
+/* лоток: висота = плитка + 28 (пупирці виступають на 9 px угорі, край — на 7 px унизу) */
 .tray {
   display: flex;
-  gap: 24px;
+  grid-area: tray;
+  flex-wrap: wrap;
+  gap: 32px 24px;
   align-items: center;
   justify-content: center;
+  justify-self: center;
   box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
   min-height: calc(var(--kl-tile) + 28px);
   padding: 14px 24px;
   background: var(--kl-surface-2);
@@ -110,75 +134,48 @@
   visibility: hidden;
 }
 
-/* нижній ряд: Kubik і лампочка ліворуч, «Gotowe» праворуч; пустий простір не перехоплює дотиків до сцени */
-.bottom {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 0 24px 24px 22px;
-  pointer-events: none;
-}
-
-.guide {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  gap: 27px;
-  align-items: flex-end;
-  pointer-events: none;
-}
-
-.hintSlot {
-  display: flex;
-  margin-bottom: 12px;
-}
-
 .check {
   display: flex;
-  pointer-events: auto;
+  grid-area: check;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
-/* ---------- Планшет і телефон у портреті: сцена-квадрат, лоток під нею, нижній ряд ---------- */
+/* ---------- Планшет і телефон у портреті: провідник рядом над дошкою-квадратом, лоток і «Gotowe» під нею ---------- */
 @media (orientation: portrait) {
   .game {
     --decor-scale: .65;
-  }
-
-  .body {
-    padding-top: 8px;
+    grid-template-areas:
+      'hud'
+      'guide'
+      'board'
+      'tray'
+      'check';
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 16px;
   }
 
   .scene {
-    flex: 0 1 auto;
-    width: min(600px, calc(100% - 48px));
-    margin: 0 auto;
+    justify-self: center;
+    width: min(600px, 100%);
+    max-height: min(600px, 100%);
     aspect-ratio: 1 / 1;
-    border: 0;
-    border-radius: 24px;
   }
 
-  .footer {
-    flex: 1 0 auto;
-    flex-direction: column;
-    gap: 16px;
-    justify-content: flex-start;
-    height: auto;
-    padding-top: 20px;
+  .guide {
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hintSlot {
+    margin-bottom: 0;
   }
 
   .tray {
-    gap: 16px;
+    gap: 32px 16px;
     padding: 14px 16px;
-  }
-
-  .bottom {
-    position: static;
-    width: 100%;
-    margin-top: auto;
-    padding: 0 20px 16px;
-    box-sizing: border-box;
   }
 }
 
@@ -188,60 +185,61 @@
   }
 
   .tray {
-    gap: 16px;
     padding: 12px 16px;
     border-radius: 22px;
   }
 }
 
-/* ---------- Телефон в альбомі (844×390): сцена праворуч від смуги, лоток-стовпець, «Gotowe» поряд; Kubik і лампочка — у смузі й поверх сцени ---------- */
+/* ---------- Телефон в альбомі (844×390): смуга HUD · дошка · провідник над «Gotowe» · лоток-стовпець ---------- */
 @media (max-height: 500px) and (orientation: landscape) {
   .game {
     --decor-scale: .5;
-    flex-direction: row;
+    grid-template-areas:
+      'hud board guide tray'
+      'hud board check tray';
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    gap: 16px;
+    padding: 0 var(--kl-edge-safe) 0 0;
   }
 
-  .body {
-    flex-direction: row;
-    gap: 16px;
-    padding: 24px 24px 24px 16px;
+  .hud {
+    width: 128px;
+    margin: 0;
   }
 
   .scene {
-    border: 0;
-    border-radius: 24px;
+    align-self: stretch;
+    margin: var(--kl-edge-safe) 0;
   }
 
-  .footer {
-    display: grid;
-    grid-template-columns: auto auto;
-    column-gap: 16px;
-    align-items: stretch;
-    justify-content: end;
-    height: auto;
+  .guide {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: var(--kl-edge-safe);
   }
 
+  /* лампочка — у смузі HUD */
+  .hintSlot {
+    display: none;
+  }
+
+  /* стовпець плиток: проміжок 12 + 16 під пупирці й край цеглинки */
   .tray {
     flex-direction: column;
-    grid-column: 2;
-    gap: 12px;
-    align-self: start;
+    flex-wrap: nowrap;
+    gap: 28px;
+    align-self: center;
     min-height: 0;
     padding: 0;
     background: transparent;
   }
 
-  .bottom {
-    position: static;
-    display: contents;
-  }
-
-  .guide {
-    display: none;
-  }
-
   .check {
-    grid-column: 1;
     align-self: end;
+    justify-content: center;
+    margin-bottom: var(--kl-edge-safe);
   }
 }

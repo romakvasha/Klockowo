@@ -177,8 +177,8 @@ describe('ставок у сцені', () => {
 
   it('усе вміщується в сцену, не заходить на Kubika; листок не менший за 24 px', () => {
     for (const max of [10, 20] as const) {
-      for (const { kind, vw, area } of cases) {
-        const reserved = sceneReserved(kind, vw, area);
+      for (const { kind, area } of cases) {
+        const reserved = sceneReserved(kind, area);
         const { layout, place } = pickPond(max, area, reserved);
         expect(layout.max).toBe(max);
         expect(place.x + place.w, `${max}/${kind}`).toBeLessThanOrEqual(area.w);

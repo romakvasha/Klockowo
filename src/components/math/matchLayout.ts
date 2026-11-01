@@ -56,13 +56,14 @@ export function setsLayout(area: Area, reserved: readonly Rect[], k: number): Se
 }
 
 /** Сторона плитки-цифри в лотку: стандартна `cssTile` (з responsive.css), але стільки, щоб k плиток уміщалися в лоток — рядком (wide, portrait) чи стовпцем
- *  (телефон в альбомі); не менше 64 px (BRIEF §12). `viewport` — розмір вікна: лоток займає майже всю ширину (висоту на телефоні). */
+ *  (телефон в альбомі); не менше 64 px (BRIEF §12). `viewport` — розмір вікна. Зони — з GameFrame.module.css (D3): у wide лоток стоїть між колонкою
+ *  провідника (21 % ширини, 180–300 px) і «Gotowe» (168 px), з проміжками по 24 px; у portrait — на всю ширину. */
 export function digitTileSize(kind: 'wide' | 'portrait' | 'phone', viewport: Area, k: number, cssTile: number): number {
-  const gap = kind === 'phone' ? 12 : kind === 'portrait' ? 16 : 24;
-  // у лотку з боків по 16 px (portrait) чи 24 px (wide); на планшеті в портреті лоток ще й не заходить на бульбашку Kubika (вона сягає ≈ 120 px від лівого краю): поля по 124 px
+  const gap = kind === 'phone' ? 28 : kind === 'portrait' ? 16 : 24;
+  const edges = 48;
   const padding = kind === 'portrait' ? 32 : 48;
-  const reserve = kind === 'portrait' && viewport.w >= 600 ? 248 : 0;
-  const avail = kind === 'phone' ? viewport.h - 48 : viewport.w - padding - reserve;
+  const reserve = kind === 'wide' ? Math.min(300, Math.max(180, viewport.w * 0.21)) + 168 + 2 * 24 : 0;
+  const avail = kind === 'phone' ? viewport.h - 48 : viewport.w - edges - padding - reserve;
   const fit = Math.floor((avail - (k - 1) * gap) / k);
   return Math.max(64, Math.min(cssTile, fit));
 }
