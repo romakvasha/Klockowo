@@ -14,6 +14,8 @@ GEN, OUT = 'design/v2/gen', 'src/assets/v2'
 SMALL = {'items', 'digits', 'hands'}
 WORK = {'small': 1024, 'big': 1280}  # rembg і matting — на зменшеній копії: швидше й уміщається в пам'ять, а для ≤ 768 px якості досить
 PAD = 6
+# Кадри рота — правки kubik-idle того самого розміру: маска й рамка обрізки беруться з idle, щоб кадри лягали піксель у піксель.
+FRAMES = {f'kubik-talking-{m}': 'kubik-idle' for m in 'aeo'}
 
 _session = None
 
@@ -77,8 +79,17 @@ def init():
     _session = new_session('isnet-general-use')
 
 
-def work(a):
+def cut(im):
     from rembg import remove
+    try:
+        out = remove(im, session=_session, alpha_matting=True, alpha_matting_foreground_threshold=240,
+                     alpha_matting_background_threshold=15, alpha_matting_erode_size=8)
+    except MemoryError:
+        out = remove(im, session=_session)  # без matting — краї трохи грубші
+    return clean_alpha(fill_inside(out.convert('RGBA'), im))
+
+
+def work(a):
     t = time.time()
     src = source(a['id'])
     if not src: return a['id'], 'missing', 0
@@ -90,13 +101,16 @@ def work(a):
     else:
         small = a['group'] in SMALL
         im = fit(im, *[WORK['small' if small else 'big']] * 2)
-        try:
-            out = remove(im, session=_session, alpha_matting=True, alpha_matting_foreground_threshold=240,
-                         alpha_matting_background_threshold=15, alpha_matting_erode_size=8)
-        except MemoryError:
-            out = remove(im, session=_session)  # без matting — краї трохи грубші
-        out = clean_alpha(fill_inside(out.convert('RGBA'), im))
-        l, t2, r, b = out.getchannel('A').point(lambda v: 255 if v > 8 else 0).getbbox()
+        if a['id'] in FRAMES:
+            ref = fit(Image.open(source(FRAMES[a['id']])).convert('RGB'), *[WORK['big']] * 2)
+            assert ref.size == im.size, f"{a['id']}: розмір не як у {FRAMES[a['id']]}"
+            mask = cut(ref).getchannel('A')
+            out = im.convert('RGBA')
+            out.putalpha(mask)
+        else:
+            out = cut(im)
+            mask = out.getchannel('A')
+        l, t2, r, b = mask.point(lambda v: 255 if v > 8 else 0).getbbox()
         out = out.crop((max(0, l - PAD), max(0, t2 - PAD), min(out.width, r + PAD), min(out.height, b + PAD)))
         out = fit(out, 512, 512) if small else fit(out, 1024, 768)
         out.save(dst, 'WEBP', quality=85, method=6)
