@@ -30,6 +30,7 @@
   flex: 1;
   flex-wrap: wrap;
   gap: var(--kl-space-3);
+  align-content: center;
   align-items: center;
   justify-content: center;
 }
@@ -37,38 +38,53 @@
 .tile {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   align-items: center;
   justify-content: center;
   width: min(280px, 100%);
-  min-height: 200px;
+  min-height: 220px;
   padding: 16px;
-  color: var(--kl-ink);
-  border-radius: 28px;
+  border-radius: 26px;
 }
 
-.tile[data-kind='review'] {
-  --edge: var(--kl-reward-edge);
-  background: var(--kl-reward);
+.tileIcon {
+  width: 96px;
+  height: 96px;
 }
 
-.tile[data-kind='paint'] {
-  --edge: var(--kl-w3-700);
-  background: var(--kl-w3-500);
+/* мініатюра таблиці: білі клітинки, розфарбовані — темні */
+.paintGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 24px);
+  gap: 4px;
 }
 
-.tile[data-kind='count'] {
-  --edge: var(--kl-w6-700);
-  background: var(--kl-w6-500);
+.paintGrid i {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, .85);
 }
 
-.tileArt {
-  font: 700 40px / 1 var(--kl-font-display);
-  letter-spacing: 2px;
+.paintGrid i[data-on='true'] {
+  background: #3A1C78;
+}
+
+/* «100» з цеглинкових цифр v2 (прикраса) */
+.hundred {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  height: 96px;
+}
+
+.hundred img {
+  width: auto;
+  height: 100%;
 }
 
 .tileLabel {
-  font: 700 22px / 1.1 var(--kl-font-display);
+  font: 700 24px / 1.15 var(--kl-font-display);
   text-align: center;
 }
 
@@ -111,13 +127,8 @@
   transition: top 250ms var(--kl-ease-out);
 }
 
+/* «вгору/вниз»: синя цеглинка з одним пупирцем, біла стрілка з контуром */
 .nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  color: var(--kl-ink);
-  background: var(--kl-secondary);
   border-radius: 20px;
 }
 
@@ -142,7 +153,7 @@
   padding-bottom: var(--kl-space-1);
 }
 
-/* колір: кругла блокова кнопка 72 px; вибраний має товсте кільце й галочку-крапку (не лише колір) */
+/* колір: кругла цеглинка 72 px свого кольору; вибраний має товсте кільце й крапку посередині (не лише колір) */
 .swatch {
   width: 72px;
   height: 72px;
@@ -151,7 +162,7 @@
 }
 
 .swatch[data-active='true'] {
-  box-shadow: 0 0 0 4px var(--kl-surface), 0 0 0 8px var(--kl-ink);
+  box-shadow: var(--kl-brick-shadow), 0 0 0 4px var(--kl-surface), 0 0 0 8px var(--kl-ink);
 }
 
 .swatch[data-active='true']::after {
@@ -173,18 +184,16 @@
   min-height: 72px;
   padding: 0 16px;
   font: 700 26px / 1 var(--kl-font-display);
-  color: var(--kl-ink);
-  background: var(--kl-w6-500);
   border-radius: 24px;
-  --edge: var(--kl-w6-700);
 }
 
+/* та, що звучить, — жовта й «натиснута» (не лише колір) */
 .song[data-active='true'] {
-  background: var(--kl-reward);
-  --edge: var(--kl-reward-edge);
+  transform: translateY(5px);
+  box-shadow: var(--kl-brick-shadow-pressed), var(--kl-ring);
 }
 
-.song:disabled {
+.song:disabled:not([data-active='true']) {
   opacity: .6;
 }
 
@@ -206,15 +215,67 @@
   min-height: 72px;
   padding: 0 24px;
   font: 700 22px / 1 var(--kl-font-display);
-  color: var(--kl-ink);
-  background: var(--kl-reward);
   border-radius: 24px;
-  --edge: var(--kl-reward-edge);
 }
 
 @media (max-width: 600px), (max-height: 500px) {
   .swatch {
     width: 80px;
     height: 80px;
+  }
+}
+
+/* телефон вертикально (полотно D1): плитки меню — смуги 116 px, картинка ліворуч від підпису */
+@media (max-width: 600px) {
+  .tile {
+    flex-direction: row;
+    gap: 18px;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 116px;
+    padding: 0 20px;
+    border-radius: 20px;
+  }
+
+  .tileIcon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .hundred {
+    height: 48px;
+  }
+
+  .paintGrid {
+    grid-template-columns: repeat(4, 14px);
+    gap: 3px;
+  }
+
+  .paintGrid i {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+  }
+
+  .tileLabel {
+    font-size: 22px;
+    text-align: left;
+  }
+}
+
+/* телефон боком: три плитки в ряд, нижчі */
+@media (max-height: 500px) {
+  .tile {
+    width: min(220px, 30vw);
+    min-height: 168px;
+  }
+
+  .tileIcon,
+  .hundred {
+    height: 64px;
+  }
+
+  .tileIcon {
+    width: 64px;
   }
 }

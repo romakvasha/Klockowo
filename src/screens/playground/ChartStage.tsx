@@ -27,13 +27,13 @@ export function ChartStage({ world, row, onRow, state, paint, onPress }: ChartSt
   const arrow = (dir: 'up' | 'down') => (
     <button
       type="button"
-      className={`kl-block ${styles.nav}`}
+      className={`kl-brick kl-stud ${styles.nav}`}
       aria-label={dir === 'up' ? LABELS.rowUp : LABELS.rowDown}
       disabled={dir === 'up' ? row <= 0 : row >= 9}
       onClick={() => onRow(row + (dir === 'up' ? -1 : 1))}
       style={{ width: NAV_BUTTON, height: NAV_BUTTON }}
     >
-      <svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true" focusable="false">
+      <svg className="kl-glyph" viewBox="0 0 40 40" width="44" height="44" aria-hidden="true" focusable="false">
         <path d={dir === 'up' ? 'M8 26L20 12L32 26' : 'M8 14L20 28L32 14'} />
       </svg>
     </button>

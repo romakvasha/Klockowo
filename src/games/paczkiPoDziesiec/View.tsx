@@ -273,13 +273,17 @@ function BuildScene({ instance, kind, area, reserved, assist, phase, celebrating
           onCubePress={interactive ? removeCube : undefined}
         />
         <div className={styles.buttons} style={{ left: design.w - BUILD_BUTTON }}>
-          <button type="button" className={`kl-block ${styles.add}`} data-place="tens" aria-label={LABELS.addTen} disabled={!interactive || tens >= 9} onClick={addTen}>
-            <Operator kind="plus" style={{ height: 32 }} />
-            <Digits value={10} style={{ height: 36 }} />
+          <button type="button" className={`kl-brick kl-studs ${styles.add}`} data-brick="blue" data-place="tens" aria-label={LABELS.addTen} disabled={!interactive || tens >= 9} onClick={addTen}>
+            <span className="kl-glyph">
+              <Operator kind="plus" style={{ height: 32 }} />
+              <Digits value={10} style={{ height: 36 }} />
+            </span>
           </button>
-          <button type="button" className={`kl-block ${styles.add}`} data-place="ones" aria-label={LABELS.addOne} disabled={!interactive} onClick={addOne}>
-            <Operator kind="plus" style={{ height: 32 }} />
-            <Digits value={1} style={{ height: 36 }} />
+          <button type="button" className={`kl-brick kl-studs ${styles.add}`} data-brick="orange" data-place="ones" aria-label={LABELS.addOne} disabled={!interactive} onClick={addOne}>
+            <span className="kl-glyph">
+              <Operator kind="plus" style={{ height: 32 }} />
+              <Digits value={1} style={{ height: 36 }} />
+            </span>
           </button>
         </div>
       </div>

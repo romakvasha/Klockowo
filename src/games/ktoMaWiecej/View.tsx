@@ -6,6 +6,7 @@ import { animalUrl } from '../../components/math/art';
 import { Digits } from '../../components/ui/Digits';
 import { Icon } from '../../components/ui/Icon';
 import { StateBadge } from '../../components/ui/StateBadge';
+import type { BrickColor } from '../../components/ui/brick';
 import { cx } from '../../components/ui/cx';
 import { BUTTONS, LABELS, pileLabel } from '../../speech/lines';
 import { ANIMALS } from '../../speech/nouns';
@@ -16,6 +17,9 @@ import type { SceneProps } from '../engine/types';
 import { LEFT, SAME, pairing, type CompareInstance } from './generate';
 import { compareLayout } from './layout';
 import styles from './View.module.css';
+
+/** Колір цеглинки «Tyle samo» за станом (як у плиток-відповідей); інакше — біла, як дія «equal». */
+const SAME_COLOR: Partial<Record<string, BrickColor>> = { correct: 'green', retry: 'pale' };
 
 /** Купки понад 20 предметів (W6, двоцифрові числа) показують стовпчиками й кубиками («3 десятки і 4 одиниці»), а не окремими предметами: так порівнюють спершу десятки. */
 export const BLOCKS_ABOVE = 20;
@@ -113,7 +117,8 @@ export function CompareScene({ instance, kind, area, reserved, assist, phase, ce
       <div key={side}>
         <button
           type="button"
-          className={cx('kl-block', styles.card)}
+          className={cx('kl-brick', styles.card)}
+          data-brick="white"
           data-state={state}
           aria-label={pileLabel(ANIMALS[instance.animals[side]])}
           aria-pressed={state === 'default' || state === 'selected' ? state === 'selected' : undefined}
@@ -168,14 +173,15 @@ export function CompareScene({ instance, kind, area, reserved, assist, phase, ce
   const sameButton = (
     <button
       type="button"
-      className={cx('kl-block', styles.same)}
+      className={cx('kl-brick', 'kl-studs', styles.same)}
+      data-brick={SAME_COLOR[sameState] ?? 'white'}
       data-state={sameState}
       aria-label={BUTTONS.same}
       aria-pressed={sameState === 'default' || sameState === 'selected' ? sameState === 'selected' : undefined}
       disabled={!interactive || sameState === 'retry'}
       onClick={() => pick(SAME)}
     >
-      <Icon name="equal" className={styles.sameIcon} />
+      <Icon name="equal" className={cx('kl-glyph', styles.sameIcon)} />
       {sameState === 'correct' && <StateBadge kind="ok" />}
       {sameState === 'retry' && <StateBadge kind="retry" />}
     </button>

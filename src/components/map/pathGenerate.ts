@@ -93,7 +93,7 @@ export function generatePortrait(world: WorldKey): PathLayout {
   links.push({ to: 'chest', d: `M${last.x} ${last.y} V${chest.y + CHEST_H - 14}`, star: false });
 
   return {
-    kind: 'portrait', width: PORTRAIT_W, height, nodes: [...nodes, ...starNodes], links: [...links, ...starLinks], chest, decor: [],
+    kind: 'portrait', width: PORTRAIT_W, height, nodes: [...nodes, ...starNodes], links: [...links, ...starLinks], chest,
     scenery: 'none', kubikH: 120,
   };
 }
@@ -141,6 +141,6 @@ export function generateStrip(world: WorldKey): PathLayout {
 
   return {
     kind: 'strip', width: Math.max(chest.x + CHEST_W, ...starNodes.map((n) => n.x + NODE_W)) + 48, height: STRIP_H, nodes: [...nodes, ...starNodes], links: [...links, ...starLinks], chest,
-    decor: [], scenery: 'none', kubikH: 110,
+    scenery: 'none', kubikH: 110,
   };
 }

@@ -2,41 +2,41 @@
   position: relative;
 }
 
-/* картка-кнопка: тваринка + купка предметів; вміст (тваринка, предмети) лежить зверху й не ловить дотики */
+/* картка-кнопка: біла цеглинка v2 без пупирців (styles/brick.css); тваринка й предмети лежать зверху й не ловлять дотики */
 .card {
-  --edge: var(--kl-neutral-edge);
   position: absolute;
   z-index: 0;
-  padding: 0;
-  background: var(--kl-surface);
   border-radius: 24px;
 }
 
+/* вибрана: синій обідок і біле сяйво (картка не піднімається — над нею стоять предмети) */
 .card[data-state='selected'],
 .card[data-state='selected']:active:not(:disabled) {
-  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
+  transform: none;
+  box-shadow: var(--kl-brick-shadow), 0 0 0 5px var(--kl-brick-blue), 0 0 0 10px rgba(255, 255, 255, .85), var(--kl-ring);
 }
 
 .card[data-state='correct'] {
-  --edge: var(--kl-success-edge);
-  background: #EAF8EF;
+  --c: #EAF8EF; --c-hi: #F6FCF8; --c-lo: #D5F0DE;
+  --d: var(--kl-brick-green-edge);
 }
 
-/* спробуй ще: лавандова рамка + стрілка; вміст лишається яскравим — купки треба перелічити */
+/* спробуй ще: фіолетова рамка + стрілка; вміст лишається яскравим — купки треба перелічити */
 .card[data-state='retry'] {
-  border: 4px solid var(--kl-retry-edge);
-  box-shadow: none;
+  --d: var(--kl-retry-edge);
+  box-shadow: var(--kl-brick-shadow), inset 0 0 0 5px var(--kl-retry-edge), var(--kl-ring);
   animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
 }
 
 .card[data-state='highlighted'] {
-  --edge: var(--kl-reward-edge);
-  background: var(--kl-hub-50);
-  box-shadow: 0 6px 0 var(--edge), 0 0 0 4px var(--kl-reward), 0 0 0 12px rgba(255, 194, 26, .28), var(--kl-ring);
+  --c: #FFF8DB; --c-hi: #FFFCEE; --c-lo: #FFEFB0;
+  --d: var(--kl-brick-yellow-edge);
+  box-shadow: var(--kl-brick-shadow), 0 0 0 5px var(--kl-brick-yellow), 0 0 0 12px rgba(255, 207, 31, .4), var(--kl-ring);
 }
 
-.card:disabled:not([data-state='retry']):not([data-state='correct']):not([data-state='highlighted']) {
-  opacity: 1; /* під час відгуку картки не тьмяніють: вимкнено лише дотик */
+/* під час відгуку картка не тьмяніє і не «вдавлюється»: вимкнено лише дотик */
+.card:disabled {
+  opacity: 1;
 }
 
 .animal {
@@ -93,15 +93,12 @@
   animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out) 600ms;
 }
 
-/* кнопка «Tyle samo» у лотку (розмір плитки лотка) */
+/* кнопка «Tyle samo» у лотку: цеглинка розміру плитки лотка; стани — як у плиток-відповідей (Tile.module.css) */
 .same {
-  --edge: var(--kl-neutral-edge);
-  position: relative;
   flex: none;
   width: var(--kl-tile);
   height: var(--kl-tile);
   border-radius: var(--kl-radius-tile);
-  background: var(--kl-surface);
 }
 
 .sameIcon {
@@ -111,19 +108,16 @@
 
 .same[data-state='selected'],
 .same[data-state='selected']:active:not(:disabled) {
-  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
+  transform: translateY(-8px);
+  box-shadow: var(--kl-brick-shadow), 0 0 0 5px var(--kl-brick-blue), 0 0 0 10px rgba(255, 255, 255, .85), var(--kl-ring);
 }
 
 .same[data-state='correct'] {
-  --edge: var(--kl-success-edge);
-  background: var(--kl-success);
   animation: var(--kl-anim-pop) var(--kl-dur-correct) var(--kl-ease-out);
 }
 
 .same[data-state='retry'] {
-  background: var(--kl-surface);
-  border: 4px solid var(--kl-retry-edge);
-  box-shadow: none;
+  box-shadow: var(--kl-brick-shadow), 0 0 0 5px var(--kl-retry-edge), var(--kl-ring);
   animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
 }
 
@@ -132,9 +126,7 @@
 }
 
 .same[data-state='highlighted'] {
-  --edge: var(--kl-reward-edge);
-  background: var(--kl-hub-50);
-  box-shadow: 0 6px 0 var(--edge), 0 0 0 4px var(--kl-reward), 0 0 0 12px rgba(255, 194, 26, .28), var(--kl-ring);
+  box-shadow: var(--kl-brick-shadow), 0 0 0 5px var(--kl-brick-yellow), 0 0 0 12px rgba(255, 207, 31, .4), var(--kl-ring);
 }
 
 .same:disabled:not([data-state='retry']):not([data-state='correct']):not([data-state='highlighted']) {

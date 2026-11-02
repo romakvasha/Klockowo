@@ -1,42 +1,41 @@
-/* Набір-картинка «Cyfra i obrazek»: біла блокова картка (контур 3 px, край кольору пари, коли набір з'єднано). */
+/* Набір-картинка «Cyfra i obrazek»: біла глянцева цеглинка v2 (styles/brick.css); край — кольору пари, коли набір з'єднано. */
 .card {
-  --edge: var(--kl-neutral-edge);
   position: relative;
   display: block;
   flex: none;
   width: var(--size);
   height: var(--size);
-  background: var(--kl-surface);
   border-radius: 14%;
 }
 
 .card[data-linked='true'] {
-  --edge: var(--pair-edge);
+  --d: var(--pair-edge);
 }
 
-/* selected: кільце 4 px і невеликий підйом */
+/* selected: піднята на 8 px, синій обідок і біле сяйво — не лише колір */
 .card[data-state='selected'],
 .card[data-state='selected']:active:not(:disabled) {
-  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
-  transform: translateY(-4px);
+  transform: translateY(-8px);
+  box-shadow: var(--kl-brick-shadow), 0 0 0 5px var(--kl-brick-blue), 0 0 0 10px rgba(255, 255, 255, .85), var(--kl-ring);
 }
 
-/* допомога Kubika вказує сюди: золота рамка й сяйво */
+/* допомога Kubika вказує сюди: жовта рамка й сяйво */
 .card[data-focus='true'] {
-  --edge: var(--kl-reward-edge);
-  box-shadow: 0 6px 0 var(--edge), 0 0 0 4px var(--kl-reward), 0 0 0 12px rgba(255, 194, 26, .28), var(--kl-ring);
+  --d: var(--kl-brick-yellow-edge);
+  box-shadow: var(--kl-brick-shadow), 0 0 0 5px var(--kl-brick-yellow), 0 0 0 12px rgba(255, 207, 31, .4), var(--kl-ring);
 }
 
 /* хибна пара: фіолетова рамка, хитання; картинка лишається яскравою — її треба перелічити */
 .card[data-state='retry'] {
-  --edge: var(--kl-retry-edge);
-  border-color: var(--kl-retry-edge);
+  --d: var(--kl-retry-edge);
+  box-shadow: var(--kl-brick-shadow), inset 0 0 0 5px var(--kl-retry-edge), var(--kl-ring);
   animation: var(--kl-anim-shake) var(--kl-dur-retry) ease-in-out;
 }
 
+/* правильно: світло-зелена цеглинка з зеленим краєм (і галочка StateBadge) */
 .card[data-state='correct'] {
-  --edge: var(--kl-success-edge);
-  background: #EAF8EF;
+  --c: #EAF8EF; --c-hi: #F6FCF8; --c-lo: #D5F0DE;
+  --d: var(--kl-brick-green-edge);
 }
 
 .face {
@@ -84,9 +83,17 @@
   display: block;
   flex: 0 1 auto;
   min-width: 0;
-  max-width: 50%;
+  max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  object-position: 50% 100%;
+  align-self: flex-end; /* дві руки стоять зап'ястями на одній лінії */
+}
+
+/* дві руки: кожна до половини ширини й трохи нижча — розкрита долоня (5, ширша за інші) не виходить дрібнішою за сусідню */
+.hand:not(:only-child) {
+  max-width: 49%;
+  max-height: 74%;
 }
 
 .hand[data-mirror='true'] {

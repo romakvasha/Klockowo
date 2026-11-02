@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { isWorldUnlocked } from '../curriculum/progression';
+import { Icon } from '../components/ui/Icon';
 import { IconButton } from '../components/ui/IconButton';
+import { brickDigitUrl } from '../components/math/art';
 import { BUTTONS, PLAYGROUND } from '../speech/lines';
 import { tts } from '../speech/tts';
 import { selectActiveProfile, selectActiveProgress, useAppStore } from '../store';
@@ -13,6 +15,9 @@ import { Backdrop } from '../components/world/Backdrop';
 import styles from './playground/Playground.module.css';
 
 type Activity = 'menu' | 'review' | 'paint' | 'count';
+
+/** Мініатюра «Pomaluj tablicę» (полотно D1): сітка 4×4 з кількома розфарбованими клітинками. */
+const PAINT_PREVIEW: readonly boolean[] = [1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1].map(Boolean);
 
 /** «Plac Zabaw» (BRIEF §6 п.13; відкривається після W1): мішане повторення й вільна гра — розфарбовування таблиці 100 і лічба до 100 з Kubikom. Кнопка «Mapa» веде назад (з активності — до меню). */
 export function Playground() {
@@ -42,17 +47,21 @@ export function Playground() {
       </header>
       {activity === 'menu' && (
         <nav className={styles.menu} aria-label={PLAYGROUND.title}>
-          <button type="button" className={`kl-block ${styles.tile}`} data-kind="review" onClick={() => pick('review', PLAYGROUND.review)}>
-            <span className={styles.tileArt} aria-hidden="true">★ ★ ★</span>
-            <span className={styles.tileLabel}>{PLAYGROUND.review}</span>
+          <button type="button" className={`kl-brick kl-studs ${styles.tile}`} data-brick="orange" data-kind="review" onClick={() => pick('review', PLAYGROUND.review)}>
+            <Icon name="retry" className={`kl-glyph ${styles.tileIcon}`} />
+            <span className={`kl-glyph ${styles.tileLabel}`}>{PLAYGROUND.review}</span>
           </button>
-          <button type="button" className={`kl-block ${styles.tile}`} data-kind="paint" onClick={() => pick('paint', PLAYGROUND.paint)}>
-            <span className={styles.tileArt} aria-hidden="true">▦</span>
-            <span className={styles.tileLabel}>{PLAYGROUND.paint}</span>
+          <button type="button" className={`kl-brick kl-studs ${styles.tile}`} data-brick="purple" data-kind="paint" onClick={() => pick('paint', PLAYGROUND.paint)}>
+            <span className={styles.paintGrid} aria-hidden="true">
+              {PAINT_PREVIEW.map((on, i) => <i key={i} data-on={on} />)}
+            </span>
+            <span className={`kl-glyph ${styles.tileLabel}`}>{PLAYGROUND.paint}</span>
           </button>
-          <button type="button" className={`kl-block ${styles.tile}`} data-kind="count" onClick={() => pick('count', PLAYGROUND.count)}>
-            <span className={styles.tileArt} aria-hidden="true">1 2 3 … 100</span>
-            <span className={styles.tileLabel}>{PLAYGROUND.count}</span>
+          <button type="button" className={`kl-brick kl-studs ${styles.tile}`} data-brick="yellow" data-kind="count" onClick={() => pick('count', PLAYGROUND.count)}>
+            <span className={styles.hundred} aria-hidden="true">
+              {[1, 0, 0].map((d, i) => <img key={i} src={brickDigitUrl(d)} alt="" draggable={false} />)}
+            </span>
+            <span className={`kl-glyph ${styles.tileLabel}`}>{PLAYGROUND.count}</span>
           </button>
         </nav>
       )}

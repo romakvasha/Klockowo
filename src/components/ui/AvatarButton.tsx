@@ -30,7 +30,7 @@ export function AvatarButton({
       <button
         type="button"
         aria-label={profileName ?? PROFILE_NO_NAME}
-        className={cx('kl-block', styles.root, className)}
+        className={cx('kl-brick', styles.root, className)}
         style={cssVars(
           { '--size': `${size}px`, '--tint': `var(--kl-${tint}-50)`, '--ring': `var(--kl-${tint}-500)`, '--ring-d': `var(--kl-${tint}-700)` },
           style,

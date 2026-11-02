@@ -2,7 +2,6 @@ import type { CSSProperties } from 'react';
 import { BusFrame } from '../../components/math/BusFrame';
 import { animalUrl, itemUrl } from '../../components/math/art';
 import { Digits } from '../../components/ui/Digits';
-import { Icon } from '../../components/ui/Icon';
 import type { WorldKey } from '../../curriculum/types';
 import type { ObjectId } from '../../speech/nouns';
 import { seatMarks } from '../../games/autobusDziesiatka/assist';
@@ -30,11 +29,9 @@ const PLATE: readonly Spot[] = [{ x: 190, y: 96 }, { x: 310, y: 112 }, { x: 430,
 
 const at = (spot: Spot): CSSProperties => ({ left: spot.x, top: spot.y });
 
-/** Малюнок предмета; ще не намальованим предметам (W4–W7) відповідає значок світу. */
-function Token({ object, size, world, ghost = false }: { object: ObjectId; size: number; world: WorldKey; ghost?: boolean }) {
-  const src = itemUrl(object);
-  const style: CSSProperties = { width: size, height: size, opacity: ghost ? 0.35 : undefined };
-  return src ? <img src={src} alt="" draggable={false} style={style} /> : <Icon name={world} style={style} />;
+/** Малюнок предмета. */
+function Token({ object, size, ghost = false }: { object: ObjectId; size: number; ghost?: boolean }) {
+  return <img src={itemUrl(object)} alt="" draggable={false} style={{ width: size, height: size, opacity: ghost ? 0.35 : undefined }} />;
 }
 
 function Plus({ style }: { style: CSSProperties }) {
@@ -55,14 +52,14 @@ function Equals({ style }: { style: CSSProperties }) {
   );
 }
 
-function Count({ object, world, stage, scatter }: Omit<IdeaPanelProps, 'kind'>) {
+function Count({ object, stage, scatter }: Omit<IdeaPanelProps, 'kind' | 'world'>) {
   const n = DEMO_COUNT;
   const spots = scatter ? SCATTER : LINE;
   return (
     <>
       {spots.map((spot, i) => (
         <span key={`i${spot.x}`} className={styles.item} data-active={stage === i + 1} style={at(spot)}>
-          <Token object={object} size={80} world={world} />
+          <Token object={object} size={80} />
         </span>
       ))}
       {spots.map((spot, i) => (
@@ -77,14 +74,14 @@ function Count({ object, world, stage, scatter }: Omit<IdeaPanelProps, 'kind'>) 
   );
 }
 
-function Plate({ object, world, stage }: Omit<IdeaPanelProps, 'kind'>) {
+function Plate({ object, stage }: Omit<IdeaPanelProps, 'kind' | 'world'>) {
   const n = DEMO_COUNT;
   return (
     <>
       <span className={styles.plate} />
       {PLATE.map((spot, i) => (
         <span key={`p${spot.x}`} className={styles.drop} data-show={stage >= i + 1} data-active={stage === i + 1} style={at(spot)}>
-          <Token object={object} size={80} world={world} />
+          <Token object={object} size={80} />
         </span>
       ))}
       <span className={styles.tile} data-show={stage > n} style={{ left: 570, top: 24 }}>
@@ -111,12 +108,12 @@ function Flash({ stage }: Pick<IdeaPanelProps, 'stage'>) {
 }
 
 /** «Razem»: дві групи предметів, цифри зі знаками й результат (борд etap2/18). */
-function Sum({ object, world, stage }: Omit<IdeaPanelProps, 'kind'>) {
+function Sum({ object, stage }: Omit<IdeaPanelProps, 'kind' | 'world'>) {
   const [a, b] = DEMO_SUM;
   const total = a + b;
   const group = (count: number, left: number, width: number, ghost: boolean, hidden = false) => (
     <span className={styles.pill} data-show={!hidden} style={{ left, top: 33, width }}>
-      {Array.from({ length: count }, (_, i) => <Token key={i} object={object} size={44} world={world} ghost={ghost} />)}
+      {Array.from({ length: count }, (_, i) => <Token key={i} object={object} size={44} ghost={ghost} />)}
     </span>
   );
   const digits = stage >= 1;
@@ -148,7 +145,7 @@ const PAIR_SPOTS: readonly (readonly Spot[])[] = [
   [{ x: 295, y: 70 }, { x: 295, y: 150 }],
 ];
 
-function Compare({ object, world, stage }: Omit<IdeaPanelProps, 'kind'>) {
+function Compare({ object, stage }: Omit<IdeaPanelProps, 'kind' | 'world'>) {
   const paired = stage >= 1;
   return (
     <>
@@ -160,7 +157,7 @@ function Compare({ object, world, stage }: Omit<IdeaPanelProps, 'kind'>) {
           const spot = (paired ? PAIR_SPOTS : PILE_SPOTS)[side]![i]!;
           return (
             <span key={`${side}-${i}`} className={styles.mover} data-extra={stage >= 2 && side === 0 && i >= DEMO_PILES[1]} style={{ left: spot.x, top: spot.y }}>
-              <Token object={object} size={64} world={world} />
+              <Token object={object} size={64} />
             </span>
           );
         }),

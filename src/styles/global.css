@@ -91,3 +91,10 @@ img[src*='/animal-'] {
   object-fit: contain;
   object-position: 50% 100%;
 }
+
+/* Предмети лічби й руки v2 (D6): вписуються в свою коробку без спотворення, посередині */
+img[src*='/item-'],
+img[src*='/hand-'],
+img[src*='/digit-'] {
+  object-fit: contain;
+}

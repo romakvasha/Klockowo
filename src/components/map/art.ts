@@ -4,7 +4,6 @@
 import type { WorldId, WorldKey } from '../../curriculum/types';
 
 const world = import.meta.glob<string>('../../assets/v2/world/*.webp', { query: '?url', import: 'default', eager: true });
-const decors = import.meta.glob<string>('../../assets/world/deco-*.svg', { query: '?url', import: 'default', eager: true });
 
 function find(sources: Record<string, string>, file: string): string {
   const entry = Object.entries(sources).find(([path]) => path.endsWith(`/${file}`));
@@ -25,9 +24,6 @@ export type BackdropScene = 'start' | WorldId;
 export const BG_URL = (scene: BackdropScene): string => find(world, `bg-${scene}.webp`);
 /** Фон «Ścieżka świata»: вид згори, посередині порожньо — доріжку з вузлами малює гра. */
 export const PATH_URL = (w: WorldKey): string => find(world, `path-${w}.webp`);
-
-/** Декор старих сцен (місія): 'meadow' (deco-w1-meadow), 'tree', 'pine', 'palm', 'rocks', 'pool'. */
-export const DECOR_URL = (kind: string): string => find(decors, kind === 'meadow' ? 'deco-w1-meadow.svg' : `deco-${kind}.svg`);
 
 const fetched = new Set<string>();
 

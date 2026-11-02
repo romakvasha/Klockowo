@@ -19,13 +19,13 @@ function NavButton({ dir, disabled, onPress }: { dir: 'up' | 'down'; disabled: b
   return (
     <button
       type="button"
-      className={`kl-block ${styles.nav}`}
+      className={`kl-brick kl-stud ${styles.nav}`}
       aria-label={dir === 'up' ? LABELS.rowUp : LABELS.rowDown}
       disabled={disabled}
       onClick={onPress}
       style={{ width: NAV_BUTTON, height: NAV_BUTTON }}
     >
-      <svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true" focusable="false">
+      <svg className="kl-glyph" viewBox="0 0 40 40" width="44" height="44" aria-hidden="true" focusable="false">
         <path d={dir === 'up' ? 'M8 26L20 12L32 26' : 'M8 14L20 28L32 14'} />
       </svg>
     </button>
