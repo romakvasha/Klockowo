@@ -58,6 +58,17 @@ export function songAt(t: number, parts: readonly SongPart[] = SONG_PARTS, end =
  *  щоб 6…10 уже стояли, коли співають «Sześć i siedem…» (так попросив власник); до нього — 1…5. */
 export const SONG_SECOND_FIVE = 3;
 
+/** На скільки секунд раніше за початок того рядка з'являються 6…10 (власник: «пришвидш на 3 секунди»). */
+export const SONG_SECOND_FIVE_LEAD = 3;
+
+/** Яка п'ятірка цифр у приспіві на секунді t: 0 — 1…5, 1 — 6…10 (за SONG_SECOND_FIVE_LEAD до рядка SONG_SECOND_FIVE і до кінця приспіву). */
+export function chorusFive(t: number, parts: readonly SongPart[] = SONG_PARTS, end = SONG_END): 0 | 1 {
+  const now = songAt(t, parts, end);
+  if (now.scene !== 'numbers') return 0;
+  const ahead = songAt(t + SONG_SECOND_FIVE_LEAD, parts, end);
+  return ahead.part !== now.part || ahead.index >= SONG_SECOND_FIVE ? 1 : 0;
+}
+
 /** Частка пісні, що минула (0–1), для смужки. */
 export const songProgress = (t: number, duration: number): number => (duration > 0 ? Math.min(1, Math.max(0, t / duration)) : 0);
 

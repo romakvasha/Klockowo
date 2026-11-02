@@ -7,7 +7,7 @@ import { cx } from '../components/ui/cx';
 import { BG_URL, type BackdropScene } from '../components/map/art';
 import { Backdrop } from '../components/world/Backdrop';
 import { afterBreakPath, afterBreakState } from '../session/breakPlan';
-import { DANCE_BEAT_MS, SONG_FILE, SONG_SCENES, SONG_SECOND_FIVE, songAt, songProgress, type SongScene } from '../session/breakSong';
+import { DANCE_BEAT_MS, SONG_FILE, SONG_SCENES, chorusFive, songAt, songProgress, type SongScene } from '../session/breakSong';
 import { sessionClock } from '../session/sessionClock';
 import { BUTTONS, SESSION_LINES, SONG } from '../speech/lines';
 import { sfx } from '../speech/sfx';
@@ -125,7 +125,7 @@ export function BreakTime() {
         className={styles.next}
         onClick={() => navigate(to, { replace: true, state: afterBreakState(location.state) })}
       />
-      <SongStage scene={now.scene} half={now.scene === 'numbers' && now.index >= SONG_SECOND_FIVE ? 1 : 0} beat={beat} calm={calm} />
+      <SongStage scene={now.scene} half={chorusFive(time)} beat={beat} calm={calm} />
       {blocked && <IconButton icon="play" label={SONG.title} size={120} pulse className={styles.play} onClick={play} />}
       <section className={cx('kl-card', styles.lyrics)} aria-label={SONG.title}>
         <div className={styles.bar} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress} aria-label={SONG.title}>

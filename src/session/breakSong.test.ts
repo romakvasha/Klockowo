@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SONG } from '../speech/lines';
-import { DANCE_POSES, SONG_END, SONG_SECOND_FIVE, SONG_PARTS, SONG_SCENES, dancePose, songAt, songProgress } from './breakSong';
+import { DANCE_POSES, SONG_END, SONG_SECOND_FIVE, SONG_SECOND_FIVE_LEAD, chorusFive, SONG_PARTS, SONG_SCENES, dancePose, songAt, songProgress } from './breakSong';
 
 describe('пісенька на перерві', () => {
   it('розділи йдуть за часом і сценами: село → цифри → мама-качка → космос → свято, приспів між куплетами', () => {
@@ -43,6 +43,20 @@ describe('пісенька на перерві', () => {
     expect(SONG.chorus[SONG_SECOND_FIVE]).toBe('na liczenie mamy chęć!');
     expect(SONG.chorus[SONG_SECOND_FIVE - 1]).toMatch(/pięć/);
     expect(SONG.chorus.findIndex((l) => l.startsWith('Sześć'))).toBeGreaterThan(SONG_SECOND_FIVE);
+  });
+
+  it('6…10 з’являються на SONG_SECOND_FIVE_LEAD с раніше за рядок «na liczenie…» і стоять до кінця приспіву', () => {
+    const p = SONG_PARTS.findIndex((x) => x.scene === 'numbers');
+    const chorus = SONG_PARTS[p];
+    const after = SONG_PARTS[p + 1];
+    if (!chorus || !after) throw new Error('song parts');
+    const lineAt = chorus.start + ((after.start - chorus.start) / chorus.lines.length) * SONG_SECOND_FIVE;
+    const switchAt = lineAt - SONG_SECOND_FIVE_LEAD;
+    expect(chorusFive(chorus.start)).toBe(0);
+    expect(chorusFive(switchAt - 0.05)).toBe(0);
+    expect(chorusFive(switchAt + 0.05)).toBe(1);
+    expect(chorusFive(after.start - 0.05)).toBe(1);
+    expect(chorusFive(after.start + 1)).toBe(0); // далі куплет — цифр немає
   });
 
   it('смужка — частка тривалості в межах 0–1', () => {
