@@ -12,7 +12,7 @@ export interface VehicleProps {
   className?: string;
 }
 
-/** Транспорт гостя: куля Łatki, вітрильник Pufki, паровозик Tofika, ракета Iskry. Декоративний. */
+/** Транспорт гостя: куля Łatki, вітрильник Pufki, паровозик Tofika, ракета Iskry (картинки v2 — вписано в коробку борда). Декоративний. */
 export function Vehicle({ kind, scale = 1, arrive = false, className }: VehicleProps) {
   const [w, h] = VEHICLE_SIZE[kind];
   return (
@@ -22,6 +22,7 @@ export function Vehicle({ kind, scale = 1, arrive = false, className }: VehicleP
       alt=""
       width={Math.round(w * scale)}
       height={Math.round(h * scale)}
+      draggable={false}
     />
   );
 }

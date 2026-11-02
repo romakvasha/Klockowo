@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Album z naklejkami</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-alb{grid-template-columns:minmax(0,1fr) 400px;grid-template-rows:var(--hb) auto minmax(0,1fr);grid-template-areas:"hud hud" "tabs tabs" "page scene"}
+.ph .s-alb{grid-template-columns:minmax(0,1fr);grid-template-rows:var(--hb) auto minmax(0,1fr) 210px;grid-template-areas:"hud" "tabs" "page" "scene"}
+.tabs{grid-area:tabs;display:flex;gap:14px;justify-content:center;padding:10px 14px}
+.ph .tabs{gap:12px;padding:10px;justify-content:flex-start;overflow:hidden}
+.tab{width:72px;height:72px;border-radius:18px;border:0;display:grid;place-items:center;background:var(--c);cursor:pointer;box-shadow:inset 0 -6px 0 rgba(0,0,0,.18),0 4px 0 rgba(0,0,0,.18)}
+.tab img{width:44px;height:44px}
+.tab.on{outline:5px solid var(--ink);outline-offset:3px}
+.ph .tab{flex:none;width:80px;height:80px}.ph .tab img{width:48px;height:48px}
+.ph .tab.on{outline-width:3px;outline-offset:2px}
+.page{grid-area:page;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:18px;padding:20px}
+.ph .page{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:10px;padding:12px}
+.slot{position:relative;border:0;border-radius:20px;background:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 5px 0 #CBD6E6,0 10px 16px rgba(10,30,70,.14)}
+.slot img{max-width:72%;max-height:72%}
+.slot.empty{background:#EEF2F8;box-shadow:inset 0 0 0 3px #C9D3E2}
+.slot.empty img{filter:brightness(0);opacity:.16}
+.slot .q{position:absolute;font:700 46px/1 var(--fd);color:var(--ink2)}
+.ph .slot{border-radius:14px}.ph .slot .q{font-size:30px}
+.scene{grid-area:scene;position:relative;overflow:hidden;background:linear-gradient(180deg,#BFE3FF 0 62%,#9BD67A 62%);display:flex;flex-direction:column;justify-content:space-between;padding:14px}
+.scene .row{display:flex;align-items:flex-end;justify-content:space-around}
+.scene img{height:120px}
+.ph .scene img{height:84px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-alb">
+  <div class="bgl blur f-bg-hub"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <button class="bk c-y rnd hb" type="button" aria-label="Odznaki"><img src="./i/k-star.svg" alt=""></button>
+  </div>
+  <nav class="card tabs" aria-label="Strona świata">
+    <sc-for list="{{f.tabs}}" as="t" hint-placeholder-count="7"><button class="tab {{t.on}}" type="button" style="--c: {{t.c}}" aria-label="{{t.name}}" aria-pressed="{{t.pressed}}"><img src="./i/w-{{t.ic}}.svg" alt=""></button></sc-for>
+  </nav>
+  <div class="card page" aria-label="Łąka Liczenia — naklejki">
+    <sc-for list="{{f.slots}}" as="s" hint-placeholder-count="8">
+      <button class="slot {{s.st}}" type="button" aria-label="{{s.aria}}"><img src="{{s.src}}" alt=""><sc-if value="{{s.empty}}" hint-placeholder-val="{{ false }}"><span class="q">?</span></sc-if></button>
+    </sc-for>
+  </div>
+  <div class="card scene" role="group" aria-label="Scena">
+    <div class="row"><img class="char" src="./v2/veh-balon.webp" alt="balon"></div>
+    <div class="row"><img class="char" src="./img/duck.png" alt="kaczka"><img class="char" src="./v2/item-kaczuszka.webp" alt="kaczuszka" style="height: 70px"></div>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Що показано</dt><dd>Сторінка W1: врятовані тваринки, машинка гостя, споруда світу; порожнє місце — силует зі «?». Дотик — Kubik називає наліпку. Праворуч (на телефоні — знизу) вільна сцена: наліпки перетягуються або ставляться дотиком → дотиком.</dd>
+  <dt>Навігація</dt><dd>Вкладки світів — колір + іконка, обрана — темна рамка (не лише колір); на телефоні вкладки по 80 px гортаються вбік. Жовта кнопка — «Odznaki» (наступна дошка).</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): animal-kotek, animal-mis, animal-zajaczek, item-biedronka, item-kaczuszka, item-kwiatek, item-motyl, veh-balon. Фон — bg-hub. Мама-качка — стара вирізка з фото (її немає в наборі).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const W = [['w1', '#7BCB5A', 'Łąka Liczenia'], ['w2', '#FF9F43', 'Ogród Cyfr'], ['w3', '#3FA9F5', 'Wyspa Dodawania'], ['w4', '#FF6B6B', 'Most Dwudziestki'],
+      ['w5', '#2FA58B', 'Las Dziesiątek'], ['w6', '#D46BD8', 'Miasto Setki'], ['w7', '#6C63FF', 'Kosmiczna Droga']];
+    const tabs = W.map(([ic, c, name], i) => ({ ic, c, name, on: i === 0 ? 'on' : '', pressed: i === 0 }));
+    const S = [
+      ['./v2/item-kaczuszka.webp', 'kaczuszka'], ['./img/duck.png', 'kaczka'], ['./v2/veh-balon.webp', 'balon'], ['./v2/item-biedronka.webp', 'biedronka'],
+      ['./v2/item-motyl.webp', ''], ['./v2/item-kwiatek.webp', ''], ['./v2/animal-zajaczek.webp', ''], ['./v2/animal-kotek.webp', ''], ['./v2/animal-mis.webp', ''],
+    ];
+    const slots = S.map(([src, aria]) => ({ src, aria: aria || 'puste miejsce', empty: !aria, st: aria ? '' : 'empty' }));
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', tabs, slots: slots.slice(0, 8) },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', tabs, slots },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

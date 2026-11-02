@@ -6,26 +6,12 @@ import { mainLevelIds, starLevelIds } from '../../curriculum/worlds';
 import { generatePortrait, generateStrip } from './pathGenerate';
 import {
   CHEST_H, CHEST_W, NODE_H, NODE_W, at, center, serpentineLinks,
-  type DecorKind, type PathDecor, type PathKind, type PathLayout, type PathLink, type PathNode, type Point,
+  type PathKind, type PathLayout, type PathLink, type PathNode, type Point,
 } from './pathTypes';
 
 export * from './pathTypes';
 
-export const DECOR_SIZE: Readonly<Record<DecorKind, readonly [number, number]>> = {
-  meadow: [140, 130],
-  tree: [100, 145],
-  pine: [100, 145],
-  rocks: [96, 72],
-  palm: [112, 150],
-  pool: [140, 90],
-};
-
-const decor = (kind: DecorKind, x: number, y: number): PathDecor => {
-  const [w, h] = DECOR_SIZE[kind];
-  return { kind, x, y, w, h };
-};
-
-function landscapeSerpentine(world: WorldKey, xs: readonly number[], ys: readonly number[], chest: Point, decorList: readonly PathDecor[]): PathLayout {
+function landscapeSerpentine(world: WorldKey, xs: readonly number[], ys: readonly number[], chest: Point): PathLayout {
   const ids = mainLevelIds(world);
   const slots = ys.flatMap((y, row) => (row % 2 === 0 ? xs : [...xs].reverse()).map((x) => ({ x, y })));
   const nodes: PathNode[] = ids.map((id, i) => ({ id, ...at(slots, i), star: false }));
@@ -34,11 +20,11 @@ function landscapeSerpentine(world: WorldKey, xs: readonly number[], ys: readonl
     ...serpentineLinks(nodes, 640),
     { to: 'chest', d: `M${last.x} ${last.y} H${chest.x + CHEST_W / 2 - 6}`, star: false },
   ];
-  return { kind: 'landscape', width: 1280, height: 720, nodes, links, chest, decor: decorList, scenery: world === 'w3' ? 'beach' : 'none', kubikH: 136 };
+  return { kind: 'landscape', width: 1280, height: 720, nodes, links, chest, scenery: world === 'w3' ? 'beach' : 'none', kubikH: 136 };
 }
 
 /** W4 і W7 (борд etap2/16): нижній ряд із 6 вузлів, дорога піднімається праворуч, верхній ряд із 6 вузлів (справа наліво), скриня ліворуч. */
-function landscapeBridge(world: 'w4' | 'w7', decorList: readonly PathDecor[]): PathLayout {
+function landscapeBridge(world: 'w4' | 'w7'): PathLayout {
   const ids = mainLevelIds(world);
   const slots = [
     ...[102, 252, 402, 552, 702, 852].map((x) => ({ x, y: 585 })),
@@ -75,7 +61,7 @@ function landscapeBridge(world: 'w4' | 'w7', decorList: readonly PathDecor[]): P
 
   return {
     kind: 'landscape', width: 1280, height: 720, nodes: [...nodes, ...starNodes], links: [...links, ...starLinks], chest,
-    decor: decorList, scenery: world === 'w4' ? 'river' : 'none', kubikH: 136,
+    scenery: world === 'w4' ? 'river' : 'none', kubikH: 136,
   };
 }
 
@@ -85,19 +71,19 @@ const ROW_YS = [565, 375, 185];
 function buildLandscape(world: WorldKey): PathLayout {
   switch (world) {
     case 'w1':
-      return landscapeSerpentine(world, W1_XS, ROW_YS, { x: 1090, y: 114 }, [decor('meadow', 16, 104), decor('tree', 1165, 390), decor('rocks', 1150, 620)]);
+      return landscapeSerpentine(world, W1_XS, ROW_YS, { x: 1090, y: 114 });
     case 'w2':
-      return landscapeSerpentine(world, W1_XS, ROW_YS, { x: 1090, y: 114 }, [decor('tree', 16, 104), decor('meadow', 1130, 400), decor('rocks', 1150, 620)]);
+      return landscapeSerpentine(world, W1_XS, ROW_YS, { x: 1090, y: 114 });
     case 'w3':
-      return landscapeSerpentine(world, [152, 352, 552, 752, 952], ROW_YS, { x: 1105, y: 114 }, [decor('palm', 8, 112), decor('palm', 1160, 420), decor('pool', 1128, 612)]);
+      return landscapeSerpentine(world, [152, 352, 552, 752, 952], ROW_YS, { x: 1105, y: 114 });
     case 'w5':
-      return landscapeSerpentine(world, W1_XS, ROW_YS, { x: 1090, y: 114 }, [decor('pine', 16, 104), decor('pine', 1165, 390), decor('rocks', 1150, 620)]);
+      return landscapeSerpentine(world, W1_XS, ROW_YS, { x: 1090, y: 114 });
     case 'w6':
-      return landscapeSerpentine(world, W1_XS, ROW_YS, { x: 1090, y: 114 }, [decor('rocks', 24, 130), decor('tree', 1165, 390), decor('rocks', 1150, 620)]);
+      return landscapeSerpentine(world, W1_XS, ROW_YS, { x: 1090, y: 114 });
     case 'w4':
-      return landscapeBridge('w4', [decor('tree', 20, 400), decor('pine', 1160, 520), decor('rocks', 1090, 640)]);
+      return landscapeBridge('w4');
     case 'w7':
-      return landscapeBridge('w7', [decor('rocks', 24, 500), decor('rocks', 1150, 620), decor('pine', 1165, 400)]);
+      return landscapeBridge('w7');
   }
 }
 

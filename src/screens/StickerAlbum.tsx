@@ -15,6 +15,8 @@ import { sfx } from '../speech/sfx';
 import { tts } from '../speech/tts';
 import { currentWorldId } from '../curriculum/progression';
 import { selectActiveProfile, selectActiveProgress, useAppStore } from '../store';
+import { BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import styles from './rewards/Rewards.module.css';
 
 type Tab = WorldKey | 'scene';
@@ -96,7 +98,8 @@ function FreeScene({ animals }: { animals: readonly AnimalId[] }) {
             role="radio"
             aria-checked={selected === a}
             aria-label={ANIMALS[a].one}
-            className={`kl-block ${styles.pick}`}
+            className={`kl-brick kl-studs ${styles.pick}`}
+            data-brick="white"
             data-selected={selected === a}
             onClick={() => {
               setSelected(a);
@@ -106,7 +109,7 @@ function FreeScene({ animals }: { animals: readonly AnimalId[] }) {
             <img src={animalUrl(a, true)} alt="" draggable={false} />
           </button>
         ))}
-        <IconButton icon="retry" label={ALBUM.clear} variant="retry" size={72} onClick={() => setPlaced([])} />
+        <IconButton icon="retry" label={ALBUM.clear} size={72} onClick={() => setPlaced([])} />
       </div>
       <div className={styles.canvas} onClick={put} onKeyDown={putByKey} role="group" aria-label={ALBUM.scene} tabIndex={0}>
         {placed.map((p) => (
@@ -145,10 +148,11 @@ export function StickerAlbum() {
 
   return (
     <main className={styles.page}>
+      <Backdrop src={BG_URL('hub')} blur />
       <header className={styles.bar}>
-        <IconButton icon="home" label={BUTTONS.map} variant="neutral" onClick={() => navigate('/map')} />
+        <IconButton icon="home" label={BUTTONS.map} onClick={() => navigate('/map')} />
         <h1 className={styles.title}>{ALBUM.title}</h1>
-        <IconButton icon="star" label={ALBUM.badges} variant="secondary" onClick={() => navigate('/badges')} />
+        <IconButton icon="badge" label={ALBUM.badges} onClick={() => navigate('/badges')} />
       </header>
       <nav className={styles.tabs} aria-label={ALBUM.page}>
         {WORLD_KEYS.map((w) => {
@@ -157,19 +161,19 @@ export function StickerAlbum() {
             <button
               key={w}
               type="button"
-              className={`kl-block ${styles.tab}`}
+              className={`kl-brick kl-stud ${styles.tab}`}
               data-active={tab === w}
               aria-pressed={tab === w}
               aria-label={`${ALBUM.page} ${w.slice(1)}: ${owned}/${total}`}
-              style={{ background: `var(--kl-${w}-500)`, ['--edge' as string]: `var(--kl-${w}-700)` }}
+              style={{ ['--w' as string]: `var(--kl-${w}-500)`, ['--w-edge' as string]: `var(--kl-${w}-700)` }}
               onClick={() => setTab(w)}
             >
-              <Icon name={w} />
+              <Icon name={w} className="kl-glyph" />
             </button>
           );
         })}
-        <button type="button" className={`kl-block ${styles.tab}`} data-active={tab === 'scene'} aria-pressed={tab === 'scene'} aria-label={ALBUM.scene} style={{ background: 'var(--kl-reward)' }} onClick={() => setTab('scene')}>
-          <Icon name="stickers" />
+        <button type="button" className={`kl-brick kl-stud ${styles.tab}`} data-brick="yellow" data-active={tab === 'scene'} aria-pressed={tab === 'scene'} aria-label={ALBUM.scene} onClick={() => setTab('scene')}>
+          <Icon name="stickers" className="kl-glyph" />
         </button>
       </nav>
       {isAlbumEmpty(rewards) && (

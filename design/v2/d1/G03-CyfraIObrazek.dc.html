@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Cyfra i obrazek</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.board{flex-direction:column;align-items:stretch;gap:16px;padding:22px 40px}
+.ph .board{gap:10px;padding:12px}
+.pr{display:flex;align-items:center;gap:24px}
+.ph .pr{gap:10px}
+.pic{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:14px;height:100px;border-radius:20px;background:#F4F8FD;border:3px solid #DCE5F1}
+.ph .pic{gap:4px;height:74px;border-radius:16px}
+.pic img{width:72px;height:72px}
+.ph .pic img{width:40px;height:40px}
+.slot{flex:none;width:110px;height:100px;border-radius:18px;border:4px dashed #9AA8BE;display:grid;place-items:center;background:rgba(255,255,255,.6)}
+.ph .slot{width:84px;height:74px}
+.slot.tgt{border-color:var(--yel-d);background:#FFF6D1}
+.slot .bk{width:84px;height:76px;font-size:44px;margin-top:6px}
+.ph .slot .bk{width:64px;height:56px;font-size:32px}
+.card-n{width:var(--tile);height:var(--tile);font-size:calc(var(--tile) * .5)}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl f-bg-w2"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 1 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Połącz obrazki z liczbami."><img src="./v2/item-jablko.webp" alt=""><img src="./i/k-equal.svg" alt="" style="height: 30px">2</div>
+    <div class="krow"><img class="kub" src="./v2/kubik-pointing-right.webp" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <sc-for list="{{f.rows}}" as="r" hint-placeholder-count="3">
+      <div class="pr">
+        <div class="pic" role="img" aria-label="{{r.aria}}"><sc-for list="{{r.items}}" as="it" hint-placeholder-count="3"><img src="./v2/{{r.img}}.webp" alt=""></sc-for></div>
+        <span class="slot {{r.tgt}}" style="position: relative">
+          <sc-if value="{{r.n}}" hint-placeholder-val="{{ false }}"><span class="bk c-g one">{{r.n}}</span><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
+        </span>
+      </div>
+    </sc-for>
+  </div>
+  <div class="tray">
+    <span class="tw sel"><button class="bk c-b tile card-n one" type="button" aria-label="cztery">4</button></span>
+    <span class="tw"><button class="bk c-b tile card-n one" type="button" aria-label="trzy">3</button></span>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Połącz obrazki z liczbami.» · дотик до картки озвучує число («cztery»)</dd>
+  <dt>Стан</dt><dd>Пара «2 яблука ↔ 2» з'єднана (зелена, галочка); вибрано картку 4 — порожнє місце біля моркви підсвічене як ціль (дотик → дотик або перетягування). Ліній-з'єднувачів немає: картка стає у віконце поруч із картинкою.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): item-jablko, kubik-pointing-right. Фон — bg-w2.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const row = (img, k, n, tgt, aria) => ({ img, n, tgt, aria, items: Array.from({ length: k }, () => ({})) });
+    const d = {
+      bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 1 ? 'bone-full' : 'bone-empty' })),
+      rows: [row('item-jablko', 2, '2', '', 'dwa jabłka'), row('item-marchewka', 4, '', 'tgt', 'cztery marchewki'), row('item-gruszka', 3, '', '', 'trzy gruszki')],
+    };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

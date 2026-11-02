@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SCREENS } from './routes';
-import { musicRoute } from './musicRoute';
+import { isSilentRoute, musicRoute } from './musicRoute';
 
 describe('musicRoute', () => {
   it('гра → сцена game зі світом із id рівня; усі решта екрани → menu', () => {
@@ -34,5 +34,10 @@ describe('musicRoute', () => {
       const path = s.example ?? s.path;
       expect(musicRoute(path).scene, path).toBe(s.id === 'game' ? 'game' : 'menu');
     }
+  });
+
+  it('на перерві фонова музика мовчить (там пісенька), на решті екранів — ні', () => {
+    expect(isSilentRoute('/break')).toBe(true);
+    for (const path of ['/', '/map', '/play/w1-1', '/breakfast', '/end']) expect(isSilentRoute(path), path).toBe(false);
   });
 });

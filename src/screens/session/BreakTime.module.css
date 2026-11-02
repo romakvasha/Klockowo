@@ -1,0 +1,322 @@
+/* «Czas na przerwę!» з пісенькою (полотно D1, дошка S11): зверху назва й «Dalej», посередині сцена з танцюристами, знизу смужка й значки сцен.
+   Слів пісні на екрані немає (діти ще не читають) — за рішенням власника після D7. */
+.screen {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'ttl next' 'stage stage' 'lyr lyr';
+  gap: var(--kl-space-3);
+  height: 100dvh;
+  padding: var(--kl-edge-safe);
+  background: var(--kl-hub-50);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* зміна сцени куплету — фон згасає з одного в інший */
+.bg {
+  animation: kl-fade-in 700ms ease-out both;
+}
+
+.title {
+  grid-area: ttl;
+  justify-self: start;
+  align-self: start;
+  margin: 0;
+  padding: 12px 26px;
+  font: 700 34px / 1.15 var(--kl-font-display);
+  color: var(--kl-ink);
+}
+
+.next {
+  grid-area: next;
+  align-self: start;
+}
+
+.stage {
+  grid-area: stage;
+  position: relative;
+  display: grid;
+  place-items: end center;
+  min-height: 0;
+}
+
+.dancers {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, 3vw, 40px);
+  max-width: 100%;
+}
+
+.side {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(4px, 1.5vw, 20px);
+}
+
+.dancers .kubik {
+  --fig-h: clamp(140px, 42dvh, 340px);
+}
+
+.side .pup {
+  --fig-h: clamp(80px, 22dvh, 190px);
+}
+
+/* предмети куплету — ряд над танцюристами; цифри приспіву — поверх (їх треба прочитати) */
+.props,
+.digits {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(6px, 1.5vw, 18px);
+  pointer-events: none;
+}
+
+.digits {
+  z-index: 1;
+  /* між числами — ширше, ніж між цифрами «10», щоб «9 10» не читалось як «910» */
+  gap: clamp(16px, 4vw, 56px);
+  /* темний обвід і тінь замість білої картки: цеглинки читаються на будь-якому фоні */
+  filter: drop-shadow(0 0 2px rgba(20, 24, 60, .9)) drop-shadow(0 0 2px rgba(20, 24, 60, .9)) drop-shadow(0 8px 10px rgba(10, 20, 50, .55));
+}
+
+/* у приспіві Kubik і команда трохи менші — місце для великих цифр */
+.stage[data-scene='numbers'] .kubik {
+  --fig-h: clamp(120px, 34dvh, 280px);
+}
+
+.stage[data-scene='numbers'] .pup {
+  --fig-h: clamp(70px, 17dvh, 150px);
+}
+
+.props img {
+  width: clamp(40px, 8dvh, 84px);
+  height: clamp(40px, 8dvh, 84px);
+}
+
+/* каченята — у 2,5 раза, зірки й кульки — удвічі більші (власник); на вузькому екрані — за шириною, щоб уміщались рядами */
+.props[data-scene='duck'] img {
+  width: min(20dvh, 210px, 27vw);
+  height: min(20dvh, 210px, 27vw);
+}
+
+.props[data-scene='party'] img {
+  width: min(16dvh, 168px, 15vw);
+  height: min(16dvh, 168px, 15vw);
+}
+
+/* 10 зірок «pięć tu, pięć tam» — усі в один ряд (інакше десята ховається за Kubikom): ширина ділиться на 10, проміжки вужчі */
+.props[data-scene='space'] {
+  gap: 8px;
+}
+
+.props[data-scene='space'] img {
+  width: min(16dvh, 168px, calc((100vw - 140px) / 10));
+  height: min(16dvh, 168px, calc((100vw - 140px) / 10));
+}
+
+.digits span {
+  display: flex;
+}
+
+.digits img {
+  height: clamp(90px, 24dvh, 210px);
+  width: auto;
+}
+
+/* танець предметів: легке підстрибування хвилею (без «Mniej animacji») */
+.screen:not([data-calm='true']) .prop {
+  animation: kl-song-bob 900ms ease-in-out infinite alternate both;
+}
+
+@keyframes kl-song-bob {
+  from { translate: 0 0; }
+  to { translate: 0 -10px; }
+}
+
+/* звук не дозволили (iOS): велика кнопка ▶ посередині сцени */
+.play {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 1;
+}
+
+.lyrics {
+  grid-area: lyr;
+  justify-self: center;
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 28px 20px;
+  text-align: center;
+}
+
+.bar {
+  position: relative;
+  width: 100%;
+  height: 16px;
+  border-radius: 8px;
+  background: #E3ECF7;
+  overflow: hidden;
+}
+
+.bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, var(--kl-brick-yellow), var(--kl-brick-orange));
+  transition: width 250ms linear;
+}
+
+/* значки сцен: поточна — жовта з темним обідком (не лише колір: ще й обідок і більша) */
+.scenes {
+  display: flex;
+  gap: 10px;
+}
+
+.scenes span {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #EEF2F8;
+  box-shadow: inset 0 0 0 2px #C9D3E2;
+}
+
+.scenes span[data-on='true'] {
+  background: var(--kl-brick-yellow);
+  box-shadow: 0 0 0 4px var(--kl-ink);
+}
+
+.scenes svg {
+  width: 28px;
+  height: 28px;
+  color: var(--kl-ink);
+}
+
+/* вертикальний екран (планшет, телефон): зірки — два ряди по п'ять, на всю ширину */
+@media (orientation: portrait) {
+  .props[data-scene='space'] img {
+    width: min(16dvh, 168px, calc((100vw - 80px) / 5));
+    height: min(16dvh, 168px, calc((100vw - 80px) / 5));
+  }
+}
+
+/* планшет вертикально: четверо цуценят і Kubik у ряд мають уміститись по ширині */
+@media (orientation: portrait) and (min-width: 601px) {
+  .dancers .side .pup {
+    --fig-h: min(22dvh, 190px, 15vw);
+  }
+}
+
+/* телефон вертикально (D1 .ph): ряд не вміщається — цуценята стоять по боках перед Kubikom */
+@media (max-width: 600px) {
+  .dancers {
+    position: relative;
+    width: 100%;
+  }
+
+  .side {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    gap: 0;
+  }
+
+  .side:first-child {
+    left: 0;
+  }
+
+  .side:last-child {
+    right: 0;
+  }
+
+  .dancers .kubik {
+    --fig-h: min(46dvh, 360px);
+  }
+
+  .side .pup {
+    --fig-h: min(14dvh, 110px);
+  }
+
+  .title {
+    align-self: center;
+    padding: 10px 14px;
+    font-size: 24px;
+  }
+
+  .lyrics {
+    gap: 8px;
+    padding: 12px 14px 14px;
+  }
+
+  .digits img {
+    height: min(13dvh, 112px);
+  }
+
+  .scenes span {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+
+  .scenes svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* телефон в альбомі (844×390): без рядка «наступний» і значків, текст дрібніше — щоб сцена лишилась видимою */
+@media (max-height: 500px) and (orientation: landscape) {
+  .title {
+    padding: 8px 16px;
+    font-size: 22px;
+  }
+
+  .lyrics {
+    gap: 6px;
+    padding: 8px 16px 10px;
+  }
+
+  .scenes {
+    display: none;
+  }
+
+  /* приспів: місця по висоті мало — цифри ліворуч, Kubik і команда праворуч, без накладання */
+  .stage[data-scene='numbers'] {
+    place-items: end end;
+  }
+
+  .stage[data-scene='numbers'] .digits {
+    justify-content: flex-start;
+    right: 38%;
+  }
+
+  .stage[data-scene='numbers'] .digits img {
+    height: 22dvh;
+  }
+
+  .stage[data-scene='numbers'] .dancers {
+    gap: 4px;
+  }
+
+  .stage[data-scene='numbers'] .kubik {
+    --fig-h: 40dvh;
+  }
+
+  .stage[data-scene='numbers'] .pup {
+    --fig-h: 20dvh;
+  }
+
+  .bar {
+    height: 10px;
+  }
+}

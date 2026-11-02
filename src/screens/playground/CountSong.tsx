@@ -46,13 +46,13 @@ export function CountSong() {
     <div className={styles.activity}>
       <ChartStage world="w6" row={row} onRow={(r) => setRow(Math.max(0, Math.min(9, r)))} state={state} />
       <div className={styles.palette}>
-        <button type="button" className={`kl-block ${styles.song}`} data-active={mode === 'ones'} disabled={mode !== null} aria-label={PLAYGROUND.ones} onClick={() => void play('ones')}>
-          <span aria-hidden="true">1 2 3</span>
+        <button type="button" className={`kl-brick kl-studs ${styles.song}`} data-brick={mode === 'ones' ? 'yellow' : 'purple'} data-active={mode === 'ones'} disabled={mode !== null} aria-label={PLAYGROUND.ones} onClick={() => void play('ones')}>
+          <span className="kl-glyph" aria-hidden="true">1 2 3</span>
         </button>
-        <button type="button" className={`kl-block ${styles.song}`} data-active={mode === 'tens'} disabled={mode !== null} aria-label={PLAYGROUND.tens} onClick={() => void play('tens')}>
-          <span aria-hidden="true">10 20 30</span>
+        <button type="button" className={`kl-brick kl-studs ${styles.song}`} data-brick={mode === 'tens' ? 'yellow' : 'purple'} data-active={mode === 'tens'} disabled={mode !== null} aria-label={PLAYGROUND.tens} onClick={() => void play('tens')}>
+          <span className="kl-glyph" aria-hidden="true">10 20 30</span>
         </button>
-        <IconButton icon="close" label={PLAYGROUND.stop} variant="neutral" size={72} disabled={mode === null} onClick={stop} />
+        <IconButton icon="close" label={PLAYGROUND.stop} size={72} disabled={mode === null} onClick={stop} />
       </div>
     </div>
   );

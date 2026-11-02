@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Галерея картинок Klockowo</title>
+<style>
+:root{--ink:#1f2433;--mute:#667;--line:#dde3ee;--paper:#f4f6fb;--card:#fff;--redo:#c2410c;--check:#a16207}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper)}
+header{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+h1{font-size:20px;margin:0}header p{margin:0;color:var(--mute)}.tools{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 12px;min-height:40px;cursor:pointer}button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+nav{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px}nav a{color:var(--ink);text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px}
+main{padding:0 16px 40px}section{scroll-margin-top:110px}h2{font-size:17px;margin:22px 0 10px}h2 small{color:var(--mute);font-weight:400}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:2px}
+.card.scene{grid-column:span 2}.card.flag-redo{border:2px solid var(--redo)}.card.flag-check{border:2px solid var(--check)}
+.pic{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;overflow:hidden;background:var(--bg)}.scene .pic{aspect-ratio:16/9}
+.pic img{width:100%;height:100%;object-fit:contain;display:block}.scene .pic img{object-fit:cover}
+body[data-bg=checker]{--bg:repeating-conic-gradient(#e6e9f0 0 25%,#fff 0 50%) 0 0/20px 20px}body[data-bg=dark]{--bg:#2c3450}body[data-bg=sky]{--bg:linear-gradient(#8fd3ff,#d9f1ff)}body[data-bg=grass]{--bg:#7cc36a}
+.id{margin:4px 0 0;font:600 13px ui-monospace,Consolas,monospace;word-break:break-all}.meta{margin:0;color:var(--mute);font-size:12px}
+.note{margin:4px 0 0;font-size:13px}.note.redo{color:var(--redo)}.note.check{color:var(--check)}
+.redo{margin-top:auto;padding-top:6px;font-size:13px;display:flex;gap:6px;align-items:center;min-height:32px}
+body.only-marked .card:not(.flag-redo):not(.flag-check):not(.marked){display:none}.card.marked{outline:3px solid var(--redo);outline-offset:-3px}
+@media (max-width:520px){header{position:static}section{scroll-margin-top:0}.grid{grid-template-columns:repeat(2,1fr)}.card.scene{grid-column:span 2}}
+</style></head>
+<body data-bg="checker">
+<header><h1>Галерея картинок Klockowo</h1>
+<p>154 з 154 · 9.0 МБ · позначок перевірки: 0 перегенерувати, 2 глянути</p>
+<div class="tools">
+<button data-bg="checker" aria-pressed="true">Шахівка</button><button data-bg="dark">Темне</button><button data-bg="sky">Небо</button><button data-bg="grass">Трава</button>
+<button id="only">Лише позначені</button><button id="copy">Копіювати список</button></div></header>
+<nav><a href="#set-kubik-1">Kubik: головні пози</a><a href="#set-kubik-2">Kubik: ще пози й рот</a><a href="#set-kubik-3">Kubik у світах</a><a href="#set-team">Команда</a><a href="#set-pups">Twój piesek</a><a href="#set-animals-1">Тваринки 1</a><a href="#set-animals-2">Тваринки 2</a><a href="#set-items-1">Предмети W1–W3</a><a href="#set-items-2">Предмети W4–W7</a><a href="#set-digits">Цифри</a><a href="#set-hands">Руки</a><a href="#set-build">База, споруди світів, транспорт</a><a href="#set-bg">Фони світів</a><a href="#set-path">Доріжки рівнів</a><a href="#set-islands">Острови мапи й скрині</a></nav>
+<main><section id="set-kubik-1"><h2>Kubik: головні пози <small>10</small></h2><div class="grid"><article class="card" data-id="kubik-idle">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-idle.webp" alt="kubik-idle" loading="lazy" width="444" height="768"></div>
+<p class="id">kubik-idle</p><p class="meta">444×768 · 55 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-pointing-left">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-pointing-left.webp" alt="kubik-pointing-left" loading="lazy" width="533" height="768"></div>
+<p class="id">kubik-pointing-left</p><p class="meta">533×768 · 52 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-pointing-left"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-pointing-right">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-pointing-right.webp" alt="kubik-pointing-right" loading="lazy" width="506" height="768"></div>
+<p class="id">kubik-pointing-right</p><p class="meta">506×768 · 48 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-pointing-right"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-pointing-down">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-pointing-down.webp" alt="kubik-pointing-down" loading="lazy" width="454" height="768"></div>
+<p class="id">kubik-pointing-down</p><p class="meta">454×768 · 52 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-pointing-down"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-demonstrating">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-demonstrating.webp" alt="kubik-demonstrating" loading="lazy" width="444" height="768"></div>
+<p class="id">kubik-demonstrating</p><p class="meta">444×768 · 51 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-demonstrating"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-thinking">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-thinking.webp" alt="kubik-thinking" loading="lazy" width="443" height="768"></div>
+<p class="id">kubik-thinking</p><p class="meta">443×768 · 55 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-thinking"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-happy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-happy.webp" alt="kubik-happy" loading="lazy" width="657" height="768"></div>
+<p class="id">kubik-happy</p><p class="meta">657×768 · 64 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-celebrating">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-celebrating.webp" alt="kubik-celebrating" loading="lazy" width="566" height="768"></div>
+<p class="id">kubik-celebrating</p><p class="meta">566×768 · 55 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-celebrating"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-encouraging">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-encouraging.webp" alt="kubik-encouraging" loading="lazy" width="440" height="768"></div>
+<p class="id">kubik-encouraging</p><p class="meta">440×768 · 52 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-encouraging"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-waving">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-waving.webp" alt="kubik-waving" loading="lazy" width="495" height="768"></div>
+<p class="id">kubik-waving</p><p class="meta">495×768 · 54 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-waving"> перегенерувати</label>
+</article></div></section>
+<section id="set-kubik-2"><h2>Kubik: ще пози й рот <small>10</small></h2><div class="grid"><article class="card" data-id="kubik-surprised">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-surprised.webp" alt="kubik-surprised" loading="lazy" width="591" height="768"></div>
+<p class="id">kubik-surprised</p><p class="meta">591×768 · 54 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-surprised"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-with-card">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-with-card.webp" alt="kubik-with-card" loading="lazy" width="591" height="768"></div>
+<p class="id">kubik-with-card</p><p class="meta">591×768 · 49 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-with-card"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-on-kart">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-on-kart.webp" alt="kubik-on-kart" loading="lazy" width="629" height="768"></div>
+<p class="id">kubik-on-kart</p><p class="meta">629×768 · 64 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-on-kart"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-sleepy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-sleepy.webp" alt="kubik-sleepy" loading="lazy" width="545" height="768"></div>
+<p class="id">kubik-sleepy</p><p class="meta">545×768 · 66 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-sleepy"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-break-jump">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-break-jump.webp" alt="kubik-break-jump" loading="lazy" width="630" height="768"></div>
+<p class="id">kubik-break-jump</p><p class="meta">630×768 · 57 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-break-jump"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-break-clap">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-break-clap.webp" alt="kubik-break-clap" loading="lazy" width="546" height="768"></div>
+<p class="id">kubik-break-clap</p><p class="meta">546×768 · 53 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-break-clap"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-break-stomp">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-break-stomp.webp" alt="kubik-break-stomp" loading="lazy" width="501" height="768"></div>
+<p class="id">kubik-break-stomp</p><p class="meta">501×768 · 60 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-break-stomp"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-talking-a">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-talking-a.webp" alt="kubik-talking-a" loading="lazy" width="444" height="768"></div>
+<p class="id">kubik-talking-a</p><p class="meta">444×768 · 51 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-talking-a"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-talking-e">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-talking-e.webp" alt="kubik-talking-e" loading="lazy" width="444" height="768"></div>
+<p class="id">kubik-talking-e</p><p class="meta">444×768 · 52 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-talking-e"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-talking-o">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-talking-o.webp" alt="kubik-talking-o" loading="lazy" width="444" height="768"></div>
+<p class="id">kubik-talking-o</p><p class="meta">444×768 · 52 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-talking-o"> перегенерувати</label>
+</article></div></section>
+<section id="set-kubik-3"><h2>Kubik у світах <small>14</small></h2><div class="grid"><article class="card" data-id="kubik-w1-idle">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w1-idle.webp" alt="kubik-w1-idle" loading="lazy" width="421" height="768"></div>
+<p class="id">kubik-w1-idle</p><p class="meta">421×768 · 56 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w1-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w1-happy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w1-happy.webp" alt="kubik-w1-happy" loading="lazy" width="617" height="768"></div>
+<p class="id">kubik-w1-happy</p><p class="meta">617×768 · 61 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w1-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w2-idle">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w2-idle.webp" alt="kubik-w2-idle" loading="lazy" width="420" height="768"></div>
+<p class="id">kubik-w2-idle</p><p class="meta">420×768 · 50 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w2-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w2-happy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w2-happy.webp" alt="kubik-w2-happy" loading="lazy" width="623" height="768"></div>
+<p class="id">kubik-w2-happy</p><p class="meta">623×768 · 58 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w2-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w3-idle">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w3-idle.webp" alt="kubik-w3-idle" loading="lazy" width="444" height="768"></div>
+<p class="id">kubik-w3-idle</p><p class="meta">444×768 · 56 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w3-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w3-happy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w3-happy.webp" alt="kubik-w3-happy" loading="lazy" width="642" height="768"></div>
+<p class="id">kubik-w3-happy</p><p class="meta">642×768 · 62 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w3-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w4-idle">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w4-idle.webp" alt="kubik-w4-idle" loading="lazy" width="417" height="768"></div>
+<p class="id">kubik-w4-idle</p><p class="meta">417×768 · 49 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w4-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w4-happy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w4-happy.webp" alt="kubik-w4-happy" loading="lazy" width="608" height="768"></div>
+<p class="id">kubik-w4-happy</p><p class="meta">608×768 · 56 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w4-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w5-idle">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w5-idle.webp" alt="kubik-w5-idle" loading="lazy" width="444" height="768"></div>
+<p class="id">kubik-w5-idle</p><p class="meta">444×768 · 56 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w5-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w5-happy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w5-happy.webp" alt="kubik-w5-happy" loading="lazy" width="659" height="768"></div>
+<p class="id">kubik-w5-happy</p><p class="meta">659×768 · 62 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w5-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w6-idle">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w6-idle.webp" alt="kubik-w6-idle" loading="lazy" width="423" height="768"></div>
+<p class="id">kubik-w6-idle</p><p class="meta">423×768 · 51 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w6-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w6-happy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w6-happy.webp" alt="kubik-w6-happy" loading="lazy" width="615" height="768"></div>
+<p class="id">kubik-w6-happy</p><p class="meta">615×768 · 57 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w6-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w7-idle">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w7-idle.webp" alt="kubik-w7-idle" loading="lazy" width="496" height="768"></div>
+<p class="id">kubik-w7-idle</p><p class="meta">496×768 · 55 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w7-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="kubik-w7-happy">
+<div class="pic"><img src="../../src/assets/v2/kubik/kubik-w7-happy.webp" alt="kubik-w7-happy" loading="lazy" width="624" height="768"></div>
+<p class="id">kubik-w7-happy</p><p class="meta">624×768 · 58 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="kubik-w7-happy"> перегенерувати</label>
+</article></div></section>
+<section id="set-team"><h2>Команда <small>12</small></h2><div class="grid"><article class="card" data-id="team-latka-idle">
+<div class="pic"><img src="../../src/assets/v2/team/team-latka-idle.webp" alt="team-latka-idle" loading="lazy" width="495" height="768"></div>
+<p class="id">team-latka-idle</p><p class="meta">495×768 · 66 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-latka-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-latka-happy">
+<div class="pic"><img src="../../src/assets/v2/team/team-latka-happy.webp" alt="team-latka-happy" loading="lazy" width="556" height="768"></div>
+<p class="id">team-latka-happy</p><p class="meta">556×768 · 66 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-latka-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-latka-pointing">
+<div class="pic"><img src="../../src/assets/v2/team/team-latka-pointing.webp" alt="team-latka-pointing" loading="lazy" width="686" height="768"></div>
+<p class="id">team-latka-pointing</p><p class="meta">686×768 · 65 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-latka-pointing"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-pufka-idle">
+<div class="pic"><img src="../../src/assets/v2/team/team-pufka-idle.webp" alt="team-pufka-idle" loading="lazy" width="589" height="768"></div>
+<p class="id">team-pufka-idle</p><p class="meta">589×768 · 58 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-pufka-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-pufka-happy">
+<div class="pic"><img src="../../src/assets/v2/team/team-pufka-happy.webp" alt="team-pufka-happy" loading="lazy" width="676" height="768"></div>
+<p class="id">team-pufka-happy</p><p class="meta">676×768 · 58 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-pufka-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-pufka-pointing">
+<div class="pic"><img src="../../src/assets/v2/team/team-pufka-pointing.webp" alt="team-pufka-pointing" loading="lazy" width="793" height="768"></div>
+<p class="id">team-pufka-pointing</p><p class="meta">793×768 · 58 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-pufka-pointing"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-tofik-idle">
+<div class="pic"><img src="../../src/assets/v2/team/team-tofik-idle.webp" alt="team-tofik-idle" loading="lazy" width="515" height="768"></div>
+<p class="id">team-tofik-idle</p><p class="meta">515×768 · 67 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-tofik-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-tofik-happy">
+<div class="pic"><img src="../../src/assets/v2/team/team-tofik-happy.webp" alt="team-tofik-happy" loading="lazy" width="624" height="768"></div>
+<p class="id">team-tofik-happy</p><p class="meta">624×768 · 65 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-tofik-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-tofik-pointing">
+<div class="pic"><img src="../../src/assets/v2/team/team-tofik-pointing.webp" alt="team-tofik-pointing" loading="lazy" width="676" height="768"></div>
+<p class="id">team-tofik-pointing</p><p class="meta">676×768 · 63 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-tofik-pointing"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-iskra-idle">
+<div class="pic"><img src="../../src/assets/v2/team/team-iskra-idle.webp" alt="team-iskra-idle" loading="lazy" width="535" height="768"></div>
+<p class="id">team-iskra-idle</p><p class="meta">535×768 · 63 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-iskra-idle"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-iskra-happy">
+<div class="pic"><img src="../../src/assets/v2/team/team-iskra-happy.webp" alt="team-iskra-happy" loading="lazy" width="563" height="768"></div>
+<p class="id">team-iskra-happy</p><p class="meta">563×768 · 56 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-iskra-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="team-iskra-pointing">
+<div class="pic"><img src="../../src/assets/v2/team/team-iskra-pointing.webp" alt="team-iskra-pointing" loading="lazy" width="663" height="768"></div>
+<p class="id">team-iskra-pointing</p><p class="meta">663×768 · 56 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="team-iskra-pointing"> перегенерувати</label>
+</article></div></section>
+<section id="set-pups"><h2>Twój piesek <small>8</small></h2><div class="grid"><article class="card" data-id="pup-pon">
+<div class="pic"><img src="../../src/assets/v2/pups/pup-pon.webp" alt="pup-pon" loading="lazy" width="546" height="768"></div>
+<p class="id">pup-pon</p><p class="meta">546×768 · 81 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="pup-pon"> перегенерувати</label>
+</article>
+<article class="card" data-id="pup-nowofundland">
+<div class="pic"><img src="../../src/assets/v2/pups/pup-nowofundland.webp" alt="pup-nowofundland" loading="lazy" width="556" height="768"></div>
+<p class="id">pup-nowofundland</p><p class="meta">556×768 · 69 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="pup-nowofundland"> перегенерувати</label>
+</article>
+<article class="card" data-id="pup-pudel">
+<div class="pic"><img src="../../src/assets/v2/pups/pup-pudel.webp" alt="pup-pudel" loading="lazy" width="534" height="768"></div>
+<p class="id">pup-pudel</p><p class="meta">534×768 · 83 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="pup-pudel"> перегенерувати</label>
+</article>
+<article class="card flag-check" data-id="pup-chart">
+<div class="pic"><img src="../../src/assets/v2/pups/pup-chart.webp" alt="pup-chart" loading="lazy" width="425" height="768"></div>
+<p class="id">pup-chart</p><p class="meta">425×768 · 50 КБ</p><p class="note check">Глянути: D2c: перегенерований, але й досі схожий на дорослого хорта, а не на цуценя; дуже вузький поруч з іншими</p>
+<label class="redo"><input type="checkbox" data-redo="pup-chart"> перегенерувати</label>
+</article>
+<article class="card" data-id="pup-papillon">
+<div class="pic"><img src="../../src/assets/v2/pups/pup-papillon.webp" alt="pup-papillon" loading="lazy" width="547" height="768"></div>
+<p class="id">pup-papillon</p><p class="meta">547×768 · 86 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="pup-papillon"> перегенерувати</label>
+</article>
+<article class="card" data-id="pup-shihtzu">
+<div class="pic"><img src="../../src/assets/v2/pups/pup-shihtzu.webp" alt="pup-shihtzu" loading="lazy" width="636" height="768"></div>
+<p class="id">pup-shihtzu</p><p class="meta">636×768 · 67 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="pup-shihtzu"> перегенерувати</label>
+</article>
+<article class="card" data-id="pup-sharpei">
+<div class="pic"><img src="../../src/assets/v2/pups/pup-sharpei.webp" alt="pup-sharpei" loading="lazy" width="494" height="768"></div>
+<p class="id">pup-sharpei</p><p class="meta">494×768 · 61 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="pup-sharpei"> перегенерувати</label>
+</article>
+<article class="card" data-id="pup-akita">
+<div class="pic"><img src="../../src/assets/v2/pups/pup-akita.webp" alt="pup-akita" loading="lazy" width="612" height="768"></div>
+<p class="id">pup-akita</p><p class="meta">612×768 · 108 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="pup-akita"> перегенерувати</label>
+</article></div></section>
+<section id="set-animals-1"><h2>Тваринки 1 <small>8</small></h2><div class="grid"><article class="card" data-id="animal-mis">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-mis.webp" alt="animal-mis" loading="lazy" width="415" height="649"></div>
+<p class="id">animal-mis</p><p class="meta">415×649 · 58 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-mis"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-mis-happy">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-mis-happy.webp" alt="animal-mis-happy" loading="lazy" width="567" height="645"></div>
+<p class="id">animal-mis-happy</p><p class="meta">567×645 · 42 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-mis-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-jezyk">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-jezyk.webp" alt="animal-jezyk" loading="lazy" width="496" height="658"></div>
+<p class="id">animal-jezyk</p><p class="meta">496×658 · 77 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-jezyk"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-jezyk-happy">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-jezyk-happy.webp" alt="animal-jezyk-happy" loading="lazy" width="548" height="656"></div>
+<p class="id">animal-jezyk-happy</p><p class="meta">548×656 · 53 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-jezyk-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-kotek">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-kotek.webp" alt="animal-kotek" loading="lazy" width="528" height="526"></div>
+<p class="id">animal-kotek</p><p class="meta">528×526 · 45 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-kotek"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-kotek-happy">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-kotek-happy.webp" alt="animal-kotek-happy" loading="lazy" width="577" height="520"></div>
+<p class="id">animal-kotek-happy</p><p class="meta">577×520 · 35 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-kotek-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-lisek">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-lisek.webp" alt="animal-lisek" loading="lazy" width="510" height="561"></div>
+<p class="id">animal-lisek</p><p class="meta">510×561 · 45 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-lisek"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-lisek-happy">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-lisek-happy.webp" alt="animal-lisek-happy" loading="lazy" width="567" height="585"></div>
+<p class="id">animal-lisek-happy</p><p class="meta">567×585 · 38 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-lisek-happy"> перегенерувати</label>
+</article></div></section>
+<section id="set-animals-2"><h2>Тваринки 2 <small>8</small></h2><div class="grid"><article class="card" data-id="animal-zajaczek">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-zajaczek.webp" alt="animal-zajaczek" loading="lazy" width="434" height="611"></div>
+<p class="id">animal-zajaczek</p><p class="meta">434×611 · 37 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-zajaczek"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-zajaczek-happy">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-zajaczek-happy.webp" alt="animal-zajaczek-happy" loading="lazy" width="512" height="636"></div>
+<p class="id">animal-zajaczek-happy</p><p class="meta">512×636 · 33 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-zajaczek-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-zabka">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-zabka.webp" alt="animal-zabka" loading="lazy" width="344" height="542"></div>
+<p class="id">animal-zabka</p><p class="meta">344×542 · 31 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-zabka"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-zabka-happy">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-zabka-happy.webp" alt="animal-zabka-happy" loading="lazy" width="579" height="542"></div>
+<p class="id">animal-zabka-happy</p><p class="meta">579×542 · 30 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-zabka-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-sowa">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-sowa.webp" alt="animal-sowa" loading="lazy" width="488" height="575"></div>
+<p class="id">animal-sowa</p><p class="meta">488×575 · 58 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-sowa"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-sowa-happy">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-sowa-happy.webp" alt="animal-sowa-happy" loading="lazy" width="653" height="561"></div>
+<p class="id">animal-sowa-happy</p><p class="meta">653×561 · 48 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-sowa-happy"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-myszka">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-myszka.webp" alt="animal-myszka" loading="lazy" width="417" height="535"></div>
+<p class="id">animal-myszka</p><p class="meta">417×535 · 30 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-myszka"> перегенерувати</label>
+</article>
+<article class="card" data-id="animal-myszka-happy">
+<div class="pic"><img src="../../src/assets/v2/animals/animal-myszka-happy.webp" alt="animal-myszka-happy" loading="lazy" width="458" height="541"></div>
+<p class="id">animal-myszka-happy</p><p class="meta">458×541 · 27 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="animal-myszka-happy"> перегенерувати</label>
+</article></div></section>
+<section id="set-items-1"><h2>Предмети W1–W3 <small>12</small></h2><div class="grid"><article class="card" data-id="item-biedronka">
+<div class="pic"><img src="../../src/assets/v2/items/item-biedronka.webp" alt="item-biedronka" loading="lazy" width="512" height="465"></div>
+<p class="id">item-biedronka</p><p class="meta">512×465 · 23 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-biedronka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-motyl">
+<div class="pic"><img src="../../src/assets/v2/items/item-motyl.webp" alt="item-motyl" loading="lazy" width="512" height="472"></div>
+<p class="id">item-motyl</p><p class="meta">512×472 · 38 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-motyl"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-kwiatek">
+<div class="pic"><img src="../../src/assets/v2/items/item-kwiatek.webp" alt="item-kwiatek" loading="lazy" width="512" height="469"></div>
+<p class="id">item-kwiatek</p><p class="meta">512×469 · 19 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-kwiatek"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-kaczuszka">
+<div class="pic"><img src="../../src/assets/v2/items/item-kaczuszka.webp" alt="item-kaczuszka" loading="lazy" width="426" height="512"></div>
+<p class="id">item-kaczuszka</p><p class="meta">426×512 · 19 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-kaczuszka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-jablko">
+<div class="pic"><img src="../../src/assets/v2/items/item-jablko.webp" alt="item-jablko" loading="lazy" width="452" height="512"></div>
+<p class="id">item-jablko</p><p class="meta">452×512 · 19 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-jablko"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-gruszka">
+<div class="pic"><img src="../../src/assets/v2/items/item-gruszka.webp" alt="item-gruszka" loading="lazy" width="351" height="512"></div>
+<p class="id">item-gruszka</p><p class="meta">351×512 · 15 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-gruszka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-truskawka">
+<div class="pic"><img src="../../src/assets/v2/items/item-truskawka.webp" alt="item-truskawka" loading="lazy" width="397" height="512"></div>
+<p class="id">item-truskawka</p><p class="meta">397×512 · 23 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-truskawka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-marchewka">
+<div class="pic"><img src="../../src/assets/v2/items/item-marchewka.webp" alt="item-marchewka" loading="lazy" width="501" height="512"></div>
+<p class="id">item-marchewka</p><p class="meta">501×512 · 19 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-marchewka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-rybka">
+<div class="pic"><img src="../../src/assets/v2/items/item-rybka.webp" alt="item-rybka" loading="lazy" width="512" height="424"></div>
+<p class="id">item-rybka</p><p class="meta">512×424 · 21 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-rybka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-muszelka">
+<div class="pic"><img src="../../src/assets/v2/items/item-muszelka.webp" alt="item-muszelka" loading="lazy" width="512" height="490"></div>
+<p class="id">item-muszelka</p><p class="meta">512×490 · 20 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-muszelka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-rozgwiazda">
+<div class="pic"><img src="../../src/assets/v2/items/item-rozgwiazda.webp" alt="item-rozgwiazda" loading="lazy" width="482" height="512"></div>
+<p class="id">item-rozgwiazda</p><p class="meta">482×512 · 20 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-rozgwiazda"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-lodka">
+<div class="pic"><img src="../../src/assets/v2/items/item-lodka.webp" alt="item-lodka" loading="lazy" width="446" height="512"></div>
+<p class="id">item-lodka</p><p class="meta">446×512 · 20 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-lodka"> перегенерувати</label>
+</article></div></section>
+<section id="set-items-2"><h2>Предмети W4–W7 <small>16</small></h2><div class="grid"><article class="card" data-id="item-auto">
+<div class="pic"><img src="../../src/assets/v2/items/item-auto.webp" alt="item-auto" loading="lazy" width="512" height="369"></div>
+<p class="id">item-auto</p><p class="meta">512×369 · 26 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-auto"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-rower">
+<div class="pic"><img src="../../src/assets/v2/items/item-rower.webp" alt="item-rower" loading="lazy" width="512" height="507"></div>
+<p class="id">item-rower</p><p class="meta">512×507 · 35 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-rower"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-balonik">
+<div class="pic"><img src="../../src/assets/v2/items/item-balonik.webp" alt="item-balonik" loading="lazy" width="253" height="512"></div>
+<p class="id">item-balonik</p><p class="meta">253×512 · 13 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-balonik"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-jajko">
+<div class="pic"><img src="../../src/assets/v2/items/item-jajko.webp" alt="item-jajko" loading="lazy" width="411" height="512"></div>
+<p class="id">item-jajko</p><p class="meta">411×512 · 17 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-jajko"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-jagoda">
+<div class="pic"><img src="../../src/assets/v2/items/item-jagoda.webp" alt="item-jagoda" loading="lazy" width="512" height="509"></div>
+<p class="id">item-jagoda</p><p class="meta">512×509 · 19 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-jagoda"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-szyszka">
+<div class="pic"><img src="../../src/assets/v2/items/item-szyszka.webp" alt="item-szyszka" loading="lazy" width="439" height="512"></div>
+<p class="id">item-szyszka</p><p class="meta">439×512 · 28 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-szyszka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-grzybek">
+<div class="pic"><img src="../../src/assets/v2/items/item-grzybek.webp" alt="item-grzybek" loading="lazy" width="426" height="512"></div>
+<p class="id">item-grzybek</p><p class="meta">426×512 · 18 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-grzybek"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-patyczek">
+<div class="pic"><img src="../../src/assets/v2/items/item-patyczek.webp" alt="item-patyczek" loading="lazy" width="490" height="512"></div>
+<p class="id">item-patyczek</p><p class="meta">490×512 · 17 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-patyczek"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-parasolka">
+<div class="pic"><img src="../../src/assets/v2/items/item-parasolka.webp" alt="item-parasolka" loading="lazy" width="512" height="508"></div>
+<p class="id">item-parasolka</p><p class="meta">512×508 · 24 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-parasolka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-tramwaj">
+<div class="pic"><img src="../../src/assets/v2/items/item-tramwaj.webp" alt="item-tramwaj" loading="lazy" width="487" height="512"></div>
+<p class="id">item-tramwaj</p><p class="meta">487×512 · 37 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-tramwaj"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-pilka">
+<div class="pic"><img src="../../src/assets/v2/items/item-pilka.webp" alt="item-pilka" loading="lazy" width="504" height="512"></div>
+<p class="id">item-pilka</p><p class="meta">504×512 · 39 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-pilka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-lizak">
+<div class="pic"><img src="../../src/assets/v2/items/item-lizak.webp" alt="item-lizak" loading="lazy" width="294" height="512"></div>
+<p class="id">item-lizak</p><p class="meta">294×512 · 21 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-lizak"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-gwiazdka">
+<div class="pic"><img src="../../src/assets/v2/items/item-gwiazdka.webp" alt="item-gwiazdka" loading="lazy" width="508" height="512"></div>
+<p class="id">item-gwiazdka</p><p class="meta">508×512 · 19 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-gwiazdka"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-planeta">
+<div class="pic"><img src="../../src/assets/v2/items/item-planeta.webp" alt="item-planeta" loading="lazy" width="512" height="345"></div>
+<p class="id">item-planeta</p><p class="meta">512×345 · 16 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-planeta"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-rakieta">
+<div class="pic"><img src="../../src/assets/v2/items/item-rakieta.webp" alt="item-rakieta" loading="lazy" width="277" height="512"></div>
+<p class="id">item-rakieta</p><p class="meta">277×512 · 17 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-rakieta"> перегенерувати</label>
+</article>
+<article class="card" data-id="item-kometa">
+<div class="pic"><img src="../../src/assets/v2/items/item-kometa.webp" alt="item-kometa" loading="lazy" width="512" height="415"></div>
+<p class="id">item-kometa</p><p class="meta">512×415 · 21 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="item-kometa"> перегенерувати</label>
+</article></div></section>
+<section id="set-digits"><h2>Цифри <small>10</small></h2><div class="grid"><article class="card" data-id="digit-0">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-0.webp" alt="digit-0" loading="lazy" width="432" height="508"></div>
+<p class="id">digit-0</p><p class="meta">432×508 · 18 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-0"> перегенерувати</label>
+</article>
+<article class="card" data-id="digit-1">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-1.webp" alt="digit-1" loading="lazy" width="286" height="455"></div>
+<p class="id">digit-1</p><p class="meta">286×455 · 12 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-1"> перегенерувати</label>
+</article>
+<article class="card" data-id="digit-2">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-2.webp" alt="digit-2" loading="lazy" width="341" height="456"></div>
+<p class="id">digit-2</p><p class="meta">341×456 · 16 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-2"> перегенерувати</label>
+</article>
+<article class="card" data-id="digit-3">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-3.webp" alt="digit-3" loading="lazy" width="357" height="483"></div>
+<p class="id">digit-3</p><p class="meta">357×483 · 16 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-3"> перегенерувати</label>
+</article>
+<article class="card flag-check" data-id="digit-4">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-4.webp" alt="digit-4" loading="lazy" width="373" height="446"></div>
+<p class="id">digit-4</p><p class="meta">373×446 · 13 КБ</p><p class="note check">Глянути: у розмірі плитки читається насилу</p>
+<label class="redo"><input type="checkbox" data-redo="digit-4"> перегенерувати</label>
+</article>
+<article class="card" data-id="digit-5">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-5.webp" alt="digit-5" loading="lazy" width="342" height="444"></div>
+<p class="id">digit-5</p><p class="meta">342×444 · 17 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-5"> перегенерувати</label>
+</article>
+<article class="card" data-id="digit-6">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-6.webp" alt="digit-6" loading="lazy" width="373" height="512"></div>
+<p class="id">digit-6</p><p class="meta">373×512 · 29 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-6"> перегенерувати</label>
+</article>
+<article class="card" data-id="digit-7">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-7.webp" alt="digit-7" loading="lazy" width="376" height="470"></div>
+<p class="id">digit-7</p><p class="meta">376×470 · 21 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-7"> перегенерувати</label>
+</article>
+<article class="card" data-id="digit-8">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-8.webp" alt="digit-8" loading="lazy" width="382" height="484"></div>
+<p class="id">digit-8</p><p class="meta">382×484 · 21 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-8"> перегенерувати</label>
+</article>
+<article class="card" data-id="digit-9">
+<div class="pic"><img src="../../src/assets/v2/digits/digit-9.webp" alt="digit-9" loading="lazy" width="376" height="512"></div>
+<p class="id">digit-9</p><p class="meta">376×512 · 29 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="digit-9"> перегенерувати</label>
+</article></div></section>
+<section id="set-hands"><h2>Руки <small>6</small></h2><div class="grid"><article class="card" data-id="hand-0">
+<div class="pic"><img src="../../src/assets/v2/hands/hand-0.webp" alt="hand-0" loading="lazy" width="315" height="446"></div>
+<p class="id">hand-0</p><p class="meta">315×446 · 11 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="hand-0"> перегенерувати</label>
+</article>
+<article class="card" data-id="hand-1">
+<div class="pic"><img src="../../src/assets/v2/hands/hand-1.webp" alt="hand-1" loading="lazy" width="261" height="503"></div>
+<p class="id">hand-1</p><p class="meta">261×503 · 9 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="hand-1"> перегенерувати</label>
+</article>
+<article class="card" data-id="hand-2">
+<div class="pic"><img src="../../src/assets/v2/hands/hand-2.webp" alt="hand-2" loading="lazy" width="270" height="512"></div>
+<p class="id">hand-2</p><p class="meta">270×512 · 20 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="hand-2"> перегенерувати</label>
+</article>
+<article class="card" data-id="hand-3">
+<div class="pic"><img src="../../src/assets/v2/hands/hand-3.webp" alt="hand-3" loading="lazy" width="270" height="509"></div>
+<p class="id">hand-3</p><p class="meta">270×509 · 12 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="hand-3"> перегенерувати</label>
+</article>
+<article class="card" data-id="hand-4">
+<div class="pic"><img src="../../src/assets/v2/hands/hand-4.webp" alt="hand-4" loading="lazy" width="304" height="509"></div>
+<p class="id">hand-4</p><p class="meta">304×509 · 13 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="hand-4"> перегенерувати</label>
+</article>
+<article class="card" data-id="hand-5">
+<div class="pic"><img src="../../src/assets/v2/hands/hand-5.webp" alt="hand-5" loading="lazy" width="450" height="512"></div>
+<p class="id">hand-5</p><p class="meta">450×512 · 22 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="hand-5"> перегенерувати</label>
+</article></div></section>
+<section id="set-build"><h2>База, споруди світів, транспорт <small>12</small></h2><div class="grid"><article class="card" data-id="base-druzyna">
+<div class="pic"><img src="../../src/assets/v2/world/base-druzyna.webp" alt="base-druzyna" loading="lazy" width="783" height="667"></div>
+<p class="id">base-druzyna</p><p class="meta">783×667 · 61 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="base-druzyna"> перегенерувати</label>
+</article>
+<article class="card" data-id="build-w1">
+<div class="pic"><img src="../../src/assets/v2/world/build-w1.webp" alt="build-w1" loading="lazy" width="477" height="663"></div>
+<p class="id">build-w1</p><p class="meta">477×663 · 45 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="build-w1"> перегенерувати</label>
+</article>
+<article class="card" data-id="build-w2">
+<div class="pic"><img src="../../src/assets/v2/world/build-w2.webp" alt="build-w2" loading="lazy" width="797" height="674"></div>
+<p class="id">build-w2</p><p class="meta">797×674 · 70 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="build-w2"> перегенерувати</label>
+</article>
+<article class="card" data-id="build-w3">
+<div class="pic"><img src="../../src/assets/v2/world/build-w3.webp" alt="build-w3" loading="lazy" width="376" height="656"></div>
+<p class="id">build-w3</p><p class="meta">376×656 · 25 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="build-w3"> перегенерувати</label>
+</article>
+<article class="card" data-id="build-w4">
+<div class="pic"><img src="../../src/assets/v2/world/build-w4.webp" alt="build-w4" loading="lazy" width="531" height="553"></div>
+<p class="id">build-w4</p><p class="meta">531×553 · 30 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="build-w4"> перегенерувати</label>
+</article>
+<article class="card" data-id="build-w5">
+<div class="pic"><img src="../../src/assets/v2/world/build-w5.webp" alt="build-w5" loading="lazy" width="607" height="684"></div>
+<p class="id">build-w5</p><p class="meta">607×684 · 96 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="build-w5"> перегенерувати</label>
+</article>
+<article class="card" data-id="build-w6">
+<div class="pic"><img src="../../src/assets/v2/world/build-w6.webp" alt="build-w6" loading="lazy" width="384" height="669"></div>
+<p class="id">build-w6</p><p class="meta">384×669 · 29 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="build-w6"> перегенерувати</label>
+</article>
+<article class="card" data-id="build-w7">
+<div class="pic"><img src="../../src/assets/v2/world/build-w7.webp" alt="build-w7" loading="lazy" width="489" height="631"></div>
+<p class="id">build-w7</p><p class="meta">489×631 · 45 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="build-w7"> перегенерувати</label>
+</article>
+<article class="card" data-id="veh-balon">
+<div class="pic"><img src="../../src/assets/v2/team/veh-balon.webp" alt="veh-balon" loading="lazy" width="421" height="681"></div>
+<p class="id">veh-balon</p><p class="meta">421×681 · 39 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="veh-balon"> перегенерувати</label>
+</article>
+<article class="card" data-id="veh-zaglowka">
+<div class="pic"><img src="../../src/assets/v2/team/veh-zaglowka.webp" alt="veh-zaglowka" loading="lazy" width="508" height="625"></div>
+<p class="id">veh-zaglowka</p><p class="meta">508×625 · 34 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="veh-zaglowka"> перегенерувати</label>
+</article>
+<article class="card" data-id="veh-pociag">
+<div class="pic"><img src="../../src/assets/v2/team/veh-pociag.webp" alt="veh-pociag" loading="lazy" width="1024" height="551"></div>
+<p class="id">veh-pociag</p><p class="meta">1024×551 · 57 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="veh-pociag"> перегенерувати</label>
+</article>
+<article class="card" data-id="veh-rakieta">
+<div class="pic"><img src="../../src/assets/v2/team/veh-rakieta.webp" alt="veh-rakieta" loading="lazy" width="381" height="635"></div>
+<p class="id">veh-rakieta</p><p class="meta">381×635 · 24 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="veh-rakieta"> перегенерувати</label>
+</article></div></section>
+<section id="set-bg"><h2>Фони світів <small>9</small></h2><div class="grid"><article class="card scene" data-id="bg-start">
+<div class="pic"><img src="../../src/assets/v2/world/bg-start.webp" alt="bg-start" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-start</p><p class="meta">1920×1080 · 172 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-start"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="bg-w1">
+<div class="pic"><img src="../../src/assets/v2/world/bg-w1.webp" alt="bg-w1" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-w1</p><p class="meta">1920×1080 · 110 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-w1"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="bg-w2">
+<div class="pic"><img src="../../src/assets/v2/world/bg-w2.webp" alt="bg-w2" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-w2</p><p class="meta">1920×1080 · 185 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-w2"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="bg-w3">
+<div class="pic"><img src="../../src/assets/v2/world/bg-w3.webp" alt="bg-w3" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-w3</p><p class="meta">1920×1080 · 169 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-w3"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="bg-w4">
+<div class="pic"><img src="../../src/assets/v2/world/bg-w4.webp" alt="bg-w4" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-w4</p><p class="meta">1920×1080 · 151 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-w4"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="bg-w5">
+<div class="pic"><img src="../../src/assets/v2/world/bg-w5.webp" alt="bg-w5" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-w5</p><p class="meta">1920×1080 · 108 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-w5"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="bg-w6">
+<div class="pic"><img src="../../src/assets/v2/world/bg-w6.webp" alt="bg-w6" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-w6</p><p class="meta">1920×1080 · 156 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-w6"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="bg-w7">
+<div class="pic"><img src="../../src/assets/v2/world/bg-w7.webp" alt="bg-w7" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-w7</p><p class="meta">1920×1080 · 195 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-w7"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="bg-hub">
+<div class="pic"><img src="../../src/assets/v2/world/bg-hub.webp" alt="bg-hub" loading="lazy" width="1920" height="1080"></div>
+<p class="id">bg-hub</p><p class="meta">1920×1080 · 99 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="bg-hub"> перегенерувати</label>
+</article></div></section>
+<section id="set-path"><h2>Доріжки рівнів <small>7</small></h2><div class="grid"><article class="card scene" data-id="path-w1">
+<div class="pic"><img src="../../src/assets/v2/world/path-w1.webp" alt="path-w1" loading="lazy" width="1920" height="1080"></div>
+<p class="id">path-w1</p><p class="meta">1920×1080 · 252 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="path-w1"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="path-w2">
+<div class="pic"><img src="../../src/assets/v2/world/path-w2.webp" alt="path-w2" loading="lazy" width="1920" height="1080"></div>
+<p class="id">path-w2</p><p class="meta">1920×1080 · 270 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="path-w2"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="path-w3">
+<div class="pic"><img src="../../src/assets/v2/world/path-w3.webp" alt="path-w3" loading="lazy" width="1920" height="1080"></div>
+<p class="id">path-w3</p><p class="meta">1920×1080 · 315 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="path-w3"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="path-w4">
+<div class="pic"><img src="../../src/assets/v2/world/path-w4.webp" alt="path-w4" loading="lazy" width="1920" height="1080"></div>
+<p class="id">path-w4</p><p class="meta">1920×1080 · 294 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="path-w4"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="path-w5">
+<div class="pic"><img src="../../src/assets/v2/world/path-w5.webp" alt="path-w5" loading="lazy" width="1920" height="1080"></div>
+<p class="id">path-w5</p><p class="meta">1920×1080 · 194 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="path-w5"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="path-w6">
+<div class="pic"><img src="../../src/assets/v2/world/path-w6.webp" alt="path-w6" loading="lazy" width="1920" height="1080"></div>
+<p class="id">path-w6</p><p class="meta">1920×1080 · 296 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="path-w6"> перегенерувати</label>
+</article>
+<article class="card scene" data-id="path-w7">
+<div class="pic"><img src="../../src/assets/v2/world/path-w7.webp" alt="path-w7" loading="lazy" width="1920" height="1080"></div>
+<p class="id">path-w7</p><p class="meta">1920×1080 · 218 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="path-w7"> перегенерувати</label>
+</article></div></section>
+<section id="set-islands"><h2>Острови мапи й скрині <small>12</small></h2><div class="grid"><article class="card" data-id="island-w1">
+<div class="pic"><img src="../../src/assets/v2/world/island-w1.webp" alt="island-w1" loading="lazy" width="584" height="564"></div>
+<p class="id">island-w1</p><p class="meta">584×564 · 52 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-w1"> перегенерувати</label>
+</article>
+<article class="card" data-id="island-w2">
+<div class="pic"><img src="../../src/assets/v2/world/island-w2.webp" alt="island-w2" loading="lazy" width="505" height="567"></div>
+<p class="id">island-w2</p><p class="meta">505×567 · 43 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-w2"> перегенерувати</label>
+</article>
+<article class="card" data-id="island-w3">
+<div class="pic"><img src="../../src/assets/v2/world/island-w3.webp" alt="island-w3" loading="lazy" width="453" height="554"></div>
+<p class="id">island-w3</p><p class="meta">453×554 · 30 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-w3"> перегенерувати</label>
+</article>
+<article class="card" data-id="island-w4">
+<div class="pic"><img src="../../src/assets/v2/world/island-w4.webp" alt="island-w4" loading="lazy" width="526" height="534"></div>
+<p class="id">island-w4</p><p class="meta">526×534 · 43 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-w4"> перегенерувати</label>
+</article>
+<article class="card" data-id="island-w5">
+<div class="pic"><img src="../../src/assets/v2/world/island-w5.webp" alt="island-w5" loading="lazy" width="557" height="605"></div>
+<p class="id">island-w5</p><p class="meta">557×605 · 45 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-w5"> перегенерувати</label>
+</article>
+<article class="card" data-id="island-w6">
+<div class="pic"><img src="../../src/assets/v2/world/island-w6.webp" alt="island-w6" loading="lazy" width="524" height="479"></div>
+<p class="id">island-w6</p><p class="meta">524×479 · 38 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-w6"> перегенерувати</label>
+</article>
+<article class="card" data-id="island-w7">
+<div class="pic"><img src="../../src/assets/v2/world/island-w7.webp" alt="island-w7" loading="lazy" width="439" height="552"></div>
+<p class="id">island-w7</p><p class="meta">439×552 · 33 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-w7"> перегенерувати</label>
+</article>
+<article class="card" data-id="island-hub">
+<div class="pic"><img src="../../src/assets/v2/world/island-hub.webp" alt="island-hub" loading="lazy" width="557" height="507"></div>
+<p class="id">island-hub</p><p class="meta">557×507 · 44 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-hub"> перегенерувати</label>
+</article>
+<article class="card" data-id="island-locked">
+<div class="pic"><img src="../../src/assets/v2/world/island-locked.webp" alt="island-locked" loading="lazy" width="494" height="604"></div>
+<p class="id">island-locked</p><p class="meta">494×604 · 34 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="island-locked"> перегенерувати</label>
+</article>
+<article class="card" data-id="chest-locked">
+<div class="pic"><img src="../../src/assets/v2/world/chest-locked.webp" alt="chest-locked" loading="lazy" width="831" height="727"></div>
+<p class="id">chest-locked</p><p class="meta">831×727 · 79 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="chest-locked"> перегенерувати</label>
+</article>
+<article class="card" data-id="chest-ready">
+<div class="pic"><img src="../../src/assets/v2/world/chest-ready.webp" alt="chest-ready" loading="lazy" width="850" height="728"></div>
+<p class="id">chest-ready</p><p class="meta">850×728 · 92 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="chest-ready"> перегенерувати</label>
+</article>
+<article class="card" data-id="chest-open">
+<div class="pic"><img src="../../src/assets/v2/world/chest-open.webp" alt="chest-open" loading="lazy" width="759" height="768"></div>
+<p class="id">chest-open</p><p class="meta">759×768 · 83 КБ</p>
+<label class="redo"><input type="checkbox" data-redo="chest-open"> перегенерувати</label>
+</article></div></section></main>
+<script>
+const KEY = 'klockowo-gallery-redo';
+let saved; try { saved = JSON.parse(localStorage.getItem(KEY)); } catch { saved = null; }
+const boxes = [...document.querySelectorAll('[data-redo]')];
+const sync = () => { boxes.forEach((b) => b.closest('.card').classList.toggle('marked', b.checked));
+  try { localStorage.setItem(KEY, JSON.stringify(boxes.filter((b) => b.checked).map((b) => b.dataset.redo))); } catch {} };
+boxes.forEach((b) => { b.checked = saved ? saved.includes(b.dataset.redo) : b.hasAttribute('data-suggest'); b.addEventListener('change', sync); });
+sync();
+document.querySelectorAll('button[data-bg]').forEach((btn) => btn.addEventListener('click', () => {
+  document.body.dataset.bg = btn.dataset.bg;
+  document.querySelectorAll('button[data-bg]').forEach((x) => x.setAttribute('aria-pressed', x === btn));
+}));
+const only = document.getElementById('only');
+only.addEventListener('click', () => only.setAttribute('aria-pressed', document.body.classList.toggle('only-marked')));
+document.getElementById('copy').addEventListener('click', async (e) => {
+  const list = boxes.filter((b) => b.checked).map((b) => b.dataset.redo).join('\n') || '(нічого не позначено)';
+  try { await navigator.clipboard.writeText(list); e.target.textContent = 'Скопійовано'; } catch { prompt('Список:', list); }
+  setTimeout(() => { e.target.textContent = 'Копіювати список'; }, 1500);
+});
+</script>
+</body></html>

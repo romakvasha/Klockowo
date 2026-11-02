@@ -174,8 +174,5 @@ export const EN_LINES: LineTables = {
   BUILDING_NAMES: {
     w1: 'windmill', w2: 'greenhouse', w3: 'lighthouse', w4: 'bridge with a tower', w5: 'tree house', w6: 'skyscraper', w7: 'rocket tower',
   },
-  BREAK_EXERCISES: [
-    { verb: 'Jump', n: 10 }, { verb: 'Clap', n: 5 }, { verb: 'Stamp your feet', n: 8 },
-  ],
   NO_VOICE_MESSAGE: 'There is no English voice in this browser. See: Parent zone → Settings → Voice.',
 };

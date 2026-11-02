@@ -32,9 +32,43 @@
   }
 }
 
-/* Телефон, альбом (844×390): Kubik прихований, виїжджає знизу поверх сцени лише для hint і together */
+/* Власна зона провідника в грі (D3): бульбашка в потоці — над Kubikom (column) чи праворуч (row); нічого не виступає за зону */
+.stage[data-layout] {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: auto;
+  height: auto;
+}
+
+.stage[data-layout='column'] {
+  flex-direction: column-reverse;
+}
+
+.stage[data-layout] > :first-child {
+  flex: none;
+  width: calc(var(--kl-kubik-h) * .8);
+  height: var(--kl-kubik-h);
+}
+
+.stage[data-layout] .bubble {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  scale: none;
+}
+
+/* row: хмаринка праворуч від Kubika — хвостик дивиться ліворуч, на нього (полотно D1, телефон) */
+.stage[data-layout='row'] .bubble > svg {
+  top: 50%;
+  bottom: auto;
+  left: -29px;
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* Телефон, альбом (844×390), кут сцени (без layout): Kubik прихований, виїжджає знизу поверх сцени лише для hint і together */
 @media (max-height: 500px) and (orientation: landscape) {
-  .stage {
+  .stage:not([data-layout]) {
     position: fixed;
     z-index: 20;
     bottom: 0;
@@ -42,13 +76,13 @@
     transition: transform 300ms var(--kl-ease-out), visibility 0s linear 300ms;
   }
 
-  .stage:not([data-state='hint']):not([data-state='together']) {
+  .stage:not([data-layout]):not([data-state='hint']):not([data-state='together']) {
     visibility: hidden;
     transform: translateY(110%);
   }
 
-  .stage[data-state='hint'],
-  .stage[data-state='together'] {
+  .stage:not([data-layout])[data-state='hint'],
+  .stage:not([data-layout])[data-state='together'] {
     transition-delay: 0s;
   }
 }

@@ -1,4 +1,4 @@
-/* Koniec poziomu (BRIEF §6.8): тло світу, смуга ґрунту на всю ширину, сцена 1280×720 (портрет 390×700) за масштабом --s по центру.
+/* Koniec poziomu (BRIEF §6.8): фото світу (Backdrop), сцена 1280×720 (портрет 390×700) за масштабом --s по центру.
    «Mapa» і «Dalej» — справжнього розміру поверх сцени (72/80 px і 88 px). */
 .page {
   position: relative;
@@ -6,16 +6,6 @@
   overflow: hidden;
   background: var(--bg);
   isolation: isolate;
-}
-
-.ground {
-  position: absolute;
-  top: var(--ground-top);
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: var(--ground);
-  border-top: 6px solid var(--ground-line);
 }
 
 .fit {

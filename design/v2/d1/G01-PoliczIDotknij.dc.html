@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Policz i dotknij</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.board{flex-wrap:wrap;align-content:center;gap:34px 46px;padding:40px 56px}
+.ph .board{gap:18px 22px;padding:18px}
+.obj{position:relative;display:inline-flex;border:0;background:none;padding:0;cursor:pointer}
+.obj .it{width:120px;height:120px}
+.ph .obj .it{width:68px;height:68px}
+.obj .num{position:absolute;left:50%;top:-22px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#fff;font:700 26px/1 var(--fd);color:var(--ink);box-shadow:0 0 0 3px var(--yel),0 3px 6px rgba(0,0,0,.2)}
+.ph .obj .num{width:30px;height:30px;font-size:19px;top:-16px}
+.obj.up{transform:translateY(-10px)}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl blur f-bg-w1"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 2 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Ile jest biedronek?"><img src="./v2/item-biedronka.webp" alt="">?</div>
+    <div class="krow"><img class="kub" src="./v2/kubik-pointing-right.webp" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <sc-for list="{{f.items}}" as="it" hint-placeholder-count="5">
+      <button class="obj {{it.up}}" type="button" aria-label="biedronka"><img class="it" src="./v2/item-biedronka.webp" alt=""><sc-if value="{{it.n}}" hint-placeholder-val="{{ true }}"><span class="num">{{it.n}}</span></sc-if></button>
+    </sc-for>
+  </div>
+  <div class="tray">
+    <sc-for list="{{f.tiles}}" as="t" hint-placeholder-count="3">
+      <span class="tw {{t.st}}"><button class="bk c-b tile" type="button" aria-label="{{t.word}}">{{t.n}}<sc-if value="{{t.hasDots}}" hint-placeholder-val="{{ true }}"><span class="dots"><sc-for list="{{t.dots}}" as="d" hint-placeholder-count="4"><i></i></sc-for></span></sc-if></button><sc-if value="{{t.ok}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if><sc-if value="{{t.retry}}" hint-placeholder-val="{{ false }}"><span class="badge rt"><img src="./i/w-retry.svg" alt=""></span></sc-if></span>
+    </sc-for>
+    <button class="bk c-o done" type="button" aria-label="Gotowe"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Policz biedronki. Dotykaj po kolei. Ile jest biedronek?» · дотик до плитки озвучує число («pięć») · «Gotowe» → «Brawo! Pięć biedronek.»</dd>
+  <dt>Стан</dt><dd>Усі 5 сонечок торкнуто (кожне підстрибнуло й отримало номер), вибрано плитку 5 — піднята з білою рамкою; чекаємо «Gotowe». W1: на плитках цифра + крапки. 2 з 6 кісточок.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): item-biedronka, kubik-pointing-right. Фон — bg-w1.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const W = ['zero', 'jeden', 'dwa', 'trzy', 'cztery', 'pięć', 'sześć', 'siedem', 'osiem', 'dziewięć', 'dziesięć'];
+    const tile = (n, st) => ({ n, st: st || '', ok: st === 'ok', retry: st === 'retry', hasDots: true, dots: Array.from({ length: n }, () => ({})), word: W[n] });
+    const d = {
+      bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 2 ? 'bone-full' : 'bone-empty' })),
+      items: [1, 2, 3, 4, 5].map((n) => ({ n: String(n), up: n === 5 ? 'up' : '' })),
+      tiles: [tile(4), tile(5, 'sel'), tile(6)],
+    };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -11,14 +11,14 @@
   height: var(--kl-pup-card);
 }
 
+/* біла цеглинка v2 без пупирців (полотно D1 «Twój piesek»), знизу — пастель породи */
 .card {
-  --edge: var(--kl-neutral-edge);
   align-items: flex-end;
   width: 100%;
   height: 100%;
   overflow: hidden;
   border-radius: var(--kl-radius-panel);
-  background: var(--tint);
+  background: linear-gradient(180deg, var(--c-hi) 30%, var(--tint) 100%);
   transition: transform var(--kl-dur-count) var(--kl-ease-pop), box-shadow var(--kl-dur-tap) var(--kl-ease-out);
 }
 
@@ -27,9 +27,11 @@
 }
 
 /* обрана: піднята на 8 px, синє кільце 4 px (+ галочка); кільце фокуса не губиться (--kl-ring) */
+/* обране: піднята, жовта рамка й сяйво, тло світліє (і галочка — не лише колір) */
 .card[data-selected='true'] {
+  --tint: #FFF3C4;
   transform: translateY(-8px);
-  box-shadow: var(--kl-shadow-block), var(--kl-selected), var(--kl-highlight), var(--kl-ring);
+  box-shadow: var(--kl-brick-shadow), 0 0 0 6px var(--kl-brick-yellow), 0 0 0 12px rgba(255, 207, 31, .35), var(--kl-ring);
 }
 
 /* галочка «обрано» — над кутом картки (design etap1/10: right −12, top −20) */

@@ -3,7 +3,7 @@
   animation: var(--kl-anim-pop-in) 350ms var(--kl-ease-pop) both;
 }
 
-/* підказка йде: кнопка залишається видимою, але не реагує (disabled) і злегка «горить» кільцем */
+/* підказка йде: кнопка залишається видимою, але не реагує (disabled) і «горить» жовтим кільцем */
 .active {
-  box-shadow: var(--kl-shadow-block), var(--kl-highlight), 0 0 0 6px rgba(255, 194, 26, .45);
+  box-shadow: var(--kl-brick-shadow), 0 0 0 6px rgba(255, 255, 255, .8), 0 0 0 12px rgba(255, 207, 31, .55);
 }

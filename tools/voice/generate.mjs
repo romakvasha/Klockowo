@@ -7,7 +7,8 @@
 //    перерваний запуск продовжується з того самого місця, а вже записане вдруге не оплачується.
 // --dry — лише план і кошторис (без ключа й кредитів); --limit N — не більше N нових речень (проба); --prune — прибрати записи,
 // яких гра вже не каже; --yes — без запитання «Продовжити?»; --workers N — запитів одночасно (Starter дозволяє 3);
-// --redo "речення" — записати це речення наново (не той наголос, шум), можна кілька разів.
+// --redo "речення" — записати це речення наново (не той наголос, шум), можна кілька разів; не допомагає (модель щоразу каже так само) —
+// інше написання для озвучки в config.json → respell.<мова> (напр. з малої літери).
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { createInterface } from 'node:readline/promises';
@@ -219,7 +220,8 @@ async function worker() {
     next++;
     reserved += e.cost;
     try {
-      const result = await synthesize({ key, voiceId, text: e.text, lang, config });
+      // config.respell: інше написання лише для озвучки, коли модель вимовляє речення неправильно (D7: «Czarny» з великої — «dżarny»)
+      const result = await synthesize({ key, voiceId, text: config.respell?.[lang]?.[e.text] ?? e.text, lang, config });
       // перезапис (--redo) — нове ім'я файла: у кеші телефонів не лишиться старий запис
       const name = createHash('sha1').update(k).digest('hex').slice(0, 12);
       const file = clips[k] === undefined ? name : `${name}-${createHash('sha1').update(result.audio).digest('hex').slice(0, 6)}`;

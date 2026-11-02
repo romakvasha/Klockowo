@@ -162,8 +162,8 @@ describe('рамка у сцені', () => {
   ];
 
   it('рамка вміщується в сцену, не заходить на Kubika; комірка-кнопка ≥ 64 px (ПК) і ≥ 56 px (найвужчий екран)', () => {
-    for (const { kind, vw, area } of cases) {
-      const reserved = sceneReserved(kind, vw, area);
+    for (const { kind, area } of cases) {
+      const reserved = sceneReserved(kind, area);
       const p = placeContent(area, reserved, DESIGN, { maxScale: 1.7 });
       expect(p.x + p.w, kind).toBeLessThanOrEqual(area.w);
       expect(p.y + p.h, kind).toBeLessThanOrEqual(area.h);
@@ -251,8 +251,8 @@ describe('★ через десяток: 8 + 5', () => {
       { kind: 'portrait', vw: 390, area: { w: 366, h: 366 } },
       { kind: 'phone', vw: 844, area: { w: 560, h: 280 } },
     ];
-    for (const { kind, vw, area } of cases) {
-      const reserved = sceneReserved(kind, vw, area);
+    for (const { kind, area } of cases) {
+      const reserved = sceneReserved(kind, area);
       const p = placeContent(area, reserved, DESIGN_BRIDGE, { maxScale: 1.7 });
       expect(p.x + p.w, kind).toBeLessThanOrEqual(area.w);
       expect(p.y + p.h, kind).toBeLessThanOrEqual(area.h);

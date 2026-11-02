@@ -70,15 +70,16 @@ function LiveKubik() {
 export function KubikSection() {
   return (
     <>
-      <Section title="Kubik — живий" note="поза + аксесуар + рот; дихання 3 с, кліпання раз на 4–6 с, happy / celebrating — стрибок 12 px і хвіст ±15°">
+      <Section title="Kubik — живий" note="поза + аксесуар + рот; дихання 3 с, happy / celebrating — стрибок 12 px">
         <LiveKubik />
         <Hint>
-          Рот «talking» — три окремі форми (A, O, E), що міняються ≈ 9 разів/с, на будь-якій позі; у справжній грі його вмикатиме
+          Рот «talking» — три латки мордочки (A, O, E), що міняються ≈ 9 разів/с, у позі спокою (і з аксесуаром світу); в інших позах Kubik
+          під час мовлення легенько киває. У справжній грі це вмикатиме
           <code> useTts().speaking</code>. При «Mniej animacji» (prefers-reduced-motion) рух зникає: лишається зміна пози, а рот — просто відкритий.
         </Hint>
       </Section>
 
-      <Section title="17 поз Kubika" note="кожна поза — окремий SVG, viewBox 0 −30 200 250; лапками Kubik не рахує, кількість — кубиками чи карткою">
+      <Section title="17 поз Kubika" note="картинки v2 (Gemini) у коробці 4 : 5; лапками Kubik не рахує, кількість — кубиками чи карткою">
         <div className={styles.poses}>
           {KUBIK_POSES.map((pose) => (
             <div key={pose} className={styles.poseCard}>
@@ -90,11 +91,12 @@ export function KubikSection() {
         </div>
       </Section>
 
-      <Section title="Аксесуари світів — шар #accessory поверх будь-якої пози" note="капелюшок W1 · пов'язка W2 · окуляри W3 · каска W4 · бінокль W5 · кепка W6 · шолом W7">
+      <Section title="Аксесуари світів — у спокої (говорить, рот A) і радості" note="капелюшок W1 · кепка W2 · окуляри W3 · каска W4 · рюкзак W5 · кепка W6 · шолом W7; в інших позах — без аксесуара">
         <div className={styles.accRow}>
-          {ACCESSORY_WORLDS.map((w, i) => (
+          {ACCESSORY_WORLDS.map((w) => (
             <Cell key={w} caption={`${WORLD_NAMES[w]}`}>
-              <Kubik pose={KUBIK_POSES[i === 3 ? 1 : 0] ?? 'idle'} accessory={w} size={175} animate={false} />
+              <Kubik accessory={w} size={175} animate={false} talking />
+              <Kubik pose="happy" accessory={w} size={175} animate={false} />
             </Cell>
           ))}
         </div>

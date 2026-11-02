@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Wprowadzenie — misja</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-mis{grid-template-columns:300px minmax(0,1fr);grid-template-rows:var(--hb) minmax(0,1fr) 130px;grid-template-areas:"hud hud" "guide board" "guide tray"}
+.ph .s-mis{grid-template-columns:minmax(0,1fr);grid-template-rows:var(--hb) 124px minmax(0,1fr) auto;grid-template-areas:"hud" "guide" "board" "tray"}
+.board{justify-content:space-around;align-items:flex-end;padding:28px 32px}
+.ph .board{flex-wrap:wrap;align-content:center;justify-content:center;gap:10px 14px}
+.guest{display:flex;flex-direction:column;align-items:center;gap:8px}
+.guest img{height:250px}
+.ph .guest img{height:130px}
+.duck{height:190px}
+.ph .duck{height:108px}
+.kids{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;justify-content:center;max-width:330px}
+.kids img{height:86px}
+.ph .kids{max-width:none;gap:6px}.ph .kids img{height:50px}
+.tray{justify-content:flex-end}
+.ph .tray{justify-content:stretch}
+.ph .tray .bk{width:100%}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-mis">
+  <div class="bgl blur f-bg-w1"></div>
+  <div class="hud"><button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button></div>
+  <div class="guide">
+    <div class="bub" aria-label="Łapki w górę, liczymy!"><img src="./v2/item-kaczuszka.webp" alt="">?</div>
+    <div class="krow"><img class="kub" src="./v2/kubik-happy.webp" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="guest"><img src="./v2/team-latka-pointing.webp" alt="Łatka"></div>
+    <img class="duck char" src="./img/duck.png" alt="">
+    <div class="kids" aria-label="kaczuszki">
+      <img class="char" src="./v2/item-kaczuszka.webp" alt=""><img class="char" src="./v2/item-kaczuszka.webp" alt="" style="transform: scaleX(-1)"><img class="char" src="./v2/item-kaczuszka.webp" alt=""><img class="char" src="./v2/item-kaczuszka.webp" alt="" style="transform: scaleX(-1)"><img class="char" src="./v2/item-kaczuszka.webp" alt="">
+    </div>
+  </div>
+  <div class="tray"><button class="bk c-g big" type="button">Graj!</button></div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>Гість місії: «Kaczuszki się zgubiły! Pomożesz je policzyć?» → Kubik: «Łapki w górę, liczymy!» (нова ідея: «Patrz, pokażę ci.» — до 20 с). Потім «Graj!».</dd>
+  <dt>Зони</dt><dd>HUD · Kubik із хмаринкою (лише картинка й «?») · сцена гостя на картці · «Graj!» окремо внизу праворуч (телефон — на всю ширину).</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): item-kaczuszka, kubik-happy, team-latka-pointing. Фон — bg-w1. Мама-качка — стара вирізка з фото (її немає в наборі).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720' },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

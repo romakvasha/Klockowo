@@ -11,6 +11,8 @@ import { sfx } from '../speech/sfx';
 import { tts } from '../speech/tts';
 import { useTts } from '../speech/useTts';
 import { useAppStore } from '../store';
+import { BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import styles from './PupChoice.module.css';
 
 /** Twój piesek (BRIEF §6.3, design etap1/16): голос «Wybierz swojego pieska!», 8 цуценят; дотик — коротка репліка («Kudłaty piesek!»),
@@ -51,6 +53,7 @@ export function PupChoice() {
 
   return (
     <main className={styles.page}>
+      <Backdrop src={BG_URL('start')} blur />
       <div className={styles.floor} aria-hidden="true" />
       <div className={styles.guide}>
         <SpeechBubble className={styles.bubble}>

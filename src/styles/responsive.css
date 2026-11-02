@@ -6,24 +6,22 @@
   --kl-btn: 72px;
   --kl-btn-icon: 40px;
   --kl-hud-h: 104px;
-  /* PlayButton (Start); на Wprowadzenie — size={120} */
-  --kl-play: 160px;
-  /* CheckButton «Gotowe» */
-  --kl-check-w: 120px;
-  --kl-check-h: 88px;
+  /* PlayButton (Start, висота; ширина 1,6 × висота — полотно D1); на Wprowadzenie — size={120} */
+  --kl-play: 120px;
+  /* CheckButton «Gotowe» (полотно D1: 168×104) */
+  --kl-check-w: 168px;
+  --kl-check-h: 104px;
   --kl-check-icon: 46px;
   /* AnswerTile (квадрат) і DigitCard (ширина = плитка, висота = 4/3) */
   --kl-tile: 120px;
   --kl-tile-digit: 72px;
-  /* ProgressBones: 6 слотів у ряд зі слотом-тлом */
+  /* ProgressBones: 6 кісточок 52×23 у ряд на білій картці (полотно D1 HUD) */
   --kl-bone-cols: 6;
-  --kl-bone-gap: 12px;
-  --kl-bone-slot-w: 60px;
-  --kl-bone-slot-h: 48px;
-  --kl-bone-slot-bg: var(--kl-surface-2);
-  --kl-bone-slot-r: 14px;
-  --kl-bone-icon-w: 44px;
-  --kl-bone-icon-h: 44px;
+  --kl-bone-gap: 10px;
+  --kl-bone-pad: 12px 20px;
+  --kl-bone-r: var(--kl-radius-panel);
+  --kl-bone-w: 52px;
+  --kl-bone-h: 23px;
   /* Kubik: висота фігури (BRIEF §7, §12: ПК 160–200, планшет 120–170, телефон 100) і масштаб бульбашки поруч */
   --kl-kubik-h: 184px;
   --kl-kubik-scale: 1;
@@ -61,7 +59,7 @@
   }
 }
 
-/* Телефон, портрет (390×844): кнопки 80, плитки 96, панель 112, кісточки 2 ряди по 3 */
+/* Телефон, портрет (390×844): кнопки 80, плитки 96, панель 112, кісточки 2 ряди по 3 (на полотні D1 — ряд 20×9 px; більші — щоб дитина бачила) */
 @media (max-width: 599px) {
   :root {
     --kl-btn: 80px;
@@ -74,13 +72,11 @@
     --kl-tile: 96px;
     --kl-tile-digit: 56px;
     --kl-bone-cols: 3;
-    --kl-bone-gap: 6px;
-    --kl-bone-slot-w: 34px;
-    --kl-bone-slot-h: 30px;
-    --kl-bone-slot-bg: transparent;
-    --kl-bone-slot-r: 0;
-    --kl-bone-icon-w: 34px;
-    --kl-bone-icon-h: 30px;
+    --kl-bone-gap: 6px 8px;
+    --kl-bone-pad: 8px 10px;
+    --kl-bone-r: 16px;
+    --kl-bone-w: 38px;
+    --kl-bone-h: 17px;
     --kl-kubik-h: 100px;
     --kl-kubik-scale: .55;
     --kl-pup-card: 150px;
@@ -89,7 +85,7 @@
   }
 }
 
-/* Телефон, альбом (844×390): бічна смуга замість панелі, плитки 88, кісточки — ряд 28 px угорі сцени */
+/* Телефон, альбом (844×390): бічна смуга замість панелі, плитки 88, кісточки — ряд 26 px угорі сцени */
 @media (max-height: 500px) and (orientation: landscape) {
   :root {
     --kl-btn: 80px;
@@ -101,13 +97,11 @@
     --kl-tile: 88px;
     --kl-tile-digit: 49px;
     --kl-bone-cols: 6;
-    --kl-bone-gap: 8px;
-    --kl-bone-slot-w: 32px;
-    --kl-bone-slot-h: 28px;
-    --kl-bone-slot-bg: transparent;
-    --kl-bone-slot-r: 0;
-    --kl-bone-icon-w: 32px;
-    --kl-bone-icon-h: 28px;
+    --kl-bone-gap: 6px;
+    --kl-bone-pad: 6px 10px;
+    --kl-bone-r: 14px;
+    --kl-bone-w: 32px;
+    --kl-bone-h: 14px;
     --kl-kubik-h: 120px; /* Kubik прихований; виїжджає лише для hint і together */
     --kl-kubik-scale: .65;
     --kl-pup-card: 120px;

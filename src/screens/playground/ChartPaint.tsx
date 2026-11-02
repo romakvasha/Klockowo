@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { PAINT_COLORS, type ChartCell } from '../../components/math/ChartGrid';
 import { IconButton } from '../../components/ui/IconButton';
+import { cssVars } from '../../components/ui/cx';
 import { PLAYGROUND } from '../../speech/lines';
 import { numberWords } from '../../speech/numberWords';
 import { sfx } from '../../speech/sfx';
@@ -38,13 +39,13 @@ export function ChartPaint() {
             role="radio"
             aria-checked={color === i}
             aria-label={`${PLAYGROUND.colour} ${numberWords(i + 1)}`}
-            className={`kl-block ${styles.swatch}`}
+            className={`kl-brick ${styles.swatch}`}
             data-active={color === i}
-            style={{ background: c }}
+            style={cssVars({ '--c': c, '--c-hi': `color-mix(in srgb, ${c} 65%, white)`, '--c-lo': `color-mix(in srgb, ${c} 88%, black)`, '--d': `color-mix(in srgb, ${c} 65%, black)` })}
             onClick={() => setColor(i)}
           />
         ))}
-        <IconButton icon="retry" label={PLAYGROUND.clear} variant="retry" size={72} onClick={() => setCells({})} />
+        <IconButton icon="retry" label={PLAYGROUND.clear} size={72} onClick={() => setCells({})} />
       </div>
     </div>
   );

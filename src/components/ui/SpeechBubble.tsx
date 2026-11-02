@@ -17,7 +17,7 @@ export interface SpeechBubbleProps {
   className?: string;
 }
 
-/** Бульбашка Kubika (BRIEF §7, design etap1/08): біла, контур 3, радіус 24, мін. висота 104. Хвостик виступає на 22 px під бульбашку. */
+/** Бульбашка Kubika (BRIEF §7, полотно D1): біла, без контуру (крім retry), радіус 22, м'яка тінь, мін. висота 104. Хвостик виступає на 22 px під бульбашку. */
 export function SpeechBubble({ variant = 'speech', tail = 'left', label, children, className }: SpeechBubbleProps) {
   return (
     <div

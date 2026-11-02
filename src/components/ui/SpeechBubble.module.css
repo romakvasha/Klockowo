@@ -1,8 +1,10 @@
+/* v2 (полотно D1 «Хмаринка й картка»): біла, без контуру, радіус 22, м'яка тінь разом із хвостиком */
 .bubble {
   --bubble-bg: var(--kl-surface);
-  --bubble-edge: var(--kl-ink);
+  --bubble-edge: transparent;
   position: relative;
   display: inline-flex;
+  filter: drop-shadow(0 8px 12px rgba(10, 30, 70, .18));
 }
 
 .talking {
@@ -13,7 +15,7 @@
   --bubble-bg: var(--kl-hub-50);
 }
 
-/* рамка #7F6CE0 (контраст ≥ 3:1); стрілку всередині фарбує той, хто її кладе */
+/* лише «спробуй ще» має рамку #7F6CE0 (контраст ≥ 3:1); стрілку всередині фарбує той, хто її кладе */
 .retry {
   --bubble-edge: var(--kl-retry-edge);
 }
@@ -29,7 +31,7 @@
   padding: 0 18px;
   background: var(--bubble-bg);
   border: 3px solid var(--bubble-edge);
-  border-radius: var(--kl-radius-panel);
+  border-radius: 22px;
   color: var(--kl-ink);
   font-family: var(--kl-font-display);
   font-weight: 700;

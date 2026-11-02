@@ -28,13 +28,8 @@
   position: absolute;
 }
 
+/* «вгору/вниз»: синя цеглинка з одним пупирцем, біла стрілка з контуром */
 .nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  color: var(--kl-ink);
-  background: var(--kl-secondary);
   border-radius: 20px;
 }
 

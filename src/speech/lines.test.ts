@@ -3,9 +3,9 @@ import {
   ANIMALS, OBJECTS,
 } from './nouns';
 import {
-  BREAK_EXERCISES, BUTTONS, FEEDBACK_LINES, FROM_COPY_9, GAME_PROMPTS, LEVEL_LINES, MISSION_LINES, PARENT, PRAISE, PUPS,
+  BUTTONS, FEEDBACK_LINES, FROM_COPY_9, GAME_PROMPTS, LEVEL_LINES, MISSION_LINES, PARENT, PRAISE, PUPS,
   SESSION_LINES, SPOKEN_LINES, START_LINES, WORLD_NAMES,
-  addSentence, bonesLabel, breakLine, bridgeTen, confirmClear, confuses, countByTens, countOnPraise, countTouch, feedAnimal,
+  addSentence, bonesLabel, bridgeTen, confirmClear, confuses, countByTens, countOnPraise, countTouch, feedAnimal,
   findNumber, frogJump, gateQuestion, houseQuestion, howManyMissing, pairSum, placeValue, praiseCorrect, praiseEcho,
   CHEST_LABELS, NODE_LABELS, flashReveal, quantityLine, WORLD_INTROS, changePlayerLabel, islandLabel, missionLine, profileMapLabel, stickerLabel, thereIs, tileLabel,
   twoGroups, whoHasMore,
@@ -64,12 +64,6 @@ describe('шаблони дають дослівно приклади з BRIEF',
     expect(twoGroups(1, 2, OBJECTS.gruszka)).toBe('Jedna gruszka i dwie gruszki. Ile razem?');
   });
 
-  it('§6.11: вправи перерви', () => {
-    expect(BREAK_EXERCISES.map((e) => breakLine(e.verb, e.n))).toEqual([
-      'Podskocz dziesięć razy!', 'Klaśnij pięć razy!', 'Tupnij osiem razy!',
-    ]);
-    expect(breakLine('Klaśnij', 1)).toBe('Klaśnij raz!');
-  });
 
   it('§6.14–15: бар’єр і панель батьків', () => {
     expect(gateQuestion(7, 8)).toBe('Wpisz wynik: siedem razy osiem');

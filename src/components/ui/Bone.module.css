@@ -3,24 +3,24 @@
   overflow: visible;
 }
 
+/* як повна кісточка в ProgressBones: жовта, темно-золотий контур, світла смужка */
 .shape {
-  fill: var(--kl-reward);
-  stroke: var(--kl-ink);
+  fill: var(--kl-brick-yellow);
+  stroke: var(--kl-brick-yellow-out);
   stroke-width: 2.6;
   stroke-linejoin: round;
 }
 
 .bone[data-empty='true'] .shape {
-  fill: none;
-  stroke: var(--kl-ink-soft);
+  fill: var(--kl-brick-pale);
+  stroke: var(--kl-brick-grey-edge);
   stroke-width: 2.2;
   stroke-dasharray: 3.5 3;
 }
 
 .shine {
   fill: none;
-  stroke: #fff;
-  stroke-opacity: .7;
+  stroke: var(--kl-brick-yellow-stud);
   stroke-width: 2;
   stroke-linecap: round;
 }

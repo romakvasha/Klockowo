@@ -2,7 +2,19 @@
   display: block;
   width: min(600px, 84vw);
   height: auto;
-  aspect-ratio: 818 / 146;
+  aspect-ratio: 552 / 94;
+  overflow: visible;
+  filter: drop-shadow(0 8px 10px rgba(10, 30, 70, .25));
   user-select: none;
-  -webkit-user-drag: none;
+  -webkit-user-select: none;
+}
+
+.letter {
+  font-family: var(--kl-font-display);
+  font-size: 44px;
+  font-weight: 700;
+  text-anchor: middle;
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+  paint-order: stroke;
 }

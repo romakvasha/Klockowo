@@ -1,4 +1,4 @@
-/* Start (design etap1/14–15): небо W3-50, логотип зверху, «Graj!» чи аватари в центрі, «Baza Drużyny» з Kubikom унизу. */
+/* Start (design etap1/14–15, D5 — фото села bg-start): логотип зверху, «Graj!» чи аватари в центрі, «Baza Drużyny» з Kubikom унизу. */
 .start {
   --base-h: min(clamp(220px, 79vh, 570px), 112vw);
   position: relative;
@@ -9,31 +9,6 @@
   overflow: hidden;
   background: var(--kl-w3-50);
   isolation: isolate;
-}
-
-.cloud {
-  position: absolute;
-  z-index: 0;
-  height: auto;
-  pointer-events: none;
-}
-
-.cloudA {
-  top: 21vh;
-  left: 5.5vw;
-  width: min(190px, 24vw);
-}
-
-.cloudB {
-  top: 28vh;
-  right: 8vw;
-  width: min(150px, 20vw);
-}
-
-.cloudC {
-  top: 10vh;
-  right: 27vw;
-  width: min(110px, 14vw);
 }
 
 .gear {
@@ -106,19 +81,21 @@
 
 .base {
   position: absolute;
-  bottom: calc(var(--base-h) * -.316);
+  bottom: 12px;
   left: 50%;
-  width: calc(var(--base-h) * .9123);
-  height: var(--base-h);
+  width: calc(var(--base-h) * .7);
+  height: calc(var(--base-h) * .6);
+  object-fit: contain;
+  object-position: 50% 100%;
   transform: translateX(-50%);
   pointer-events: none;
 }
 
-/* Kubik стоїть ліворуч у «будиночка», трохи вище нижнього краю; бульбашка — над ним */
+/* Kubik стоїть ліворуч від «будиночка» (картинка base-druzyna 783×667), на тій самій землі; бульбашка — над ним */
 .kubik {
   position: absolute;
-  bottom: calc(var(--base-h) * .08);
-  left: calc(50% - var(--base-h) * .4562 + 20px);
+  bottom: 12px;
+  left: calc(50% - var(--base-h) * .35 - var(--kl-kubik-h) * .7);
   display: flex;
   align-items: flex-end;
 }
@@ -171,9 +148,5 @@
   .bubble {
     left: calc(var(--kl-kubik-h) * .7);
     transform-origin: left bottom;
-  }
-
-  .cloudC {
-    display: none;
   }
 }

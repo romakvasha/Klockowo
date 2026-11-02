@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { AnswerTile, CheckButton, DigitCard, type TileState } from '../../components/ui';
+import { AnswerTile, CheckButton, DigitCard, type BrickColor, type TileState } from '../../components/ui';
 import { FEEDBACK_LINES, praiseEcho } from '../../speech/lines';
 import { numberWords } from '../../speech/numberWords';
 import { sfx } from '../../speech/sfx';
 import { tts } from '../../speech/tts';
 import { Cell, DevButton, Hint, Row, Section, Sub } from './UiSection';
 import styles from './Ui.module.css';
+
+const CARD_COLORS: readonly BrickColor[] = ['red', 'yellow', 'blue', 'green', 'orange', 'purple'];
 
 /** Мініатюрне завдання на «Policz i dotknij»: вибір плитки озвучує число, перевіряє лише «Gotowe» (BRIEF §7). */
 function PlayDemo() {
@@ -66,18 +68,21 @@ export function TilesSection() {
   const [replay, setReplay] = useState(0);
   return (
     <>
-      <Section title="AnswerTile — стани" note="120×120 · радіус 20 · цифра 72 · контур 3 px ink · край #E3CFA8">
+      <Section title="AnswerTile — стани" note="120×120 · синя цеглинка, 2 пупирці · цифра 72, біла з темним контуром · тло — як сцена гри">
+        <div className={styles.stage}>
         <Row key={replay}>
           <Cell caption="default"><AnswerTile value={6} /></Cell>
           <Cell caption="pressed"><AnswerTile value={6} data-demo="pressed" /></Cell>
-          <Cell caption="selected · кільце 4 px"><AnswerTile value={7} state="selected" /></Cell>
+          <Cell caption="selected · піднята, біла рамка, крапка"><AnswerTile value={7} state="selected" /></Cell>
           <Cell caption="correct · зелена + галочка"><AnswerTile value={7} state="correct" /></Cell>
-          <Cell caption="retry · вміст 40 %, рамка 100 %"><AnswerTile value={8} state="retry" /></Cell>
-          <Cell caption="locked"><AnswerTile value={30} state="locked" /></Cell>
+          <Cell caption="retry · бліда, вміст 40 %, рамка й стрілка 100 %"><AnswerTile value={8} state="retry" /></Cell>
+          <Cell caption="locked · сіра, замок"><AnswerTile value={30} state="locked" /></Cell>
           <Cell caption="dragging ×1,1"><AnswerTile value={6} state="dragging" /></Cell>
           <Cell caption="focus-visible"><AnswerTile value={6} data-demo="focus" /></Cell>
           <Cell caption="highlighted (підказка)"><AnswerTile value={6} state="highlighted" /></Cell>
+          <Cell caption="selected + focus-visible"><AnswerTile value={7} state="selected" data-demo="focus" /></Cell>
         </Row>
+        </div>
         <div className={styles.controls}>
           <DevButton onClick={() => setReplay((n) => n + 1)}>▶ показати анімації correct / retry знову</DevButton>
         </div>
@@ -94,7 +99,7 @@ export function TilesSection() {
           <Cell caption="W1 · 7 = 5 + 2"><AnswerTile value={7} dots={7} /></Cell>
           <Cell caption="W4–W7 · 47"><AnswerTile value={47} places /></Cell>
           <Cell caption="W4–W7 · 30"><AnswerTile value={30} places /></Cell>
-          <Cell caption="розряди + correct: цифри ink"><AnswerTile value={47} places state="correct" /></Cell>
+          <Cell caption="розряди + correct: цифри білі"><AnswerTile value={47} places state="correct" /></Cell>
         </Row>
         <Sub>Розміри плитки: 1440×900 · 1024×768 · база 1280×720 · 390×844 · 844×390</Sub>
         <Row>
@@ -105,12 +110,12 @@ export function TilesSection() {
           <Cell caption="88 · цифра 49"><AnswerTile value={9} size={88} digit={49} /></Cell>
         </Row>
         <Hint>
-          Двоцифрові: десятки #1A4FA0, одиниці #A34700 — лише на білій плитці; у correct (зелена заливка) обидві цифри стають ink.
+          Двоцифрові: десятки #1A4FA0, одиниці #A34700 — лише на білій цеглинці; у correct (зелена цеглинка) обидві цифри стають білими з контуром.
           Справжній розмір плитки на цій сторінці залежить від ширини вікна (--kl-tile); нижня галерея показує всі п'ять в'юпортів.
         </Hint>
       </Section>
 
-      <Section title="DigitCard" note="120×160 · радіус 20 · цифра 110 · картки цифр, доріжка, «Cyfra i obrazek», картка в лапах Kubika">
+      <Section title="DigitCard" note="120×160 · 1 пупирець · цифра 110 · картки цифр, доріжка, «Cyfra i obrazek», картка в лапах Kubika">
         <Row>
           <Cell caption="default"><DigitCard value={8} /></Cell>
           <Cell caption="highlighted · підказка / показ"><DigitCard value={8} state="highlighted" /></Cell>
@@ -120,6 +125,12 @@ export function TilesSection() {
           <Cell caption="W1 · цифра + крапки кубика"><DigitCard value={6} dots={6} /></Cell>
           <Cell caption="0 — «zero» (W2)"><DigitCard value={0} /></Cell>
           <Cell caption="30 · розряди (W5–W6)"><DigitCard value={30} places /></Cell>
+        </Row>
+        <Sub>Кольори карток (полотно D1 «Картки цифр»: проп color)</Sub>
+        <Row>
+          {CARD_COLORS.map((color, n) => (
+            <Cell key={color} caption={color}><DigitCard value={n} color={color} size={72} /></Cell>
+          ))}
         </Row>
         <Hint>Перетягування завжди можна замінити двома дотиками: торкнутися предмета, потім місця.</Hint>
       </Section>

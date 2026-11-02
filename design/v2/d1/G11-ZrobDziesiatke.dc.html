@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Zrób dziesiątkę</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.tf{display:grid;grid-template-columns:repeat(5,104px);grid-template-rows:repeat(2,104px);gap:8px;padding:12px;border-radius:22px;background:#2B2A4A;box-shadow:0 0 0 10px #FFD95A,0 0 40px 18px rgba(255,207,31,.65)}
+.ph .tf{grid-template-columns:repeat(5,52px);grid-template-rows:repeat(2,52px);gap:5px;padding:7px;border-radius:14px;box-shadow:0 0 0 6px #FFD95A,0 0 24px 10px rgba(255,207,31,.65)}
+.cell{border-radius:14px;background:#F4F7FB;display:grid;place-items:center}
+.ph .cell{border-radius:8px}
+.cell i{width:72%;height:72%;border-radius:50%;box-shadow:inset 0 -6px 0 rgba(0,0,0,.2),inset 0 5px 0 rgba(255,255,255,.4)}
+.cell i.a{background:var(--red)}
+.cell i.b{background:var(--blu);outline:4px dashed #fff;outline-offset:-10px}
+.ph .cell i.b{outline-width:3px;outline-offset:-6px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl f-bg-w3"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 6 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Siedem i trzy to dziesięć.">7 + 3 = 10</div>
+    <div class="krow"><img class="kub" src="./v2/kubik-happy.webp" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="tf" role="img" aria-label="ramka dziesiątki: siedem i trzy">
+      <sc-for list="{{f.cells}}" as="c" hint-placeholder-count="10"><span class="cell"><i class="{{c.k}}"></i></span></sc-for>
+    </div>
+  </div>
+  <div class="tray">
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="dwa">2</button></span>
+    <span class="tw ok"><button class="bk c-b tile one" type="button" aria-label="trzy — dobrze">3</button><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></span>
+    <span class="tw"><button class="bk c-b tile one" type="button" aria-label="cztery">4</button></span>
+    <button class="bk c-o done" type="button" aria-label="Gotowe" disabled style="opacity: 0.55"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Ile brakuje do dziesięciu?» → «Siedem i trzy to dziesięć.»</dd>
+  <dt>Стан</dt><dd>Правильно: 3 нові фішки (сині з білим пунктиром — відрізняються й не лише кольором) доповнили рамку, повна рамка спалахує золотим; шоста кісточка в слоті → далі «Koniec poziomu».</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-happy. Фон — bg-w3. Немає: рамка-десятка й фішки малюються кодом.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const d = {
+      bones: [0, 1, 2, 3, 4, 5].map(() => ({ src: 'bone-full' })),
+      cells: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({ k: i < 7 ? 'a' : 'b' })),
+    };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

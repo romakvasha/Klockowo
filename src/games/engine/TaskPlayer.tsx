@@ -252,7 +252,6 @@ function PlaceholderTaskView({ level, task, filled, onSolved, onMap }: Omit<Task
           <IconButton
             icon="next"
             label={BUTTONS.next}
-            variant="primary"
             size={88}
             onClick={() => onSolved({ outcome: 'first', entry: null, minutes: 0, taps: NO_TAPS })}
           />

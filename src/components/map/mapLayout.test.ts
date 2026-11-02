@@ -95,11 +95,11 @@ describe('портретна розкладка', () => {
 });
 
 describe('масштаб і орієнтація', () => {
-  it('сцена вміщається, але не збільшується понад 1: 1440×900 → 1; 1024×768 → 0,8; 844×390 → 0,5417', () => {
+  it('сцена вміщається, але не збільшується понад 1: 1440×900 → 1; 1024×768 → 0,8; 844×390 → 0,47 (між бічними колонками панелі)', () => {
     expect(landscapeScale(1440, 900)).toBe(1);
     expect(landscapeScale(1280, 720)).toBe(1);
     expect(landscapeScale(1024, 768)).toBeCloseTo(0.8, 10);
-    expect(landscapeScale(844, 390)).toBeCloseTo(390 / 720, 10);
+    expect(landscapeScale(844, 390)).toBeCloseTo((844 - 240) / 1280, 10);
     expect(landscapeScale(0, 0)).toBe(1);
   });
 

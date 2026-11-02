@@ -111,32 +111,23 @@ span.box {
   top: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px; /* пупирці нижньої цеглинки (9 px) не торкаються краю верхньої (7 px) */
   justify-content: center;
   height: 100%;
 }
 
-/* «+10» і «+1»: блокові кнопки 96 px у кольорах розрядів */
+/* «+10» — синя цеглинка (десятки), «+1» — помаранчева (одиниці), як кольори розрядів; значки білі з контуром */
 .add {
+  width: 96px;
+  height: 96px;
+  border-radius: 20px;
+}
+
+.add > span {
   display: flex;
   gap: 2px;
   align-items: center;
   justify-content: center;
-  width: 96px;
-  height: 96px;
-  padding: 0;
-  color: var(--kl-ink);
-  border-radius: 20px;
-}
-
-.add[data-place='tens'] {
-  --edge: var(--kl-tens-digit);
-  background: var(--kl-tens);
-}
-
-.add[data-place='ones'] {
-  --edge: var(--kl-ones-digit);
-  background: var(--kl-ones);
 }
 
 .add:disabled {

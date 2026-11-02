@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { setLanguage } from '../../language';
 import {
-  BREAK_EXERCISES, BUTTONS, NO_VOICE_MESSAGE, PUPS, WORLD_NAMES, bonesLabel, breakLine, bridgeTen, countLabel, countOnPraise, countTouch, feedAnimal,
+  BUTTONS, NO_VOICE_MESSAGE, PUPS, WORLD_NAMES, bonesLabel, bridgeTen, countLabel, countOnPraise, countTouch, feedAnimal,
   flashReveal, frogJump, houseQuestion, howManyMissing, missionLine, neighborAnswer, neighborQuestion, pairSum, paintDigit, placeValue, praiseCorrect,
   rocketFlight, startFrom, sumQuestion, thereIs, tileLabel, twoGroups, wagonLabel,
 } from '../../lines';
@@ -90,7 +90,6 @@ describe('українська: шаблони', () => {
     expect(neighborAnswer(34, -1)).toBe('Тридцять чотири, на один менше — це тридцять три.');
     expect(rocketFlight(34, 10)).toBe('Ракета на числі тридцять чотири. Вона летить на десять далі. Де вона приземлиться?');
     expect(frogJump(4, 3)).toBe('Жабка на числі чотири. Вона стрибає три рази. Де вона опиниться?');
-    expect(BREAK_EXERCISES.map((e) => breakLine(e.verb, e.n))).toEqual(['Підстрибни десять разів!', "Плесни в долоні п'ять разів!", 'Тупни ногою вісім разів!']);
   });
 
   it('підписи: плитка, вагон, кісточки', () => {

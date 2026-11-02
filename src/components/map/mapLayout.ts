@@ -9,7 +9,7 @@ export type MapOrientation = 'landscape' | 'portrait';
 export interface MapLayout {
   width: number;
   height: number;
-  /** Розмір коробки острова (картинка island-*.svg має пропорцію 208 : 228). */
+  /** Розмір коробки острова (картинка острова вписується й стоїть на низу). */
   island: { w: number; h: number };
   /** Множник відносно борда (190×208): розміри прапорця, сяйва, Kubika на картингу. */
   scale: number;
@@ -117,8 +117,13 @@ export function layoutFor(orientation: MapOrientation): MapLayout {
 }
 
 /** Масштаб сцени 1280×720 у вікні: вміщається повністю, але не більше 1 (на широких екранах боки — тло світу). */
+/** Дві бічні колонки панелі мапи на телефоні в альбомі: кнопка 80 + край 24 + проміжок 16 з кожного боку. */
+export const MAP_SIDE_COLUMNS = 2 * (80 + 24 + 16);
+
 export function landscapeScale(viewportW: number, viewportH: number): number {
-  const s = Math.min(1, viewportW / LANDSCAPE.width, viewportH / LANDSCAPE.height);
+  // телефон в альбомі (висота ≤ 500): панель стає двома бічними колонками (аватар | «Naklejki» і шестерня) — сцена між ними (D3)
+  const sides = viewportH <= 500 ? MAP_SIDE_COLUMNS : 0;
+  const s = Math.min(1, (viewportW - sides) / LANDSCAPE.width, viewportH / LANDSCAPE.height);
   return Number.isFinite(s) && s > 0 ? s : 1;
 }
 

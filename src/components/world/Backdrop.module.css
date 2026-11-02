@@ -1,0 +1,30 @@
+/* Фото-фон (полотно D1 kl.css .bgl): фіксований шар під екраном; розмитий — ширший на 30 px, щоб краї не просвічували. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: center / cover no-repeat;
+}
+
+.backdrop[data-blur='true'] {
+  inset: -30px;
+  filter: blur(10px) saturate(1.08) brightness(1.05);
+}
+
+/* мапа пригод — небо (D1 .f-air) */
+.backdrop[data-sky='true'] {
+  background-image: linear-gradient(180deg, #6DBDF7 0%, #A9DBFF 60%, #DDF1FF 100%);
+}
+
+/* затемнення країв для контрасту кнопок і карток */
+.backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 52%, rgba(10, 30, 70, .3));
+}
+
+.backdrop[data-sky='true']::after {
+  display: none;
+}

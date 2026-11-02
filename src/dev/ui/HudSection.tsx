@@ -70,7 +70,7 @@ function HudDemo() {
         arriving={arriving}
         listenPulse={pulse}
         onListen={listen}
-        stripExtra={<IconButton icon="bulb" label={BUTTONS.help} variant="hint" />}
+        stripExtra={<IconButton icon="bulb" label={BUTTONS.help} />}
       />
       <div className={styles.controls} style={{ padding: '0 24px 24px' }}>
         <DevButton onClick={addBone}>{filled >= 6 ? '↻ спочатку' : '＋ кісточка долітає'}</DevButton>
@@ -83,15 +83,15 @@ function HudDemo() {
 export function HudSection() {
   return (
     <>
-      <Section title="HUD · ProgressBones" note="панель 104 (телефон 112) · кнопки 72 / 80 · 6 слотів по центру · відступи ≥ 24 px">
+      <Section title="HUD · ProgressBones" note="прозора панель 104 (телефон 112) · «Mapa» помаранчева, «Posłuchaj» синя · 6 кісточок на білій картці">
         <HudDemo />
         <Hint>
-          Розкладка залежить від вікна: на ПК слоти 60×48 у ряд; до 600 px (телефон) — 2 ряди по 3; у 844×390 (альбом) панель стає
-          бічною смугою 128 px із «Mapa», «Posłuchaj», «Pomóż mi», а кісточки — рядом 28 px угорі сцени. Усі п'ять в'юпортів — у галереї внизу.
+          Розкладка залежить від вікна: на ПК кісточки 52×23 у ряд; до 600 px (телефон) — 2 ряди по 3; у 844×390 (альбом) панель стає
+          бічною смугою 128 px із «Mapa», «Posłuchaj», «Pomóż mi», а кісточки — рядом 26 px угорі сцени. Усі п'ять в'юпортів — у галереї внизу.
         </Hint>
         <Row>
-          <Cell caption="empty · слот surface-2, пунктир ink-soft"><ProgressBones total={1} filled={0} /></Cell>
-          <Cell caption="filled · reward + контур ink"><ProgressBones total={1} filled={1} /></Cell>
+          <Cell caption="empty · бліда, сірий пунктир"><ProgressBones total={1} filled={0} /></Cell>
+          <Cell caption="filled · жовта, золотий контур"><ProgressBones total={1} filled={1} /></Cell>
           <Cell caption="arriving · слот підсвічено, посадка"><ProgressBones total={1} filled={1} arriving={0} /></Cell>
           <Cell caption="початок рівня · 0 / 6"><ProgressBones filled={0} /></Cell>
           <Cell caption="3-тя долітає · 3 / 6"><ProgressBones filled={3} arriving={2} /></Cell>
@@ -100,7 +100,7 @@ export function HudSection() {
         <Hint>Слотів завжди 6: кісточку дають і після «показу разом». Лише одна кісточка летить за раз. Кісточки не інтерактивні.</Hint>
       </Section>
 
-      <Section title="SpeechBubble — лише іконки або цифри" note="біла, контур 3, радіус 24, мін. висота 104 · хвостик до рота Kubika">
+      <Section title="SpeechBubble — лише іконки або цифри" note="біла, без контуру, радіус 22, м'яка тінь · мін. висота 104 · хвостик до рота Kubika">
         <div className={styles.bubbles}>
           <Bubble caption="число + крапки кубика">
             <Digits value={5} style={{ height: 64 }} />
@@ -115,6 +115,9 @@ export function HudSection() {
           </Bubble>
           <Bubble caption="talking — Kubik говорить" variant="talking">
             <Icon name="speaker" size={56} />
+          </Bubble>
+          <Bubble caption="retry — фіолетова рамка" variant="retry">
+            <span style={{ fontSize: 60 }}>?</span>
           </Bubble>
           <Bubble caption="хвостик справа" tail="right">
             <Digits value={47} style={{ height: 64 }} />

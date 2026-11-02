@@ -81,7 +81,7 @@ function Face({ kind, count, object, seed, inner, world }: Pick<SetCardProps, 'k
   return dots ? <DotCard layout={dots} face="front" size={inner} world={world} label="" bare className={styles.dots} /> : null;
 }
 
-/** Набір-картинка «Cyfra i obrazek»: кнопка з білою карткою; у лівому куті позначка пари, внизу праворуч лічильник підказки. Нічого не залежить від hover. */
+/** Набір-картинка «Cyfra i obrazek»: біла цеглинка v2 без пупирців (у куті — позначка пари); у лівому куті позначка пари, внизу праворуч лічильник підказки. Нічого не залежить від hover. */
 export function SetCard({ kind, count, object, seed, size, world, pair, linked = false, state = 'idle', focus = false, counted = null, celebrate = false, disabled = false, label, onPress }: SetCardProps) {
   const color = PAIR_COLORS[((pair % PAIR_COLORS.length) + PAIR_COLORS.length) % PAIR_COLORS.length]!;
   const pad = Math.round(size * PAD);
@@ -93,7 +93,8 @@ export function SetCard({ kind, count, object, seed, size, world, pair, linked =
       type="button"
       aria-label={label}
       aria-pressed={state === 'idle' || state === 'selected' ? state === 'selected' : undefined}
-      className={cx('kl-block', styles.card)}
+      className={cx('kl-brick', styles.card)}
+      data-brick="white"
       data-state={state}
       data-linked={linked}
       data-focus={focus}

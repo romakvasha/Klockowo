@@ -1,15 +1,18 @@
-// Базові UI-компоненти (M3). Розмір за в'юпортом — styles/responsive.css, рух — styles/motion.css, «блоковий» вигляд — styles/block.css.
+// Базові UI-компоненти (M3, вигляд v2 — D2b). Розмір за в'юпортом — styles/responsive.css, рух — styles/motion.css, глянцеві цеглинки — styles/brick.css.
 export { AnswerTile, type AnswerTileProps } from './AnswerTile';
 export { AvatarButton, type AvatarButtonProps } from './AvatarButton';
 export { BONES_PER_LEVEL } from './boneStates';
+export { ACTION_COLOR, BRICK_COLORS, actionColor, type BrickColor } from './brick';
 export { CheckButton, type CheckButtonProps } from './CheckButton';
 export { DigitCard, type DigitCardProps } from './DigitCard';
 export { Digits, type DigitsProps } from './Digits';
+export { DiligenceBadge } from './DiligenceBadge';
 export { Dots, type DotsProps } from './Dots';
 export { HUD, type HudProps } from './HUD';
 export { Icon, type IconProps } from './Icon';
 export { ICON_NAMES, type IconName } from './icons';
-export { IconButton, type IconButtonProps, type IconButtonVariant } from './IconButton';
+export { IconButton, type IconButtonProps } from './IconButton';
+export { Logo } from './Logo';
 export { Overlay, type OverlayProps } from './Overlay';
 export { PlayButton, type PlayButtonProps } from './PlayButton';
 export { ProgressBones, type ProgressBonesProps } from './ProgressBones';

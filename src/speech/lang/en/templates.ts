@@ -66,5 +66,4 @@ export const EN_TEMPLATES: LineTemplates = {
   neighborAnswer: (base, delta) => `${cap(nw(base))}, ${byWord(delta)} ${delta > 0 ? 'more' : 'less'} is ${nw(base + delta)}.`,
   placeValue: (n) => `${cap(quantity(Math.floor(n / 10), EN_NOUNS.DZIESIATKA))} and ${quantity(n % 10, EN_NOUNS.JEDNOSC)} make ${nw(n)}.`,
   findNumber: (n) => `Find the number ${nw(n)}.`,
-  breakLine: (verb, n) => `${verb} ${times(n)}!`,
 };

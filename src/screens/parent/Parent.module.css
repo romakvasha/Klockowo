@@ -269,6 +269,25 @@
   color: var(--kl-ink);
 }
 
+/* Телефон в альбомі (844×390): дві зони — питання, відповідь і «назад» ліворуч, клавіатура праворуч (D3) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .gate {
+    display: grid;
+    grid-template-columns: minmax(0, 360px) auto;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, auto);
+    column-gap: 48px;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+  }
+
+  .gate > :nth-child(4) {
+    grid-row: 1 / span 4;
+    grid-column: 2;
+  }
+}
+
 /* Profile, підтвердження */
 .profileList {
   display: flex;

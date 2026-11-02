@@ -9,6 +9,7 @@
   padding: var(--kl-edge-safe);
   background: var(--world, var(--kl-hub-50));
   overflow: hidden;
+  isolation: isolate;
 }
 
 .doneStage {
@@ -52,6 +53,7 @@
   min-height: 100dvh;
   padding: var(--kl-edge-safe);
   background: var(--kl-hub-50);
+  isolation: isolate;
 }
 
 .bar {
@@ -63,8 +65,12 @@
 
 .title {
   margin: 0;
+  padding: 6px 20px;
   font: 700 clamp(26px, 5vw, 40px) / 1.1 var(--kl-font-display);
   color: var(--kl-ink);
+  background: var(--kl-card);
+  border-radius: var(--kl-radius-panel);
+  box-shadow: var(--kl-card-shadow);
 }
 
 .tabs {
@@ -75,19 +81,24 @@
 }
 
 /* вкладка світу: кругла блокова кнопка 72 px з іконкою світу; активна — кільце (не лише колір) */
+/* вкладка — кругла цеглинка кольору світу (D5); «Scena» — жовта. Вибрана — біло-темне кільце (не лише колір) */
 .tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 72px;
   height: 72px;
-  padding: 0;
-  color: var(--kl-ink);
-  border-radius: 50%;
+  border-radius: var(--kl-radius-round);
+}
+
+.tab:not([data-brick]) {
+  --c: var(--w);
+  --c-hi: color-mix(in srgb, var(--w) 70%, #fff);
+  --c-lo: color-mix(in srgb, var(--w) 82%, #000);
+  --s: color-mix(in srgb, var(--w) 55%, #fff);
+  --d: var(--w-edge);
+  --o: var(--w-edge);
 }
 
 .tab[data-active='true'] {
-  box-shadow: 0 0 0 4px var(--kl-surface), 0 0 0 8px var(--kl-ink);
+  --kl-ring: 0 0 0 5px var(--kl-surface), 0 0 0 9px var(--kl-ink);
 }
 
 .tab svg {
@@ -192,13 +203,8 @@
 }
 
 .pick {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 80px;
   height: 80px;
-  padding: 0;
-  border-radius: 20px;
 }
 
 .pick img {
@@ -207,7 +213,7 @@
 }
 
 .pick[data-selected='true'] {
-  box-shadow: 0 0 0 4px var(--kl-surface), 0 0 0 8px var(--kl-secondary-edge);
+  --kl-ring: 0 0 0 5px var(--kl-surface), 0 0 0 9px var(--kl-secondary-edge);
 }
 
 .badgeCell {

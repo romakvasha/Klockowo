@@ -55,7 +55,8 @@ export function PupPicker({ value, onPick, className }: PupPickerProps) {
               aria-label={pupLabel(pup.id)}
               tabIndex={index === tabStop ? 0 : -1}
               data-selected={selected}
-              className={cx('kl-block', styles.card)}
+              data-brick="white"
+              className={cx('kl-brick', styles.card)}
               style={cssVars({ '--tint': `var(--kl-${PUP_TINTS[pup.id]}-50)` })}
               onClick={() => onPick(pup.id)}
               onPointerDown={pressHandler(false, false)}

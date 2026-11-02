@@ -1,27 +1,36 @@
-/* Значок стану в правому верхньому куті плитки (design etap1/07: 44 px, виступає на 14 px).
-   Позиція враховує 3 px контуру батьківської кнопки. */
+/* Значок стану в правому верхньому куті плитки (полотно D1: кругла наліпка з білим знаком і білою облямівкою, виступає над кутом). */
 .badge {
   position: absolute;
-  top: -17px;
-  right: -17px;
+  z-index: 1; /* над пупирцями плитки */
+  top: -14px;
+  right: -14px;
   width: 44px;
   height: 44px;
   overflow: visible;
   pointer-events: none;
+  filter: drop-shadow(0 3px 0 rgba(10, 30, 70, .25));
 }
 
 .ring {
-  fill: var(--kl-surface);
-  stroke: var(--kl-ink);
+  stroke: var(--kl-surface);
   stroke-width: 3;
 }
 
+.ringOk {
+  fill: var(--kl-brick-green-edge);
+}
+
+.ringChosen {
+  fill: var(--kl-brick-blue-edge);
+}
+
 .ringRetry {
-  stroke: var(--kl-retry-edge);
+  fill: var(--kl-retry-edge);
 }
 
 .tick {
   fill: none;
+  stroke: var(--kl-surface);
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -30,24 +39,16 @@
   animation: var(--kl-anim-draw) 250ms var(--kl-ease-out) 100ms both;
 }
 
-.tickOk {
-  stroke: var(--kl-success-edge);
-}
-
-.tickChosen {
-  stroke: var(--kl-secondary-edge);
-}
-
 .arc {
   fill: none;
-  stroke: var(--kl-retry-edge);
+  stroke: var(--kl-surface);
   stroke-width: 4;
   stroke-linecap: round;
 }
 
 .head {
-  fill: var(--kl-retry-edge);
-  stroke: var(--kl-retry-edge);
+  fill: var(--kl-surface);
+  stroke: var(--kl-surface);
   stroke-width: 2;
   stroke-linejoin: round;
 }

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Mapa przygody</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-map{grid-template-rows:var(--hb) minmax(0,1fr);grid-template-areas:"hud" "map"}
+.hud .r{display:flex;gap:16px;align-items:center}
+.me{width:var(--hb);height:var(--hb);border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 6px var(--red),0 6px 0 6px var(--red-d)}
+.me img{width:76%;height:76%}
+.map{grid-area:map;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:16px 24px;padding:8px 8px 0}
+.ph .map{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:12px}
+.isl{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;border:0;background:none;padding:0;cursor:pointer}
+.isl .col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.disc{position:relative;width:176px;height:150px;border-radius:50% / 46%;display:grid;place-items:center;background:var(--c) center/cover no-repeat;
+ box-shadow:inset 0 10px 0 rgba(255,255,255,.35),inset 0 -14px 0 rgba(0,0,0,.18),0 12px 0 color-mix(in srgb,var(--c),#000 30%),0 20px 22px rgba(10,30,70,.3)}
+.disc img.ic{width:64px;height:64px}
+.disc.photo{background-image:url(img/p22.jpg);background-size:260% auto;background-position:22% 60%}
+.lock .disc{--c:#A9B2C0;filter:saturate(.2)}
+.lock .disc img.ic{opacity:.75}
+.nm{padding:6px 14px;border-radius:999px;background:var(--card);font:700 18px/1.1 var(--fd);color:var(--ink);box-shadow:0 4px 10px rgba(10,30,70,.2);white-space:nowrap}
+.ph .disc{width:100px;height:88px}.ph .disc img.ic{width:40px;height:40px}
+.ph .nm{font-size:14px;padding:4px 10px}
+.isl .badge{right:auto;left:calc(50% + 52px);top:-6px}
+.ph .isl .badge{left:calc(50% + 30px)}
+.isl-img{height:170px}
+.ph .isl-img{height:96px}
+.isl .kart{height:150px}
+.ph .isl .kart{height:76px}
+.isl .stub{position:absolute;left:50%;transform:translateX(-50%);bottom:-26px}
+.ph .isl .stub{bottom:-20px;font-size:10px;padding:2px 6px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-map">
+  <div class="bgl f-air"></div>
+  <div class="hud">
+    <span class="me" role="img" aria-label="Ola"><img src="./v2/pup-papillon.webp" alt=""></span>
+    <div class="r">
+      <button class="bk c-p rnd hb" type="button" aria-label="Naklejki"><img src="./i/w-stickers.svg" alt=""></button>
+      <button class="chip" type="button" aria-label="Strefa rodzica — przytrzymaj 3 sekundy"><img src="./i/k-gear.svg" alt=""></button>
+    </div>
+  </div>
+  <div class="map">
+    <sc-for list="{{f.isl}}" as="w" hint-placeholder-count="8">
+      <button class="isl {{w.st}}" type="button" style="grid-area: {{w.ga}}" aria-label="{{w.aria}}">
+        <span class="col">
+          <img class="isl-img char" src="./v2/{{w.img}}.webp" alt="">
+          <span class="nm">{{w.name}}</span>
+        </span>
+        <sc-if value="{{w.done}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if>
+        <sc-if value="{{w.locked}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--ink)"><img src="./i/w-lock.svg" alt=""></span></sc-if>
+        <sc-if value="{{w.here}}" hint-placeholder-val="{{ false }}"><img class="kart char" src="./v2/kubik-on-kart.webp" alt="Kubik"></sc-if>
+        <sc-if value="{{w.stub}}" hint-placeholder-val="{{ false }}"><span class="stub">{{w.stub}}</span></sc-if>
+      </button>
+    </sc-for>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Що показано</dt><dd>7 островів уздовж стежки + «Plac Zabaw» біля бази. W1 пройдено (галочка), W2 — поточний (Kubik поруч), W3–W7 заблоковані: сірий камінь + замок + іконка світу. Угорі: аватар дитини, «Naklejki», шестерня. Загального лічильника кісточок немає.</dd>
+  <dt>Телефон</dt><dd>Острови зигзагом у 2 колонки знизу вгору; мапа гортається вертикально.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): island-hub, island-locked, island-w1, island-w2, kubik-on-kart, pup-papillon. Фон — небо кодом (мапа з островами — D5).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const base = [
+      { k: 'hub', name: 'Plac Zabaw', c: '#FFC21A', ic: 'hub', st: 'open' },
+      { k: 'w1', name: 'Łąka Liczenia', c: '#7BCB5A', ic: 'w1', st: 'done', disc: 'photo' },
+      { k: 'w2', name: 'Ogród Cyfr', c: '#FF9F43', ic: 'w2', st: 'here' },
+      { k: 'w3', name: 'Wyspa Dodawania', c: '#3FA9F5', ic: 'w3', st: 'lock' },
+      { k: 'w4', name: 'Most Dwudziestki', c: '#FF6B6B', ic: 'w4', st: 'lock' },
+      { k: 'w5', name: 'Las Dziesiątek', c: '#2FA58B', ic: 'w5', st: 'lock' },
+      { k: 'w6', name: 'Miasto Setki', c: '#D46BD8', ic: 'w6', st: 'lock' },
+      { k: 'w7', name: 'Kosmiczna Droga', c: '#6C63FF', ic: 'w7', st: 'lock' },
+    ];
+    const pc = { hub: '2 / 1', w1: '2 / 2', w2: '2 / 3', w3: '2 / 4', w4: '1 / 4', w5: '1 / 3', w6: '1 / 2', w7: '1 / 1' };
+    const ph = { hub: '4 / 1', w1: '4 / 2', w2: '3 / 2', w3: '3 / 1', w4: '2 / 1', w5: '2 / 2', w6: '1 / 2', w7: '1 / 1' };
+    const mk = (pos) => base.map((w) => ({
+      ...w, img: w.st === 'lock' ? 'island-locked' : `island-${w.k}`, ga: pos[w.k], done: w.st === 'done', locked: w.st === 'lock', here: w.st === 'here',
+      aria: w.st === 'lock' ? `${w.name} — zablokowane` : w.st === 'done' ? `${w.name} — ukończone` : w.st === 'here' ? `${w.name} — tutaj jesteśmy` : w.name,
+    }));
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', isl: mk(pc) },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', isl: mk(ph) },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

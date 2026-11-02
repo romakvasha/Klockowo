@@ -12,18 +12,19 @@ export interface CheckButtonProps extends Omit<ComponentPropsWithRef<'button'>, 
   silent?: boolean;
 }
 
-/** «Gotowe» — 120×88 (телефон 80×80), є в кожному завданні з вибором. Активна лише після вибору (`disabled`, доки нічого не вибрано):
- *  дотик до плитки лише вибирає й озвучує число, перевірка — тільки тут (BRIEF §7). */
+/** «Gotowe» — помаранчева цеглинка з галочкою в колі, 120×88 (телефон 80×80), є в кожному завданні з вибором (полотно D1).
+ *  Активна лише після вибору (`disabled`, доки нічого не вибрано): дотик до плитки лише вибирає й озвучує число, перевірка — тільки тут (BRIEF §7). */
 export function CheckButton({ label = BUTTONS.done, silent, className, onPointerDown, ...rest }: CheckButtonProps) {
   return (
     <button
       type="button"
       aria-label={label}
-      className={cx('kl-block', styles.root, className)}
+      data-brick="orange"
+      className={cx('kl-brick', 'kl-studs', styles.root, className)}
       onPointerDown={pressHandler(silent, rest.disabled, onPointerDown)}
       {...rest}
     >
-      <Icon name="check" className={styles.icon} />
+      <Icon name="check" className={cx('kl-glyph', styles.icon)} />
     </button>
   );
 }

@@ -1,0 +1,170 @@
+/* Глянцева цеглинка v2 (docs/DESIGN_V2.md §4, полотно D1 — design/v2/d1/kl.css .bk): градієнт із бліком угорі й темнішим низом,
+   об'ємний край 7 px, м'яка тінь; пупирці — .kl-studs (два) або .kl-stud (один посередині, для круглих кнопок і карток цифр).
+   Колір — data-brick="red|yellow|blue|green|orange|purple|white|grey|pale" або власні змінні --c, --c-hi, --c-lo, --s, --d, --t, --o.
+   Значок і цифри фарбуються --t; клас .kl-glyph дає білому значку темний контур --o і тінь (контраст ≥ 6,5 : 1, contrast.test.ts).
+   Натиск — цеглинка «вдавлюється» на 5 px (край 7 → 2 px), за 90 мс. Нічого не залежить від hover.
+   Кільце фокуса — змінна --kl-ring (стани компонентів дописують його в кінець box-shadow). Старий .kl-block прибрано в D6.
+   Пресети кольорів мають нульову специфічність (:where), тож будь-який модульний клас компонента їх перекриває. */
+:where(.kl-brick) {
+  --c: var(--kl-brick-blue); --c-hi: var(--kl-brick-blue-hi); --c-lo: var(--kl-brick-blue-lo);
+  --s: var(--kl-brick-blue-stud); --d: var(--kl-brick-blue-edge); --o: var(--kl-brick-blue-out);
+  --t: #FFFFFF;
+  --kl-glyph-fx: drop-shadow(0 1.5px 0 var(--o)) drop-shadow(0 -1.5px 0 var(--o)) drop-shadow(1.5px 0 0 var(--o))
+    drop-shadow(-1.5px 0 0 var(--o)) drop-shadow(0 2px 0 rgba(0, 0, 0, .2));
+  /* об'єм: блік угорі, темніший низ, край --d, м'яка тінь; стани компонентів дописують свої кільця після цих змінних */
+  --kl-brick-shadow: inset 0 3px 0 rgba(255, 255, 255, .55), inset 0 -5px 0 rgba(0, 0, 0, .16), 0 7px 0 var(--d),
+    0 12px 18px rgba(10, 30, 70, .3);
+  --kl-brick-shadow-pressed: inset 0 3px 0 rgba(255, 255, 255, .4), inset 0 -3px 0 rgba(0, 0, 0, .18), 0 2px 0 var(--d),
+    0 4px 8px rgba(10, 30, 70, .3);
+}
+
+:where(.kl-brick[data-brick='red']) {
+  --c: var(--kl-brick-red); --c-hi: var(--kl-brick-red-hi); --c-lo: var(--kl-brick-red-lo);
+  --s: var(--kl-brick-red-stud); --d: var(--kl-brick-red-edge); --o: var(--kl-brick-red-out);
+}
+
+:where(.kl-brick[data-brick='green']) {
+  --c: var(--kl-brick-green); --c-hi: var(--kl-brick-green-hi); --c-lo: var(--kl-brick-green-lo);
+  --s: var(--kl-brick-green-stud); --d: var(--kl-brick-green-edge); --o: var(--kl-brick-green-out);
+}
+
+:where(.kl-brick[data-brick='orange']) {
+  --c: var(--kl-brick-orange); --c-hi: var(--kl-brick-orange-hi); --c-lo: var(--kl-brick-orange-lo);
+  --s: var(--kl-brick-orange-stud); --d: var(--kl-brick-orange-edge); --o: var(--kl-brick-orange-out);
+}
+
+:where(.kl-brick[data-brick='purple']) {
+  --c: var(--kl-brick-purple); --c-hi: var(--kl-brick-purple-hi); --c-lo: var(--kl-brick-purple-lo);
+  --s: var(--kl-brick-purple-stud); --d: var(--kl-brick-purple-edge); --o: var(--kl-brick-purple-out);
+}
+
+:where(.kl-brick[data-brick='grey']) {
+  --c: var(--kl-brick-grey); --c-hi: var(--kl-brick-grey-hi); --c-lo: var(--kl-brick-grey-lo);
+  --s: var(--kl-brick-grey-stud); --d: var(--kl-brick-grey-edge); --o: var(--kl-brick-grey-out);
+}
+
+/* світлі цеглинки — темний значок без контуру */
+:where(.kl-brick[data-brick='yellow']) {
+  --c: var(--kl-brick-yellow); --c-hi: var(--kl-brick-yellow-hi); --c-lo: var(--kl-brick-yellow-lo);
+  --s: var(--kl-brick-yellow-stud); --d: var(--kl-brick-yellow-edge);
+  --t: var(--kl-brick-yellow-glyph);
+  --kl-glyph-fx: drop-shadow(0 2px 0 rgba(255, 255, 255, .45));
+}
+
+:where(.kl-brick[data-brick='white']) {
+  --c: var(--kl-brick-white); --c-hi: var(--kl-brick-white-hi); --c-lo: var(--kl-brick-white-lo);
+  --s: var(--kl-brick-white-stud); --d: var(--kl-brick-white-edge);
+  --t: var(--kl-ink);
+  --kl-glyph-fx: none;
+}
+
+:where(.kl-brick[data-brick='pale']) {
+  --c: var(--kl-brick-pale); --c-hi: var(--kl-brick-pale-hi); --c-lo: var(--kl-brick-pale-lo);
+  --s: var(--kl-brick-pale-stud); --d: var(--kl-brick-pale-edge);
+  --t: var(--kl-ink);
+  --kl-glyph-fx: none;
+}
+
+.kl-brick {
+  --kl-ring: 0 0 0 0 transparent;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: var(--t);
+  font: inherit;
+  border: 0;
+  border-radius: var(--kl-radius-brick);
+  background: linear-gradient(180deg, var(--c-hi) 0%, var(--c) 46%, var(--c-lo) 100%);
+  box-shadow: var(--kl-brick-shadow), var(--kl-ring);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  transition: transform var(--kl-dur-tap) var(--kl-ease-out), box-shadow var(--kl-dur-tap) var(--kl-ease-out);
+}
+
+.kl-brick:disabled {
+  cursor: default;
+}
+
+.kl-brick:active:not(:disabled),
+.kl-brick[data-demo='pressed'] {
+  transform: translateY(5px);
+  box-shadow: var(--kl-brick-shadow-pressed), var(--kl-ring);
+}
+
+.kl-brick:focus-visible,
+.kl-brick[data-demo='focus'] {
+  --kl-ring: 0 0 0 6px var(--kl-surface);
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 6px;
+}
+
+/* пупирці: виступають на 9 px над цеглинкою, тінь пупирця — колір краю */
+.kl-studs::before,
+.kl-studs::after,
+.kl-stud::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  width: 26%;
+  max-width: 34px;
+  height: 12px;
+  border-radius: 50% / 45%;
+  background: linear-gradient(180deg, var(--s), var(--c));
+  box-shadow: 0 3px 0 var(--d);
+  pointer-events: none;
+}
+
+.kl-studs::before {
+  left: 17%;
+}
+
+.kl-studs::after {
+  right: 17%;
+}
+
+.kl-stud::before {
+  left: 50%;
+  width: 34%;
+  transform: translateX(-50%);
+}
+
+.kl-glyph {
+  filter: var(--kl-glyph-fx);
+}
+
+/* Біла картка v2: панелі, кісточки HUD, дошка завдання — текст лише на ній, ніколи просто на фото (DESIGN_V2 §3) */
+.kl-card {
+  background: var(--kl-card);
+  border-radius: var(--kl-radius-panel);
+  box-shadow: var(--kl-card-shadow);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* «Posłuchaj» пульсує один раз: біле й синє кільця розходяться від цеглинки (полотно D1 .pulse). «Mniej animacji» — без пульсу. */
+:root {
+  --kl-anim-brick-pulse: kl-brick-pulse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --kl-anim-brick-pulse: none;
+  }
+}
+
+:root[data-reduce-motion='true'] {
+  --kl-anim-brick-pulse: none;
+}
+
+@keyframes kl-brick-pulse {
+  0% { box-shadow: var(--kl-brick-shadow), 0 0 0 0 rgba(255, 255, 255, .85), 0 0 0 0 rgba(31, 127, 224, .5); }
+  70% { box-shadow: var(--kl-brick-shadow), 0 0 0 10px rgba(255, 255, 255, 0), 0 0 0 22px rgba(31, 127, 224, 0); }
+  100% { box-shadow: var(--kl-brick-shadow), 0 0 0 0 rgba(255, 255, 255, 0), 0 0 0 0 rgba(31, 127, 224, 0); }
+}

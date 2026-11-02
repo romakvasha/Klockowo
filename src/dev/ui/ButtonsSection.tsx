@@ -1,15 +1,21 @@
 import { useState } from 'react';
-import { BUTTONS } from '../../speech/lines';
-import { CheckButton, IconButton, PlayButton, type IconButtonVariant, type IconName } from '../../components/ui';
+import { BUTTONS, LABELS } from '../../speech/lines';
+import { CheckButton, IconButton, PlayButton, actionColor, type IconName } from '../../components/ui';
 import { Cell, DevButton, Hint, Row, Section } from './UiSection';
 import styles from './Ui.module.css';
 
-const VARIANTS: ReadonlyArray<{ variant: IconButtonVariant; icon: IconName; label: string; note: string }> = [
-  { variant: 'neutral', icon: 'home', label: BUTTONS.map, note: '«Mapa», «Naklejki», «Zamknij»' },
-  { variant: 'secondary', icon: 'speaker', label: BUTTONS.listen, note: '«Posłuchaj»' },
-  { variant: 'primary', icon: 'next', label: BUTTONS.next, note: '«Dalej»' },
-  { variant: 'hint', icon: 'bulb', label: BUTTONS.help, note: '«Pomóż mi» — після 1-ї помилки' },
-  { variant: 'retry', icon: 'retry', label: BUTTONS.again, note: '«Jeszcze raz» (службові стани)' },
+/** Дії дитини: одна дія — одна іконка — один колір цеглинки (полотно D1, ACTION_COLOR). */
+const ACTIONS: ReadonlyArray<{ icon: IconName; label: string; note: string }> = [
+  { icon: 'home', label: BUTTONS.map, note: '«Mapa» · HUD ліворуч' },
+  { icon: 'speaker', label: BUTTONS.listen, note: '«Posłuchaj» · HUD праворуч, пульсує раз' },
+  { icon: 'bulb', label: BUTTONS.help, note: '«Pomóż mi» — після 1-ї помилки' },
+  { icon: 'next', label: BUTTONS.next, note: '«Dalej»' },
+  { icon: 'retry', label: BUTTONS.again, note: '«Jeszcze raz», «Wyczyść»' },
+  { icon: 'stickers', label: BUTTONS.stickers, note: '«Naklejki»' },
+  { icon: 'badge', label: LABELS.badges, note: '«Odznaki» — жетон-цеглинка (★ лише для гілок)' },
+  { icon: 'close', label: BUTTONS.close, note: '«Zamknij», «Stop»' },
+  { icon: 'pour', label: BUTTONS.pour, note: '«Wsyp!» (Ile razem?)' },
+  { icon: 'pack', label: BUTTONS.pack, note: '«Zapakuj» (Paczki)' },
 ];
 
 /** «Posłuchaj» пульсує один раз; щоб показати знову, скидаємо й вмикаємо прапор. */
@@ -21,7 +27,7 @@ function PulseDemo() {
   };
   return (
     <>
-      <IconButton icon="speaker" label={BUTTONS.listen} variant="secondary" pulse={pulse} onClick={replay} />
+      <IconButton icon="speaker" label={BUTTONS.listen} pulse={pulse} onClick={replay} />
       <DevButton onClick={replay}>▶ pulse (1 раз)</DevButton>
     </>
   );
@@ -30,52 +36,51 @@ function PulseDemo() {
 export function ButtonsSection() {
   return (
     <>
-      <Section title="PlayButton" note="«Graj!» · primary · 160 (Start) / 120 (Wprowadzenie) / 96 (телефон) · іконка 45 %">
-        <Row>
-          <Cell caption="default"><PlayButton /></Cell>
-          <Cell caption="pressed (показано примусово)"><PlayButton data-demo="pressed" /></Cell>
-          <Cell caption="focus-visible"><PlayButton data-demo="focus" /></Cell>
-          <Cell caption="idle · «дихання» 2,4 с"><PlayButton idle /></Cell>
-          <Cell caption="size 120"><PlayButton size={120} /></Cell>
-          <Cell caption="size 96"><PlayButton size={96} /></Cell>
-        </Row>
+      <Section title="PlayButton" note="«Graj!» · зелена цеглинка, 2 пупирці · висота 120 (Start, Wprowadzenie) / 96 (телефон), ширина × 1,6">
+        <div className={styles.stage}>
+          <Row>
+            <Cell caption="default"><PlayButton /></Cell>
+            <Cell caption="pressed — «вдавлюється» на 5 px"><PlayButton data-demo="pressed" /></Cell>
+            <Cell caption="focus-visible"><PlayButton data-demo="focus" /></Cell>
+            <Cell caption="idle · «дихання» 2,4 с"><PlayButton idle /></Cell>
+            <Cell caption="size 96 · телефон"><PlayButton size={96} /></Cell>
+          </Row>
+        </div>
+        <Hint>Бриф §4: кнопки дитини — лише іконки, тож «Graj!» — трикутник (слово звучить при дотику й іде в aria-label).</Hint>
       </Section>
 
-      <Section title="IconButton" note="72 px на ПК · 80 на телефоні · іконка 40 / 44 · кнопки дитини — лише іконки, слово = aria-label і голос">
-        {VARIANTS.map(({ variant, icon, label, note }) => (
-          <div key={variant} className={styles.variant}>
+      <Section title="IconButton" note="кругла цеглинка з 1 пупирцем · 72 px на ПК, 80 на телефоні · значок 56 % · колір — від дії">
+        {ACTIONS.map(({ icon, label, note }) => (
+          <div key={icon} className={styles.variant}>
             <div className={styles.variantName}>
-              {variant}
+              {actionColor(icon)}
               <span>{note}</span>
             </div>
             <div className={styles.variantCells}>
-              <Cell caption="default"><IconButton icon={icon} label={label} variant={variant} /></Cell>
-              <Cell caption="pressed"><IconButton icon={icon} label={label} variant={variant} data-demo="pressed" /></Cell>
-              <Cell caption="focus-visible"><IconButton icon={icon} label={label} variant={variant} data-demo="focus" /></Cell>
-              <Cell caption="size 80"><IconButton icon={icon} label={label} variant={variant} size={80} /></Cell>
-              {variant === 'neutral' && (
-                <Cell caption="«Zamknij»"><IconButton icon="close" label={BUTTONS.close} /></Cell>
-              )}
-              {variant === 'secondary' && <PulseDemo />}
-              {variant === 'primary' && (
-                <Cell caption="88 · Koniec poziomu"><IconButton icon="next" label={BUTTONS.next} variant="primary" size={88} /></Cell>
-              )}
+              <Cell caption="default"><IconButton icon={icon} label={label} /></Cell>
+              <Cell caption="pressed"><IconButton icon={icon} label={label} data-demo="pressed" /></Cell>
+              <Cell caption="focus-visible"><IconButton icon={icon} label={label} data-demo="focus" /></Cell>
+              <Cell caption="size 80"><IconButton icon={icon} label={label} size={80} /></Cell>
+              {icon === 'speaker' && <PulseDemo />}
+              {icon === 'next' && <Cell caption="88 · Koniec poziomu"><IconButton icon="next" label={BUTTONS.next} size={88} /></Cell>}
             </div>
           </div>
         ))}
-        <Hint>Натисни будь-яку кнопку: м'який «тик» (після першого дотику). Hover ні на що не впливає.</Hint>
+        <Hint>Натисни будь-яку кнопку: м'який «тик» (після першого дотику). Hover ні на що не впливає. Колір можна змінити пропом color.</Hint>
       </Section>
 
-      <Section title="CheckButton" note="«Gotowe» · 120×88 (телефон 80×80) · є в кожному завданні з вибором">
-        <Row>
-          <Cell caption="disabled · нічого не вибрано"><CheckButton disabled /></Cell>
-          <Cell caption="default"><CheckButton /></Cell>
-          <Cell caption="pressed"><CheckButton data-demo="pressed" /></Cell>
-          <Cell caption="focus-visible"><CheckButton data-demo="focus" /></Cell>
-        </Row>
+      <Section title="CheckButton" note="«Gotowe» · помаранчева цеглинка · 120×88 (телефон 80×80) · є в кожному завданні з вибором">
+        <div className={styles.stage}>
+          <Row>
+            <Cell caption="disabled · нічого не вибрано"><CheckButton disabled /></Cell>
+            <Cell caption="default"><CheckButton /></Cell>
+            <Cell caption="pressed"><CheckButton data-demo="pressed" /></Cell>
+            <Cell caption="focus-visible"><CheckButton data-demo="focus" /></Cell>
+          </Row>
+        </div>
         <Hint>
-          Дотик до плитки лише вибирає її й озвучує число; перевірка — тільки по «Gotowe». Неактивна кнопка — пласка, без краю,
-          сіра рамка + сіра галочка (не лише колір).
+          Дотик до плитки лише вибирає її й озвучує число; перевірка — тільки по «Gotowe». Неактивна кнопка — пласка бліда, без краю й пупирців,
+          сіра пунктирна рамка + сіра галочка (не лише колір). Полотно D1: «Gotowe» 168×104 — розмір зміниться разом із розкладкою (D3).
         </Hint>
       </Section>
     </>

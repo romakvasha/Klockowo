@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { WORLD_KEYS } from '../../curriculum/worlds';
 import {
-  CARD_H, CARD_W, PANEL_H, PANEL_W, groundColors, missionDecor, missionLayout, missionOrientation, missionScale,
+  CARD_H, CARD_W, PANEL_H, PANEL_W, missionLayout, missionOrientation, missionScale,
   type Box, type MissionOrientation, type MissionPhase,
 } from './missionLayout';
 
@@ -76,29 +75,5 @@ describe('орієнтація, масштаб, ґрунт, декор', () => {
     expect(missionScale('portrait', 390, 844)).toBe(1);
     expect(missionScale('portrait', 768, 1024)).toBeCloseTo(1024 / 700);
     expect(missionScale('portrait', 1000, 2000)).toBe(1.5);
-  });
-
-  it('ґрунт: W1 — трава, W3 — пісок, решта — відтінок світу', () => {
-    expect(groundColors('w1').fill).toBe('var(--kl-w1-100)');
-    expect(groundColors('w3').fill).toBe('#f3d9a0');
-    expect(groundColors('w5').fill).toBe('var(--kl-w5-100)');
-  });
-
-  it('декор: в альбомі кожен світ має його, у портреті — жодного', () => {
-    for (const world of WORLD_KEYS) {
-      expect(missionDecor(world, 'landscape').length, world).toBeGreaterThan(0);
-      expect(missionDecor(world, 'portrait'), world).toEqual([]);
-    }
-  });
-
-  it('декор не перекриває картку у фазі card і гостя', () => {
-    const l = missionLayout('landscape', 'card');
-    for (const world of WORLD_KEYS) {
-      for (const d of missionDecor(world, 'landscape')) {
-        expect(apart(d, cardBox(l)), `${world}/${d.kind}: картка`).toBe(true);
-        expect(apart(d, l.guest), `${world}/${d.kind}: гість`).toBe(true);
-        expect(apart(d, l.kubik), `${world}/${d.kind}: Kubik`).toBe(true);
-      }
-    }
   });
 });

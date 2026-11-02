@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 import { Kubik } from '../characters/Kubik';
 import { PlayerPup } from '../characters/PlayerPup';
 import { PUP_TINTS } from '../characters/pups';
-import { BASE_URL } from '../components/map/art';
+import { BASE_URL, BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import { AvatarButton } from '../components/ui/AvatarButton';
 import { HoldToConfirm } from '../components/ui/HoldToConfirm';
 import { Icon } from '../components/ui/Icon';
@@ -17,18 +18,6 @@ import { useTts } from '../speech/useTts';
 import { useAppStore } from '../store';
 import { LanguagePicker } from './start/LanguagePicker';
 import styles from './Start.module.css';
-
-/** Хмаринка-декор (design etap1/14). */
-function Cloud({ className }: { className: string }) {
-  return (
-    <svg className={className} viewBox="0 0 150 70" aria-hidden="true" focusable="false">
-      <rect x="0" y="24" width="150" height="40" rx="14" fill="#fff" />
-      <rect x="26" y="0" width="64" height="44" rx="14" fill="#fff" />
-      <rect x="74" y="10" width="52" height="34" rx="12" fill="#fff" />
-      <rect x="8" y="58" width="134" height="8" rx="4" fill="var(--kl-w3-100)" />
-    </svg>
-  );
-}
 
 type Phase = 'play' | 'who';
 
@@ -65,9 +54,7 @@ export function Start() {
 
   return (
     <main className={styles.start}>
-      <Cloud className={`${styles.cloud} ${styles.cloudA}`} />
-      <Cloud className={`${styles.cloud} ${styles.cloudB}`} />
-      <Cloud className={`${styles.cloud} ${styles.cloudC}`} />
+      <Backdrop src={BG_URL('start')} />
       <HoldToConfirm className={styles.gear} label={PARENT_GEAR_LABEL} onConfirm={() => navigate('/parent-gate')}>
         <Icon name="gear" />
       </HoldToConfirm>

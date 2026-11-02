@@ -38,7 +38,7 @@ export function ReviewSession({ onExit }: { onExit: () => void }) {
     return (
       <div className={styles.empty}>
         <p>{PLAYGROUND.empty}</p>
-        <button type="button" className={`kl-block ${styles.back}`} onClick={onExit}>
+        <button type="button" className={`kl-brick kl-studs ${styles.back}`} data-brick="yellow" onClick={onExit}>
           {PLAYGROUND.title}
         </button>
       </div>

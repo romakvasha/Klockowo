@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Tajemnicza tablica</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.pc .g-chart{grid-template-columns:300px 600px minmax(0,1fr);grid-template-rows:var(--hb) minmax(0,1fr);grid-template-areas:"hud hud hud" "guide board tray"}
+.pc .g-chart .board{padding:12px}
+.pc .g-chart .tray{flex-direction:column;justify-content:flex-end;align-items:flex-end}
+.ch{display:grid;grid-template-columns:repeat(10,55px);grid-auto-rows:55px;border:3px solid var(--ink);border-radius:10px;overflow:hidden;background:#fff}
+.ph .ch{grid-template-columns:repeat(10,21px);grid-auto-rows:21px;border-width:2px;border-radius:6px}
+.cl{display:grid;place-items:center;border:0;padding:0;background:#fff;box-shadow:inset -1px -1px 0 #B9C6D8;font:600 22px/1 var(--fd);color:var(--ink);cursor:pointer}
+.ph .ch .cl{font-size:8px}
+.cl.row{background:#F6EAF7}
+.cl.pick{background:var(--yel);box-shadow:inset 0 0 0 4px var(--ink);font-weight:700}
+.ph .ch .cl.pick{box-shadow:inset 0 0 0 2px var(--ink)}
+.zoom{display:grid;grid-template-columns:repeat(4,80px);border:3px solid var(--ink);border-radius:12px;overflow:hidden;background:#fff}
+.zoom .cl{height:80px;font-size:34px}
+.ph .board{flex-direction:column;gap:8px}
+.hint{font:700 14px/1.2 var(--fn);color:var(--ink2)}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game g-chart">
+  <div class="bgl f-bg-w6"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 2 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Znajdź liczbę czterdzieści siedem.">47 ?</div>
+    <div class="krow"><img class="kub" src="./v2/kubik-pointing-right.webp" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="ch" role="grid" aria-label="tablica stu">
+      <sc-for list="{{f.cells}}" as="c" hint-placeholder-count="100"><button class="cl {{c.k}}" type="button" aria-label="{{c.n}}">{{c.n}}</button></sc-for>
+    </div>
+    <span class="hint ph-only">ряд 41–50 збільшено нижче</span>
+  </div>
+  <div class="tray">
+    <div class="zoom ph-only" role="group" aria-label="rząd od czterdziestu jeden do pięćdziesięciu">
+      <button class="cl row" type="button">45</button><button class="cl row" type="button">46</button><button class="cl pick" type="button">47</button><button class="cl row" type="button">48</button>
+    </div>
+    <button class="bk c-o done" type="button" aria-label="Gotowe"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Znajdź liczbę czterdzieści siedem.» · також: «Jaka liczba się schowała?» (число під листочком), розфарбування закономірності, сусіди ±1 / ±10.</dd>
+  <dt>Розкладка</dt><dd>ПК: таблиця займає всю висоту під панеллю, клітинки 55 px без проміжків (межі — лінії), лоток — колонка праворуч. Телефон: уся таблиця — для огляду (не торкаємось), дитина торкається збільшеного ряду (клітинки 80 px).</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-pointing-right. Фон — bg-w6. Таблиця малюється кодом.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cells = [];
+    for (let n = 1; n <= 100; n++) cells.push({ n: String(n), k: n === 47 ? 'pick' : n > 40 && n <= 50 ? 'row' : '' });
+    const d = { bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 2 ? 'bone-full' : 'bone-empty' })), cells };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

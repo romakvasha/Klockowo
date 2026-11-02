@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Nakarm zwierzaka</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.board{justify-content:space-evenly;gap:32px}
+.ph .board{gap:12px;padding:12px}
+.an{display:flex;flex-direction:column;align-items:center;gap:6px}
+.an img{height:250px}
+.ph .an img{height:150px}
+.an .bk{width:86px;height:80px;font-size:50px}
+.ph .an .bk{width:60px;height:56px;font-size:34px}
+.ph .an{flex-direction:column-reverse}
+.plate{width:420px;height:250px;border-radius:50%;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:6px 14px;padding:30px 60px;
+ background:radial-gradient(ellipse at 50% 45%,#fff 0 55%,#E9EEF6 56% 64%,#fff 65%);box-shadow:0 0 0 6px var(--yel),0 10px 0 6px #E6D9A8,0 18px 26px rgba(10,30,70,.22)}
+.plate img{width:86px;height:86px}
+.ph .plate{width:170px;height:130px;padding:18px 20px;gap:2px 6px}
+.ph .plate img{width:42px;height:42px}
+.pile{display:flex;gap:14px;align-items:center;padding:12px 18px}
+.pile button{border:0;background:none;padding:0;cursor:pointer;border-radius:50%}
+.pile img{width:78px;height:78px;display:block}
+.pile .pick{outline:5px solid #fff;outline-offset:4px;transform:translateY(-8px);box-shadow:0 0 0 12px rgba(255,207,31,.6)}
+.ph .pile{gap:4px;padding:8px 10px}.ph .pile img{width:52px;height:52px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl blur f-bg-w2"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 1 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Daj misiowi pięć jabłek."><img src="./v2/item-jablko.webp" alt="">5</div>
+    <div class="krow"><img class="kub" src="./v2/kubik-pointing-right.webp" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="an"><span class="bk c-y one">5</span><img src="./v2/animal-mis.webp" alt="miś"></div>
+    <div class="plate" role="group" aria-label="talerz: trzy jabłka">
+      <img src="./v2/item-jablko.webp" alt=""><img src="./v2/item-jablko.webp" alt=""><img src="./v2/item-jablko.webp" alt="">
+    </div>
+  </div>
+  <div class="tray">
+    <div class="card pile" role="group" aria-label="jabłka">
+      <button class="pick" type="button" aria-label="jabłko"><img src="./v2/item-jablko.webp" alt=""></button>
+      <sc-for list="{{f.pile}}" as="p" hint-placeholder-count="3"><button type="button" aria-label="jabłko"><img src="./v2/item-jablko.webp" alt=""></button></sc-for>
+    </div>
+    <button class="bk c-o done" type="button" aria-label="Gotowe"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Daj misiowi pięć jabłek.» · кожне яблуко на тарілці — рахується вголос · «Gotowe» → «Brawo! Pięć jabłek.»</dd>
+  <dt>Стан</dt><dd>На тарілці 3 яблука; дитина взяла четверте (дотик → дотик на тарілку або перетягування) — тарілка підсвічена жовтим як ціль. У W5 — коробки по 10 і поштучно.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): animal-mis, item-jablko, kubik-pointing-right. Фон — bg-w2.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const d = {
+      bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 1 ? 'bone-full' : 'bone-empty' })),
+      pile: [1, 2, 3, 4].map(() => ({})),
+    };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

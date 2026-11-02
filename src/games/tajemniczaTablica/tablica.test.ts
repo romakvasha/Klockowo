@@ -88,8 +88,8 @@ describe('розкладки лупи (BRIEF §12: клітинки від 64 px
 
   it('у всіх 5 розмірах екрана: клітинка лупи ≥ 64 px, кнопки ≥ 80 px (на ПК ≥ 64), нічого не заходить на Kubika й за сцену', () => {
     for (const rows of [3, 10]) {
-      for (const { name, kind, vw, area } of cases) {
-        const reserved = sceneReserved(kind, vw, area);
+      for (const { name, kind, area } of cases) {
+        const reserved = sceneReserved(kind, area);
         const { layout, place } = pickChartLayout(area, reserved, rows);
         const tag = `${name}/${rows}/${layout.id}`;
         expect(MAGNIFIER_CELL * place.scale, tag).toBeGreaterThanOrEqual(63.5);

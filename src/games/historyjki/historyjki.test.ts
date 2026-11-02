@@ -176,10 +176,10 @@ describe('кадри у сцені', () => {
   ];
 
   it('усі три кадри вміщуються в сцену, не заходять на Kubika; портрет — стовпчик, решта — ряд', () => {
-    for (const { kind, vw, area } of cases) {
+    for (const { kind, area } of cases) {
       const layout = storyLayout(kind);
       expect(kind === 'portrait' ? layout.design.h > layout.design.w : layout.design.w > layout.design.h, kind).toBe(true);
-      const reserved = sceneReserved(kind, vw, area);
+      const reserved = sceneReserved(kind, area);
       const p = placeContent(area, reserved, layout.design, { maxScale: 1.4 });
       expect(p.x + p.w, kind).toBeLessThanOrEqual(area.w);
       expect(p.y + p.h, kind).toBeLessThanOrEqual(area.h);

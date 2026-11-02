@@ -1,7 +1,12 @@
+/* картинки v2 вищі за ширину — вписуємо в квадрат (аватар, картка пікера) по низу, без спотворення */
 .pup {
   display: block;
+  width: 100%;
   max-width: 100%;
   height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: 50% 100%;
   user-select: none;
   -webkit-user-drag: none;
 }

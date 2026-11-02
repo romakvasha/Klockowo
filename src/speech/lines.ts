@@ -16,8 +16,6 @@ export const SITE_NAME = 'Klockowo';
 
 /** Рядки таблиці: ключі — польської таблиці, значення — будь-який рядок (у кожній мові свій). */
 type Strings<T> = { readonly [K in keyof T]: string };
-/** Те саме для таблиць з об'єктами (кортеж зберігає довжину). */
-type Each<T, V> = { readonly [K in keyof T]: V };
 
 let templates: LineTemplates | null = null;
 
@@ -278,10 +276,28 @@ const PL_BUILDING_NAMES: Readonly<Record<WorldKey, string>> = {
   w1: 'wiatrak', w2: 'oranżeria', w3: 'latarnia morska', w4: 'most z wieżą', w5: 'domek na drzewie', w6: 'wieżowiec', w7: 'wieża rakietowa',
 };
 
-/** Вправи для «Czas na przerwę!» (BRIEF §6.11). */
-const PL_BREAK_EXERCISES = [
-  { verb: 'Podskocz', n: 10 }, { verb: 'Klaśnij', n: 5 }, { verb: 'Tupnij', n: 8 },
-] as const;
+/** Пісенька «Kubik liczy do dziesięciu» на «Czas na przerwę!» (docs/DESIGN_V2.md §6, текст — design/v2/mockup.html). Авторська, лише польською:
+ *  не перекладається й не озвучується голосом — рядки лише показуються під час пісні. */
+export const SONG = {
+  title: 'Kubik liczy do dziesięciu',
+  chorus: [
+    'Łapki w górę, liczymy!', 'Głośno razem mówimy:', 'raz, dwa, trzy, cztery, pięć –', 'na liczenie mamy chęć!',
+    'Sześć i siedem, osiem, dziewięć,', 'jeszcze jeden – mamy dziesięć!',
+  ],
+  village: [
+    'Z klocków dom i z klocków drzewa,', 'Kubik biega, Kubik śpiewa.', 'Gdy zwierzątko ma kłopoty,', 'Kubik rusza do roboty!',
+    'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!',
+  ],
+  duck: [
+    'Mama kaczka woła: kwa!', 'Ile dzieci w trawie ma?', 'Raz, dwa, trzy, cztery, pięć –', 'pięć kaczuszek: kwa, kwa, kwa!',
+    'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!',
+  ],
+  space: [
+    'Na Kosmicznej Drodze nocą', 'gwiazdy nad Kubikiem migocą.', 'Pięć tu świeci, pięć tam świeci –', 'razem dziesięć, wiedzą dzieci!',
+    'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!',
+  ],
+  party: ['Brawo! Misja wykonana!', 'Policzymy znów od rana!', 'Łapki w górę, liczymy!'],
+} as const;
 
 // ---------- Текст для дорослого (не озвучується) ----------
 /** Назви навичок для «Mapa umiejętności» (Strefa rodzica, M22). [do sprawdzenia] — укладено разом із навчальною програмою M5,
@@ -372,12 +388,6 @@ export let PLAYGROUND: Strings<typeof PL_PLAYGROUND> = PL_PLAYGROUND;
 export let ALBUM: Strings<typeof PL_ALBUM> = PL_ALBUM;
 export let VEHICLE_NAMES: Strings<typeof PL_VEHICLE_NAMES> = PL_VEHICLE_NAMES;
 export let BUILDING_NAMES: Readonly<Record<WorldKey, string>> = PL_BUILDING_NAMES;
-/** Вправа перерви: дієслово мовою гри й кількість повторів. */
-export interface BreakExercise {
-  readonly verb: string;
-  readonly n: number;
-}
-export let BREAK_EXERCISES: Each<typeof PL_BREAK_EXERCISES, BreakExercise> = PL_BREAK_EXERCISES;
 export let NO_VOICE_MESSAGE: string = PL_NO_VOICE_MESSAGE;
 
 /** Усі таблиці однієї мови: польська — PL_LINES, інші — speech/lang/*. */
@@ -407,7 +417,6 @@ export interface LineTables {
   ALBUM: typeof ALBUM;
   VEHICLE_NAMES: typeof VEHICLE_NAMES;
   BUILDING_NAMES: typeof BUILDING_NAMES;
-  BREAK_EXERCISES: typeof BREAK_EXERCISES;
   NO_VOICE_MESSAGE: string;
 }
 
@@ -437,7 +446,6 @@ export const PL_LINES: LineTables = {
   ALBUM: PL_ALBUM,
   VEHICLE_NAMES: PL_VEHICLE_NAMES,
   BUILDING_NAMES: PL_BUILDING_NAMES,
-  BREAK_EXERCISES: PL_BREAK_EXERCISES,
   NO_VOICE_MESSAGE: PL_NO_VOICE_MESSAGE,
 };
 
@@ -446,7 +454,7 @@ export function setLineTables(t: LineTables): void {
   ({
     BUTTONS, LABELS, ISLAND_STATE_LABELS, PARENT_GEAR_LABEL, TILE_STATE_LABELS, PROFILE_NO_NAME, WORLD_NAMES, CHARACTER_NAMES, GAME_TITLES, PUPS,
     START_LINES, MISSION_LINES, PRAISE, FEEDBACK_LINES, LEVEL_LINES, NODE_LABELS, CHEST_LABELS, WORLD_INTROS, SESSION_LINES, ERROR_LINES, GAME_PROMPTS,
-    PLAYGROUND, ALBUM, VEHICLE_NAMES, BUILDING_NAMES, BREAK_EXERCISES, NO_VOICE_MESSAGE,
+    PLAYGROUND, ALBUM, VEHICLE_NAMES, BUILDING_NAMES, NO_VOICE_MESSAGE,
   } = t);
 }
 
@@ -684,12 +692,6 @@ export function findNumber(n: number): string {
   return `Znajdź liczbę ${numberWords(n)}.`;
 }
 
-/** «Podskocz dziesięć razy!» */
-export function breakLine(verb: string, n: number): string {
-  if (templates) return templates.breakLine(verb, n);
-  return `${verb} ${times(n)}!`;
-}
-
 /** Письмове питання батьківського бар'єра (без озвучення): «Wpisz wynik: siedem razy osiem». */
 export function gateQuestion(a: number, b: number): string {
   return `Wpisz wynik: ${numberWords(a)} razy ${numberWords(b)}`;
@@ -747,7 +749,6 @@ export interface LineTemplates {
   neighborAnswer(base: number, delta: number): string;
   placeValue(n: number): string;
   findNumber(n: number): string;
-  breakLine(verb: string, n: number): string;
 }
 
 // ---------- Усі статичні польські репліки голосу (для dev-сторінки прослуховування і тестів) ----------

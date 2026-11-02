@@ -1,4 +1,10 @@
-/* Вітрина /#/dev/ui: службова сторінка для власника. Адаптивна: усе переноситься, горизонтальної прокрутки немає. */
+/* Вітрина /#/dev/ui: службова сторінка для власника. Адаптивна: усе переноситься, горизонтальної прокрутки немає.
+   v2: тло як на полотні D1 (#E4EDF8), секції — білі картки; «сцени» — небо й трава замість фото світу (фото — етап D5). */
+.backdrop {
+  min-height: 100dvh;
+  background: #E4EDF8;
+}
+
 .page {
   max-width: 1240px;
   margin: 0 auto;
@@ -29,8 +35,9 @@
 .section {
   margin-top: var(--kl-space-3);
   padding: var(--kl-space-3);
-  background: var(--kl-surface);
+  background: var(--kl-card);
   border-radius: var(--kl-radius-panel);
+  box-shadow: var(--kl-card-shadow);
 }
 
 .title {
@@ -89,13 +96,19 @@
   line-height: 1.45;
 }
 
-/* сцена-тло світу для компонентів, що живуть на кольоровому тлі */
+/* сцена-тло для компонентів, що живуть на тлі гри: небо й трава (полотно D1 .f-sky) замість фото світу */
+.stage,
+.stageFlush,
+.scene {
+  --dev-sky: linear-gradient(180deg, #7CC4FF 0%, #BFE3FF 55%, #9BD67A 56%, #6FBF4E 100%);
+}
+
 .stage {
   display: flex;
   flex-direction: column;
   gap: var(--kl-space-3);
   padding: var(--kl-space-3);
-  background: var(--kl-w1-50);
+  background: var(--dev-sky);
   border-radius: var(--kl-radius-tile);
 }
 
@@ -104,7 +117,7 @@
   flex-direction: column;
   gap: var(--kl-space-3);
   overflow: hidden;
-  background: var(--kl-w1-50);
+  background: var(--dev-sky);
   border-radius: var(--kl-radius-tile);
 }
 
@@ -251,7 +264,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  background: var(--kl-w1-50);
+  background: var(--dev-sky);
 }
 
 .sceneStage {

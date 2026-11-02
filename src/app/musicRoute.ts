@@ -20,3 +20,6 @@ export function musicRoute(pathname: string): MusicRoute {
     dev: screen === 'dev',
   };
 }
+
+/** Екрани, де фонова музика гри стихає зовсім: «Czas na przerwę!» — там грає своя пісенька (docs/DESIGN_V2.md §6). */
+export const isSilentRoute = (pathname: string): boolean => pathname.split('/').filter(Boolean)[0] === 'break';

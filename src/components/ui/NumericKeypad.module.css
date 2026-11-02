@@ -4,17 +4,40 @@
   gap: 12px;
 }
 
+/* пласка світла клавіша для дорослого (полотно D1 «Bramka rodzica»); натиск — легке опускання, фокус — кільце ink */
 .key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   min-width: 64px;
   min-height: 64px;
+  margin: 0;
   padding: 0;
   font: 700 28px / 1 var(--kl-font-display);
   color: var(--kl-ink);
-  background: var(--kl-surface);
-  border-radius: 18px;
+  background: #F7F9FC;
+  border: 2px solid #C9D3E2;
+  border-radius: 14px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition: transform var(--kl-dur-tap) var(--kl-ease-out);
+}
+
+.key:active:not(:disabled) {
+  transform: translateY(2px);
+  background: #E9EEF6;
+}
+
+.key:focus-visible {
+  outline: 3px solid var(--kl-ink);
+  outline-offset: 3px;
 }
 
 .key:disabled {
+  cursor: default;
   opacity: .5;
 }
 
@@ -23,8 +46,11 @@
 }
 
 .submit {
-  font-size: 20px;
-  color: var(--kl-ink);
-  background: var(--kl-reward);
-  --edge: var(--kl-reward-edge);
+  min-width: 64px;
+  min-height: 64px;
+  font: 700 20px / 1 var(--kl-font-display);
+}
+
+.submit:disabled {
+  opacity: .5;
 }

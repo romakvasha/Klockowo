@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { TEAM, TEAM_MEMBERS, TEAM_POSES, TeamPup, Vehicle, Kubik, type TeamMember } from '../../characters';
-import { SILHOUETTE_URL, need } from '../../characters/art';
 import { cssVars } from '../../components/ui/cx';
 import { CHARACTER_NAMES } from '../../speech/lines';
 import type { WorldKey } from '../../speech/nouns';
@@ -67,7 +66,7 @@ export function TeamSection() {
   const [arrive, setArrive] = useState(0);
   return (
     <>
-      <Section title="Команда — гості місій" note="ті самі групи SVG, що й у Kubika · колір спорядження = колір першого світу, де цуценя — гість">
+      <Section title="Команда — гості місій" note="картинки v2 у тій самій коробці, що й Kubik · колір нашийника = колір першого світу, де цуценя — гість">
         <div className={styles.controls}>
           <DevButton onClick={() => setArrive((n) => n + 1)}>▶ транспорт приїжджає (600 мс)</DevButton>
         </div>
@@ -97,7 +96,11 @@ export function TeamSection() {
         <div className={styles.silhouettes}>
           {SILHOUETTES.map(({ key, name, note }) => (
             <div key={key} className={styles.silhouette}>
-              <img src={need(SILHOUETTE_URL, key, 'Silhouette')} alt="" width={104} height={130} />
+              {key === 'kubik' ? (
+                <Kubik animate={false} size={130} className={styles.silhouetteArt} />
+              ) : (
+                <TeamPup member={key} animate={false} size={130} className={styles.silhouetteArt} />
+              )}
               {name}
               <span className={styles.poseNote}>{note}</span>
             </div>

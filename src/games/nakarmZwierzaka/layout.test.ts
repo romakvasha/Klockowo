@@ -21,8 +21,8 @@ describe('supplyCount', () => {
   });
 });
 
-describe.each(CASES)('feedLayout: $name', ({ kind, vw, area }) => {
-  const reserved = sceneReserved(kind, vw, area);
+describe.each(CASES)('feedLayout: $name', ({ kind, area }) => {
+  const reserved = sceneReserved(kind, area);
 
   it('предмети запасу: потрібна кількість, не перекриваються, усередині області, поза ділянками', () => {
     for (let n = 1; n <= 10; n++) {
@@ -80,8 +80,8 @@ describe('вигляд за пропорцією', () => {
   });
 });
 
-describe.each(CASES)('boxSourcesLayout (W5, коробки по 10): $name', ({ kind, vw, area }) => {
-  const reserved = sceneReserved(kind, vw, area);
+describe.each(CASES)('boxSourcesLayout (W5, коробки по 10): $name', ({ kind, area }) => {
+  const reserved = sceneReserved(kind, area);
   const l = boxSourcesLayout(area, reserved);
 
   it('стос коробок і купка їжі — великі цілі дотику (від 88 px; на ПК — 132), не перекриваються', () => {

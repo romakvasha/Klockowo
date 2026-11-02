@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Bramka rodzica</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-gate{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);justify-items:center;align-items:center}
+.top{justify-self:stretch;display:flex;justify-content:space-between;align-items:center}
+.top h1{margin:0;font:700 24px/1.2 var(--fn);color:var(--ink)}
+.x{width:48px;height:48px;border-radius:12px;border:2px solid #C9D3E2;background:#fff;display:grid;place-items:center;cursor:pointer}
+.x img{width:24px;height:24px}
+.panel{width:460px;padding:26px 28px;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(20,40,90,.12);display:flex;flex-direction:column;gap:14px;font:600 18px/1.4 var(--fn)}
+.ph .panel{width:100%;padding:18px}
+.panel label{font-weight:800}
+.in{height:56px;border-radius:12px;border:2px solid var(--ink);padding:0 16px;font:700 26px/52px var(--fn);color:var(--ink);background:#F7F9FC}
+.err{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:#F1EDFF;border:2px solid var(--retry);font-size:16px;color:#3C2A8A}
+.err img{width:22px;height:22px}
+.kp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kp button{height:56px;border-radius:12px;border:2px solid #C9D3E2;background:#F7F9FC;font:700 24px/1 var(--fn);color:var(--ink);cursor:pointer;display:grid;place-items:center}
+.kp button img{width:26px;height:26px}
+.kp .sp{visibility:hidden}
+.go{height:56px;border-radius:12px;border:0;background:var(--blu-d);color:#fff;font:800 20px/1 var(--fn);cursor:pointer}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-gate">
+  <div class="bgl f-calm"></div>
+  <div class="top"><h1>Strefa rodzica</h1><button class="x" type="button" aria-label="Zamknij"><img src="./i/k-close.svg" alt=""></button></div>
+  <div class="panel" role="form" aria-label="Bramka rodzica">
+    <label id="gate-{{f.cls}}">Wpisz wynik: siedem razy osiem</label>
+    <div class="in" role="textbox" aria-labelledby="gate-{{f.cls}}">54</div>
+    <div class="err" role="alert"><img src="./i/k-retry.svg" alt="">Niepoprawny wynik. Spróbuj ponownie.</div>
+    <div class="kp">
+      <sc-for list="{{f.keys}}" as="k" hint-placeholder-count="12"><button class="{{k.cls}}" type="button" aria-label="{{k.aria}}">{{k.t}}<sc-if value="{{k.del}}" hint-placeholder-val="{{ false }}"><img src="./i/k-close.svg" alt=""></sc-if></button></sc-for>
+    </div>
+    <button class="go" type="button">Wejdź</button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Як працює</dt><dd>Крок 1: тримати шестерню 3 с (заповнюється кільце). Крок 2 (показано): письмове питання без озвучення, цифрова клавіатура, «Wejdź». Приклад щоразу інший; після 3 помилок — назад до дитини.</dd>
+  <dt>Стиль</dt><dd>Спокійний дорослий: білий, текст 18 px, кнопки від 44 px (тут 56). Помилка — фіолетова рамка з іконкою, не червона.</dd>
+  <dt>Заглушки</dt><dd>Немає.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del'].map((t) =>
+      t === 'del' ? { t: '', del: true, aria: 'Usuń', cls: '' } : { t, del: false, aria: t || 'puste', cls: t ? '' : 'sp' });
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', keys },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', keys },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

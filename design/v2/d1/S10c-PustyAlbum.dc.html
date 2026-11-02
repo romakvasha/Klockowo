@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Pusty album</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-ea{grid-template-columns:minmax(0,1fr) 360px;grid-template-rows:var(--hb) minmax(0,1fr) auto;grid-template-areas:"hud hud" "page kub" "page go"}
+.ph .s-ea{grid-template-columns:minmax(0,1fr);grid-template-rows:var(--hb) 170px minmax(0,1fr) auto;grid-template-areas:"hud" "kub" "page" "go"}
+.page{grid-area:page;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:18px;padding:22px}
+.ph .page{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:10px;padding:12px}
+.slot{border-radius:20px;background:#EEF2F8;box-shadow:inset 0 0 0 3px #C9D3E2;display:grid;place-items:center;position:relative}
+.slot img{max-width:66%;max-height:66%;filter:brightness(0);opacity:.14}
+.slot b{position:absolute;font:700 46px/1 var(--fd);color:var(--ink2)}
+.ph .slot{border-radius:14px}.ph .slot b{font-size:30px}
+.kz{grid-area:kub;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:16px}
+.ph .kz{flex-direction:row-reverse;justify-content:center;align-items:center}
+.kz img.k{height:300px}
+.ph .kz img.k{height:160px}
+.go{grid-area:go;display:flex;justify-content:center}
+.ph .go .bk{width:100%}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-ea">
+  <div class="bgl blur f-bg-hub"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <button class="bk c-y rnd hb" type="button" aria-label="Odznaki"><img src="./i/k-star.svg" alt=""></button>
+  </div>
+  <div class="card page" aria-label="Naklejki — puste miejsca">
+    <sc-for list="{{f.slots}}" as="s" hint-placeholder-count="8"><span class="slot" role="img" aria-label="puste miejsce"><img src="{{s.src}}" alt=""><b>?</b></span></sc-for>
+  </div>
+  <div class="kz">
+    <div class="bub" aria-label="Naklejki"><img src="./i/k-stickers.svg" alt="" style="height: 40px">?</div>
+    <img class="k char" src="./v2/kubik-waving.webp" alt="Kubik">
+  </div>
+  <div class="go"><button class="bk c-g big" type="button">Graj!</button></div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Що показано</dt><dd>Службовий стан «порожній альбом»: усі місця — силуети зі «?», Kubik кличе грати; «Graj!» веде на мапу. Окремої репліки в брифі немає — голос лише назве силует при дотику.</dd>
+  <dt>Зони</dt><dd>HUD · сторінка наліпок · Kubik із хмаринкою · «Graj!» — окремо.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): animal-kotek, animal-mis, animal-zajaczek, item-biedronka, item-kaczuszka, item-kwiatek, item-motyl, kubik-waving, veh-balon. Фон — bg-hub. Мама-качка — стара вирізка з фото (її немає в наборі).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const src = ['./v2/item-kaczuszka.webp', './img/duck.png', './v2/veh-balon.webp', './v2/item-biedronka.webp', './v2/item-motyl.webp', './v2/item-kwiatek.webp', './v2/animal-zajaczek.webp', './v2/animal-kotek.webp', './v2/animal-mis.webp'];
+    const slots = src.map((s) => ({ src: s }));
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', slots: slots.slice(0, 8) },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', slots },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -12,7 +12,7 @@ export function CharactersPage() {
       <h1 className={styles.h1}>Персонажі</h1>
       <p className={styles.lead}>
         Kubik, команда (Łatka, Pufka, Tofik, Iskra), 8 цуценят для вибору, MascotStage. Рух — чистим CSS: «Mniej animacji» (prefers-reduced-motion)
-        вимикає дихання, кліпання, хвіст і стрибок — лишається зміна пози.
+        вимикає дихання, рот, кивання й стрибок — лишається зміна пози.
       </p>
       <KubikSection />
       <StageSection />

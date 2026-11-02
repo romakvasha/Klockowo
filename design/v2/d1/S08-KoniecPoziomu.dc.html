@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Koniec poziomu</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-end{grid-template-columns:360px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"kub ttl" "kub prize" "kub btns"}
+.ph .s-end{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 190px minmax(0,1fr) auto;grid-template-areas:"ttl" "kub" "prize" "btns"}
+.tt{grid-area:ttl;justify-self:center;padding:14px 34px;text-align:center}
+.ph .tt{padding:10px 16px}
+.kz{grid-area:kub;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:0}
+.ph .kz{flex-direction:row;justify-content:center;align-items:flex-end;gap:10px}
+.kz .kub{height:330px}
+.ph .kz .kub{height:180px}
+.bowl{position:relative;width:250px;height:96px;margin-top:-30px;border-radius:14px 14px 80px 80px;background:linear-gradient(180deg,#FF6A62,var(--red) 40%,var(--red-d));box-shadow:inset 0 10px 0 rgba(255,255,255,.3),0 10px 18px rgba(10,30,70,.3);display:flex;flex-wrap:wrap;justify-content:center;align-content:flex-start;gap:0 2px;padding-top:4px}
+.bowl img{width:66px;height:29px;margin-top:-16px}
+.ph .bowl{width:140px;height:62px;margin-top:0;border-radius:10px 10px 50px 50px}
+.ph .bowl img{width:40px;height:18px;margin-top:-8px}
+.prize{grid-area:prize;display:flex;align-items:center;justify-content:center;gap:28px;padding:20px 28px}
+.ph .prize{gap:12px;padding:12px}
+.stk{display:flex;flex-direction:column;align-items:center;gap:10px}
+.stk .sq{width:200px;height:200px;border-radius:28px;background:#fff;border:6px dashed var(--yel-d);display:grid;place-items:center;transform:rotate(-4deg);box-shadow:0 10px 18px rgba(10,30,70,.2)}
+.stk .sq img{width:150px}
+.ph .stk .sq{width:120px;height:120px;border-radius:18px;border-width:4px}
+.ph .stk .sq img{width:88px}
+.badge-n{width:150px;height:150px;border-radius:22px;background:linear-gradient(180deg,#FFE06A,#FFC21A 55%,#E0A000);display:grid;place-items:center;box-shadow:inset 0 6px 0 rgba(255,255,255,.5),inset 0 -8px 0 rgba(0,0,0,.15),0 8px 0 #B58400;position:relative}
+.badge-n::before{content:'';position:absolute;top:-12px;left:50%;margin-left:-22px;width:44px;height:16px;border-radius:50%;background:#FFE06A;box-shadow:0 4px 0 #D9A400}
+.badge-n img{width:80px;height:80px}
+.ph .badge-n{width:96px;height:96px;border-radius:16px}.ph .badge-n img{width:52px;height:52px}
+.cap{font:700 18px/1.2 var(--fd);text-align:center;padding:6px 12px;border-radius:12px;background:var(--card)}
+.ph .cap{font-size:14px}
+.btns{grid-area:btns;display:flex;justify-content:center;align-items:center;gap:32px}
+.ph .btns{gap:16px}
+.ph .btns .next{flex:1 1 auto}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-end">
+  <div class="bgl f-bg-w1"></div>
+  <div class="card tt"><p class="ttl">Misja wykonana!</p></div>
+  <div class="kz">
+    <img class="kub" src="./v2/kubik-celebrating.webp" alt="Kubik">
+    <div class="bowl" role="img" aria-label="kosteczki: 6 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img src="./i/bone-full.svg" alt=""></sc-for></div>
+  </div>
+  <div class="card prize">
+    <div class="stk"><span class="sq"><img class="char" src="./v2/item-kaczuszka.webp" alt="naklejka: kaczuszka"></span><span class="cap">nowa naklejka</span></div>
+    <div class="stk"><span class="badge-n" role="img" aria-label="Nie poddajesz się!"><img src="./i/k-star.svg" alt=""></span><span class="cap">Nie poddajesz się!</span></div>
+  </div>
+  <div class="btns">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <button class="bk c-b big next" type="button" aria-label="Dalej"><img src="./i/w-next.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Misja wykonana! Ten poziom za nami!» → «Masz nową naklejkę!» · кісточки злітаються в миску Kubika, врятоване каченя дякує</dd>
+  <dt>Стан</dt><dd>Оцінок зірками немає (у макеті D0 були ★★★ — прибрано за брифом). Значок «Nie poddajesz się!» — лише якщо дитина хоч раз розв'язувала разом із Kubikiem. «Dalej» → Ścieżka świata; «Mapa» → Mapa przygody.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): item-kaczuszka, kubik-celebrating. Фон — bg-w1.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const bones = [1, 2, 3, 4, 5, 6].map(() => ({}));
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', bones },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', bones },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

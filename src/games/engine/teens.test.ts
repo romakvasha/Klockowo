@@ -27,8 +27,8 @@ describe('розкладка «десять і ще n» (arrangement tens)', () 
   ];
 
   it('усі предмети 11–20 розкладено, не перекриваються, не виходять за область і не заходять на Kubika', () => {
-    for (const { kind, vw, area } of cases) {
-      const reserved = sceneReserved(kind, vw, area);
+    for (const { kind, area } of cases) {
+      const reserved = sceneReserved(kind, area);
       for (let count = 11; count <= 20; count++) {
         const { size, items } = layoutObjects({ arrangement: 'tens', count, area, size: 84, rng: createRng(count), reserved });
         const name = `${kind}/${count}`;
@@ -144,8 +144,8 @@ describe('двоповерховий автобус на 20', () => {
       { kind: 'portrait', vw: 390, area: { w: 366, h: 366 } },
       { kind: 'phone', vw: 844, area: { w: 560, h: 280 } },
     ];
-    for (const { kind, vw, area } of cases) {
-      const reserved = sceneReserved(kind, vw, area);
+    for (const { kind, area } of cases) {
+      const reserved = sceneReserved(kind, area);
       const p = busPlacement(area, reserved, 4);
       const g = busGeometry(p.width, 4);
       expect(p.x, kind).toBeGreaterThanOrEqual(0);

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Gra — Błysk!</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.dc{display:flex;gap:40px;padding:40px 56px;border-radius:28px;background:#fff;box-shadow:0 8px 0 #CBD6E6,0 14px 26px rgba(10,30,70,.22)}
+.ph .dc{gap:18px;padding:22px 26px}
+.grp{display:flex;gap:22px;padding:18px;border:5px dashed var(--org);border-radius:999px}
+.ph .grp{gap:10px;padding:10px;border-width:4px}
+.dot{width:64px;height:64px;border-radius:50%;background:var(--ink)}
+.ph .dot{width:38px;height:38px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr g-game">
+  <div class="bgl blur f-bg-w1"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <div class="card bones" role="img" aria-label="kosteczki: 3 z 6"><sc-for list="{{f.bones}}" as="b" hint-placeholder-count="6"><img class="bone" src="./i/{{b.src}}.svg" alt=""></sc-for></div>
+    <button class="bk c-b rnd hb" type="button" aria-label="Posłuchaj"><img src="./i/w-speaker.svg" alt=""></button>
+  </div>
+  <div class="guide">
+    <div class="bub" aria-label="Brawo! Cztery kropki.">4</div>
+    <div class="krow"><img class="kub" src="./v2/kubik-happy.webp" alt="Kubik"></div>
+  </div>
+  <div class="card board">
+    <div class="dc" role="img" aria-label="cztery kropki: dwie i dwie">
+      <span class="grp"><i class="dot"></i><i class="dot"></i></span>
+      <span class="grp"><i class="dot"></i><i class="dot"></i></span>
+    </div>
+  </div>
+  <div class="tray">
+    <sc-for list="{{f.tiles}}" as="t" hint-placeholder-count="3">
+      <span class="tw {{t.st}}"><button class="bk c-b tile" type="button" aria-label="{{t.word}}">{{t.n}}<span class="dots"><sc-for list="{{t.dots}}" as="d" hint-placeholder-count="4"><i></i></sc-for></span></button><sc-if value="{{t.ok}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--grn)"><img src="./i/w-check.svg" alt=""></span></sc-if></span>
+    </sc-for>
+    <button class="bk c-o done" type="button" aria-label="Gotowe" disabled style="opacity: 0.55"><img src="./i/w-check.svg" alt="" style="width: 52px; height: 52px"></button>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Patrz uważnie! Ile kropek?» → картка з крапками на мить → вибір із 3 → «Brawo! Cztery kropki.»</dd>
+  <dt>Стан</dt><dd>Правильно: плитка 4 зелена з галочкою, Kubik радіє, у хмаринці — відповідь; групи на картці обведено (2 і 2); третя кісточка вже в слоті. Наступне завдання — коли голос договорив.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-happy. Фон — bg-w1. Решта малюється кодом.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const W = ['zero', 'jeden', 'dwa', 'trzy', 'cztery', 'pięć', 'sześć'];
+    const tile = (n, st) => ({ n, st: st || '', ok: st === 'ok', dots: Array.from({ length: n }, () => ({})), word: W[n] });
+    const d = {
+      bones: [0, 1, 2, 3, 4, 5].map((i) => ({ src: i < 3 ? 'bone-full' : 'bone-empty' })),
+      tiles: [tile(3), tile(4, 'ok'), tile(5)],
+    };
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', ...d },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', ...d },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

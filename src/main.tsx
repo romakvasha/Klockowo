@@ -5,7 +5,7 @@ import './styles/tokens.css';
 import './styles/global.css';
 import './styles/responsive.css';
 import './styles/motion.css';
-import './styles/block.css';
+import './styles/brick.css';
 import { App } from './app/App';
 import { installAudioUnlock } from './speech/unlock';
 import { registerOffline } from './app/registerOffline';

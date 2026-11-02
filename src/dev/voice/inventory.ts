@@ -50,7 +50,6 @@ export async function collectUtterances(seeds = 120): Promise<Utterance[]> {
   for (const text of [L.PLAYGROUND.review, L.PLAYGROUND.paint, L.PLAYGROUND.count]) screen(text);
   screen(L.BUTTONS.same);
   screen(LANG_NATIVE_NAMES[getLanguage()], 1);
-  for (const e of L.BREAK_EXERCISES) screen(L.breakLine(e.verb, e.n));
   for (const animal of ANIMAL_IDS) screen(stickerName({ kind: 'animal', animal, owned: true, star: false } as Parameters<typeof stickerName>[0]), 1);
   for (const vehicle of ['balon', 'zaglowka', 'pociag', 'rakieta'] as const) screen(stickerName({ kind: 'vehicle', vehicle, owned: true } as Parameters<typeof stickerName>[0]), 1);
   for (const world of WORLD_KEYS) screen(stickerName({ kind: 'building', world, owned: true } as Parameters<typeof stickerName>[0]), 1);

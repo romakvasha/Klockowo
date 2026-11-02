@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Odznaki</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-bdg{grid-template-columns:300px minmax(0,1fr);grid-template-rows:var(--hb) minmax(0,1fr);grid-template-areas:"hud hud" "kub main"}
+.ph .s-bdg{grid-template-columns:minmax(0,1fr);grid-template-rows:var(--hb) 150px minmax(0,1fr);grid-template-areas:"hud" "kub" "main"}
+.hud{justify-content:flex-start}
+.kz{grid-area:kub;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:14px}
+.ph .kz{flex-direction:row;justify-content:center}
+.kz img{height:360px}
+.ph .kz img{height:140px}
+.main{grid-area:main;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:18px;padding:24px;place-items:center}
+.ph .main{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:10px;padding:14px}
+.bd{position:relative;width:116px;height:116px;border:0;border-radius:20px;display:grid;place-items:center;cursor:pointer;
+ background:linear-gradient(180deg,#FFE06A,#FFC21A 55%,#E0A000);box-shadow:inset 0 6px 0 rgba(255,255,255,.5),inset 0 -8px 0 rgba(0,0,0,.15),0 7px 0 #B58400,0 12px 16px rgba(10,30,70,.25);margin-top:12px}
+.bd::before{content:'';position:absolute;top:-11px;left:50%;margin-left:-20px;width:40px;height:15px;border-radius:50%;background:#FFE06A;box-shadow:0 4px 0 #D9A400}
+.bd img.s{width:58px;height:58px}
+.bd .w{position:absolute;right:-8px;bottom:-8px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--c);box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.bd .w img{width:26px;height:26px}
+.bd.empty{background:#EEF2F8;box-shadow:inset 0 0 0 4px #C9D3E2;border:0}
+.bd.empty::before{background:#E1E7F0;box-shadow:none}
+.bd.empty img.s{opacity:.22}
+.ph .bd{width:84px;height:84px;border-radius:16px}.ph .bd img.s{width:42px;height:42px}
+.ph .bd .w{width:30px;height:30px;border-radius:9px}.ph .bd .w img{width:20px;height:20px}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-bdg">
+  <div class="bgl blur f-bg-hub"></div>
+  <div class="hud">
+    <button class="bk c-o rnd hb" type="button" aria-label="Mapa"><img src="./i/w-home.svg" alt=""></button>
+    <button class="bk c-p rnd hb" type="button" aria-label="Naklejki"><img src="./i/w-stickers.svg" alt=""></button>
+  </div>
+  <div class="kz"><img class="char" src="./v2/kubik-demonstrating.webp" alt="Kubik"></div>
+  <div class="card main" aria-label="Odznaki">
+    <sc-for list="{{f.badges}}" as="b" hint-placeholder-count="12">
+      <button class="bd {{b.st}}" type="button" aria-label="{{b.aria}}"><img class="s" src="./i/k-star.svg" alt=""><sc-if value="{{b.w}}" hint-placeholder-val="{{ true }}"><span class="w" style="--c: {{b.c}}"><img src="./i/w-{{b.w}}.svg" alt=""></span></sc-if></button>
+    </sc-for>
+  </div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Що показано</dt><dd>Значки «Nie poddajesz się!» — квадратні цеглинки #FFC21A з одним пупирцем і зіркою; у кутку — світ, де отримано. Порожні — сірі місця. Дотик — голос називає значок.</dd>
+  <dt>Рішення</dt><dd>Значки лишаються квадратними цеглинками, жетон Kubika — кругла цеглинка з одним пупирцем (полотно схвалено 2026-10-29).</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): kubik-demonstrating. Фон — bg-hub. Немає (малюється кодом).</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const got = [['w1', '#7BCB5A'], ['w1', '#7BCB5A'], ['w2', '#FF9F43'], ['w2', '#FF9F43'], ['w3', '#3FA9F5']];
+    const badges = [];
+    for (let i = 0; i < 12; i++) {
+      const g = got[i];
+      badges.push(g ? { st: '', w: g[0], c: g[1], aria: 'Nie poddajesz się!' } : { st: 'empty', w: '', c: '', aria: 'puste miejsce' });
+    }
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', badges: badges.slice(0, 15) },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', badges },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

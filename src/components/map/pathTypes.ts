@@ -29,13 +29,6 @@ export interface PathLink {
   star: boolean;
 }
 
-export type DecorKind = 'meadow' | 'tree' | 'rocks' | 'palm' | 'pool' | 'pine';
-export interface PathDecor extends Point {
-  kind: DecorKind;
-  w: number;
-  h: number;
-}
-
 export type Scenery = 'none' | 'beach' | 'river';
 
 export interface PathLayout {
@@ -46,7 +39,6 @@ export interface PathLayout {
   links: readonly PathLink[];
   /** Лівий верхній кут скрині 132×155. */
   chest: Point;
-  decor: readonly PathDecor[];
   scenery: Scenery;
   /** Висота Kubika біля вузла (px сцени). */
   kubikH: number;

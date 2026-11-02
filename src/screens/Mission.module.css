@@ -1,4 +1,4 @@
-/* Wprowadzenie (design etap2/17–18): тло світу, смуга ґрунту на всю ширину, сцена 1280×720 (портрет 390×700) за масштабом --s по центру.
+/* Wprowadzenie (design etap2/17–18): фото світу (Backdrop), сцена 1280×720 (портрет 390×700) за масштабом --s по центру.
    Кнопки «Mapa», «Posłuchaj», «Graj!» — справжнього розміру поверх сцени (дотик ≥ 72/80 px на будь-якому екрані). */
 .page {
   position: relative;
@@ -6,18 +6,6 @@
   overflow: hidden;
   background: var(--bg);
   isolation: isolate;
-}
-
-/* смуга ґрунту: верх рахує екран (--ground-top) від масштабованої сцени; лінія зверху 6 px */
-.ground {
-  position: absolute;
-  top: var(--ground-top);
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: var(--ground);
-  border-top: 6px solid var(--ground-line);
-  transition: top 400ms var(--kl-ease-out);
 }
 
 .fit {
@@ -31,12 +19,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(var(--s));
-}
-
-.decor {
-  position: absolute;
-  max-width: none;
-  pointer-events: none;
 }
 
 /* картка й панель стоять у лівому верхньому куті сцени, їхнє місце й розмір задає transform: так стискання до compact — плавний перехід */
@@ -93,7 +75,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ground,
   .cardSlot,
   .guest,
   .kubik {
@@ -101,7 +82,6 @@
   }
 }
 
-:global(:root[data-reduce-motion='true']) .ground,
 :global(:root[data-reduce-motion='true']) .cardSlot,
 :global(:root[data-reduce-motion='true']) .guest,
 :global(:root[data-reduce-motion='true']) .kubik {

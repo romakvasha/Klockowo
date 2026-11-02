@@ -108,11 +108,6 @@ g[data-star='true'][data-open='false'] > .top {
   stroke: #e4e1ec;
 }
 
-.decor {
-  position: absolute;
-  pointer-events: none;
-}
-
 /* Kubik стоїть біля наступного вузла; крізь нього проходять дотики. Перехід між вузлами — «біг по стежці» (1,2 с) */
 .kubik {
   position: absolute;

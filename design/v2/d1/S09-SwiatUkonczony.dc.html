@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Świat ukończony</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./kl.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.s-wd{grid-template-columns:320px minmax(0,1fr) 300px;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"ttl ttl ttl" "kub chest bld" "kub btns btns"}
+.ph .s-wd{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) 190px auto;grid-template-areas:"ttl ttl" "chest chest" "kub bld" "btns btns"}
+.tt{grid-area:ttl;justify-self:center;padding:14px 30px;text-align:center}
+.ph .tt{padding:10px 14px}
+.ph .tt .ttl{font-size:21px}
+.kz{grid-area:kub;display:flex;align-items:flex-end;justify-content:center}
+.kz img{height:400px}
+.ph .kz img{height:180px}
+.chest{grid-area:chest;display:grid;place-items:center;position:relative;overflow:hidden}
+.chest .ch{width:330px}
+.ph .chest .ch{width:190px}
+.conf{position:absolute;inset:16px;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(5,1fr);pointer-events:none}
+.conf i{width:22px;height:14px;border-radius:4px;align-self:center;justify-self:center}
+.ph .conf i{width:14px;height:9px}
+.bld{grid-area:bld;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px}
+.bld .phbox{width:100%;flex:1 1 auto}
+.bld img{height:240px}
+.ph .bld img{height:130px}
+.btns{grid-area:btns;display:flex;justify-content:flex-end}
+.ph .btns{justify-content:stretch}.ph .btns .bk{width:100%}
+</style>
+</helmet>
+<div class="ab">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="dev {{f.cls}}">
+<div class="devlab"><b>{{f.name}}</b>{{f.size}}</div>
+<div class="scr s-wd">
+  <div class="bgl f-bg-w7"></div>
+  <div class="card tt"><p class="ttl">Wszystkie misje w tym świecie wykonane!</p></div>
+  <div class="kz"><img class="char" src="./v2/kubik-w7-happy.webp" alt="Kubik"></div>
+  <div class="card chest">
+    <div class="conf" aria-hidden="true"><sc-for list="{{f.conf}}" as="c" hint-placeholder-count="12"><i style="grid-area: {{c.ga}}; background: {{c.c}}; transform: rotate({{c.r}}deg)"></i></sc-for></div>
+    <img class="ch" src="./v2/chest-open.webp" alt="Skrzynia otwarta">
+  </div>
+  <div class="card bld">
+    <img class="char" src="./v2/build-w7.webp" alt="wieża rakietowa">
+  </div>
+  <div class="btns"><button class="bk c-b big" type="button" aria-label="Dalej"><img src="./i/w-next.svg" alt="" style="width: 52px; height: 52px"></button></div>
+</div>
+</section>
+</sc-for>
+<dl class="spec">
+  <dt>Голос</dt><dd>«Wszystkie misje w tym świecie wykonane!» — скриня відкривається з конфеті-цеглинками</dd>
+  <dt>Стан</dt><dd>Приклад — W7 «Kosmiczna Droga» (космічний вигляд: Kubik у шоломі, фото космосу). На мапі з'являється нова споруда світу (тут — «wieża rakietowa»), відкривається наступний світ. «Dalej» → Mapa przygody.</dd>
+  <dt>Картинки</dt><dd>D2a — нові картинки (Gemini, вирізані): build-w7, chest-open, kubik-w7-happy. Фон — bg-w7. Конфеті — цеглинки кодом.</dd>
+</dl>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1766,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cols = ['#E8352F', '#FFCF1F', '#1F7FE0', '#3FAE35', '#FF8A1F', '#8B4FE0'];
+    const spots = ['1/1', '1/3', '1/5', '1/7', '2/2', '2/6', '4/1', '4/7', '5/2', '5/4', '5/6', '3/7'];
+    const conf = spots.map((ga, i) => ({ ga, c: cols[i % 6], r: (i * 37) % 90 - 45 }));
+    return {
+      frames: [
+        { cls: 'pc', name: 'ПК', size: '1280 × 720', conf },
+        { cls: 'ph', name: 'Телефон', size: '390 × 844', conf },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

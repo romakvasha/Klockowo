@@ -3,7 +3,8 @@ import { Navigate, useNavigate } from 'react-router';
 import { PlayerPup } from '../characters/PlayerPup';
 import { PUP_TINTS } from '../characters/pups';
 import { useViewport } from '../app/useViewport';
-import { BASE_URL } from '../components/map/art';
+import { BASE_URL, prefetchWorldArt } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import { anchor, landscapeScale, layoutFor, mapOrientation, type MapLayout } from '../components/map/mapLayout';
 import { WorldIsland } from '../components/map/WorldIsland';
 import { AvatarButton } from '../components/ui/AvatarButton';
@@ -28,11 +29,6 @@ function stateOf(world: WorldId, progress: Parameters<typeof isWorldUnlocked>[0]
 function Trail({ layout, unlocked }: { layout: MapLayout; unlocked: (world: WorldId) => boolean }) {
   return (
     <svg className={styles.trail} viewBox={`0 0 ${layout.width} ${layout.height}`} aria-hidden="true" focusable="false">
-      <g className={styles.waves}>
-        {layout.waves.map(([x, y]) => (
-          <path key={`${x}-${y}`} d={`M${x} ${y} q10 -6 20 0 t20 0`} />
-        ))}
-      </g>
       {layout.trail.map((seg) => (
         <g key={`${seg.from}-${seg.to}`} data-open={unlocked(seg.to)}>
           <path className={styles.trailEdge} d={seg.d} />
@@ -43,7 +39,7 @@ function Trail({ layout, unlocked }: { layout: MapLayout; unlocked: (world: Worl
   );
 }
 
-/** Mapa przygody (BRIEF §6.4, design etap1/17): 7 островів уздовж стежки, «Plac Zabaw» і «Baza Drużyny». Заблоковані — сірий камінь із замком;
+/** Mapa przygody (BRIEF §6.4, полотно D1 S04): 7 островів уздовж стежки, «Plac Zabaw» і «Baza Drużyny». Заблоковані — сірий камінь із замком;
  *  Kubik на картингу стоїть біля поточного світу. Угорі: аватар, «Naklejki», шестерня (утримувати 3 с). Альбом — сцена 1280×720 за розміром
  *  вікна; портрет — вертикальна стежка, що гортається. Загального лічильника кісточок немає. */
 export function AdventureMap() {
@@ -67,6 +63,11 @@ export function AdventureMap() {
     const y = anchor(layout, current === 'hub' ? 'w1' : current).y * scale;
     box.scrollTop = Math.max(0, y - box.clientHeight / 2);
   }, [orientation, layout, scale, current]);
+
+  // фони поточного світу — у кеш наперед (і для гри без мережі)
+  useEffect(() => {
+    if (current !== 'hub') prefetchWorldArt(current);
+  }, [current]);
 
   if (!profile) return <Navigate to="/start" replace />;
 
@@ -105,6 +106,7 @@ export function AdventureMap() {
 
   return (
     <main className={styles.map} data-orientation={orientation}>
+      <Backdrop src={null} />
       <header className={styles.chrome}>
         {profileCount > 1 ? (
           <AvatarButton

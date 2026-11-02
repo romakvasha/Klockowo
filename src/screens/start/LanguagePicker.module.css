@@ -30,9 +30,9 @@
   line-height: 1;
   color: var(--kl-ink);
   background: var(--kl-surface);
-  border: 3px solid var(--kl-neutral-edge);
+  border: 0;
   border-radius: var(--kl-radius-round);
-  box-shadow: 0 4px 0 var(--kl-neutral-edge);
+  box-shadow: 0 4px 0 var(--kl-brick-white-edge), 0 8px 14px rgba(10, 30, 70, .25); /* v2: білий «чип» (полотно D1 .chip) */
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -40,14 +40,14 @@
 
 .chip:active {
   transform: translateY(2px);
-  box-shadow: 0 2px 0 var(--kl-neutral-edge);
+  box-shadow: 0 2px 0 var(--kl-brick-white-edge), 0 4px 8px rgba(10, 30, 70, .25);
 }
 
-/* обрана мова: заливка + галочка (сигнал не лише кольором) */
+/* обрана мова: жовта заливка + галочка (сигнал не лише кольором) */
 .chip[aria-pressed='true'] {
-  background: var(--kl-reward);
-  border-color: var(--kl-reward-edge);
-  box-shadow: 0 4px 0 var(--kl-reward-edge);
+  color: var(--kl-brick-yellow-glyph);
+  background: linear-gradient(180deg, var(--kl-brick-yellow-hi), var(--kl-brick-yellow) 46%, var(--kl-brick-yellow-lo));
+  box-shadow: 0 4px 0 var(--kl-brick-yellow-edge), 0 8px 14px rgba(10, 30, 70, .25);
 }
 
 .chip:focus-visible {
@@ -64,7 +64,7 @@
 }
 
 .check circle {
-  fill: var(--kl-success);
+  fill: var(--kl-brick-green-edge);
   stroke: var(--kl-surface);
   stroke-width: 2;
 }
