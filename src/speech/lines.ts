@@ -283,6 +283,29 @@ const PL_BREAK_EXERCISES = [
   { verb: 'Podskocz', n: 10 }, { verb: 'Klaśnij', n: 5 }, { verb: 'Tupnij', n: 8 },
 ] as const;
 
+/** Пісенька «Kubik liczy do dziesięciu» на «Czas na przerwę!» (docs/DESIGN_V2.md §6, текст — design/v2/mockup.html). Авторська, лише польською:
+ *  не перекладається й не озвучується голосом — рядки лише показуються під час пісні. */
+export const SONG = {
+  title: 'Kubik liczy do dziesięciu',
+  chorus: [
+    'Łapki w górę, liczymy!', 'Głośno razem mówimy:', 'raz, dwa, trzy, cztery, pięć –', 'na liczenie mamy chęć!',
+    'Sześć i siedem, osiem, dziewięć,', 'jeszcze jeden – mamy dziesięć!',
+  ],
+  village: [
+    'Z klocków dom i z klocków drzewa,', 'Kubik biega, Kubik śpiewa.', 'Gdy zwierzątko ma kłopoty,', 'Kubik rusza do roboty!',
+    'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!',
+  ],
+  duck: [
+    'Mama kaczka woła: kwa!', 'Ile dzieci w trawie ma?', 'Raz, dwa, trzy, cztery, pięć –', 'pięć kaczuszek: kwa, kwa, kwa!',
+    'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!',
+  ],
+  space: [
+    'Na Kosmicznej Drodze nocą', 'gwiazdy nad Kubikiem migocą.', 'Pięć tu świeci, pięć tam świeci –', 'razem dziesięć, wiedzą dzieci!',
+    'Ale sam nie da rady, wiesz?', 'Pomóż mu i policz też!',
+  ],
+  party: ['Brawo! Misja wykonana!', 'Policzymy znów od rana!', 'Łapki w górę, liczymy!'],
+} as const;
+
 // ---------- Текст для дорослого (не озвучується) ----------
 /** Назви навичок для «Mapa umiejętności» (Strefa rodzica, M22). [do sprawdzenia] — укладено разом із навчальною програмою M5,
  *  у BRIEF їх немає; польську перевірити й доповнити українським перекладом у M22. */

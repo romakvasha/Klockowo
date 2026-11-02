@@ -1,0 +1,265 @@
+/* «Czas na przerwę!» з пісенькою (полотно D1, дошка S11): зверху назва й «Dalej», посередині сцена з танцюристами, знизу картка з текстом */
+.screen {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'ttl next' 'stage stage' 'lyr lyr';
+  gap: var(--kl-space-3);
+  height: 100dvh;
+  padding: var(--kl-edge-safe);
+  background: var(--kl-hub-50);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* зміна сцени куплету — фон згасає з одного в інший */
+.bg {
+  animation: kl-fade-in 700ms ease-out both;
+}
+
+.title {
+  grid-area: ttl;
+  justify-self: start;
+  align-self: start;
+  margin: 0;
+  padding: 12px 26px;
+  font: 700 34px / 1.15 var(--kl-font-display);
+  color: var(--kl-ink);
+}
+
+.next {
+  grid-area: next;
+  align-self: start;
+}
+
+.stage {
+  grid-area: stage;
+  position: relative;
+  display: grid;
+  place-items: end center;
+  min-height: 0;
+}
+
+.dancers {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, 3vw, 40px);
+  max-width: 100%;
+}
+
+.side {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(4px, 1.5vw, 20px);
+}
+
+.dancers .kubik {
+  --fig-h: clamp(140px, 42dvh, 340px);
+}
+
+.side .pup {
+  --fig-h: clamp(80px, 22dvh, 190px);
+}
+
+/* предмети куплету — ряд над танцюристами */
+.props,
+.digits {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(6px, 1.5vw, 18px);
+  pointer-events: none;
+}
+
+.props img {
+  width: clamp(40px, 8dvh, 84px);
+  height: clamp(40px, 8dvh, 84px);
+}
+
+.digits span {
+  display: flex;
+}
+
+.digits img {
+  height: clamp(40px, 9dvh, 88px);
+  width: auto;
+}
+
+/* танець предметів: легке підстрибування хвилею (без «Mniej animacji») */
+.screen:not([data-calm='true']) .prop {
+  animation: kl-song-bob 900ms ease-in-out infinite alternate both;
+}
+
+@keyframes kl-song-bob {
+  from { translate: 0 0; }
+  to { translate: 0 -10px; }
+}
+
+/* звук не дозволили (iOS): велика кнопка ▶ посередині сцени */
+.play {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 1;
+}
+
+.lyrics {
+  grid-area: lyr;
+  justify-self: center;
+  width: min(820px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 28px 20px;
+  text-align: center;
+}
+
+.line {
+  margin: 0;
+  min-height: 1.2em;
+  font: 700 40px / 1.2 var(--kl-font-display);
+  color: var(--kl-ink);
+}
+
+.upcoming {
+  margin: 0;
+  min-height: 1.2em;
+  font: 600 26px / 1.2 var(--kl-font-display);
+  color: var(--kl-ink-soft);
+}
+
+.bar {
+  position: relative;
+  width: 100%;
+  height: 16px;
+  border-radius: 8px;
+  background: #E3ECF7;
+  overflow: hidden;
+}
+
+.bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, var(--kl-brick-yellow), var(--kl-brick-orange));
+  transition: width 250ms linear;
+}
+
+/* значки сцен: поточна — жовта з темним обідком (не лише колір: ще й обідок і більша) */
+.scenes {
+  display: flex;
+  gap: 10px;
+}
+
+.scenes span {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #EEF2F8;
+  box-shadow: inset 0 0 0 2px #C9D3E2;
+}
+
+.scenes span[data-on='true'] {
+  background: var(--kl-brick-yellow);
+  box-shadow: 0 0 0 4px var(--kl-ink);
+}
+
+.scenes svg {
+  width: 28px;
+  height: 28px;
+  color: var(--kl-ink);
+}
+
+/* телефон вертикально (D1 .ph): ряд не вміщається — цуценята стоять по боках перед Kubikom */
+@media (max-width: 600px) {
+  .dancers {
+    position: relative;
+    width: 100%;
+  }
+
+  .side {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    gap: 0;
+  }
+
+  .side:first-child {
+    left: 0;
+  }
+
+  .side:last-child {
+    right: 0;
+  }
+
+  .dancers .kubik {
+    --fig-h: min(46dvh, 360px);
+  }
+
+  .side .pup {
+    --fig-h: min(14dvh, 110px);
+  }
+
+  .title {
+    align-self: center;
+    padding: 10px 14px;
+    font-size: 24px;
+  }
+
+  .lyrics {
+    gap: 8px;
+    padding: 12px 14px 14px;
+  }
+
+  .line {
+    font-size: 24px;
+  }
+
+  .upcoming {
+    font-size: 17px;
+  }
+
+  .scenes span {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+
+  .scenes svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* телефон в альбомі (844×390): без рядка «наступний» і значків, текст дрібніше — щоб сцена лишилась видимою */
+@media (max-height: 500px) and (orientation: landscape) {
+  .title {
+    padding: 8px 16px;
+    font-size: 22px;
+  }
+
+  .lyrics {
+    gap: 6px;
+    padding: 8px 16px 10px;
+  }
+
+  .line {
+    font-size: 22px;
+  }
+
+  .upcoming,
+  .scenes {
+    display: none;
+  }
+
+  .bar {
+    height: 10px;
+  }
+}
