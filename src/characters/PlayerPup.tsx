@@ -10,7 +10,7 @@ export interface PlayerPupProps {
   className?: string;
 }
 
-/** Цуценя, яке обирає дитина (8 порід, без уніформ і транспорту; BRIEF §9). Декоративне: ім'я дає кнопка-аватар чи картка. */
+/** Цуценя, яке обирає дитина (8 порід, без уніформ і транспорту; BRIEF §9; картинки v2, вписані в квадрат). Декоративне: ім'я дає кнопка-аватар чи картка. */
 export function PlayerPup({ id, size, className }: PlayerPupProps) {
   return (
     <img
@@ -19,6 +19,7 @@ export function PlayerPup({ id, size, className }: PlayerPupProps) {
       alt=""
       width={size}
       height={size}
+      style={size === undefined ? undefined : { width: size }}
       draggable={false}
     />
   );

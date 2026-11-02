@@ -157,6 +157,10 @@
   border-radius: 6px;
 }
 
+.silhouetteArt {
+  filter: brightness(0);
+}
+
 .silhouettes {
   display: flex;
   flex-wrap: wrap;

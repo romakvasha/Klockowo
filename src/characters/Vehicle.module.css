@@ -1,6 +1,9 @@
 .vehicle {
   display: block;
   flex: none;
+  object-fit: contain;
+  object-position: 50% 100%;
+  -webkit-user-drag: none;
 }
 
 .arrive {

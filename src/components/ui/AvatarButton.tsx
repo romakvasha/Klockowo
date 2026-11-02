@@ -6,7 +6,7 @@ import { pressHandler } from './tick';
 import styles from './AvatarButton.module.css';
 
 export interface AvatarButtonProps extends Omit<ComponentPropsWithRef<'button'>, 'children' | 'name'> {
-  /** Картинка цуценяти (зазвичай <img> із src/assets/pups); показується знизу, обрізається колом. */
+  /** Картинка цуценяти (зазвичай <img> із src/assets/v2/pups); показується знизу, обрізається колом. */
   children: ReactNode;
   /** Колір профілю — один зі світів: тло 50, обідок 500, край обідка 700 (полотно D1 «Kto dziś gra?»). */
   tint?: WorldKey | 'hub';

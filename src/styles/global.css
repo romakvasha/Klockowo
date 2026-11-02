@@ -85,3 +85,9 @@ svg {
   transition-duration: var(--kl-dur-reduced) !important;
   scroll-behavior: auto !important;
 }
+
+/* Тваринки v2 (D4): у кожної картинки свої пропорції — у будь-якій коробці вписуються без спотворення, по низу (стоять на землі) */
+img[src*='/animal-'] {
+  object-fit: contain;
+  object-position: 50% 100%;
+}

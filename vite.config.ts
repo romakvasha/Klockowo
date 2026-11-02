@@ -29,7 +29,8 @@ export default defineConfig(({ mode }) => ({
           ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,svg,png,woff2,woff,json,mp3,ogg,wav}'],
+          // webp — картинки v2, які імпортує код (персонажі й тваринки, D4: ≈ 4,4 МБ); фони й мапа світів — D5
+          globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2,woff,json,mp3,ogg,wav}'],
           // Записаний голос (тисячі mp3, десятки МБ) — не в першому завантаженні: файли кешуються, коли звучать, а найчутніші
           // тихо докачуються після старту (speech/clipCache.ts). Маніфест — спершу з мережі (нові записи), без мережі — з кешу.
           globIgnores: ['audio/**'],

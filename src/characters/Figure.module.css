@@ -1,0 +1,78 @@
+/* Рух персонажів (BRIEF §11): idle — «дихання» 3 с; talking — рот A/O/E 8–10 разів/с (кадри-латки мордочки), у поз без кадрів —
+   легке кивання; happy — стрибок 12 px, 350 мс ease-pop. Усе — через --kl-anim-* (motion.css): при reduced-motion рух зникає,
+   лишається зміна пози (поява за 150 мс), а рот під час мовлення просто відкритий (A). */
+.figure {
+  --fig-h: var(--kl-kubik-h);
+  position: relative;
+  display: block;
+  flex: none;
+  height: var(--fig-h);
+  aspect-ratio: 4 / 5;
+  animation: var(--kl-anim-pose) 150ms ease-out;
+  user-select: none;
+}
+
+/* дзеркало не через transform: його анімує стрибок */
+.flip {
+  scale: -1 1;
+}
+
+/* рамка картинки: по низу й центру коробки; шари рота й картки — у частках цієї рамки */
+.motion {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
+  transform-origin: 50% 100%; /* низ фігури — ґрунт під лапами */
+}
+
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-user-drag: none;
+}
+
+.figure[data-animate='true'][data-motion='breathe'] .motion {
+  animation: var(--kl-anim-breathe-soft) 3s ease-in-out infinite;
+}
+
+/* стрибок — раз при появі пози; px екрана */
+.figure[data-animate='true'][data-motion='hop'] {
+  animation: var(--kl-anim-hop) 350ms var(--kl-ease-pop);
+}
+
+/* говорить без кадрів рота — кивання замість дихання */
+.figure[data-animate='true'][data-talking='true'][data-mouth='false'] .motion {
+  animation: var(--kl-anim-nod) 400ms ease-in-out infinite;
+}
+
+/* рот: латки мордочки A / O / E поверх пози спокою; без руху — відкритий рот A */
+.mouth {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.figure[data-talking='true'] .mouth[data-m='a'] {
+  visibility: visible;
+}
+
+.figure[data-talking='true'][data-animate='true'] .mouth[data-m='a'] {
+  animation: var(--kl-anim-mouth-a) 330ms steps(1, end) infinite;
+}
+
+.figure[data-talking='true'][data-animate='true'] .mouth[data-m='o'] {
+  animation: var(--kl-anim-mouth-o) 330ms steps(1, end) infinite;
+}
+
+.figure[data-talking='true'][data-animate='true'] .mouth[data-m='e'] {
+  animation: var(--kl-anim-mouth-e) 330ms steps(1, end) infinite;
+}
+
+/* число на порожній картці в лапах (поза with-card) */
+.card {
+  position: absolute;
+  display: block;
+  overflow: visible;
+}

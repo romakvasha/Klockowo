@@ -1,17 +1,27 @@
 import type { WorldKey } from '../speech/nouns';
 
-/** 17 поз Kubika (design etap1/11); `talking` — не поза, а прапор (рот A/O/E) на будь-якій позі. */
+/** 17 поз Kubika (design etap1/11, картинки v2); `talking` — не поза, а прапор (рот A/O/E у спокої, кивання в інших позах). */
 export const KUBIK_POSES = [
   'idle', 'pointing-left', 'pointing-right', 'pointing-down', 'demonstrating', 'thinking', 'happy', 'celebrating',
   'encouraging', 'waving', 'surprised', 'with-card', 'on-kart', 'sleepy', 'break-jump', 'break-clap', 'break-stomp',
 ] as const;
 export type KubikPose = (typeof KUBIK_POSES)[number];
 
-/** Три форми рота «talking» — окремі файли kubik-talking-a|o|e (відрізняються від idle лише #mouth). */
+/** Три форми рота «talking» — латки мордочки з kubik-talking-a|o|e (tools/art/mouths.py) поверх пози спокою. */
 export const MOUTH_SHAPES = ['a', 'o', 'e'] as const;
 
-/** Аксесуар світу: капелюшок W1, пов'язка W2, окуляри W3, каска W4, бінокль W5, кепка W6, шолом W7. У хабі аксесуара немає. */
+/** Аксесуар світу (картинки v2): капелюшок W1, зелена кепка W2, окуляри W3, каска W4, рюкзак W5, червона кепка W6, шолом W7. У хабі аксесуара немає. */
 export const ACCESSORY_WORLDS: readonly WorldKey[] = ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7'];
+
+/** Картинка пози: аксесуар світу намальовано лише в спокої (`w3-idle`) і радості (`w3-happy`, і для celebrating);
+ *  решта поз — без аксесуара. Ключ = ім'я файла без `kubik-`. */
+export function kubikImage(pose: KubikPose, accessory: WorldKey | null = null): string {
+  if (accessory && ACCESSORY_WORLDS.includes(accessory)) {
+    if (pose === 'idle') return `${accessory}-idle`;
+    if (pose === 'happy' || pose === 'celebrating') return `${accessory}-happy`;
+  }
+  return pose;
+}
 
 /** Команда — гості місій (BRIEF §9): по 3 пози й власний транспорт. */
 export const TEAM_MEMBERS = ['latka', 'pufka', 'tofik', 'iskra'] as const;
@@ -39,7 +49,7 @@ export const TEAM: Readonly<Record<TeamMember, TeamInfo>> = {
   iskra: { breed: 'corgi', worlds: 'W7', vest: '#6C63FF', vehicle: 'rakieta' },
 };
 
-/** Розмір транспорту на борді дизайну (etap2/13), px: ширина × висота. */
+/** Коробка транспорту на борді дизайну (etap2/13), px: ширина × висота; картинка v2 вписується в неї без спотворення. */
 export const VEHICLE_SIZE: Readonly<Record<VehicleKind, readonly [number, number]>> = {
   balon: [124, 148],
   zaglowka: [180, 147],
@@ -47,7 +57,7 @@ export const VEHICLE_SIZE: Readonly<Record<VehicleKind, readonly [number, number
   rakieta: [91, 148],
 };
 
-/** Рух за позою: breathe — «дихання» 3 с у спокої; hop — стрибок 12 px + хвіст ±15° (350 мс), раз при появі пози; none — поза сама рух. */
+/** Рух за позою: breathe — «дихання» 3 с у спокої; hop — стрибок 12 px (350 мс), раз при появі пози; none — поза сама рух. */
 export type Motion = 'breathe' | 'hop' | 'none';
 
 const HOP: ReadonlySet<string> = new Set(['happy', 'celebrating']);
