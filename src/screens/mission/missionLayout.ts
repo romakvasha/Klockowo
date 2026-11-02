@@ -1,8 +1,6 @@
 // Композиція Wprowadzenie (BRIEF §6.6, design etap2/17–18): альбомна сцена 1280×720 із координатами бордів і портретна 390×700.
 // Дві фази: «card» — велика MissionCard і гість показує на неї; «idea» — картка стискається в куток, у центрі з'являється панель
 // демонстрації нової ідеї. Чисті дані: екран лише підставляє їх у CSS-змінні й переходи.
-import type { DecorKind } from '../../components/map/pathTypes';
-import type { WorldKey } from '../../curriculum/types';
 
 export type MissionOrientation = 'landscape' | 'portrait';
 export type MissionPhase = 'card' | 'idea';
@@ -72,36 +70,4 @@ export function missionScale(orientation: MissionOrientation, viewportW: number,
   const cap = orientation === 'landscape' ? 1 : 1.5;
   const s = Math.min(cap, viewportW / base.width, viewportH / base.height);
   return Number.isFinite(s) && s > 0 ? s : 1;
-}
-
-/** Декор сцени (поза карткою) — лише в альбомі: координати борду W1 (дерево, лужок) і W3 (пальма, басейн); решта світів — за зразком W1. */
-export interface MissionDecor {
-  kind: DecorKind;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-const D = (kind: DecorKind, x: number, y: number, w: number, h: number): MissionDecor => ({ kind, x, y, w, h });
-
-const DECOR: Record<WorldKey, readonly MissionDecor[]> = {
-  w1: [D('tree', 1172, 130, 100, 145), D('meadow', 176, 572, 140, 130)],
-  w2: [D('tree', 1172, 130, 100, 145), D('meadow', 176, 572, 140, 130)],
-  w3: [D('palm', 190, 440, 112, 150), D('pool', 820, 606, 140, 90)],
-  w4: [D('tree', 1172, 130, 100, 145), D('rocks', 176, 600, 96, 72)],
-  w5: [D('pine', 1172, 130, 100, 145), D('rocks', 176, 600, 96, 72)],
-  w6: [D('tree', 1172, 130, 100, 145), D('rocks', 176, 600, 96, 72)],
-  w7: [D('pine', 1172, 130, 100, 145), D('rocks', 176, 600, 96, 72)],
-};
-
-export function missionDecor(world: WorldKey, orientation: MissionOrientation): readonly MissionDecor[] {
-  return orientation === 'landscape' ? DECOR[world] : [];
-}
-
-/** Кольори смуги ґрунту: W1 — трава (борд etap2/17), W3 — пісок (etap2/18), решта — світлий відтінок світу з темнішою лінією зверху. */
-export function groundColors(world: WorldKey): { fill: string; line: string } {
-  if (world === 'w1') return { fill: 'var(--kl-w1-100)', line: '#bfe3ae' };
-  if (world === 'w3') return { fill: '#f3d9a0', line: '#e4c78a' };
-  return { fill: `var(--kl-${world}-100)`, line: 'rgba(45, 42, 74, .12)' };
 }

@@ -1,7 +1,8 @@
 import { Kubik } from '../../characters/Kubik';
 import { TEAM_MEMBERS, type TeamMember } from '../../characters/poses';
 import { TeamPup } from '../../characters/TeamPup';
-import { DECOR_URL } from '../../components/map/art';
+import { BG_URL } from '../../components/map/art';
+import { Backdrop } from '../../components/world/Backdrop';
 import { IconButton } from '../../components/ui/IconButton';
 import { MissionCard } from '../../components/ui/MissionCard';
 import { PlayButton } from '../../components/ui/PlayButton';
@@ -13,7 +14,7 @@ import type { ObjectId } from '../../speech/nouns';
 import { IdeaPanel } from './IdeaPanel';
 import type { DemoKind } from './ideaDemo';
 import {
-  CARD_H, CARD_W, PANEL_H, PANEL_W, groundColors, missionDecor, missionLayout, missionOrientation, missionScale,
+  CARD_H, CARD_W, PANEL_H, PANEL_W, missionLayout, missionOrientation, missionScale,
   type Box, type MissionPhase,
 } from './missionLayout';
 import styles from '../Mission.module.css';
@@ -64,8 +65,6 @@ export function MissionView({ world: worldKey, object, line, phase, kind, stage,
   const orientation = missionOrientation(viewport.width, viewport.height);
   const layout = missionLayout(orientation, phase);
   const scale = missionScale(orientation, viewport.width, viewport.height);
-  const ground = groundColors(worldKey);
-  const groundTop = (viewport.height - layout.height * scale) / 2 + layout.ground * scale;
   const phone = viewport.width < 600 || viewport.height < 500;
 
   return (
@@ -73,9 +72,9 @@ export function MissionView({ world: worldKey, object, line, phase, kind, stage,
       className={styles.page}
       data-orientation={orientation}
       data-phase={phase}
-      style={cssVars({ '--bg': `var(--kl-${worldKey}-50)`, '--ground': ground.fill, '--ground-line': ground.line, '--ground-top': `${groundTop}px` })}
+      style={cssVars({ '--bg': `var(--kl-${worldKey}-50)` })}
     >
-      <div className={styles.ground} aria-hidden="true" />
+      <Backdrop src={BG_URL(worldKey)} blur />
 
       <header className={styles.chrome}>
         <IconButton icon="home" label={BUTTONS.map} onClick={onMap} />
@@ -84,10 +83,6 @@ export function MissionView({ world: worldKey, object, line, phase, kind, stage,
 
       <div className={styles.fit}>
         <div className={styles.stage} style={cssVars({ '--s': scale }, { width: layout.width, height: layout.height })}>
-          {missionDecor(worldKey, orientation).map((d) => (
-            <img key={d.kind} className={styles.decor} src={DECOR_URL(d.kind)} alt="" draggable={false} style={{ left: d.x, top: d.y, width: d.w, height: d.h }} />
-          ))}
-
           <div className={styles.cardSlot} style={{ width: CARD_W, height: CARD_H, transform: `translate(${layout.card.x}px, ${layout.card.y}px) scale(${layout.card.scale})` }}>
             <MissionCard world={worldKey} object={object} label={line} />
           </div>

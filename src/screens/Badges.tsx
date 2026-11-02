@@ -8,6 +8,8 @@ import { ALBUM, BUTTONS, LEVEL_LINES } from '../speech/lines';
 import { sfx } from '../speech/sfx';
 import { tts } from '../speech/tts';
 import { diligenceBadgesOf, selectActiveProfile, selectActiveProgress, useAppStore } from '../store';
+import { BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import styles from './rewards/Rewards.module.css';
 
 /** Odznaki (BRIEF §6 п.10): значки «Nie poddajesz się!» — квадратні жетони-кубики #FFC21A, як у Kubika на нашийнику; по одному за рівень, у якому дитина хоч раз розв'язувала разом із Kubikom.
@@ -27,6 +29,7 @@ export function Badges() {
 
   return (
     <main className={styles.page}>
+      <Backdrop src={BG_URL('hub')} blur />
       <header className={styles.bar}>
         <IconButton icon="stickers" label={ALBUM.title} onClick={() => navigate('/album')} />
         <h1 className={styles.title}>{ALBUM.badges}</h1>

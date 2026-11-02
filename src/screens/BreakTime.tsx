@@ -11,6 +11,8 @@ import { sfx } from '../speech/sfx';
 import { useScript } from '../speech/useScript';
 import { useTts } from '../speech/useTts';
 import { selectActiveProfile, useAppStore } from '../store';
+import { BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import styles from './session/Session.module.css';
 
 /** Czas na przerwę! (BRIEF §6 п.11): бадьорий Kubik показує 3 рухові вправи з лічбою — «Podskocz dziesięć razy!», «Klaśnij pięć razy!», «Tupnij osiem razy!» (пози «стрибок», «плескання»,
@@ -52,6 +54,7 @@ export function BreakTime() {
   if (!profile) return <Navigate to="/start" replace />;
   return (
     <main className={styles.screen}>
+      <Backdrop src={BG_URL('hub')} />
       <div className={styles.stage}>
         <Kubik pose={pose} talking={speaking} size={320} />
         <span className={styles.count} aria-hidden="true">{rep > 0 && <Digits value={rep} style={{ height: 120 }} />}</span>

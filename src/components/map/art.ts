@@ -1,21 +1,44 @@
-// Арт мапи з src/assets/world: острови світів, замок (сірий камінь) і «Baza Drużyny».
-const islands = import.meta.glob<string>('../../assets/world/island-*.svg', { query: '?url', import: 'default', eager: true });
-const bases = import.meta.glob<string>('../../assets/world/base-*.svg', { query: '?url', import: 'default', eager: true });
+// Арт світів v2 (D5): картинки Gemini з src/assets/v2/world (tools/art/process.py). Острови, скрині, «Baza Drużyny» й споруди — у precache
+// (мапа — перший екран); фони світів (bg-*) і доріжок (path-*) важчі (≈ 3 МБ), тож у першому завантаженні їх немає: вони кешуються, коли
+// з'являються на екрані, а картинки світу, в який дитина заходить, підвантажуються наперед (prefetchWorldArt; vite.config — runtimeCaching).
+import type { WorldId, WorldKey } from '../../curriculum/types';
 
-function find(sources: Record<string, string>, suffix: string): string {
-  const entry = Object.entries(sources).find(([path]) => path.endsWith(suffix));
-  if (!entry) throw new Error(`Map art not found: ${suffix}`);
+const world = import.meta.glob<string>('../../assets/v2/world/*.webp', { query: '?url', import: 'default', eager: true });
+const decors = import.meta.glob<string>('../../assets/world/deco-*.svg', { query: '?url', import: 'default', eager: true });
+
+function find(sources: Record<string, string>, file: string): string {
+  const entry = Object.entries(sources).find(([path]) => path.endsWith(`/${file}`));
+  if (!entry) throw new Error(`Map art not found: ${file}`);
   return entry[1];
 }
 
-/** 'w1' … 'w7', 'hub' або 'locked'. */
-export const ISLAND_URL = (id: string): string => find(islands, `island-${id}.svg`);
-export const BASE_URL = (): string => find(bases, 'base-druzyna.svg');
+/** Острів мапи: 'w1' … 'w7', 'hub' або 'locked' (туман із замком). */
+export const ISLAND_URL = (id: WorldId | 'locked'): string => find(world, `island-${id}.webp`);
+export const BASE_URL = (): string => find(world, 'base-druzyna.webp');
+/** Скриня світу: 'locked' | 'ready' | 'open'. */
+export const CHEST_URL = (state: string): string => find(world, `chest-${state}.webp`);
+/** Споруда пройденого світу (вітряк, оранжерея, маяк, міст, будинок на дереві, вежа, ракета). */
+export const BUILD_URL = (w: WorldKey): string => find(world, `build-${w}.webp`);
 
-const chests = import.meta.glob<string>('../../assets/world/chest-*.svg', { query: '?url', import: 'default', eager: true });
-const decors = import.meta.glob<string>('../../assets/world/deco-*.svg', { query: '?url', import: 'default', eager: true });
+/** Фон екрана: 'start' (село), 'hub' (Plac Zabaw, альбом, перерва) або світ — фон гри, місії, кінця рівня. */
+export type BackdropScene = 'start' | WorldId;
+export const BG_URL = (scene: BackdropScene): string => find(world, `bg-${scene}.webp`);
+/** Фон «Ścieżka świata»: вид згори, посередині порожньо — доріжку з вузлами малює гра. */
+export const PATH_URL = (w: WorldKey): string => find(world, `path-${w}.webp`);
 
-/** Скриня світу 132×155: 'locked' | 'ready' | 'open'. */
-export const CHEST_URL = (state: string): string => find(chests, `chest-${state}.svg`);
-/** Декор сцени стежки: 'meadow' (deco-w1-meadow), 'tree', 'pine', 'palm', 'rocks', 'pool'. */
+/** Декор старих сцен (місія): 'meadow' (deco-w1-meadow), 'tree', 'pine', 'palm', 'rocks', 'pool'. */
 export const DECOR_URL = (kind: string): string => find(decors, kind === 'meadow' ? 'deco-w1-meadow.svg' : `deco-${kind}.svg`);
+
+const fetched = new Set<string>();
+
+/** Тихо підвантажує фони світу (доріжка й гра), щоб вони були в кеші до першого екрана світу й без мережі. Повторно не просить. */
+export function prefetchWorldArt(w: WorldKey): void {
+  if (typeof Image === 'undefined') return;
+  for (const url of [PATH_URL(w), BG_URL(w)]) {
+    if (fetched.has(url)) continue;
+    fetched.add(url);
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = url;
+  }
+}

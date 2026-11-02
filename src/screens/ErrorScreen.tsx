@@ -4,6 +4,8 @@ import { IconButton } from '../components/ui/IconButton';
 import { BUTTONS, ERROR_LINES } from '../speech/lines';
 import { useScript } from '../speech/useScript';
 import { useTts } from '../speech/useTts';
+import { BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import styles from './session/Session.module.css';
 
 /** Błąd (BRIEF §6 п.16): здивований Kubik, голос «Ups! Spróbujmy jeszcze raz.», кнопка «Jeszcze raz» із круговою стрілкою. Без тексту, цифр і кодів — дитина нічого не читає. Як маршрут
@@ -17,6 +19,7 @@ export function ErrorScreen({ onRetry }: { onRetry?: () => void }) {
   });
   return (
     <main className={styles.screen}>
+      <Backdrop src={BG_URL('start')} blur />
       <div className={styles.stage}>
         <Kubik pose="surprised" talking={speaking} size={300} />
       </div>

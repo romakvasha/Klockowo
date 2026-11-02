@@ -29,12 +29,18 @@ export default defineConfig(({ mode }) => ({
           ],
         },
         workbox: {
-          // webp — картинки v2, які імпортує код (персонажі й тваринки, D4: ≈ 4,4 МБ); фони й мапа світів — D5
+          // webp — картинки v2, які імпортує код (персонажі, тваринки, острови, скрині, споруди). Фони світів і доріжок (bg-*, path-*, ≈ 3 МБ) —
+          // не в першому завантаженні: кешуються, коли з'являються, а світ, у який дитина заходить, підвантажується наперед (map/art.ts prefetchWorldArt)
           globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2,woff,json,mp3,ogg,wav}'],
           // Записаний голос (тисячі mp3, десятки МБ) — не в першому завантаженні: файли кешуються, коли звучать, а найчутніші
           // тихо докачуються після старту (speech/clipCache.ts). Маніфест — спершу з мережі (нові записи), без мережі — з кешу.
-          globIgnores: ['audio/**'],
+          globIgnores: ['audio/**', 'assets/bg-*.webp', 'assets/path-*.webp'],
           runtimeCaching: [
+            {
+              urlPattern: ({ url }) => /\/assets\/(bg|path)-[^/]+\.webp$/.test(url.pathname),
+              handler: 'CacheFirst',
+              options: { cacheName: 'klockowo-world', cacheableResponse: { statuses: [200] } },
+            },
             {
               urlPattern: ({ url }) => url.pathname.includes('/audio/') && url.pathname.endsWith('/manifest.json'),
               handler: 'NetworkFirst',

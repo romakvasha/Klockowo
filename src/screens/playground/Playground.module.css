@@ -5,6 +5,7 @@
   padding: var(--kl-edge-safe);
   gap: var(--kl-space-2);
   background: var(--kl-hub-50, #FFF5DA);
+  isolation: isolate;
 }
 
 .bar {
@@ -15,8 +16,12 @@
 
 .title {
   margin: 0;
+  padding: 6px 20px;
   font: 700 clamp(26px, 5vw, 40px) / 1.1 var(--kl-font-display);
   color: var(--kl-ink);
+  background: var(--kl-card);
+  border-radius: var(--kl-radius-panel);
+  box-shadow: var(--kl-card-shadow);
 }
 
 /* меню трьох активностей: великі блокові плитки */

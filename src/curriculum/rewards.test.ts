@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { BUILDINGS, BUILDING_H, BUILDING_W, buildingCells } from '../components/map/worldBuildings';
 import { ANIMAL_IDS } from '../speech/nouns';
 import { levelsOfWorld } from './levels';
 import { albumCount, albumSlots, isAlbumEmpty, sceneStickers, vehicleOfWorld, type RewardsProgress } from './rewards';
@@ -77,29 +76,5 @@ describe('celebrateWorld', () => {
     expect(celebrateWorld(once, 'w3')).toBe(once);
     expect(celebrateWorld(once, 'w5').celebrated).toEqual(['w3', 'w5']);
     expect(p.celebrated).toEqual([]);
-  });
-});
-
-describe('споруди світів', () => {
-  it('для кожного світу є споруда: решітка 9 × 8, лише відомі символи, є двері, дах чи верхівка', () => {
-    for (const w of WORLD_KEYS) {
-      const rows = BUILDINGS[w];
-      expect(rows, w).toHaveLength(BUILDING_H);
-      for (const row of rows) {
-        expect(row, w).toHaveLength(BUILDING_W);
-        expect(row, w).toMatch(/^[.WDRwkf]+$/);
-      }
-      expect(rows.join(''), w).toContain('k');
-      expect(buildingCells(w), w).toHaveLength(BUILDING_H);
-    }
-  });
-
-  it('усі сім споруд різні; нижній ряд — суцільна основа з дверима', () => {
-    expect(new Set(WORLD_KEYS.map((w) => BUILDINGS[w].join('|'))).size).toBe(7);
-    for (const w of WORLD_KEYS) {
-      const base = BUILDINGS[w][BUILDING_H - 1]!;
-      expect(base, w).toContain('k');
-      expect(base.replace(/\./g, '').length, w).toBeGreaterThanOrEqual(5);
-    }
   });
 });

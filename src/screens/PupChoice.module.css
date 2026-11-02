@@ -6,6 +6,7 @@
   min-height: 100dvh;
   overflow: hidden;
   background: var(--kl-hub-50);
+  isolation: isolate;
 }
 
 .floor {

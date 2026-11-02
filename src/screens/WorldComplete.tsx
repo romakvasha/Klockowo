@@ -3,7 +3,8 @@ import { Navigate, useNavigate, useParams } from 'react-router';
 import { Kubik } from '../characters/Kubik';
 import { TeamPup } from '../characters/TeamPup';
 import { WorldBuilding } from '../components/map/WorldBuilding';
-import { CHEST_URL } from '../components/map/art';
+import { BG_URL, CHEST_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import { Confetti } from '../components/ui/Confetti';
 import { IconButton } from '../components/ui/IconButton';
 import { isWorldComplete } from '../curriculum/progression';
@@ -36,6 +37,7 @@ function WorldCompleteScreen({ world }: { world: WorldKey }) {
 
   return (
     <main className={styles.done} style={{ '--world': `var(--kl-${world}-100)` } as React.CSSProperties}>
+      <Backdrop src={BG_URL(world)} />
       <Confetti seed={world.charCodeAt(1)} />
       <div className={styles.doneStage}>
         {guest && guest !== 'all' && <TeamPup member={guest} pose="happy" size={170} className={styles.guest} />}

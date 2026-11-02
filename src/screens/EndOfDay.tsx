@@ -6,6 +6,8 @@ import { BUTTONS, SESSION_LINES } from '../speech/lines';
 import { useScript } from '../speech/useScript';
 import { useTts } from '../speech/useTts';
 import { selectActiveProfile, useAppStore } from '../store';
+import { BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import styles from './session/Session.module.css';
 
 /** Koniec na dziś (BRIEF §6 п.12): сонний Kubik біля будки, «Koniec na dziś. Do zobaczenia!». З'являється лише після завершення поточного рівня; наступний урок сам не запускається —
@@ -24,6 +26,7 @@ export function EndOfDay() {
   if (!profile) return <Navigate to="/start" replace />;
   return (
     <main className={styles.screen} data-night="true">
+      <Backdrop src={BG_URL('start')} className={styles.nightBg} />
       <div className={styles.stage}>
         <div className={styles.house} aria-hidden="true">
           <span className={styles.roof} />

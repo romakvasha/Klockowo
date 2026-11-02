@@ -3,12 +3,11 @@ import { useElementSize, type ElementSize } from '../../app/useElementSize';
 import { useViewport } from '../../app/useViewport';
 import { MascotStage } from '../../characters/MascotStage';
 import type { MascotState } from '../../characters/poses';
-import { DECOR_URL } from '../../components/map/art';
-import { DECOR_SIZE, pathLayoutFor } from '../../components/map/pathLayout';
+import { BG_URL } from '../../components/map/art';
+import { Backdrop } from '../../components/world/Backdrop';
 import { CheckButton } from '../../components/ui/CheckButton';
 import { HUD } from '../../components/ui/HUD';
 import { HintButton } from '../../components/ui/HintButton';
-import { cssVars } from '../../components/ui/cx';
 import type { WorldKey } from '../../curriculum/types';
 import { LABELS } from '../../speech/lines';
 import { frameKind, sceneReserved, type FrameKind } from './frameMath';
@@ -48,28 +47,6 @@ export interface GameFrameProps {
   children: (scene: FrameScene) => ReactNode;
 }
 
-/** Блоковий декор лише по краях сцени (BRIEF §7, борд etap2/00): три предмети з набору світу — унизу ліворуч, угорі праворуч, унизу праворуч.
- *  Власний шар із overflow: hidden — тоді сама сцена не обрізає предмет, який дитина перетягує на тарілку в лотку. */
-function Decor({ world }: { world: WorldKey }) {
-  const kinds = pathLayoutFor(world, 'landscape').decor;
-  const spots = ['bl', 'tr', 'br'] as const;
-  return (
-    <div className={styles.decorLayer}>
-      {spots.map((spot, i) => {
-        const d = kinds[i];
-        if (!d) return null;
-        const [w, h] = DECOR_SIZE[d.kind];
-        return (
-          <img
-            key={spot} className={styles.decor} data-spot={spot} src={DECOR_URL(d.kind)} alt="" draggable={false}
-            style={cssVars({ '--w': `${w}px`, '--h': `${h}px` })}
-          />
-        );
-      })}
-    </div>
-  );
-}
-
 /** Ігровий екран (BRIEF §7, полотно D1 «сітка гри», docs/DESIGN_V2.md §3): CSS Grid із зонами HUD · провідник (Kubik, бульбашка, лампочка) · дошка (сцена) · лоток · «Gotowe».
  *  Зони не перетинаються: wide — провідник колонкою ліворуч, лоток і «Gotowe» під дошкою; portrait — провідник рядом над дошкою, лоток і «Gotowe» під нею;
  *  phone — бічна смуга HUD, дошка, колонка провідника з «Gotowe» унизу, лоток-стовпець. Лише верстка: стан, голос і перевірку веде TaskPlayer. */
@@ -83,13 +60,13 @@ export function GameFrame({ world, filled, arriving, listenPulse, onMap, onListe
 
   return (
     <main className={styles.game} data-kind={kind} data-world={world}>
+      <Backdrop src={BG_URL(world)} blur />
       <HUD className={styles.hud} world={world} filled={filled} arriving={arriving} onMap={onMap} onListen={onListen} listenPulse={listenPulse} stripExtra={hintButton} />
       <aside className={styles.guide}>
         <MascotStage state={mascot} world={world} bubble={bubble} speaking={speaking} layout={kind === 'portrait' ? 'row' : 'column'} />
         <span className={styles.hintSlot}>{hintButton}</span>
       </aside>
       <section className={styles.scene} role="group" aria-label={sceneLabel}>
-        <Decor world={world} />
         <div ref={sceneRef} className={styles.content}>
           {area.w > 0 && area.h > 0 && children({ area, reserved, kind, tray: trayEl })}
         </div>

@@ -8,6 +8,8 @@ import { selectActiveProfile, selectActiveProgress, useAppStore } from '../store
 import { ChartPaint } from './playground/ChartPaint';
 import { CountSong } from './playground/CountSong';
 import { ReviewSession } from './playground/ReviewSession';
+import { BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import styles from './playground/Playground.module.css';
 
 type Activity = 'menu' | 'review' | 'paint' | 'count';
@@ -33,6 +35,7 @@ export function Playground() {
 
   return (
     <main className={styles.screen}>
+      <Backdrop src={BG_URL('hub')} />
       <header className={styles.bar}>
         <IconButton icon="home" label={BUTTONS.map} onClick={back} />
         <h1 className={styles.title}>{PLAYGROUND.title}</h1>

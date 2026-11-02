@@ -6,6 +6,8 @@ import { markNoVoiceSeen } from '../session/noVoice';
 import { LANG_BCP47 } from '../speech/langCode';
 import { useLanguage } from '../speech/language';
 import { BUTTONS, NO_VOICE_MESSAGE } from '../speech/lines';
+import { BG_URL } from '../components/map/art';
+import { Backdrop } from '../components/world/Backdrop';
 import styles from './session/Session.module.css';
 
 /** Brak polskiego głosu (BRIEF §6 п.16): Kubik із перекресленим динаміком й повідомлення для ДОРОСЛОГО (дитина ще не читає): «Brak polskiego głosu w tej przeglądarce. Zobacz: Strefa rodzica →
@@ -15,6 +17,7 @@ export function NoVoice() {
   const language = useLanguage();
   return (
     <main className={styles.screen}>
+      <Backdrop src={BG_URL('start')} blur />
       <div className={styles.stage}>
         <Kubik pose="thinking" size={260} />
         <Icon name="speaker-off" className={styles.muted} aria-hidden="true" />

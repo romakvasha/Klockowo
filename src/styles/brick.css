@@ -3,7 +3,7 @@
    Колір — data-brick="red|yellow|blue|green|orange|purple|white|grey|pale" або власні змінні --c, --c-hi, --c-lo, --s, --d, --t, --o.
    Значок і цифри фарбуються --t; клас .kl-glyph дає білому значку темний контур --o і тінь (контраст ≥ 6,5 : 1, contrast.test.ts).
    Натиск — цеглинка «вдавлюється» на 5 px (край 7 → 2 px), за 90 мс. Нічого не залежить від hover.
-   Кільце фокуса — змінна --kl-ring, як у .kl-block. Старий вигляд .kl-block (block.css) лишається для мапи й ігор до D5–D6.
+   Кільце фокуса — змінна --kl-ring, як у .kl-block. Старий вигляд .kl-block (block.css) лишається для ігор до D6.
    Пресети кольорів мають нульову специфічність (:where), тож будь-який модульний клас компонента їх перекриває. */
 :where(.kl-brick) {
   --c: var(--kl-brick-blue); --c-hi: var(--kl-brick-blue-hi); --c-lo: var(--kl-brick-blue-lo);

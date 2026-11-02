@@ -10,10 +10,16 @@
   padding: var(--kl-edge-safe);
   background: var(--kl-hub-50);
   overflow: hidden;
+  isolation: isolate; /* фото-фон (Backdrop) — у цьому шарі */
 }
 
 .screen[data-night='true'] {
   background: #E4E1F5;
+}
+
+/* «Koniec na dziś»: те саме село, але присмерк */
+.nightBg {
+  filter: brightness(.6) saturate(.8) hue-rotate(-12deg);
 }
 
 .stage {
@@ -91,9 +97,13 @@
 .adult {
   max-width: 560px;
   margin: 0;
+  padding: 16px 24px;
   font: 600 20px / 1.4 var(--kl-font-ui);
   text-align: center;
   color: var(--kl-ink);
+  background: var(--kl-card);
+  border-radius: var(--kl-radius-panel);
+  box-shadow: var(--kl-card-shadow);
 }
 
 /* Телефон в альбомі (844×390): зони стають рядком — Kubik · (текст) · кнопка, щоб кнопка не опинилася нижче краю (D3) */

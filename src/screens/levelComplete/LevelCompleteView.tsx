@@ -7,10 +7,11 @@ import { IconButton } from '../../components/ui/IconButton';
 import { StickerTile } from '../../components/ui/StickerTile';
 import { cssVars } from '../../components/ui/cx';
 import { animalUrl } from '../../components/math/art';
+import { BG_URL } from '../../components/map/art';
+import { Backdrop } from '../../components/world/Backdrop';
 import type { WorldKey } from '../../curriculum/types';
 import { BUTTONS } from '../../speech/lines';
 import type { AnimalId } from '../../speech/nouns';
-import { groundColors } from '../mission/missionLayout';
 import { Bowl } from './Bowl';
 import { boneFlight, completeLayout, completeOrientation, completeScale, slotCenter } from './levelCompleteLayout';
 import styles from './LevelComplete.module.css';
@@ -43,8 +44,6 @@ export function LevelCompleteView(p: LevelCompleteViewProps) {
   const orientation = completeOrientation(p.viewport.width, p.viewport.height);
   const layout = completeLayout(orientation);
   const scale = completeScale(orientation, p.viewport.width, p.viewport.height);
-  const ground = groundColors(p.world);
-  const groundTop = (p.viewport.height - layout.height * scale) / 2 + layout.ground * scale;
   const bowl = layout.bowl;
   const flyStart = p.flying === null ? null : slotCenter(layout.rail, p.flying);
   const flight = p.flying === null ? null : boneFlight(layout, p.flying);
@@ -54,9 +53,9 @@ export function LevelCompleteView(p: LevelCompleteViewProps) {
     <main
       className={styles.page}
       data-orientation={orientation}
-      style={cssVars({ '--bg': `var(--kl-${p.world}-50)`, '--ground': ground.fill, '--ground-line': ground.line, '--ground-top': `${groundTop}px` })}
+      style={cssVars({ '--bg': `var(--kl-${p.world}-50)` })}
     >
-      <div className={styles.ground} aria-hidden="true" />
+      <Backdrop src={BG_URL(p.world)} />
       {p.confetti && <Confetti key="confetti" seed={7} />}
 
       <header className={styles.chrome}>

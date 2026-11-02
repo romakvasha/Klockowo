@@ -1,33 +1,62 @@
-/* Вузол стежки (design etap2/14–16): кнопка 96×104 з картинкою-платформою; натиснутий — вниз на 4 px і 0,94. */
+/* Вузол стежки (D5, полотно D1 S05): коробка 96×104 (як у pathLayout), у ній цеглинка 96×88 унизу — над нею місце під пупирці.
+   Центр цеглинки (48; 56) — там, де NODE_CX/NODE_CY, тобто по ньому йде дорога. */
+.box {
+  position: absolute;
+}
+
 .node {
   position: absolute;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform var(--kl-dur-tap) var(--kl-ease-out);
-}
-
-.node svg {
-  position: relative; /* над сяйвом (позиціоновані елементи інакше малюються поверх непозиціонованих) */
-  display: block;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
-  overflow: visible; /* сяйво «наступного» вузла ширше за коробку */
-  pointer-events: none;
+  height: 88px;
+  font-family: var(--kl-font-display);
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.node:active {
-  transform: translateY(4px) scale(.94);
+.num {
+  color: var(--t);
+  filter: var(--kl-glyph-fx);
 }
 
-.node:focus-visible {
-  border-radius: 18px;
-  outline: 3px solid var(--kl-ink);
+.icon {
+  width: 50px;
+  height: 50px;
+}
+
+/* наступний: біла рамка й тепле сяйво (D1 .nd.next) */
+.node[data-state='next'] {
+  outline: 6px solid var(--kl-surface);
   outline-offset: 4px;
-  box-shadow: 0 0 0 6px var(--kl-surface);
+}
+
+.badge {
+  top: -16px;
+  right: -16px;
+}
+
+/* закритий ★-вузол: маленька зірочка на жовтому кружку в лівому верхньому куті */
+.starChip {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--kl-brick-yellow-glyph);
+  background: var(--kl-brick-yellow);
+  border: 3px solid var(--kl-surface);
+  border-radius: var(--kl-radius-round);
+  box-sizing: border-box;
+  box-shadow: 0 3px 0 rgba(10, 30, 70, .25);
+}
+
+.starChip svg {
+  width: 24px;
+  height: 24px;
 }
 
 /* заблокований лише хитається (±6 px, 300 мс) — без червоного і спалахів */
@@ -36,20 +65,19 @@
 }
 
 /* щойно відкритий вузол «вистрибує» (замок відкривається, 500 мс) */
-.node[data-fresh='true'] svg {
+.node[data-fresh='true'] {
   animation: var(--kl-anim-pop) 500ms var(--kl-ease-pop) both;
 }
 
-/* сяйво під наступним вузлом: жовтий овал 132×64 із кільцем 10 px, пульсує повільно (2,4 с); борд etap2/14 — зсув (−18; +37) від кута вузла */
+/* сяйво під наступним вузлом: жовтий овал, пульсує повільно (2,4 с) */
 .glow {
   position: absolute;
-  top: 37px;
-  left: -18px;
-  width: 132px;
-  height: 64px;
+  top: 0;
+  left: -22px;
+  width: 140px;
+  height: 120px;
   pointer-events: none;
-  background: rgba(255, 194, 26, .45);
+  background: radial-gradient(closest-side, rgba(255, 236, 140, .85), rgba(255, 236, 140, .35) 70%, transparent);
   border-radius: 999px;
-  box-shadow: 0 0 0 10px rgba(255, 194, 26, .2);
   animation: var(--kl-anim-glow) 2.4s ease-in-out infinite;
 }

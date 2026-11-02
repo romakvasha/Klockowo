@@ -9,7 +9,7 @@ export type MapOrientation = 'landscape' | 'portrait';
 export interface MapLayout {
   width: number;
   height: number;
-  /** Розмір коробки острова (картинка island-*.svg має пропорцію 208 : 228). */
+  /** Розмір коробки острова (картинка острова вписується й стоїть на низу). */
   island: { w: number; h: number };
   /** Множник відносно борда (190×208): розміри прапорця, сяйва, Kubika на картингу. */
   scale: number;

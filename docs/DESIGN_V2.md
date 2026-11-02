@@ -63,6 +63,7 @@
 2. Фон вирізається (`rembg`, модель isnet-general-use; `tools/art/process.py`), краї обрізаються; персонажі, острови й споруди — до 768 px заввишки, предмети, цифри й руки — до 512 px, фони — 1920×1080; формат WebP.
 3. Галерея `design/v2/gallery.html` (`tools/art/gallery.mjs`, зауваги — `tools/art/review.mjs`): власник переглядає й позначає, що перегенерувати.
 4. У гру — `src/assets/v2/…`; картинки світу підвантажуються, коли дитина входить у світ, і кешуються для офлайну (як голос).
+   У коді (D5): `src/components/map/art.ts` (URL картинок, `prefetchWorldArt`), фон екрана — `src/components/world/Backdrop.tsx`; фони `bg-*`/`path-*` — поза precache, кеш `klockowo-world` (`vite.config.ts`).
 
 ## 6. Пісенька на перерві
 
