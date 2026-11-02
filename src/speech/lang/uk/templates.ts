@@ -64,5 +64,4 @@ export const UK_TEMPLATES: LineTemplates = {
   neighborAnswer: (base, delta) => `${cap(nw(base))}, на ${byWord(delta)} ${delta > 0 ? 'більше' : 'менше'} — це ${nw(base + delta)}.`,
   placeValue: (n) => `${and(cap(quantity(Math.floor(n / 10), UK_NOUNS.DZIESIATKA)), quantity(n % 10, UK_NOUNS.JEDNOSC))} — це ${nw(n)}.`,
   findNumber: (n) => `Знайди число ${nw(n)}.`,
-  breakLine: (verb, n) => `${verb} ${times(n)}!`,
 };

@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { setLanguage } from '../../language';
 import {
-  BREAK_EXERCISES, BUTTONS, NO_VOICE_MESSAGE, WORLD_NAMES, animalHas, breakLine, bridgeTen, compareAnswer, countLabel, countTouch, feedAnimal, frogJump,
+  BUTTONS, NO_VOICE_MESSAGE, WORLD_NAMES, animalHas, bridgeTen, compareAnswer, countLabel, countTouch, feedAnimal, frogJump,
   houseQuestion, howManyMissing, missionLine, neighborAnswer, neighborQuestion, pairSum, paintDigit, placeValue, praiseCorrect, rocketFlight, startFrom,
   sumQuestion, thereIs, tileLabel, twoGroups,
 } from '../../lines';
@@ -86,7 +86,6 @@ describe('англійська: шаблони', () => {
     expect(rocketFlight(34, 10)).toBe('The rocket is on number thirty-four. It flies ten further. Where will it land?');
     expect(frogJump(4, 1)).toBe('The frog is on number four. It jumps once. Where will it land?');
     expect(frogJump(4, 3)).toBe('The frog is on number four. It jumps three times. Where will it land?');
-    expect(BREAK_EXERCISES.map((e) => breakLine(e.verb, e.n))).toEqual(['Jump ten times!', 'Clap five times!', 'Stamp your feet eight times!']);
     expect(tileLabel(7, 'retry')).toBe('seven — try again');
   });
 });

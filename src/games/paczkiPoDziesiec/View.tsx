@@ -23,6 +23,10 @@ export const RIGHT_X = 330;
 export const BOX = 100;
 export const BOX_GAP = 10;
 export const PACK_BUTTON = 80;
+/** Центр «Zapakuj» — на 20 design-px лівіше від правої зони. */
+export const PACK_BUTTON_X = RIGHT_X - 20;
+/** Ширина зони розсипаних предметів при масштабі сцени: кнопка не масштабується, тож на малому екрані предмети відступають від її лівого краю (+8 px). */
+export const looseWidth = (scale: number): number => Math.min(LOOSE_ZONE.w, Math.floor(PACK_BUTTON_X - (PACK_BUTTON / 2 + 8) / scale));
 /** Мат у режимі «Zbuduj»: стовпчики й кубики того ж розміру, ліворуч; праворуч — дві кнопки «+10» і «+1» по 96 px. */
 export const CELL = 17;
 export const MAT_CELL = 20;
@@ -92,7 +96,8 @@ function PackScene({ instance, area, reserved, assist, phase, celebrating, onTou
 
   const loose = total - 10 * boxes;
   const showMat = matShown || celebrating;
-  const fit = useMemo(() => fitGrid(loose, LOOSE_ZONE.w, LOOSE_ZONE.h, 8, 52), [loose]);
+  const zoneW = looseWidth(place.scale);
+  const fit = useMemo(() => fitGrid(loose, zoneW, LOOSE_ZONE.h, 8, 52), [loose, zoneW]);
 
   const say = (n: number) => void tts.speak(numberWords(n), { interrupt: true });
   const pack = () => {
@@ -123,7 +128,7 @@ function PackScene({ instance, area, reserved, assist, phase, celebrating, onTou
   const hintBox = assist.mode === 'hint' && (assist.level ?? 1) <= 1 ? assist.step - 1 : assist.mode === 'together' && assist.step <= tens ? assist.step - 1 : -1;
   const hintSingle = assist.mode === 'together' && assist.step > tens ? assist.step - tens - 1 : -1;
   const button = {
-    x: Math.round(place.x + (RIGHT_X - 20) * place.scale),
+    x: Math.round(place.x + PACK_BUTTON_X * place.scale),
     y: Math.round(place.y + (PACK_DESIGN.h / 2) * place.scale),
   };
 
@@ -133,9 +138,9 @@ function PackScene({ instance, area, reserved, assist, phase, celebrating, onTou
         className={styles.stage}
         style={{ left: place.x, top: place.y, width: PACK_DESIGN.w, height: PACK_DESIGN.h, transform: `scale(${place.scale})`, ...cssVars({ '--pk-tens': 'var(--kl-tens)' }) }}
       >
-        <div className={styles.loose} style={{ width: LOOSE_ZONE.w, height: LOOSE_ZONE.h }} role="group" aria-label={LABELS.looseItems}>
+        <div className={styles.loose} style={{ width: zoneW, height: LOOSE_ZONE.h }} role="group" aria-label={LABELS.looseItems}>
           {Array.from({ length: loose }, (_, i) => {
-            const p = gridCell(fit, i, loose, LOOSE_ZONE.w, LOOSE_ZONE.h);
+            const p = gridCell(fit, i, loose, zoneW, LOOSE_ZONE.h);
             const isSingleZone = loose < 10 || instance.mode === 'packed';
             const counted = isSingleZone && i < countedSingles;
             return (

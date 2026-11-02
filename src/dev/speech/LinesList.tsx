@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import {
-  BREAK_EXERCISES, FROM_COPY_9, SPOKEN_LINES,
-  addSentence, breakLine, bridgeTen, countByTens, countOnPraise, countTouch, feedAnimal, findNumber, frogJump, gateQuestion,
+  FROM_COPY_9, SPOKEN_LINES,
+  addSentence, bridgeTen, countByTens, countOnPraise, countTouch, feedAnimal, findNumber, frogJump, gateQuestion,
   houseQuestion, howManyMissing, missionLine, pairSum, placeValue, praiseCorrect, thereIs, twoGroups, whoHasMore,
 } from '../../speech/lines';
 import { ANIMALS, OBJECTS } from '../../speech/nouns';
@@ -32,9 +32,6 @@ const TEMPLATE_EXAMPLES: readonly { label: string; text: string }[] = [
   { label: 'BRIEF §7 · гра 12', text: countByTens(2) },
   { label: 'BRIEF §7 · гра 12', text: placeValue(47) },
   { label: 'BRIEF §7 · гра 13', text: findNumber(47) },
-  { label: 'BRIEF §6.11 · перерва', text: breakLine(BREAK_EXERCISES[0].verb, BREAK_EXERCISES[0].n) },
-  { label: 'BRIEF §6.11 · перерва', text: breakLine(BREAK_EXERCISES[1].verb, BREAK_EXERCISES[1].n) },
-  { label: 'BRIEF §6.11 · перерва', text: breakLine(BREAK_EXERCISES[2].verb, BREAK_EXERCISES[2].n) },
   { label: 'BRIEF §6.14 · бар’єр (без озвучення)', text: gateQuestion(7, 8) },
   { label: 'POLISH_COPY §9 · W4 ★', text: bridgeTen(8, 5) },
   { label: 'POLISH_COPY §8 · до двадцяти', text: howManyMissing(20) },

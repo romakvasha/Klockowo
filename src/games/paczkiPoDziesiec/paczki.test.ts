@@ -8,7 +8,7 @@ import type { Assist, AssistContext, GenContext, SceneKind } from '../engine/typ
 import { boxesFor, hintPack, tensCount, togetherPack } from './assist';
 import { LOOSE_MAX, PACK_MAX, PACK_MIN, checkPack, digitsOf, generatePack, packAnswer, pickPackOptions, swapDigits, type PackInstance } from './generate';
 import { paczkiPoDziesiec, promptOf } from './index';
-import { BOX, BOX_GAP, BUILD_BUTTON, MAT_CELL_NARROW, buildDesign, CELL, LOOSE_ZONE, PACK_BUTTON, PACK_DESIGN, RIGHT_X, boxPosition } from './View';
+import { BOX, BOX_GAP, BUILD_BUTTON, MAT_CELL_NARROW, buildDesign, CELL, LOOSE_ZONE, PACK_BUTTON, PACK_BUTTON_X, PACK_DESIGN, looseWidth, RIGHT_X, boxPosition } from './View';
 
 const level: Level = { id: 'w5-3', world: 'w5', index: 3, kind: 'main', newIdea: true, skills: ['bundle-ten'], tasks: [], draft: false };
 const ctxFor = (seed: number, previous: readonly number[] = []): GenContext => ({ level, world: 'w5', index: previous.length, rng: createRng(seed), previous });
@@ -211,8 +211,11 @@ describe('композиція', () => {
       expect(p.x + p.w, kind).toBeLessThanOrEqual(area.w);
       expect(p.y + p.h, kind).toBeLessThanOrEqual(area.h);
       for (const r of reserved) expect(intersects({ x: p.x, y: p.y, w: p.w, h: p.h }, r), kind).toBe(false);
-      const x = Math.round(p.x + (RIGHT_X - 20) * p.scale);
+      const x = Math.round(p.x + PACK_BUTTON_X * p.scale);
       const y = Math.round(p.y + (PACK_DESIGN.h / 2) * p.scale);
+      // розсипані предмети закінчуються лівіше від кнопки (вона не масштабується)
+      expect(p.x + looseWidth(p.scale) * p.scale, kind).toBeLessThanOrEqual(x - PACK_BUTTON / 2);
+      expect(looseWidth(p.scale), kind).toBeGreaterThan(150);
       expect(x - PACK_BUTTON / 2, kind).toBeGreaterThanOrEqual(0);
       expect(x + PACK_BUTTON / 2, kind).toBeLessThanOrEqual(area.w);
       expect(y - PACK_BUTTON / 2, kind).toBeGreaterThanOrEqual(0);
