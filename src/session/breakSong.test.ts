@@ -39,9 +39,10 @@ describe('пісенька на перерві', () => {
     expect(seen).toEqual(new Set(SONG_PARTS.flatMap((p) => p.lines)));
   });
 
-  it('у приспіві цифри 6…10 з’являються з рядка «Sześć i siedem…», до нього — 1…5', () => {
-    expect(SONG.chorus[SONG_SECOND_FIVE]).toMatch(/^Sześć/);
-    expect(SONG.chorus.slice(0, SONG_SECOND_FIVE).join(' ')).toContain('pięć');
+  it('у приспіві цифри 6…10 з’являються одразу після «…pięć» — на «na liczenie mamy chęć!», ще до «Sześć i siedem…»', () => {
+    expect(SONG.chorus[SONG_SECOND_FIVE]).toBe('na liczenie mamy chęć!');
+    expect(SONG.chorus[SONG_SECOND_FIVE - 1]).toMatch(/pięć/);
+    expect(SONG.chorus.findIndex((l) => l.startsWith('Sześć'))).toBeGreaterThan(SONG_SECOND_FIVE);
   });
 
   it('смужка — частка тривалості в межах 0–1', () => {

@@ -54,8 +54,9 @@ export function songAt(t: number, parts: readonly SongPart[] = SONG_PARTS, end =
   return { scene: part.scene, line: part.lines[index] ?? null, next, part: p, index };
 }
 
-/** Рядок приспіву, з якого показуються цифри 6…10 («Sześć i siedem, osiem, dziewięć,»); до нього — 1…5. */
-export const SONG_SECOND_FIVE = 4;
+/** Рядок приспіву, з якого показуються цифри 6…10: одразу після «raz, dwa, trzy, cztery, pięć» — на «na liczenie mamy chęć!»,
+ *  щоб 6…10 уже стояли, коли співають «Sześć i siedem…» (так попросив власник); до нього — 1…5. */
+export const SONG_SECOND_FIVE = 3;
 
 /** Частка пісні, що минула (0–1), для смужки. */
 export const songProgress = (t: number, duration: number): number => (duration > 0 ? Math.min(1, Math.max(0, t / duration)) : 0);
