@@ -98,6 +98,27 @@
   height: clamp(40px, 8dvh, 84px);
 }
 
+/* каченята — у 2,5 раза, зірки й кульки — удвічі більші (власник); на вузькому екрані — за шириною, щоб уміщались рядами */
+.props[data-scene='duck'] img {
+  width: min(20dvh, 210px, 27vw);
+  height: min(20dvh, 210px, 27vw);
+}
+
+.props[data-scene='party'] img {
+  width: min(16dvh, 168px, 15vw);
+  height: min(16dvh, 168px, 15vw);
+}
+
+/* 10 зірок «pięć tu, pięć tam» — усі в один ряд (інакше десята ховається за Kubikom): ширина ділиться на 10, проміжки вужчі */
+.props[data-scene='space'] {
+  gap: 8px;
+}
+
+.props[data-scene='space'] img {
+  width: min(16dvh, 168px, calc((100vw - 140px) / 10));
+  height: min(16dvh, 168px, calc((100vw - 140px) / 10));
+}
+
 .digits span {
   display: flex;
 }
@@ -179,6 +200,21 @@
   width: 28px;
   height: 28px;
   color: var(--kl-ink);
+}
+
+/* вертикальний екран (планшет, телефон): зірки — два ряди по п'ять, на всю ширину */
+@media (orientation: portrait) {
+  .props[data-scene='space'] img {
+    width: min(16dvh, 168px, calc((100vw - 80px) / 5));
+    height: min(16dvh, 168px, calc((100vw - 80px) / 5));
+  }
+}
+
+/* планшет вертикально: четверо цуценят і Kubik у ряд мають уміститись по ширині */
+@media (orientation: portrait) and (min-width: 601px) {
+  .dancers .side .pup {
+    --fig-h: min(22dvh, 190px, 15vw);
+  }
 }
 
 /* телефон вертикально (D1 .ph): ряд не вміщається — цуценята стоять по боках перед Kubikom */

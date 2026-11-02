@@ -21,11 +21,11 @@ function Props({ scene, half }: { scene: SongScene; half: 0 | 1 }) {
         </div>
       );
     case 'duck':
-      return <div className={styles.props}>{Array.from({ length: 5 }, (_, k) => img(itemUrl('kaczuszka'), k))}</div>;
+      return <div className={styles.props} data-scene="duck">{Array.from({ length: 5 }, (_, k) => img(itemUrl('kaczuszka'), k))}</div>;
     case 'space':
-      return <div className={styles.props}>{Array.from({ length: 10 }, (_, k) => img(itemUrl('gwiazdka'), k))}</div>;
+      return <div className={styles.props} data-scene="space">{Array.from({ length: 10 }, (_, k) => img(itemUrl('gwiazdka'), k))}</div>;
     case 'party':
-      return <div className={styles.props}>{Array.from({ length: 6 }, (_, k) => img(itemUrl('balonik'), k))}</div>;
+      return <div className={styles.props} data-scene="party">{Array.from({ length: 6 }, (_, k) => img(itemUrl('balonik'), k))}</div>;
     default:
       return null;
   }
