@@ -78,7 +78,10 @@
 
 .digits {
   z-index: 1;
-  gap: clamp(8px, 2vw, 24px);
+  /* між числами — ширше, ніж між цифрами «10», щоб «9 10» не читалось як «910» */
+  gap: clamp(16px, 4vw, 56px);
+  /* темний обвід і тінь замість білої картки: цеглинки читаються на будь-якому фоні */
+  filter: drop-shadow(0 0 2px rgba(20, 24, 60, .9)) drop-shadow(0 0 2px rgba(20, 24, 60, .9)) drop-shadow(0 8px 10px rgba(10, 20, 50, .55));
 }
 
 /* у приспіві Kubik і команда трохи менші — місце для великих цифр */
@@ -97,11 +100,6 @@
 
 .digits span {
   display: flex;
-  gap: 2px;
-  padding: clamp(6px, 1.2vw, 14px) clamp(8px, 1.6vw, 18px);
-  background: var(--kl-card);
-  border-radius: var(--kl-radius-panel);
-  box-shadow: var(--kl-card-shadow);
 }
 
 .digits img {
@@ -267,7 +265,7 @@
   }
 
   .stage[data-scene='numbers'] .digits img {
-    height: 17dvh;
+    height: 22dvh;
   }
 
   .stage[data-scene='numbers'] .dancers {
