@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SONG } from '../speech/lines';
-import { DANCE_POSES, SONG_END, SONG_PARTS, SONG_SCENES, dancePose, songAt, songProgress } from './breakSong';
+import { DANCE_POSES, SONG_END, SONG_SECOND_FIVE, SONG_PARTS, SONG_SCENES, dancePose, songAt, songProgress } from './breakSong';
 
 describe('пісенька на перерві', () => {
   it('розділи йдуть за часом і сценами: село → цифри → мама-качка → космос → свято, приспів між куплетами', () => {
@@ -37,6 +37,11 @@ describe('пісенька на перерві', () => {
       if (line) seen.add(line);
     }
     expect(seen).toEqual(new Set(SONG_PARTS.flatMap((p) => p.lines)));
+  });
+
+  it('у приспіві цифри 6…10 з’являються з рядка «Sześć i siedem…», до нього — 1…5', () => {
+    expect(SONG.chorus[SONG_SECOND_FIVE]).toMatch(/^Sześć/);
+    expect(SONG.chorus.slice(0, SONG_SECOND_FIVE).join(' ')).toContain('pięć');
   });
 
   it('смужка — частка тривалості в межах 0–1', () => {

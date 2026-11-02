@@ -1,5 +1,5 @@
 // Пісенька на «Czas na przerwę!» (docs/DESIGN_V2.md §6): «Kubik liczy do dziesięciu» (≈ 2:30) — сцени куплетів (село → цифри → мама-качка → космос → свято)
-// і рядки тексту за часом пісні. Чиста логіка: який розділ і рядок звучать на секунді t.
+// за часом пісні (текст на екрані не показується — лише визначає, коли що звучить). Чиста логіка: який розділ і рядок звучать на секунді t.
 import { SONG } from '../speech/lines';
 
 export type SongScene = 'village' | 'numbers' | 'duck' | 'space' | 'party';
@@ -53,6 +53,9 @@ export function songAt(t: number, parts: readonly SongPart[] = SONG_PARTS, end =
   const next = part.lines[index + 1] ?? parts[p + 1]?.lines[0] ?? null;
   return { scene: part.scene, line: part.lines[index] ?? null, next, part: p, index };
 }
+
+/** Рядок приспіву, з якого показуються цифри 6…10 («Sześć i siedem, osiem, dziewięć,»); до нього — 1…5. */
+export const SONG_SECOND_FIVE = 4;
 
 /** Частка пісні, що минула (0–1), для смужки. */
 export const songProgress = (t: number, duration: number): number => (duration > 0 ? Math.min(1, Math.max(0, t / duration)) : 0);

@@ -7,7 +7,7 @@ import { cx } from '../components/ui/cx';
 import { BG_URL, type BackdropScene } from '../components/map/art';
 import { Backdrop } from '../components/world/Backdrop';
 import { afterBreakPath, afterBreakState } from '../session/breakPlan';
-import { DANCE_BEAT_MS, SONG_FILE, SONG_SCENES, songAt, songProgress, type SongScene } from '../session/breakSong';
+import { DANCE_BEAT_MS, SONG_FILE, SONG_SCENES, SONG_SECOND_FIVE, songAt, songProgress, type SongScene } from '../session/breakSong';
 import { sessionClock } from '../session/sessionClock';
 import { BUTTONS, SESSION_LINES, SONG } from '../speech/lines';
 import { sfx } from '../speech/sfx';
@@ -23,7 +23,8 @@ const SCENE_ICON: Readonly<Record<SongScene, IconName>> = { village: 'home', num
 const lessMotion = (setting: boolean): boolean => setting || (typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches);
 
 /** Czas na przerwę! (BRIEF §6 п.11, docs/DESIGN_V2.md §6): Kubik каже «Czas na przerwę!», і звучить пісенька «Kubik liczy do dziesięciu» —
- *  сцени куплетів змінюються, рядок, що звучить, — великий, наступний — дрібніше; Kubik і команда танцюють. Фонова музика гри тут мовчить
+ *  сцени куплетів змінюються (у приспіві — великі цифри 1…5, потім 6…10), Kubik і команда танцюють. Слів пісні на екрані немає: діти 4–5 років
+ *  ще не читають — лише смужка, скільки минуло, і значки сцен. Фонова музика гри тут мовчить
  *  (MusicRouteSync), голос під час пісні — теж. «Dalej» — будь-коли: веде туди, куди йшла дитина (`state.next`), або на мапу. */
 export function BreakTime() {
   const navigate = useNavigate();
@@ -124,11 +125,9 @@ export function BreakTime() {
         className={styles.next}
         onClick={() => navigate(to, { replace: true, state: afterBreakState(location.state) })}
       />
-      <SongStage scene={now.scene} beat={beat} calm={calm} />
+      <SongStage scene={now.scene} half={now.scene === 'numbers' && now.index >= SONG_SECOND_FIVE ? 1 : 0} beat={beat} calm={calm} />
       {blocked && <IconButton icon="play" label={SONG.title} size={120} pulse className={styles.play} onClick={play} />}
       <section className={cx('kl-card', styles.lyrics)} aria-label={SONG.title}>
-        <p className={styles.line} aria-live="polite">{now.line ?? SONG.title}</p>
-        <p className={styles.upcoming}>{now.next}</p>
         <div className={styles.bar} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress} aria-label={SONG.title}>
           <i style={{ width: `${progress}%` }} />
         </div>

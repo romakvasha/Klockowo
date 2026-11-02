@@ -1,4 +1,5 @@
-/* «Czas na przerwę!» з пісенькою (полотно D1, дошка S11): зверху назва й «Dalej», посередині сцена з танцюристами, знизу картка з текстом */
+/* «Czas na przerwę!» з пісенькою (полотно D1, дошка S11): зверху назва й «Dalej», посередині сцена з танцюристами, знизу смужка й значки сцен.
+   Слів пісні на екрані немає (діти ще не читають) — за рішенням власника після D7. */
 .screen {
   position: relative;
   display: grid;
@@ -63,7 +64,7 @@
   --fig-h: clamp(80px, 22dvh, 190px);
 }
 
-/* предмети куплету — ряд над танцюристами */
+/* предмети куплету — ряд над танцюристами; цифри приспіву — поверх (їх треба прочитати) */
 .props,
 .digits {
   position: absolute;
@@ -75,6 +76,20 @@
   pointer-events: none;
 }
 
+.digits {
+  z-index: 1;
+  gap: clamp(8px, 2vw, 24px);
+}
+
+/* у приспіві Kubik і команда трохи менші — місце для великих цифр */
+.stage[data-scene='numbers'] .kubik {
+  --fig-h: clamp(120px, 34dvh, 280px);
+}
+
+.stage[data-scene='numbers'] .pup {
+  --fig-h: clamp(70px, 17dvh, 150px);
+}
+
 .props img {
   width: clamp(40px, 8dvh, 84px);
   height: clamp(40px, 8dvh, 84px);
@@ -82,10 +97,15 @@
 
 .digits span {
   display: flex;
+  gap: 2px;
+  padding: clamp(6px, 1.2vw, 14px) clamp(8px, 1.6vw, 18px);
+  background: var(--kl-card);
+  border-radius: var(--kl-radius-panel);
+  box-shadow: var(--kl-card-shadow);
 }
 
 .digits img {
-  height: clamp(40px, 9dvh, 88px);
+  height: clamp(90px, 24dvh, 210px);
   width: auto;
 }
 
@@ -111,27 +131,13 @@
 .lyrics {
   grid-area: lyr;
   justify-self: center;
-  width: min(820px, 100%);
+  width: min(560px, 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   padding: 18px 28px 20px;
   text-align: center;
-}
-
-.line {
-  margin: 0;
-  min-height: 1.2em;
-  font: 700 40px / 1.2 var(--kl-font-display);
-  color: var(--kl-ink);
-}
-
-.upcoming {
-  margin: 0;
-  min-height: 1.2em;
-  font: 600 26px / 1.2 var(--kl-font-display);
-  color: var(--kl-ink-soft);
 }
 
 .bar {
@@ -218,12 +224,8 @@
     padding: 12px 14px 14px;
   }
 
-  .line {
-    font-size: 24px;
-  }
-
-  .upcoming {
-    font-size: 17px;
+  .digits img {
+    height: min(13dvh, 112px);
   }
 
   .scenes span {
@@ -250,13 +252,34 @@
     padding: 8px 16px 10px;
   }
 
-  .line {
-    font-size: 22px;
-  }
-
-  .upcoming,
   .scenes {
     display: none;
+  }
+
+  /* приспів: місця по висоті мало — цифри ліворуч, Kubik і команда праворуч, без накладання */
+  .stage[data-scene='numbers'] {
+    place-items: end end;
+  }
+
+  .stage[data-scene='numbers'] .digits {
+    justify-content: flex-start;
+    right: 38%;
+  }
+
+  .stage[data-scene='numbers'] .digits img {
+    height: 17dvh;
+  }
+
+  .stage[data-scene='numbers'] .dancers {
+    gap: 4px;
+  }
+
+  .stage[data-scene='numbers'] .kubik {
+    --fig-h: 40dvh;
+  }
+
+  .stage[data-scene='numbers'] .pup {
+    --fig-h: 20dvh;
   }
 
   .bar {
