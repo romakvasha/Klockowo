@@ -25,10 +25,17 @@ export const DEFAULT_RATE = 0.9; // POLISH_COPY §8: числа слухати �
 const VOICE_WAIT_MS = 2500; // повільні пристрої вантажать голоси довго; до цього часу status = 'loading'
 const CANCEL_COOLDOWN_MS = 80;
 const PRIME_CLEANUP_MS = 500;
-const CLIP_WATCHDOG_MS = 15000;
+const CLIP_START_MS = 15000; // запис не почав грати (не завантажився) за цей час — браузерний голос
+const MANIFEST_WAIT_MS = 6000; // фраза до завантаження маніфеста записів чекає його стільки (повільна мобільна мережа)
 const SENTENCE_GAP_MS = 220; // пауза між реченнями запису — як природна пауза в мовленні
 
 const clamp = (x: number, min: number, max: number): number => Math.min(max, Math.max(min, x));
+
+/** Сторожовий таймер запису, що вже грає: тривалість із запасом (невідома — пів хвилини). */
+export function clipWatchdogMs(duration: number | undefined, playbackRate: number): number {
+  if (duration === undefined || !Number.isFinite(duration) || duration <= 0) return 30000;
+  return Math.ceil((duration * 1000) / playbackRate) + 4000;
+}
 
 /** Сторожовий таймер: якщо браузер «загубив» подію end (буває), гра не має зависнути. */
 export function watchdogMs(text: string, rate: number): number {
@@ -38,8 +45,6 @@ export function watchdogMs(text: string, rate: number): number {
 interface Job {
   text: string;
   rate: number;
-  /** Файли запису (по одному на речення) або null — каже браузерний голос. */
-  files: readonly string[] | null;
   resolve: (r: SpeakResult) => void;
 }
 
@@ -57,6 +62,7 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   const voiceWaitMs = cfg.voiceWaitMs ?? VOICE_WAIT_MS;
   const cooldownMs = cfg.cancelCooldownMs ?? CANCEL_COOLDOWN_MS;
   const sentenceGapMs = cfg.sentenceGapMs ?? SENTENCE_GAP_MS;
+  const manifestWaitMs = cfg.manifestWaitMs ?? MANIFEST_WAIT_MS;
 
   let state: TtsState = {
     unlocked: false,
@@ -80,6 +86,15 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   let voiceWaiters: (() => void)[] = [];
   /** Записи за мовою: ключа ще немає — не вантажили; null — записів немає (чи ще вантажаться). */
   const manifests: Partial<Record<Lang, ClipManifest | null>> = {};
+  /** Мови, чий маніфест ще вантажиться, і фрази, що на нього чекають. */
+  const manifestLoading = new Set<Lang>();
+  let manifestWaiters: (() => void)[] = [];
+
+  function flushManifestWaiters(): void {
+    const waiters = manifestWaiters;
+    manifestWaiters = [];
+    for (const w of waiters) w();
+  }
 
   function patch(p: Partial<TtsState>): void {
     state = { ...state, ...p };
@@ -127,14 +142,20 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   function loadRecorded(l: Lang): void {
     if (clipEnv && !(l in manifests)) {
       manifests[l] = null;
+      manifestLoading.add(l);
       clipEnv.load(l).then(
         (m) => {
           manifests[l] = m;
+          manifestLoading.delete(l);
+          flushManifestWaiters();
           if (l !== lang) return;
           syncRecorded();
           if (m) clipEnv.warm?.(l, m);
         },
-        () => { /* немає записів — браузерний голос */ },
+        () => {
+          manifestLoading.delete(l); // немає записів — браузерний голос
+          flushManifestWaiters();
+        },
       );
     } else {
       const m = manifests[l];
@@ -180,8 +201,22 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
   function begin(job: Job): void {
     const a: Active = { job, done: false, stop: () => {}, timer: undefined, keep: undefined };
     active = a;
-    if (clipEnv && job.files) playClips(a, clipEnv, job.files);
-    else speakSynth(a);
+    if (!clipEnv || !state.useRecorded) return speakSynth(a);
+    // Маніфест записів ще вантажиться (перші фрази після старту, повільна мережа телефона): чекаємо його, а не одразу браузерний голос.
+    // Файли визначаємо тут, а не в speak(): фраза, поставлена в чергу до маніфеста, теж звучатиме записом.
+    let decided = false;
+    const decide = (): void => {
+      if (decided || a.done) return;
+      decided = true;
+      if (a.timer !== undefined) clearTimeout(a.timer);
+      a.timer = undefined;
+      const files = clipsFor(manifests[lang], a.job.text);
+      if (files) playClips(a, clipEnv, files);
+      else speakSynth(a);
+    };
+    if (!manifestLoading.has(lang)) return decide();
+    manifestWaiters.push(decide);
+    a.timer = setTimeout(decide, manifestWaitMs);
   }
 
   function speakSynth(a: Active): void {
@@ -231,6 +266,12 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
       audio.volume = state.volume;
       audio.playbackRate = clamp((state.rate * a.job.rate) / DEFAULT_RATE, 0.5, 2);
       let settled = false;
+      const started = (): void => {
+        if (settled || a.done) return;
+        // Запис почав грати: далі сторож — за його тривалістю (довге речення на повільному телефоні не обірветься посередині)
+        if (a.timer !== undefined) clearTimeout(a.timer);
+        a.timer = setTimeout(failed, clipWatchdogMs(audio.duration, audio.playbackRate));
+      };
       const ended = (): void => {
         if (settled || a.done) return;
         settled = true;
@@ -260,8 +301,8 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
         audio.onerror = null;
         audio.pause();
       };
-      a.timer = setTimeout(failed, CLIP_WATCHDOG_MS);
-      audio.play().catch(failed);
+      a.timer = setTimeout(failed, CLIP_START_MS);
+      audio.play().then(started, failed);
     };
     next();
   }
@@ -284,17 +325,16 @@ export function createTts(env: TtsEnv, cfg: TtsConfig = {}): Tts {
     }
     if (!clean || !state.unlocked || hidden) return Promise.resolve('skipped');
     if (opts.interrupt) cancelAll();
-    const files = state.useRecorded && clipEnv ? clipsFor(manifests[lang], clean) : null;
     return new Promise<SpeakResult>((resolve) => {
-      queue.push({ text: clean, rate: opts.rate ?? 1, files, resolve });
+      queue.push({ text: clean, rate: opts.rate ?? 1, resolve });
       pump();
     });
   }
 
   function unlock(): void {
+    clipEnv?.prime?.(); // на кожному дотику: програвач сам знає, чи вже «розблокований» (clipAudio.ts)
     if (state.unlocked) return;
     patch({ unlocked: true });
-    clipEnv?.prime?.();
     refreshVoices();
     if (!synth || synth.speaking) return;
     // Тиха «розминка» просто в жесті: iOS дозволяє подальші speak() лише після першого виклику з дотику.

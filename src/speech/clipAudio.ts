@@ -26,7 +26,18 @@ function silenceUrl(): string {
 
 export function sharedClipAudio(): { make(url: string): AudioLike; prime(): void } {
   let el: HTMLAudioElement | undefined;
-  const audio = (): HTMLAudioElement => (el ??= new Audio());
+  /** Елемент уже справді зіграв (тишу чи запис) — iOS більше не вимагає дотику. */
+  let allowed = false;
+  let silence: string | undefined;
+  const audio = (): HTMLAudioElement => {
+    if (!el) {
+      el = new Audio();
+      el.addEventListener('playing', () => {
+        allowed = true;
+      });
+    }
+    return el;
+  };
   return {
     make: (url) => {
       const a = audio();
@@ -34,12 +45,14 @@ export function sharedClipAudio(): { make(url: string): AudioLike; prime(): void
       cacheClip(url);
       return a as unknown as AudioLike;
     },
+    // Кожен дотик (unlock.ts): доки елемент не зіграв, пробуємо ще раз — перша спроба могла не вдатися (дотик не «рахувався»,
+    // тиша не встигла, iOS перервав). Коли елемент грає запис — не чіпаємо.
     prime: () => {
       const a = audio();
-      if (a.src) return;
-      a.src = silenceUrl();
+      if (allowed || !a.paused) return;
+      a.src = silence ??= silenceUrl();
       a.play().catch(() => {
-        /* не вийшло — речення скаже браузерний голос */
+        /* не вийшло — спробуємо в наступному дотику; речення тим часом скаже браузерний голос */
       });
     },
   };

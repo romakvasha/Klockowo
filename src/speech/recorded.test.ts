@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { clipKey, clipsFor, splitSentences, type ClipManifest } from './clips';
+import { clipWatchdogMs } from './tts';
 import { EN, PL, setup } from './ttsFakes';
 
 const flush = () => vi.advanceTimersByTimeAsync(0);
@@ -28,6 +29,7 @@ describe('clips: речення й ключі', () => {
     expect(splitSentences('Ile jest?  Policz razem… Dobrze.')).toEqual(['Ile jest?', 'Policz razem…', 'Dobrze.']);
     expect(splitSentences('siedem')).toEqual(['siedem']);
     expect(splitSentences('   ')).toEqual([]);
+    expect(splitSentences('  Tak!Nie.  Dobrze  ')).toEqual(['Tak!Nie.', 'Dobrze']); // ділимо лише на пробілі після знака
   });
 
   it('ключ: без регістру й крапки чи знака оклику в кінці; знак питання лишається', () => {
@@ -156,11 +158,62 @@ describe('tts: записаний голос', () => {
     await expect(p).resolves.toBe('spoken');
   });
 
-  it('файл «завис» без події end → сторожовий таймер, далі браузерний голос', async () => {
-    const { synth, tts } = await ready();
-    void tts.speak('siedem');
-    await vi.advanceTimersByTimeAsync(15000);
-    expect(synth.real.map((u) => u.text)).toEqual(['siedem']);
+  it('файл не вантажиться (play() не вирішується) → за 15 с браузерний голос', async () => {
+    const t = setup([EN, PL], { sentenceGapMs: GAP }, { manifests: { pl: PL_CLIPS }, hang: true });
+    await flush();
+    t.tts.unlock();
+    void t.tts.speak('siedem');
+    await vi.advanceTimersByTimeAsync(14999);
+    expect(t.synth.real).toHaveLength(0);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(t.synth.real.map((u) => u.text)).toEqual(['siedem']);
+  });
+
+  it('запис уже грає: сторож — за тривалістю, довге речення не обривається на 15-й секунді', async () => {
+    const t = setup([EN, PL], { sentenceGapMs: GAP }, { manifests: { pl: PL_CLIPS }, duration: 14 });
+    await flush();
+    t.tts.unlock();
+    void t.tts.speak('siedem');
+    await vi.advanceTimersByTimeAsync(17000);
+    expect(t.synth.real).toHaveLength(0);
+    await vi.advanceTimersByTimeAsync(1000); // 14 с + 4 с запасу — подія end загубилась
+    expect(t.synth.real.map((u) => u.text)).toEqual(['siedem']);
+  });
+
+  it('clipWatchdogMs: тривалість / темп + 4 с; невідома тривалість — 30 с', () => {
+    expect(clipWatchdogMs(2, 1)).toBe(6000);
+    expect(clipWatchdogMs(2, 0.5)).toBe(8000);
+    expect(clipWatchdogMs(NaN, 1)).toBe(30000);
+    expect(clipWatchdogMs(Infinity, 1)).toBe(30000);
+    expect(clipWatchdogMs(undefined, 1)).toBe(30000);
+  });
+
+  it('фраза до завантаження маніфеста (повільна мережа телефона) чекає його й звучить записом, і та, що в черзі, теж', async () => {
+    const t = setup([EN, PL], { sentenceGapMs: GAP }, { manifests: { pl: PL_CLIPS }, slow: true });
+    t.tts.unlock();
+    const p1 = t.tts.speak('siedem');
+    void t.tts.speak('Brawo!');
+    await vi.advanceTimersByTimeAsync(3000);
+    expect(t.synth.real).toHaveLength(0);
+    expect(t.audios).toHaveLength(0);
+    t.loaded();
+    await flush();
+    expect(t.audios.map((a) => a.url)).toEqual(['audio/pl/s7.mp3']);
+    t.audios[0]?.end();
+    await expect(p1).resolves.toBe('spoken');
+    await flush();
+    expect(t.audios.map((a) => a.url)).toEqual(['audio/pl/s7.mp3', 'audio/pl/b1.mp3']);
+    expect(t.synth.real).toHaveLength(0);
+  });
+
+  it('маніфест не приходить → фраза чекає не довше 6 с, далі браузерний голос', async () => {
+    const t = setup([EN, PL], { sentenceGapMs: GAP }, { manifests: { pl: PL_CLIPS }, slow: 'never' });
+    t.tts.unlock();
+    void t.tts.speak('siedem');
+    await vi.advanceTimersByTimeAsync(5999);
+    expect(t.synth.real).toHaveLength(0);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(t.synth.real.map((u) => u.text)).toEqual(['siedem']);
   });
 
   it('cancel() під час речення чи паузи між реченнями: «cancelled», далі нічого не грає', async () => {
@@ -201,9 +254,9 @@ describe('tts: записаний голос', () => {
     await expect(tts.speak('osiem')).resolves.toBe('skipped');
   });
 
-  it('перший дотик «розблоковує» програвач записів (iOS) — один раз', async () => {
+  it('кожен дотик пробує «розблокувати» програвач записів (iOS): перша спроба могла не вдатися', async () => {
     const { tts, primes } = await ready();
     tts.unlock();
-    expect(primes()).toBe(1);
+    expect(primes()).toBe(2);
   });
 });

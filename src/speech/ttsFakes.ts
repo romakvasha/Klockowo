@@ -52,10 +52,12 @@ export class FakeAudio implements AudioLike {
   onerror: (() => void) | null = null;
   played = false;
   paused = false;
-  /** Як iOS без дотику: play() відхиляється. */
-  constructor(public url: string, private refuse = false) {}
+  duration = NaN;
+  /** refuse — як iOS без дотику: play() відхиляється; hang — файл не вантажиться: play() не вирішується. */
+  constructor(public url: string, private refuse = false, private hang = false) {}
   play(): Promise<void> {
     this.played = true;
+    if (this.hang) return new Promise<void>(() => undefined);
     return this.refuse ? Promise.reject(new Error('NotAllowedError')) : Promise.resolve();
   }
   pause(): void {
@@ -76,6 +78,12 @@ export interface FakeClips {
   manifests?: Partial<Record<Lang, ClipManifest>>;
   /** play() відхиляється (iOS без дотику). */
   refuse?: boolean;
+  /** play() не вирішується (файл не вантажиться). */
+  hang?: boolean;
+  /** Тривалість кожного запису, с. */
+  duration?: number;
+  /** Маніфест приходить лише після loaded() (повільна мережа); never — не приходить узагалі. */
+  slow?: boolean | 'never';
 }
 
 export function setup(voices: VoiceLike[] = [EN, PL], cfg: TtsConfig = {}, fake: FakeClips | null = null) {
@@ -84,15 +92,20 @@ export function setup(voices: VoiceLike[] = [EN, PL], cfg: TtsConfig = {}, fake:
   const loads: Lang[] = [];
   const warms: Lang[] = [];
   let primes = 0;
+  let release = (): void => undefined;
   const clips: ClipEnv | undefined = fake
     ? {
         load: (lang) => {
           loads.push(lang);
-          return Promise.resolve(fake.manifests?.[lang] ?? null);
+          const m = fake.manifests?.[lang] ?? null;
+          if (fake.slow === 'never') return new Promise(() => undefined);
+          if (fake.slow) return new Promise((resolve) => (release = () => resolve(m)));
+          return Promise.resolve(m);
         },
         url: (lang, file) => `audio/${lang}/${file}.mp3`,
         make: (url) => {
-          const a = new FakeAudio(url, fake.refuse);
+          const a = new FakeAudio(url, fake.refuse, fake.hang);
+          if (fake.duration !== undefined) a.duration = fake.duration;
           audios.push(a);
           return a;
         },
@@ -105,5 +118,5 @@ export function setup(voices: VoiceLike[] = [EN, PL], cfg: TtsConfig = {}, fake:
       }
     : undefined;
   const tts = createTts({ synth, makeUtterance: (t) => new FakeUtterance(t), clips }, cfg);
-  return { synth, tts, audios, loads, warms, primes: () => primes };
+  return { synth, tts, audios, loads, warms, primes: () => primes, loaded: () => release() };
 }

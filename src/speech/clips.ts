@@ -5,10 +5,19 @@
 
 /** Речення висловлювання: «Brawo! Pięć jabłek.» → [«Brawo!», «Pięć jabłek.»]. */
 export function splitSentences(text: string): string[] {
-  return text
-    .split(/(?<=[.!?…])\s+/u)
-    .map((s) => s.trim())
-    .filter(Boolean);
+  // Без регулярного виразу з lookbehind (?<=…): Safari до 16.4 (старі iPad/iPhone) його не знає — модуль не завантажився б.
+  const out: string[] = [];
+  let words: string[] = [];
+  for (const w of text.split(/\s+/u)) {
+    if (!w) continue;
+    words.push(w);
+    if (/[.!?…]$/u.test(w)) {
+      out.push(words.join(' '));
+      words = [];
+    }
+  }
+  if (words.length > 0) out.push(words.join(' '));
+  return out;
 }
 
 /** Ключ запису речення: малі літери, один пробіл, без «.», «!», «…» у кінці (знак питання лишається — інша інтонація). */

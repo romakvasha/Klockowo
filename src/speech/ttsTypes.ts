@@ -76,6 +76,8 @@ export interface AudioLike {
   volume: number;
   /** Темп запису (висота не змінюється — у браузері preservesPitch за замовчуванням). */
   playbackRate: number;
+  /** Тривалість у секундах (NaN, поки невідома). */
+  readonly duration?: number;
   onended: (() => void) | null;
   onerror: (() => void) | null;
   play(): Promise<void>;
@@ -103,4 +105,6 @@ export interface TtsConfig {
   cancelCooldownMs?: number;
   /** Пауза між реченнями запису, мс. */
   sentenceGapMs?: number;
+  /** Скільки фраза чекає маніфест записів, що ще вантажиться (тести). */
+  manifestWaitMs?: number;
 }
